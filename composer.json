@@ -1,0 +1,25 @@
+{
+  "name": "digital-craftsman/cqrs",
+  "description": "CQRS construct for Symfony",
+  "type": "symfony-bundle",
+  "require": {
+    "php": "~8.0.0",
+    "symfony/framework-bundle": "^5.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "DigitalCraftsman\\CQRS\\": "src/"
+    }
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Christian Kolb",
+      "email": "info@digital-craftsman.de"
+    }
+  ],
+  "require-dev": {
+    "vimeo/psalm": "^4.12",
+    "friendsofphp/php-cs-fixer": "^3.3"
+  }
+}
