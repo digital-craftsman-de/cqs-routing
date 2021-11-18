@@ -63,7 +63,7 @@ The construct consists of two starting points, the `CommandController` and the `
 *Validates the created command or query.*
 - **[Handler](./docs/handler.md)**  
 *Command or query handler which contains the business logic.*
-**[Handler wrapper](./docs/handler-wrapper.md)**  
+- **[Handler wrapper](./docs/handler-wrapper.md)**  
 *Wraps handler to execute logic as a prepare / try / catch logic.*
 - **[Response constructor](./docs/response-constructor.md)**  
 *Transforms the gathered data of the handler into a response.*
@@ -83,7 +83,6 @@ $routes->add(
         'routePayload' => Configuration::routePayload(
             dtoClass: CreateNewsArticleCommand::class,
             handlerClass: CreateNewsArticleCommandHandler::class,
-            requestDecoderClass: CommandWithFilesRequestDecoder::class,
             dtoValidatorClasses: [
                 UserIdValidator::class,
             ],
