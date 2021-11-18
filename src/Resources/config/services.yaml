@@ -1,45 +1,7 @@
 services:
 
-  # Interface instances
-  _instanceof:
-
-    DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface:
-      tags: [ 'cqrs.request_decoder' ]
-
-    DigitalCraftsman\CQRS\DTODataTransformer\DTODataTransformerInterface:
-      tags: [ 'cqrs.dto_data_transformer' ]
-
-    DigitalCraftsman\CQRS\DTOConstructor\DTOConstructorInterface:
-      tags: [ 'cqrs.dto_constructor' ]
-
-    DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface:
-      tags: [ 'cqrs.dto_validator' ]
-
-    DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface:
-      tags: [ 'cqrs.handler_wrapper' ]
-
-    DigitalCraftsman\CQRS\Command\CommandHandlerInterface:
-      tags: [ 'cqrs.command_handler' ]
-
-    DigitalCraftsman\CQRS\Query\QueryHandlerInterface:
-      tags: [ 'cqrs.query_handler' ]
-
-    DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface:
-      tags: [ 'cqrs.response_constructor' ]
-
-  # Controllers
-  DigitalCraftsman\CQRS\Controller\QueryController:
-    arguments:
-      $requestDecoders: !tagged_iterator cqrs.request_decoder
-      $dtoDataTransformers: !tagged_iterator cqrs.dto_data_transformer
-      $dtoConstructors: !tagged_iterator cqrs.dto_constructor
-      $dtoValidators: !tagged_iterator cqrs.dto_validator
-      $handlerWrappers: !tagged_iterator cqrs.handler_wrapper
-      $queryHandlers: !tagged_iterator cqrs.query_handler
-      $responseConstructors: !tagged_iterator cqrs.response_constructor
-    tags: [ 'controller.service_arguments' ]
-
-  DigitalCraftsman\CQRS\Controller\CommandController:
+  # Service container
+  DigitalCraftsman\CQRS\ServiceMap\ServiceMap:
     arguments:
       $requestDecoders: !tagged_iterator cqrs.request_decoder
       $dtoDataTransformers: !tagged_iterator cqrs.dto_data_transformer
@@ -47,5 +9,30 @@ services:
       $dtoValidators: !tagged_iterator cqrs.dto_validator
       $handlerWrappers: !tagged_iterator cqrs.handler_wrapper
       $commandHandlers: !tagged_iterator cqrs.command_handler
+      $queryHandlers: !tagged_iterator cqrs.query_handler
       $responseConstructors: !tagged_iterator cqrs.response_constructor
+
+  # Controllers
+  DigitalCraftsman\CQRS\Controller\QueryController:
+    autoconfigure: true
+    autowire: true
+    arguments:
+      $defaultRequestDecoderClass: '%cqrs.query_controller.default_request_decoder_class%'
+      $defaultDTODataTransformerClasses: '%cqrs.query_controller.default_dto_data_transformer_classes%'
+      $defaultDTOConstructorClass: '%cqrs.query_controller.default_dto_constructor_class%'
+      $defaultDTOValidatorClasses: '%cqrs.query_controller.default_dto_validator_classes%'
+      $defaultHandlerWrapperClasses: '%cqrs.query_controller.default_handler_wrapper_classes%'
+      $defaultResponseConstructorClass: '%cqrs.query_controller.default_response_constructor_class%'
+    tags: [ 'controller.service_arguments' ]
+
+  DigitalCraftsman\CQRS\Controller\CommandController:
+    autoconfigure: true
+    autowire: true
+    arguments:
+      $defaultRequestDecoderClass: '%cqrs.command_controller.default_request_decoder_class%'
+      $defaultDTODataTransformerClasses: '%cqrs.command_controller.default_dto_data_transformer_classes%'
+      $defaultDTOConstructorClass: '%cqrs.command_controller.default_dto_constructor_class%'
+      $defaultDTOValidatorClasses: '%cqrs.command_controller.default_dto_validator_classes%'
+      $defaultHandlerWrapperClasses: '%cqrs.command_controller.default_handler_wrapper_classes%'
+      $defaultResponseConstructorClass: '%cqrs.command_controller.default_response_constructor_class%'
     tags: [ 'controller.service_arguments' ]

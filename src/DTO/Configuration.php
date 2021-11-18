@@ -9,6 +9,7 @@ use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
 use DigitalCraftsman\CQRS\DTOConstructor\DTOConstructorInterface;
 use DigitalCraftsman\CQRS\DTODataTransformer\DTODataTransformerInterface;
 use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
+use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 use DigitalCraftsman\CQRS\Query\Query;
 use DigitalCraftsman\CQRS\Query\QueryHandlerInterface;
 use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
