@@ -1,6 +1,23 @@
 services:
 
-  # Service container
+  # Request decoders
+  DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder:
+    autowire: true
+    autoconfigure: true
+    tags: [ 'cqrs.request_decoder' ]
+
+  # Response constructors
+  DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor:
+    autowire: true
+    autoconfigure: true
+    tags: [ 'cqrs.response_constructor' ]
+
+  DigitalCraftsman\CQRS\ResponseConstructor\EmptyResponseConstructor:
+    autowire: true
+    autoconfigure: true
+    tags: [ 'cqrs.response_constructor' ]
+
+  # Service map
   DigitalCraftsman\CQRS\ServiceMap\ServiceMap:
     arguments:
       $requestDecoders: !tagged_iterator cqrs.request_decoder
