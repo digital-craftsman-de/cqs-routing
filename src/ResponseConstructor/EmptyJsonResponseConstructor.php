@@ -11,6 +11,6 @@ final class EmptyJsonResponseConstructor implements ResponseConstructorInterface
 {
     public function constructResponse($data): JsonResponse
     {
-        return new JsonResponse(null, Response::HTTP_NO_CONTENT, [], true);
+        return new JsonResponse('', Response::HTTP_NO_CONTENT, [], true);
     }
 }
