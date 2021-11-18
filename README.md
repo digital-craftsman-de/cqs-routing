@@ -1,8 +1,42 @@
-# Separation of concerns with CQRS in Symfony
+# Reduced cost of change through CQRS in Symfony
+
+## Installation and configuration
+
+Install package through composer:
+
+```shell
+composer require digital-craftsman/cqrs
+```
+
+Then add the following `cqrs.yaml` file to your `config/packages` and replace it with your instances of the interfaces:
+
+```yaml
+cqrs:
+
+  query_controller:
+    default_request_decoder_class: 'App\CQRS\RequestDecoder\JsonRequestDecoder'
+    default_dto_constructor_class: 'App\CQRS\DTOConstructor\SerializerDTOConstructor'
+    default_dto_validator_classes:
+      - 'App\CQRS\DTOValidator\UserIdValidator'
+    default_response_constructor_class: 'App\CQRS\ResponseConstructor\JsonResponseConstructor'
+
+  command_controller:
+    default_request_decoder_class: 'App\CQRS\RequestDecoder\JsonRequestDecoder'
+    default_dto_constructor_class: 'App\CQRS\DTOConstructor\SerializerDTOConstructor'
+    default_dto_validator_classes:
+      - 'App\CQRS\DTOValidator\UserIdValidator'
+    default_handler_wrapper_classes:
+      - 'App\CQRS\HandlerWrapper\ConnectionTransactionWrapper'
+    default_response_constructor_class: 'App\CQRS\ResponseConstructor\EmptyJsonResponseConstructor'
+```
+
+Where to use which instances, is described below.
 
 ## Why
 
-The CQRS construct is a Symfony bundle to separate concerns when working with CQRS. With it, you can handle all domain logic within a `CommandHandler` or `QueryHandler` and keep everything else in separate services.
+It's very easy to build a CRUD and REST API with Symfony. There are components like parameter converter which are all geared towards getting data very quickly into a controller to handle the logic there. Unfortunately even though it's very fast to build endpoints with a REST mindset, it's very difficult to handle business logic in a matter that makes changes easy and secure. In short, we have a [low cost of introduction at the expense of the cost of change](https://www.youtube.com/watch?v=uQUxJObxTUs).
+
+### Overarching goals
 
 The construct has to following goals:
 
@@ -11,7 +45,29 @@ The construct has to following goals:
 3. Make refactoring safer through the extensive use of types.
 4. Add clear boundries between business logic and application / infrastructe logic.
 
-Commands and queries are therefore strongly typed value objects which already validate whatever they can. Here is an example command that is used to create a news article:
+### How
+
+The CQRS construct closes this gap and **drastically reduces the cost of change** without much higher costs of introduction.
+It consists of two starting points, the `CommandController` and the `QueryController` and the following components:
+
+- **Request decoder**
+*Parses the request and transforms it into an array structure.*
+- **DTO data transformer**
+*Transforms the previously generated array structure if necessary.*
+- **DTO constructor**
+*Generates a command or query from the array structure.*
+- **DTO validator**
+*Validates the created command or query.*
+- **Handler**
+*Command or query handler which contains the business logic.*
+- **Response constructor**
+*Transforms the gathered data of the handler into a response.*
+
+Through the Symfony routing, we define which instances of the components (if relevant) are used for which route. This is why we use PHP files for the routes instead of the default YAML. So renaming of components is easier through the IDE.
+
+### Command example
+
+Commands and queries are strongly typed value objects which already validate whatever they can. Here is an example command that is used to create a news article:
 
 ```php
 <?php
@@ -98,36 +154,4 @@ final class CreateProductNewsArticleCommandHandler implements CommandHandlerInte
         $this->entityManager->flush();
     }
 }
-```
-
-## Installation and configuration
-
-Install package through composer:
-
-```shell
-composer require digital-craftsman/cqrs
-```
-
-Then add the following `cqrs.yaml` file to your `config/packages` and replace it with your instances of the interfaces:
-
-```yaml
-cqrs:
-
-  query_controller:
-    default_request_decoder_class: 'App\CQRS\RequestDecoder\JsonRequestDecoder'
-    default_dto_constructor_class: 'App\CQRS\DTOConstructor\SerializerDTOConstructor'
-    default_dto_validator_classes:
-      - 'App\Application\CourseMapping\DTOValidator\CourseIdValidator'
-      - 'App\CQRS\DTOValidator\UserIdValidator'
-    default_response_constructor_class: 'App\CQRS\ResponseConstructor\JsonResponseConstructor'
-
-  command_controller:
-    default_request_decoder_class: 'App\CQRS\RequestDecoder\JsonRequestDecoder'
-    default_dto_constructor_class: 'App\CQRS\DTOConstructor\SerializerDTOConstructor'
-    default_dto_validator_classes:
-      - 'App\Application\CourseMapping\DTOValidator\CourseIdValidator'
-      - 'App\CQRS\DTOValidator\UserIdValidator'
-    default_handler_wrapper_classes:
-      - 'App\CQRS\HandlerWrapper\ConnectionTransactionWrapper'
-    default_response_constructor_class: 'App\CQRS\ResponseConstructor\EmptyJsonResponseConstructor'
 ```
