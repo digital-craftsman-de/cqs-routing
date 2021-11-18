@@ -14,8 +14,7 @@ interface CommandHandlerInterface
 ```php
 interface QueryHandlerInterface
 {
-    /** @return mixed */
-    public function handle(Query $query);
+    public function handle(Query $query): mixed;
 }
 ```
 

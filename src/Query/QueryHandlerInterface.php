@@ -6,5 +6,5 @@ namespace DigitalCraftsman\CQRS\Query;
 
 interface QueryHandlerInterface
 {
-    public function handle(Query $query);
+    public function handle(Query $query): mixed;
 }
