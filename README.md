@@ -1,14 +1,114 @@
-## Working with CQRS in Symfony
+# Separation of concerns with CQRS in Symfony
 
-This bundle contains all necessary interfaces to work with CQRS as described in the [Craftsman Compendium](https://www.digital-craftsman.de/craftsman-compendium/cqrs-construct).
+## Why
 
-Setup:
+The CQRS construct is a Symfony bundle to separate concerns when working with CQRS. With it, you can handle all domain logic within a `CommandHandler` or `QueryHandler` and keep everything else in separate services.
+
+The construct has to following goals:
+
+1. Make it very fast and easy to understand **what** is happening (from a business logic perspective).
+2. Make the code safer through extensive use of value objects.
+3. Make refactoring safer through the extensive use of types.
+4. Add clear boundries between business logic and application / infrastructe logic.
+
+Commands and queries are therefore strongly typed value objects which already validate whatever they can. Here is an example command that is used to create a news article:
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domain\News\WriteSide\CreateNewsArticle;
+
+use App\Helper\HtmlHelper;
+use App\ValueObject\UserId;
+use Assert\Assertion;
+use DigitalCraftsman\CQRS\Command\Command;
+
+final class CreateNewsArticleCommand extends Command
+{
+    public function __construct(
+        public UserId $userId,
+        public string $title,
+        public string $content,
+        public bool $isPublished,
+    ) {
+        Assertion::betweenLength($title, 1, 255);
+        Assertion::minLength($content, 1);
+        HtmlHelper::assertValidHtml($content);
+    }
+}
 
 ```
+
+The structural validation is therefore already done through the creation of the command and the command handler only has to handle the business logic validation. A command handler might look like this: 
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domain\News\WriteSide\CreateNewsArticle;
+
+use App\DomainService\UserCollection;
+use App\Entity\NewsArticle;
+use App\Time\Clock\ClockInterface;
+use App\ValueObject\NewsArticleId;
+use DigitalCraftsman\CQRS\Command\Command;
+use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
+use Doctrine\ORM\EntityManagerInterface;
+
+final class CreateProductNewsArticleCommandHandler implements CommandHandlerInterface
+{
+    public function __construct(
+        private ClockInterface $clock,
+        private UserCollection $userCollection,
+        private EntityManagerInterface $entityManager,
+    ) {
+    }
+
+    /** @param CreateProductNewsArticleCommand $command */
+    public function handle(Command $command): void
+    {
+        $commandExecutedAt = $this->clock->now();
+
+        // Validate
+        $requestingUser = $this->userCollection->getOne($command->userId);
+        $requestingUser->mustNotBeLocked();
+        $requestingUser->mustHavePermissionToWriteArticle();
+
+        // Apply
+        $this->createNewsArticle($command, $commandExecutedAt);
+    }
+
+    private function createNewsArticle(
+        CreateProductNewsArticleCommand $command,
+        \DateTimeImmutable $commandExecutedAt,
+    ): void {
+        $newsArticleId = NewsArticleId::generateRandom();
+        $newsArticle = new NewsArticle(
+            $newsArticleId,
+            $command->title,
+            $command->content,
+            $command->isPublished,
+            $commandExecutedAt,
+        );
+
+        $this->entityManager->persist($newsArticle);
+        $this->entityManager->flush();
+    }
+}
+```
+
+## Installation and configuration
+
+Install package through composer:
+
+```shell
 composer require digital-craftsman/cqrs
 ```
 
-Add the following `cqrs.yaml` file to your `config/packages` and replace it with your instances:
+Then add the following `cqrs.yaml` file to your `config/packages` and replace it with your instances of the interfaces:
 
 ```yaml
 cqrs:
