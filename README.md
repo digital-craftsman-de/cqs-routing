@@ -30,11 +30,15 @@ cqrs:
     default_response_constructor_class: 'App\CQRS\ResponseConstructor\EmptyJsonResponseConstructor'
 ```
 
-Where to use which instances, is described below.
+At the moment the package doesn't supply any instances itself, so you need to create your own before using it.
+
+Where and how to use the instances, is described below.
 
 ## Why
 
-It's very easy to build a CRUD and REST API with Symfony. There are components like parameter converter which are all geared towards getting data very quickly into a controller to handle the logic there. Unfortunately even though it's very fast to build endpoints with a REST mindset, it's very difficult to handle business logic in a matter that makes changes easy and secure. In short, we have a [low cost of introduction at the expense of the cost of change](https://www.youtube.com/watch?v=uQUxJObxTUs).
+It's very easy to build a CRUD and REST API with Symfony. There are components like parameter converter which are all geared towards getting data very quickly into a controller to handle the logic there. Unfortunately even though it's very fast to build endpoints with a REST mindset, it's very difficult to handle business logic in a matter that makes changes easy and secure. In short, we have a **[low cost of introduction at the expense of the cost of change](https://www.youtube.com/watch?v=uQUxJObxTUs)**.
+
+The CQRS construct closes this gap and **drastically reduces the cost of change** without much higher costs of introduction.
 
 ### Overarching goals
 
@@ -47,20 +51,19 @@ The construct has to following goals:
 
 ### How
 
-The CQRS construct closes this gap and **drastically reduces the cost of change** without much higher costs of introduction.
-It consists of two starting points, the `CommandController` and the `QueryController` and the following components:
+The construct consists of two starting points, the `CommandController` and the `QueryController` and the following components:
 
-- **Request decoder**
+- **[Request decoder](./docs/request-decoder.md)**  
 *Parses the request and transforms it into an array structure.*
-- **DTO data transformer**
+- **DTO data transformer**  
 *Transforms the previously generated array structure if necessary.*
-- **DTO constructor**
+- **DTO constructor**  
 *Generates a command or query from the array structure.*
-- **DTO validator**
+- **DTO validator**  
 *Validates the created command or query.*
-- **Handler**
+- **Handler**  
 *Command or query handler which contains the business logic.*
-- **Response constructor**
+- **Response constructor**  
 *Transforms the gathered data of the handler into a response.*
 
 Through the Symfony routing, we define which instances of the components (if relevant) are used for which route. This is why we use PHP files for the routes instead of the default YAML. So renaming of components is easier through the IDE.
