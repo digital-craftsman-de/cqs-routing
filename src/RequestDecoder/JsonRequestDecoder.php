@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\CQRS\RequestDecoder;
+namespace DigitalCraftsman\CQRS\RequestDecoder;
 
-use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 final class JsonRequestDecoder implements RequestDecoderInterface
