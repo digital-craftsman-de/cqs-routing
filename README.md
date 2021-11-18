@@ -14,23 +14,23 @@ Then add the following `cqrs.yaml` file to your `config/packages` and replace it
 cqrs:
 
   query_controller:
-    default_request_decoder_class: 'App\CQRS\RequestDecoder\JsonRequestDecoder'
+    default_request_decoder_class: 'DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder'
     default_dto_constructor_class: 'App\CQRS\DTOConstructor\SerializerDTOConstructor'
     default_dto_validator_classes:
       - 'App\CQRS\DTOValidator\UserIdValidator'
     default_response_constructor_class: 'App\CQRS\ResponseConstructor\JsonResponseConstructor'
 
   command_controller:
-    default_request_decoder_class: 'App\CQRS\RequestDecoder\JsonRequestDecoder'
+    default_request_decoder_class: 'DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder'
     default_dto_constructor_class: 'App\CQRS\DTOConstructor\SerializerDTOConstructor'
     default_dto_validator_classes:
       - 'App\CQRS\DTOValidator\UserIdValidator'
     default_handler_wrapper_classes:
       - 'App\CQRS\HandlerWrapper\ConnectionTransactionWrapper'
-    default_response_constructor_class: 'App\CQRS\ResponseConstructor\EmptyJsonResponseConstructor'
+    default_response_constructor_class: 'DigitalCraftsman\CQRS\ResponseConstructor\EmptyResponseConstructor'
 ```
 
-At the moment the package doesn't supply any instances itself, so you need to create your own before using it.
+At the moment the package only contains instances for request decoder and response constructor, so you need to create your own for the rest before using them.
 
 Where and how to use the instances, is described below.
 
