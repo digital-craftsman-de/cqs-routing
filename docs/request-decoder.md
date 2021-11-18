@@ -39,13 +39,13 @@ When feeding it a request with the following JSON body:
 
 ```json
 {
-  "userId": "5118d20f-0ca5-40d1-99a8-1d1c20d675d6",
-  "emailAddress": "user@example.com",
-  "name": {
-    "firstName": "John",
-    "lastName": "Doe"
-  },
-  "password": "V6nP2mKmxn42Km3JG3x@"
+    "userId": "5118d20f-0ca5-40d1-99a8-1d1c20d675d6",
+    "emailAddress": "user@example.com",
+    "name": {
+        "firstName": "John",
+        "lastName": "Doe"
+    },
+    "password": "V6nP2mKmxn42Km3JG3x@"
 }
 ```
 
