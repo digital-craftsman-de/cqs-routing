@@ -57,16 +57,41 @@ The construct consists of two starting points, the `CommandController` and the `
 *Parses the request and transforms it into an array structure.*
 - **[DTO data transformer](./docs/dto-data-transformer.md)**  
 *Transforms the previously generated array structure if necessary.*
-- **DTO constructor**  
+- **[DTO constructor](./docs/dto-constructor.md)**  
 *Generates a command or query from the array structure.*
-- **DTO validator**  
+- **[DTO validator](./docs/dto-validator.md)**  
 *Validates the created command or query.*
-- **Handler**  
+- **[Handler](./docs/handler.md)**  
 *Command or query handler which contains the business logic.*
-- **Response constructor**  
+**[Handler wrapper](./docs/handler-wrapper.md)**  
+*Wraps handler to execute logic as a prepare / try / catch logic.*
+- **[Response constructor](./docs/response-constructor.md)**  
 *Transforms the gathered data of the handler into a response.*
 
 Through the Symfony routing, we define which instances of the components (if relevant) are used for which route. This is why we use PHP files for the routes instead of the default YAML. So renaming of components is easier through the IDE.
+
+A route might look like this:
+
+```php
+$routes->add(
+    'api_news_create_news_article_command',
+    '/api/news/create-news-article-command',
+)
+    ->controller([CommandController::class, 'handle'])
+    ->methods([Request::METHOD_POST])
+    ->defaults([
+        'routePayload' => Configuration::routePayload(
+            dtoClass: CreateNewsArticleCommand::class,
+            handlerClass: CreateNewsArticleCommandHandler::class,
+            requestDecoderClass: CommandWithFilesRequestDecoder::class,
+            dtoValidatorClasses: [
+                UserIdValidator::class,
+            ],
+        ),
+    ]);
+```
+
+You only need to define the components that differ from the defaults configured in the `cqrs.yaml` configuration.
 
 ### Command example
 
@@ -117,7 +142,7 @@ use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class CreateProductNewsArticleCommandHandler implements CommandHandlerInterface
+final class CreateNewsArticleCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private ClockInterface $clock,
