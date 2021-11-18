@@ -7,8 +7,8 @@ namespace DigitalCraftsman\CQRS\ServiceMap\Exception;
 /** @psalm-immutable */
 final class ConfiguredHandlerWrapperNotAvailable extends \DomainException
 {
-    public function __construct()
+    public function __construct(string $handlerWrapperClass)
     {
-        parent::__construct('The configured handler wrapper is not available');
+        parent::__construct(sprintf('The configured handler wrapper "%s" is not available', $handlerWrapperClass));
     }
 }

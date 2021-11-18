@@ -105,11 +105,13 @@ final class ServiceMap
     public function getRequestDecoder(Configuration $configuration, ?string $defaultRequestDecoderClass): RequestDecoderInterface
     {
         if ($configuration->requestDecoderClass !== null) {
-            return $this->requestDecoderMap[$configuration->requestDecoderClass] ?? throw new ConfiguredRequestDecoderNotAvailable();
+            return $this->requestDecoderMap[$configuration->requestDecoderClass]
+                ?? throw new ConfiguredRequestDecoderNotAvailable($configuration->requestDecoderClass);
         }
 
         if ($defaultRequestDecoderClass !== null) {
-            return $this->requestDecoderMap[$defaultRequestDecoderClass] ?? throw new ConfiguredRequestDecoderNotAvailable();
+            return $this->requestDecoderMap[$defaultRequestDecoderClass]
+                ?? throw new ConfiguredRequestDecoderNotAvailable($defaultRequestDecoderClass);
         }
 
         throw new NoDefaultRequestDecoderDefined();
@@ -125,14 +127,14 @@ final class ServiceMap
 
             return array_map(
                 fn (string $dtoDataTransformerClass) => $this->dtoDataTransformerMap[$dtoDataTransformerClass]
-                    ?? throw new ConfiguredDTODataTransformerNotAvailable(),
+                    ?? throw new ConfiguredDTODataTransformerNotAvailable($dtoDataTransformerClass),
                 $defaultDTODataTransformerClasses,
             );
         }
 
         return array_map(
             fn (string $dtoDataTransformerClass) => $this->dtoDataTransformerMap[$dtoDataTransformerClass]
-                ?? throw new ConfiguredDTODataTransformerNotAvailable(),
+                ?? throw new ConfiguredDTODataTransformerNotAvailable($dtoDataTransformerClass),
             $configuration->dtoDataTransformerClasses,
         );
     }
@@ -140,11 +142,13 @@ final class ServiceMap
     public function getDTOConstructor(Configuration $configuration, ?string $defaultDTOConstructorClass): DTOConstructorInterface
     {
         if ($configuration->dtoConstructorClass !== null) {
-            return $this->dtoConstructorMap[$configuration->dtoConstructorClass] ?? throw new ConfiguredDTOConstructorNotAvailable();
+            return $this->dtoConstructorMap[$configuration->dtoConstructorClass]
+                ?? throw new ConfiguredDTOConstructorNotAvailable($configuration->dtoConstructorClass);
         }
 
         if ($defaultDTOConstructorClass !== null) {
-            return $this->dtoConstructorMap[$defaultDTOConstructorClass] ?? throw new ConfiguredDTOConstructorNotAvailable();
+            return $this->dtoConstructorMap[$defaultDTOConstructorClass]
+                ?? throw new ConfiguredDTOConstructorNotAvailable($defaultDTOConstructorClass);
         }
 
         throw new NoDefaultDTOConstructorDefined();
@@ -160,14 +164,14 @@ final class ServiceMap
 
             return array_map(
                 fn (string $dtoValidatorClass) => $this->dtoValidatorMap[$dtoValidatorClass]
-                    ?? throw new ConfiguredDTOValidatorNotAvailable(),
+                    ?? throw new ConfiguredDTOValidatorNotAvailable($dtoValidatorClass),
                 $defaultDTOValidatorClasses,
             );
         }
 
         return array_map(
             fn (string $dtoValidatorClass) => $this->dtoValidatorMap[$dtoValidatorClass]
-                ?? throw new ConfiguredDTOValidatorNotAvailable(),
+                ?? throw new ConfiguredDTOValidatorNotAvailable($dtoValidatorClass),
             $configuration->dtoValidatorClasses,
         );
     }
@@ -182,7 +186,8 @@ final class ServiceMap
 
             return array_map(
                 fn (string $handlerWrapperClass) => new HandlerWrapperWithParameters(
-                    $this->handlerWrapperMap[$handlerWrapperClass] ?? throw new ConfiguredHandlerWrapperNotAvailable(),
+                    $this->handlerWrapperMap[$handlerWrapperClass]
+                        ?? throw new ConfiguredHandlerWrapperNotAvailable($handlerWrapperClass),
                     null,
                 ),
                 $defaultHandlerWrapperClasses,
@@ -192,7 +197,7 @@ final class ServiceMap
         return array_map(
             fn (HandlerWrapperConfiguration $handlerWrapperConfiguration) => new HandlerWrapperWithParameters(
                 $this->handlerWrapperMap[$handlerWrapperConfiguration->handlerWrapperClass]
-                ?? throw new ConfiguredHandlerWrapperNotAvailable(),
+                ?? throw new ConfiguredHandlerWrapperNotAvailable($handlerWrapperConfiguration->handlerWrapperClass),
                 $handlerWrapperConfiguration->parameters,
             ),
             $configuration->handlerWrapperConfigurations,
@@ -201,12 +206,14 @@ final class ServiceMap
 
     public function getCommandHandler(Configuration $configuration): CommandHandlerInterface
     {
-        return $this->commandHandlerMap[$configuration->handlerClass] ?? throw new ConfiguredCommandHandlerNotAvailable();
+        return $this->commandHandlerMap[$configuration->handlerClass]
+            ?? throw new ConfiguredCommandHandlerNotAvailable($configuration->handlerClass);
     }
 
     public function getQueryHandler(Configuration $configuration): QueryHandlerInterface
     {
-        return $this->queryHandlerMap[$configuration->handlerClass] ?? throw new ConfiguredQueryHandlerNotAvailable();
+        return $this->queryHandlerMap[$configuration->handlerClass]
+            ?? throw new ConfiguredQueryHandlerNotAvailable($configuration->handlerClass);
     }
 
     public function getResponseConstructor(
@@ -215,12 +222,12 @@ final class ServiceMap
     ): ResponseConstructorInterface {
         if ($configuration->responseConstructorClass !== null) {
             return $this->responseConstructorMap[$configuration->responseConstructorClass]
-                ?? throw new ConfiguredResponseConstructorNotAvailable();
+                ?? throw new ConfiguredResponseConstructorNotAvailable($configuration->responseConstructorClass);
         }
 
         if ($defaultResponseConstructorClass !== null) {
             return $this->responseConstructorMap[$defaultResponseConstructorClass]
-                ?? throw new ConfiguredResponseConstructorNotAvailable();
+                ?? throw new ConfiguredResponseConstructorNotAvailable($defaultResponseConstructorClass);
         }
 
         throw new NoDefaultResponseConstructorDefined();

@@ -7,8 +7,8 @@ namespace DigitalCraftsman\CQRS\ServiceMap\Exception;
 /** @psalm-immutable */
 final class ConfiguredRequestDecoderNotAvailable extends \DomainException
 {
-    public function __construct()
+    public function __construct(string $requestDecoderClass)
     {
-        parent::__construct('The configured request decoder is not available');
+        parent::__construct(sprintf('The configured request decoder "%s" is not available', $requestDecoderClass));
     }
 }

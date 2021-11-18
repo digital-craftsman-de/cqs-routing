@@ -7,8 +7,8 @@ namespace DigitalCraftsman\CQRS\ServiceMap\Exception;
 /** @psalm-immutable */
 final class ConfiguredDTOConstructorNotAvailable extends \DomainException
 {
-    public function __construct()
+    public function __construct(string $dtoConstructorClass)
     {
-        parent::__construct('The configured DTO constructor is not available');
+        parent::__construct(sprintf('The configured DTO constructor "%s" is not available', $dtoConstructorClass));
     }
 }

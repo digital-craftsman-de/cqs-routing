@@ -7,8 +7,8 @@ namespace DigitalCraftsman\CQRS\ServiceMap\Exception;
 /** @psalm-immutable */
 final class ConfiguredDTODataTransformerNotAvailable extends \DomainException
 {
-    public function __construct()
+    public function __construct(string $dtoDataTransformerClass)
     {
-        parent::__construct('The configured DTO data transformer is not available');
+        parent::__construct(sprintf('The configured DTO data transformer "%s" is not available', $dtoDataTransformerClass));
     }
 }

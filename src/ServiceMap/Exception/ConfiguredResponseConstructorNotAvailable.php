@@ -7,8 +7,8 @@ namespace DigitalCraftsman\CQRS\ServiceMap\Exception;
 /** @psalm-immutable */
 final class ConfiguredResponseConstructorNotAvailable extends \DomainException
 {
-    public function __construct()
+    public function __construct(string $responseConstructorClass)
     {
-        parent::__construct('The configured response constructor is not available');
+        parent::__construct(sprintf('The configured response constructor "%s" is not available', $responseConstructorClass));
     }
 }

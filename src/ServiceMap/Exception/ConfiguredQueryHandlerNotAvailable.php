@@ -7,8 +7,8 @@ namespace DigitalCraftsman\CQRS\ServiceMap\Exception;
 /** @psalm-immutable */
 final class ConfiguredQueryHandlerNotAvailable extends \DomainException
 {
-    public function __construct()
+    public function __construct(string $handlerClass)
     {
-        parent::__construct('The configured query handler is not available');
+        parent::__construct(sprintf('The configured query handler "%s" is not available', $handlerClass));
     }
 }
