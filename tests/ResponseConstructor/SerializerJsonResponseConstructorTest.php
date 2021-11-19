@@ -7,6 +7,7 @@ namespace DigitalCraftsman\CQRS\ResponseConstructor;
 use DigitalCraftsman\CQRS\ResponseConstructor\ReadModel\User as UserReadModel;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -35,5 +36,7 @@ final class SerializerJsonResponseConstructorTest extends TestCase
 
         // Assert
         self::assertSame($expectedJSON, $response->getContent());
+        self::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        self::assertSame('application/json', $response->headers->get('Content-Type'));
     }
 }
