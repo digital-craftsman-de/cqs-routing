@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -20,6 +21,10 @@ final class SerializerJsonResponseConstructorTest extends TestCase
         // Arrange
         $serializerJsonResponseConstructor = new SerializerJsonResponseConstructor(
             new Serializer([new PropertyNormalizer()], [new JsonEncoder()]),
+            [
+                AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
+                AbstractObjectNormalizer::PRESERVE_EMPTY_OBJECTS => true,
+            ],
         );
 
         $userReadModel = new UserReadModel(

@@ -26,6 +26,8 @@ services:
   DigitalCraftsman\CQRS\ResponseConstructor\SerializerJsonResponseConstructor:
     autowire: true
     autoconfigure: true
+    arguments:
+      $serializerContext: '%cqrs.serializer_context%'
     tags: [ 'cqrs.response_constructor' ]
 
   DigitalCraftsman\CQRS\ResponseConstructor\StreamedResponseConstructor:
