@@ -4,11 +4,22 @@
   "type": "symfony-bundle",
   "require": {
     "php": "~8.0.0",
-    "symfony/framework-bundle": "^5.3"
+    "symfony/framework-bundle": "^5.3",
+    "symfony/serializer": "^5.3"
+  },
+  "require-dev": {
+    "vimeo/psalm": "^4.12",
+    "friendsofphp/php-cs-fixer": "^3.3",
+    "phpunit/phpunit": "^9.5"
   },
   "autoload": {
     "psr-4": {
       "DigitalCraftsman\\CQRS\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "DigitalCraftsman\\CQRS\\": "tests/"
     }
   },
   "license": "MIT",
@@ -17,9 +28,5 @@
       "name": "Christian Kolb",
       "email": "info@digital-craftsman.de"
     }
-  ],
-  "require-dev": {
-    "vimeo/psalm": "^4.12",
-    "friendsofphp/php-cs-fixer": "^3.3"
-  }
+  ]
 }

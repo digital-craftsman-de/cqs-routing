@@ -6,6 +6,12 @@ services:
     autoconfigure: true
     tags: [ 'cqrs.request_decoder' ]
 
+  # DTO constructors
+  DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor:
+    autowire: true
+    autoconfigure: true
+    tags: [ 'cqrs.dto_constructor' ]
+
   # Response constructors
   DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor:
     autowire: true
@@ -13,6 +19,11 @@ services:
     tags: [ 'cqrs.response_constructor' ]
 
   DigitalCraftsman\CQRS\ResponseConstructor\EmptyResponseConstructor:
+    autowire: true
+    autoconfigure: true
+    tags: [ 'cqrs.response_constructor' ]
+
+  DigitalCraftsman\CQRS\ResponseConstructor\SerializerJsonResponseConstructor:
     autowire: true
     autoconfigure: true
     tags: [ 'cqrs.response_constructor' ]
