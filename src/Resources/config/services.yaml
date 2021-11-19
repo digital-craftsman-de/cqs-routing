@@ -17,6 +17,11 @@ services:
     autoconfigure: true
     tags: [ 'cqrs.response_constructor' ]
 
+  DigitalCraftsman\CQRS\ResponseConstructor\StreamedResponseConstructor:
+    autowire: true
+    autoconfigure: true
+    tags: [ 'cqrs.response_constructor' ]
+
   # Service map
   DigitalCraftsman\CQRS\ServiceMap\ServiceMap:
     arguments:
