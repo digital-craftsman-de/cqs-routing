@@ -55,6 +55,16 @@ php-cli:
 	docker-compose run --rm php sh
 
 ##
+## Tests
+## -----
+##
+
+## php-tests		Run the PHP tests.
+.PHONY: php-tests
+php-tests:
+	docker-compose run --rm php ./vendor/bin/phpunit
+
+##
 ## Code validations
 ## ----------------
 ##
