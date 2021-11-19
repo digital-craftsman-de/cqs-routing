@@ -8,7 +8,7 @@ This is the interface for the response constructor:
 interface ResponseConstructorInterface
 {
     /** @param mixed $result */
-    public function constructResponse($result): Response;
+    public function constructResponse($result, Request $request): Response;
 }
 ```
 
@@ -17,14 +17,14 @@ interface ResponseConstructorInterface
 Most of the time the result will be an object or array and be converted into JSON throught the JSONResponseConstructor. Obviously it needs the custom normalizers for the values objects to be able to do so.
 
 ```php
-final class JsonResponseConstructor implements ResponseConstructorInterface
+final class SerializerJsonResponseConstructor implements ResponseConstructorInterface
 {
     public function __construct(
         private SerializerInterface $serializer,
     ) {
     }
 
-    public function constructResponse($data): JsonResponse
+    public function constructResponse($data, Request $request): JsonResponse
     {
         return new JsonResponse(
             $this->serializer->serialize($data),
@@ -44,7 +44,7 @@ A file should be returned as a binary and not as JSON, so we would need a custom
 final class FileResponseConstructor implements ResponseConstructorInterface
 {
     /** @param File $data */
-    public function constructResponse($data): Response
+    public function constructResponse($data, Request $request): Response
     {
         return FileManagementHelper::binaryResponse(
         $data->fileContent,
@@ -107,7 +107,7 @@ Such a callable would be send to a simple streamed response constructor:
 final class StreamedResponseConstructor implements ResponseConstructorInterface
 {
     /** @param callable $data */
-    public function constructResponse($data): Response
+    public function constructResponse($data, Request $request): Response
     {
         return new StreamedResponse($data);
     }

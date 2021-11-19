@@ -133,6 +133,6 @@ final class CommandController extends AbstractController
         // Construct and return response
         $responseConstructor = $this->serviceMap->getResponseConstructor($configuration, $this->defaultResponseConstructorClass);
 
-        return $responseConstructor->constructResponse(null);
+        return $responseConstructor->constructResponse(null, $request);
     }
 }

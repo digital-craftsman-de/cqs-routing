@@ -137,6 +137,6 @@ final class QueryController extends AbstractController
         // Construct and return response
         $responseConstructor = $this->serviceMap->getResponseConstructor($configuration, $this->defaultResponseConstructorClass);
 
-        return $responseConstructor->constructResponse($result);
+        return $responseConstructor->constructResponse($result, $request);
     }
 }
