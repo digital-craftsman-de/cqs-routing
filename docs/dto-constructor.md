@@ -18,27 +18,24 @@ interface DTOConstructorInterface
 
 ## Construction through serializer
 
-A possible implementation of a constructor is one that uses the Symfony serializer like this:
+A possible implementation of a constructor is one that uses the Symfony serializer like this that is already built-in:
 
 ```php
-final class SerializerDTOConstructor implements DTOConstructorInterface
+final class SerializerJsonResponseConstructor implements ResponseConstructorInterface
 {
     public function __construct(
         private SerializerInterface $serializer,
     ) {
     }
 
-    /**
-     * @return Command|Query
-     *
-     * @psalm-template T of Command|Query
-     * @psalm-param class-string<T> $dtoClass
-     * @psalm-return T
-     */
-    public function constructDTO(array $dtoData, string $dtoClass): object
+    public function constructResponse($data, Request $request): JsonResponse
     {
-        /** @psalm-var T */
-        return $this->serializer->denormalize($dtoData, $dtoClass);
+        $content = $this->serializer->serialize($data, JsonEncoder::FORMAT, [
+            AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
+            AbstractObjectNormalizer::PRESERVE_EMPTY_OBJECTS => true,
+        ]);
+
+        return new JsonResponse($content, Response::HTTP_OK, [], true);
     }
 }
 ```

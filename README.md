@@ -15,18 +15,12 @@ cqrs:
 
   query_controller:
     default_request_decoder_class: 'DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder'
-    default_dto_constructor_class: 'App\CQRS\DTOConstructor\SerializerDTOConstructor'
-    default_dto_validator_classes:
-      - 'App\CQRS\DTOValidator\UserIdValidator'
-    default_response_constructor_class: 'App\CQRS\ResponseConstructor\JsonResponseConstructor'
+    default_dto_constructor_class: 'DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor'
+    default_response_constructor_class: 'DigitalCraftsman\CQRS\ResponseConstructor\SerializerJsonResponseConstructor'
 
   command_controller:
     default_request_decoder_class: 'DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder'
-    default_dto_constructor_class: 'App\CQRS\DTOConstructor\SerializerDTOConstructor'
-    default_dto_validator_classes:
-      - 'App\CQRS\DTOValidator\UserIdValidator'
-    default_handler_wrapper_classes:
-      - 'App\CQRS\HandlerWrapper\ConnectionTransactionWrapper'
+    default_dto_constructor_class: 'DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor'
     default_response_constructor_class: 'DigitalCraftsman\CQRS\ResponseConstructor\EmptyResponseConstructor'
 ```
 

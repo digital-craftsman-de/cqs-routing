@@ -16,21 +16,12 @@ The simple implementation of a request decoder is the `JsonRequestDecoder`:
 ```php
 final class JsonRequestDecoder implements RequestDecoderInterface
 {
-    public function __construct(
-        private SerializerInterface $serializer,
-    ) {
-    }
-
     public function decodeRequest(Request $request): array
     {
         /** @var string $content */
         $content = $request->getContent();
 
-        if (empty($content)) {
-            return [];
-        }
-
-        return $this->serializer->decode($content, JsonEncoder::FORMAT);
+        return (array) json_decode($content, true, 512, JSON_THROW_ON_ERROR);
     }
 }
 ```

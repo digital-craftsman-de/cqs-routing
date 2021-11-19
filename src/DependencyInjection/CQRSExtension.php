@@ -74,6 +74,7 @@ final class CQRSExtension extends Extension
          *     default_handler_wrapper_classes: ?array<int, string>,
          *     default_response_constructor_class: ?string,
          *   },
+         *   serializer_context: array,
          * }
          */
         $config = $this->processConfiguration($configuration, $configs);
@@ -85,5 +86,7 @@ final class CQRSExtension extends Extension
         foreach ($config['command_controller'] as $key => $value) {
             $container->setParameter('cqrs.command_controller.'.$key, $value);
         }
+
+        $container->setParameter('cqrs.serializer_context', $config['serializer_context']);
     }
 }
