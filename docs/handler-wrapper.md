@@ -173,9 +173,9 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
 }
 ```
 
-This might be useful when the flow of a command handler should be stopped, but no error must be shown to the user. As an example, imagine a command to change an email address where the email address hasn't changed. No confirmation email must be send out and no data must be stored. But the user must also not get an error because the email address itself is valid. With this handler wrapper, we can throw a `EmailAddressDidNotChange` exception to exit the flow.
+This might be useful when the flow of a command handler should be stopped, but no error must be shown to the user. As an example, imagine a command to change an email address where the email address hasn't changed. No confirmation email must be send out and no data must be stored. But the user must also not get an error because the email address itself is valid. With this handler wrapper, we can throw an `EmailAddressDidNotChange` exception to exit the flow.
 
-The priority of the `catch` method is set to a low value like `-100` to make sure it's executed last and doesn't prevent another handler wrapper that for example rolls back a doctrine transation.
+The priority of the `catch` method is set to a low value like `-100` to make sure it's executed last and doesn't prevent another handler wrapper (that for example rolls back a doctrine transation) to be executed.
 
 Handler wrappers in a route are not defined like other components with just the class names, but instead as `HandlerWrapperConfiguration`. They still contain the class of the implementation but additionally can define parameters that can be used in the handler wrapper.
 
@@ -194,11 +194,11 @@ Handler wrappers in a route are not defined like other components with just the 
 
 ## Request locking
 
-There are some requests which can't be run in parallel. For such requests we can use the symfony lock bundle and a custom handler wrapper.
+There are some requests which must not be run in parallel. For such requests we can use the Symfony lock bundle and a custom handler wrapper.
 
-With our example we create and acquire a lock depending on the user id. So we prevent that a user is able to create multiple news entries at the same time.
+With our example we create and acquire a lock depending on the user id. So we prevent that a user is able to create multiple news articles at the same time.
 
-The priority of `prepare` is very high and the priority of `finally` is very low. This way we can make sure that the lock is created before a doctrine transation is created and released after the transaction is commited or rolled back. So we know that those handler wrappers don't interfere with each other. 
+The priority of `prepare` is very high and the priority of `finally` is very low. This way we can make sure that the lock is created before a doctrine transation is created and released after the transaction is commited or rolled back. So we know that those handler wrappers don't interfere with each other.
 
 ```php
 <?php
