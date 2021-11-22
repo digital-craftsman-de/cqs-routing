@@ -24,7 +24,9 @@ cqrs:
     default_response_constructor_class: 'DigitalCraftsman\CQRS\ResponseConstructor\EmptyResponseConstructor'
 ```
 
-At the moment the package only contains instances for request decoder and response constructor, so you need to create your own for the rest before using them.
+You can find the [full configuration here](./docs/configuration.md). 
+
+The package contains instances for request decoder, DTO constructor and response constructor. With this you can already use it. You only need to create your own DTO validators, DTO data transformers and handler wrappers when you want to use those. 
 
 Where and how to use the instances, is described below.
 
@@ -84,7 +86,7 @@ $routes->add(
     ]);
 ```
 
-You only need to define the components that differ from the defaults configured in the `cqrs.yaml` configuration.
+You only need to define the components that differ from the defaults configured in the `cqrs.yaml` configuration. Read more about [routing here](./docs/routing.md).
 
 ### Command example
 
