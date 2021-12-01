@@ -45,9 +45,22 @@ services:
       $handlerWrappers: !tagged_iterator cqrs.handler_wrapper
       $commandHandlers: !tagged_iterator cqrs.command_handler
       $queryHandlers: !tagged_iterator cqrs.query_handler
+      $workflowHandlers: !tagged_iterator cqrs.workflow_handler
       $responseConstructors: !tagged_iterator cqrs.response_constructor
 
   # Controllers
+  DigitalCraftsman\CQRS\Controller\CommandController:
+    autoconfigure: true
+    autowire: true
+    arguments:
+      $defaultRequestDecoderClass: '%cqrs.command_controller.default_request_decoder_class%'
+      $defaultDTODataTransformerClasses: '%cqrs.command_controller.default_dto_data_transformer_classes%'
+      $defaultDTOConstructorClass: '%cqrs.command_controller.default_dto_constructor_class%'
+      $defaultDTOValidatorClasses: '%cqrs.command_controller.default_dto_validator_classes%'
+      $defaultHandlerWrapperClasses: '%cqrs.command_controller.default_handler_wrapper_classes%'
+      $defaultResponseConstructorClass: '%cqrs.command_controller.default_response_constructor_class%'
+    tags: [ 'controller.service_arguments' ]
+
   DigitalCraftsman\CQRS\Controller\QueryController:
     autoconfigure: true
     autowire: true
@@ -60,14 +73,14 @@ services:
       $defaultResponseConstructorClass: '%cqrs.query_controller.default_response_constructor_class%'
     tags: [ 'controller.service_arguments' ]
 
-  DigitalCraftsman\CQRS\Controller\CommandController:
+  DigitalCraftsman\CQRS\Controller\WorkflowController:
     autoconfigure: true
     autowire: true
     arguments:
-      $defaultRequestDecoderClass: '%cqrs.command_controller.default_request_decoder_class%'
-      $defaultDTODataTransformerClasses: '%cqrs.command_controller.default_dto_data_transformer_classes%'
-      $defaultDTOConstructorClass: '%cqrs.command_controller.default_dto_constructor_class%'
-      $defaultDTOValidatorClasses: '%cqrs.command_controller.default_dto_validator_classes%'
-      $defaultHandlerWrapperClasses: '%cqrs.command_controller.default_handler_wrapper_classes%'
-      $defaultResponseConstructorClass: '%cqrs.command_controller.default_response_constructor_class%'
+      $defaultRequestDecoderClass: '%cqrs.workflow_controller.default_request_decoder_class%'
+      $defaultDTODataTransformerClasses: '%cqrs.workflow_controller.default_dto_data_transformer_classes%'
+      $defaultDTOConstructorClass: '%cqrs.workflow_controller.default_dto_constructor_class%'
+      $defaultDTOValidatorClasses: '%cqrs.workflow_controller.default_dto_validator_classes%'
+      $defaultHandlerWrapperClasses: '%cqrs.workflow_controller.default_handler_wrapper_classes%'
+      $defaultResponseConstructorClass: '%cqrs.workflow_controller.default_response_constructor_class%'
     tags: [ 'controller.service_arguments' ]

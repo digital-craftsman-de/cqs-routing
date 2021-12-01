@@ -6,6 +6,7 @@ namespace DigitalCraftsman\CQRS\HandlerWrapper;
 
 use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\Query\Query;
+use DigitalCraftsman\CQRS\Workflow\Workflow;
 
 /**
  * When multiple wrappers are defined, the methods are executed in order of the related priorities in descending order. The priorities
@@ -22,7 +23,7 @@ interface HandlerWrapperInterface
      * @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters
      */
     public function prepare(
-        Command|Query $dto,
+        Command|Query|Workflow $dto,
         mixed $parameters,
     ): void;
 
@@ -32,7 +33,7 @@ interface HandlerWrapperInterface
      * @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters
      */
     public function then(
-        Command|Query $dto,
+        Command|Query|Workflow $dto,
         mixed $parameters,
     ): void;
 
@@ -43,7 +44,7 @@ interface HandlerWrapperInterface
      * @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters
      */
     public function catch(
-        Command|Query $dto,
+        Command|Query|Workflow $dto,
         mixed $parameters,
         \Exception $exception,
     ): ?\Exception;
@@ -54,7 +55,7 @@ interface HandlerWrapperInterface
      * @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters
      */
     public function finally(
-        Command|Query $dto,
+        Command|Query|Workflow $dto,
         mixed $parameters,
     ): void;
 
