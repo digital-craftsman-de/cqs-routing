@@ -69,7 +69,7 @@ php-tests:
 ## ----------------
 ##
 
-## php-code-validation		Run code fixers and linters for the API.
+## php-code-validation		Run code fixers and linters for PHP.
 .PHONY: php-code-validation
 php-code-validation:
 	docker-compose run --rm php ./vendor/bin/php-cs-fixer fix
