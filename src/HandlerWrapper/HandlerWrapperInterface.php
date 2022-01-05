@@ -7,6 +7,7 @@ namespace DigitalCraftsman\CQRS\HandlerWrapper;
 use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\Query\Query;
 use DigitalCraftsman\CQRS\Workflow\Workflow;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * When multiple wrappers are defined, the methods are executed in order of the related priorities in descending order. The priorities
@@ -24,6 +25,7 @@ interface HandlerWrapperInterface
      */
     public function prepare(
         Command|Query|Workflow $dto,
+        Request $request,
         mixed $parameters,
     ): void;
 
@@ -34,6 +36,7 @@ interface HandlerWrapperInterface
      */
     public function then(
         Command|Query|Workflow $dto,
+        Request $request,
         mixed $parameters,
     ): void;
 
@@ -45,6 +48,7 @@ interface HandlerWrapperInterface
      */
     public function catch(
         Command|Query|Workflow $dto,
+        Request $request,
         mixed $parameters,
         \Exception $exception,
     ): ?\Exception;
@@ -56,6 +60,7 @@ interface HandlerWrapperInterface
      */
     public function finally(
         Command|Query|Workflow $dto,
+        Request $request,
         mixed $parameters,
     ): void;
 

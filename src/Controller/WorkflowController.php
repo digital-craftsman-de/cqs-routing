@@ -80,6 +80,7 @@ final class WorkflowController extends AbstractController
         foreach ($handlerWrapperPrepareStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
             $handlerWrapperWithParameters->handlerWrapper->prepare(
                 $workflow,
+                $request,
                 $handlerWrapperWithParameters->parameters,
             );
         }
@@ -93,6 +94,7 @@ final class WorkflowController extends AbstractController
             foreach ($handlerWrapperThenStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
                 $handlerWrapperWithParameters->handlerWrapper->then(
                     $workflow,
+                    $request,
                     $handlerWrapperWithParameters->parameters,
                 );
             }
@@ -112,6 +114,7 @@ final class WorkflowController extends AbstractController
                  */
                 $exceptionToHandle = $handlerWrapperWithParameters->handlerWrapper->catch(
                     $workflow,
+                    $request,
                     $handlerWrapperWithParameters->parameters,
                     $exceptionToHandle,
                 );
@@ -125,6 +128,7 @@ final class WorkflowController extends AbstractController
             foreach ($handlerWrapperFinallyStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
                 $handlerWrapperWithParameters->handlerWrapper->finally(
                     $workflow,
+                    $request,
                     $handlerWrapperWithParameters->parameters,
                 );
             }

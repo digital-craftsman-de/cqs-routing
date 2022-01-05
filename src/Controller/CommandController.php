@@ -80,6 +80,7 @@ final class CommandController extends AbstractController
         foreach ($handlerWrapperPrepareStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
             $handlerWrapperWithParameters->handlerWrapper->prepare(
                 $command,
+                $request,
                 $handlerWrapperWithParameters->parameters,
             );
         }
@@ -93,6 +94,7 @@ final class CommandController extends AbstractController
             foreach ($handlerWrapperThenStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
                 $handlerWrapperWithParameters->handlerWrapper->then(
                     $command,
+                    $request,
                     $handlerWrapperWithParameters->parameters,
                 );
             }
@@ -112,6 +114,7 @@ final class CommandController extends AbstractController
                  */
                 $exceptionToHandle = $handlerWrapperWithParameters->handlerWrapper->catch(
                     $command,
+                    $request,
                     $handlerWrapperWithParameters->parameters,
                     $exceptionToHandle,
                 );
@@ -125,6 +128,7 @@ final class CommandController extends AbstractController
             foreach ($handlerWrapperFinallyStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
                 $handlerWrapperWithParameters->handlerWrapper->finally(
                     $command,
+                    $request,
                     $handlerWrapperWithParameters->parameters,
                 );
             }

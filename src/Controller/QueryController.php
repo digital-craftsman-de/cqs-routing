@@ -80,6 +80,7 @@ final class QueryController extends AbstractController
         foreach ($handlerWrapperPrepareStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
             $handlerWrapperWithParameters->handlerWrapper->prepare(
                 $query,
+                $request,
                 $handlerWrapperWithParameters->parameters,
             );
         }
@@ -97,6 +98,7 @@ final class QueryController extends AbstractController
             foreach ($handlerWrapperThenStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
                 $handlerWrapperWithParameters->handlerWrapper->then(
                     $query,
+                    $request,
                     $handlerWrapperWithParameters->parameters,
                 );
             }
@@ -116,6 +118,7 @@ final class QueryController extends AbstractController
                  */
                 $exceptionToHandle = $handlerWrapperWithParameters->handlerWrapper->catch(
                     $query,
+                    $request,
                     $handlerWrapperWithParameters->parameters,
                     $exceptionToHandle,
                 );
@@ -129,6 +132,7 @@ final class QueryController extends AbstractController
             foreach ($handlerWrapperFinallyStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
                 $handlerWrapperWithParameters->handlerWrapper->finally(
                     $query,
+                    $request,
                     $handlerWrapperWithParameters->parameters,
                 );
             }

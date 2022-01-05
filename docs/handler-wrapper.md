@@ -2,15 +2,15 @@
 
 Handler wrappers are components that allow executation of code before (`prepare`), after success (`then`), after error (`catch`) and after in both cases (`finally`). Each method has its own priority with which it's executed in relation to other handler wrappers. Through this priority it's possible to have the `prepare` method be called first for one handler wrapper but the `finally` method be triggered last. The priority mirrors the event listener logic from Symfony in that it's `0` as default and can usually range from `-256` to `256`. 
 
-With handle wrappers it's possible to implement automatic transaction rollbacks, locking of requests or silent exceptions. All things that are generally part of an appliaction layer and not part of the domain.
+With handle wrappers it's possible to implement automatic transaction rollbacks, locking of requests or silent exceptions. All things that are generally part of an application layer and not part of the domain.
 
-For now there are no built-in handler wrappers because they are highly dependant of the domain implementation and / or depent on external libraries.
+For now there are no built-in handler wrappers because they are highly dependant of the domain implementation and / or depend on external libraries.
 
 We still go through a few examples to explain how they are used. 
 
 ## Automatic rollback of doctrine transactions
 
-The logic here is pretty simple: Before running a handler, we start a new transation. When everything worked we simply commit it. And when there was any exception, we roll back the transaction.
+The logic here is pretty simple: Before running a handler, we start a new transaction. When everything worked we simply commit it. And when there was any exception, we roll back the transaction.
 
 ```php
 <?php
@@ -23,6 +23,7 @@ use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 use DigitalCraftsman\CQRS\Query\Query;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\HttpFoundation\Request;
 
 final class ConnectionTransactionWrapper implements HandlerWrapperInterface
 {
@@ -34,6 +35,7 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
     /** @param null $parameters */
     public function prepare(
         Command | Query $dto,
+        Request $request,
         mixed $parameters,
     ): void {
         $this->connection->beginTransaction();
@@ -42,6 +44,7 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
     /** @param null $parameters */
     public function catch(
         Command | Query $dto,
+        Request $request,
         mixed $parameters,
         \Exception $exception,
     ): ?\Exception {
@@ -55,6 +58,7 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
     /** @param null $parameters */
     public function then(
         Command | Query $dto,
+        Request $request,
         mixed $parameters,
     ): void {
         $this->connection->commit();
@@ -63,6 +67,7 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
     /** @param null $parameters */
     public function finally(
         Command | Query $dto,
+        Request $request,
         mixed $parameters,
     ): void {
         // Nothing to do
@@ -108,12 +113,14 @@ namespace App\CQRS\HandlerWrapper;
 use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 use DigitalCraftsman\CQRS\Query\Query;
+use Symfony\Component\HttpFoundation\Request;
 
 final class SilentExceptionWrapper implements HandlerWrapperInterface
 {
     /** @param array<int, string> $parameters */
     public function prepare(
         Command | Query $dto,
+        Request $request,
         mixed $parameters,
     ): void {
         // Nothing to do
@@ -122,6 +129,7 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
     /** @param array<int, string> $parameters Exception class strings to be swallowed */
     public function catch(
         Command | Query $dto,
+        Request $request,
         mixed $parameters,
         \Exception $exception,
     ): ?\Exception {
@@ -136,6 +144,7 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
     /** @param array<int, string> $parameters */
     public function then(
         Command | Query $dto,
+        Request $request,
         mixed $parameters,
     ): void {
         // Nothing to do
@@ -144,6 +153,7 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
     /** @param array<int, string> $parameters */
     public function finally(
         Command | Query $dto,
+        Request $request,
         mixed $parameters,
     ): void {
         // Nothing to do
@@ -211,6 +221,7 @@ use App\Service\Lock\LockService;
 use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 use DigitalCraftsman\CQRS\Query\Query;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Lock\LockInterface;
 
 final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
@@ -225,6 +236,7 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
     /** @param CreateNewsArticleCommand $dto */
     public function prepare(
         Command | Query $dto,
+        Request $request,
         mixed $parameters,
     ): void {
         $this->lock = $this->lockService->createLock((string) $dto->userId);
@@ -234,6 +246,7 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
     /** @param null $parameters */
     public function catch(
         Command | Query $dto,
+        Request $request,
         mixed $parameters,
         \Exception $exception,
     ): ?\Exception {
@@ -244,6 +257,7 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
     /** @param null $parameters */
     public function then(
         Command | Query $dto,
+        Request $request,
         mixed $parameters,
     ): void {
         // Nothing to do
@@ -252,6 +266,7 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
     /** @param null $parameters */
     public function finally(
         Command | Query $dto,
+        Request $request,
         mixed $parameters,
     ): void {
         $this->lock->release();
