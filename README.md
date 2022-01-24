@@ -104,7 +104,7 @@ use App\ValueObject\UserId;
 use Assert\Assertion;
 use DigitalCraftsman\CQRS\Command\Command;
 
-final class CreateNewsArticleCommand extends Command
+final class CreateNewsArticleCommand implements Command
 {
     public function __construct(
         public UserId $userId,
