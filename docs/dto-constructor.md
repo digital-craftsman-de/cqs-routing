@@ -57,7 +57,7 @@ It transforms an array like the following:
 Into a DTO like this:
 
 ```php
-final class CreateUserAccountCommand extends Command
+final class CreateUserAccountCommand implements Command
 {
     public function __construct(
         public UserId $userId,
