@@ -7,7 +7,7 @@ namespace DigitalCraftsman\CQRS\DTOConstructor\Command;
 use DigitalCraftsman\CQRS\Command\Command;
 
 /** @psalm-immutable */
-final class CreateNewsArticleCommand extends Command
+final class CreateNewsArticleCommand implements Command
 {
     public function __construct(
        public string $userId,
