@@ -45,7 +45,6 @@ services:
       $handlerWrappers: !tagged_iterator cqrs.handler_wrapper
       $commandHandlers: !tagged_iterator cqrs.command_handler
       $queryHandlers: !tagged_iterator cqrs.query_handler
-      $workflowHandlers: !tagged_iterator cqrs.workflow_handler
       $responseConstructors: !tagged_iterator cqrs.response_constructor
 
   # Controllers
@@ -71,16 +70,4 @@ services:
       $defaultDTOValidatorClasses: '%cqrs.query_controller.default_dto_validator_classes%'
       $defaultHandlerWrapperClasses: '%cqrs.query_controller.default_handler_wrapper_classes%'
       $defaultResponseConstructorClass: '%cqrs.query_controller.default_response_constructor_class%'
-    tags: [ 'controller.service_arguments' ]
-
-  DigitalCraftsman\CQRS\Controller\WorkflowController:
-    autoconfigure: true
-    autowire: true
-    arguments:
-      $defaultRequestDecoderClass: '%cqrs.workflow_controller.default_request_decoder_class%'
-      $defaultDTODataTransformerClasses: '%cqrs.workflow_controller.default_dto_data_transformer_classes%'
-      $defaultDTOConstructorClass: '%cqrs.workflow_controller.default_dto_constructor_class%'
-      $defaultDTOValidatorClasses: '%cqrs.workflow_controller.default_dto_validator_classes%'
-      $defaultHandlerWrapperClasses: '%cqrs.workflow_controller.default_handler_wrapper_classes%'
-      $defaultResponseConstructorClass: '%cqrs.workflow_controller.default_response_constructor_class%'
     tags: [ 'controller.service_arguments' ]

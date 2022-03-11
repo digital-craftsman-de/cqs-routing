@@ -23,10 +23,6 @@ cqrs:
     default_dto_constructor_class: 'DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor'
     default_response_constructor_class: 'DigitalCraftsman\CQRS\ResponseConstructor\EmptyResponseConstructor'
 
-  workflow_controller:
-    default_request_decoder_class: 'DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder'
-    default_dto_constructor_class: 'DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor'
-    default_response_constructor_class: 'DigitalCraftsman\CQRS\ResponseConstructor\EmptyResponseConstructor'
 ```
 
 You can find the [full configuration here](./docs/configuration.md). 

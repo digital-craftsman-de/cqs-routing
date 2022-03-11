@@ -6,7 +6,6 @@ namespace DigitalCraftsman\CQRS\HandlerWrapper;
 
 use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\Query\Query;
-use DigitalCraftsman\CQRS\Workflow\Workflow;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -24,7 +23,7 @@ interface HandlerWrapperInterface
      * @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters
      */
     public function prepare(
-        Command|Query|Workflow $dto,
+        Command|Query $dto,
         Request $request,
         mixed $parameters,
     ): void;
@@ -35,7 +34,7 @@ interface HandlerWrapperInterface
      * @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters
      */
     public function then(
-        Command|Query|Workflow $dto,
+        Command|Query $dto,
         Request $request,
         mixed $parameters,
     ): void;
@@ -47,7 +46,7 @@ interface HandlerWrapperInterface
      * @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters
      */
     public function catch(
-        Command|Query|Workflow $dto,
+        Command|Query $dto,
         Request $request,
         mixed $parameters,
         \Exception $exception,
@@ -59,7 +58,7 @@ interface HandlerWrapperInterface
      * @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters
      */
     public function finally(
-        Command|Query|Workflow $dto,
+        Command|Query $dto,
         Request $request,
         mixed $parameters,
     ): void;

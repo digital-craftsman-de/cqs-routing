@@ -13,7 +13,7 @@ final class Configuration implements ConfigurationInterface
      * @noinspection NullPointerExceptionInspection
      * @psalm-suppress MixedMethodCall
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('cqrs');
         $rootNode = $treeBuilder->getRootNode();
@@ -47,30 +47,6 @@ final class Configuration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('query_controller')
                     ->info('Add default instances for query controller')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('default_request_decoder_class')->defaultNull()->end()
-                        ->arrayNode('default_dto_data_transformer_classes')
-                            ->beforeNormalization()->castToArray()->end()
-                            ->defaultValue([])
-                            ->prototype('scalar')->end()
-                        ->end()
-                        ->scalarNode('default_dto_constructor_class')->defaultNull()->end()
-                        ->arrayNode('default_dto_validator_classes')
-                            ->beforeNormalization()->castToArray()->end()
-                            ->defaultValue([])
-                            ->prototype('scalar')->end()
-                        ->end()
-                        ->arrayNode('default_handler_wrapper_classes')
-                            ->beforeNormalization()->castToArray()->end()
-                            ->defaultValue([])
-                            ->prototype('scalar')->end()
-                        ->end()
-                        ->scalarNode('default_response_constructor_class')->defaultNull()->end()
-                    ->end()
-                ->end()
-                ->arrayNode('workflow_controller')
-                    ->info('Add default instances for workflow controller')
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->scalarNode('default_request_decoder_class')->defaultNull()->end()

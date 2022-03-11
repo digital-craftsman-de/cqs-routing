@@ -12,7 +12,6 @@ use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 use DigitalCraftsman\CQRS\Query\QueryHandlerInterface;
 use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
 use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
-use DigitalCraftsman\CQRS\Workflow\WorkflowHandlerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -54,10 +53,6 @@ final class CQRSExtension extends Extension
             ->addTag('cqrs.query_handler');
 
         $container
-            ->registerForAutoconfiguration(WorkflowHandlerInterface::class)
-            ->addTag('cqrs.workflow_handler');
-
-        $container
             ->registerForAutoconfiguration(ResponseConstructorInterface::class)
             ->addTag('cqrs.response_constructor');
 
@@ -79,13 +74,6 @@ final class CQRSExtension extends Extension
          *     default_handler_wrapper_classes: ?array<int, string>,
          *     default_response_constructor_class: ?string,
          *   },
-         *   workflow_controller: array{
-         *     default_request_decoder_class: ?string,
-         *     default_dto_constructor_class: ?string,
-         *     default_dto_validator_classes: ?array<int, string>,
-         *     default_handler_wrapper_classes: ?array<int, string>,
-         *     default_response_constructor_class: ?string,
-         *   },
          *   serializer_context: array,
          * }
          */
@@ -97,10 +85,6 @@ final class CQRSExtension extends Extension
 
         foreach ($config['command_controller'] as $key => $value) {
             $container->setParameter('cqrs.command_controller.'.$key, $value);
-        }
-
-        foreach ($config['workflow_controller'] as $key => $value) {
-            $container->setParameter('cqrs.workflow_controller.'.$key, $value);
         }
 
         $container->setParameter('cqrs.serializer_context', $config['serializer_context']);

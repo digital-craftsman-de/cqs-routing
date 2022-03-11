@@ -14,8 +14,6 @@ use DigitalCraftsman\CQRS\Query\Query;
 use DigitalCraftsman\CQRS\Query\QueryHandlerInterface;
 use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
 use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
-use DigitalCraftsman\CQRS\Workflow\Workflow;
-use DigitalCraftsman\CQRS\Workflow\WorkflowHandlerInterface;
 
 /**
  * The symfony routing does not support the usage of objects as it has to dump them into a php file for caching. Therefore, we create an
@@ -24,8 +22,8 @@ use DigitalCraftsman\CQRS\Workflow\WorkflowHandlerInterface;
 final class Configuration
 {
     /**
-     * @psalm-param class-string<Command>|class-string<Query>|class-string<Workflow> $dtoClass
-     * @psalm-param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>|class-string<WorkflowHandlerInterface> $handlerClass
+     * @psalm-param class-string<Command>|class-string<Query> $dtoClass
+     * @psalm-param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface> $handlerClass
      * @psalm-param class-string<RequestDecoderInterface>|null $requestDecoderClass
      * @psalm-param array<int, class-string<DTODataTransformerInterface>>|null $dtoDataTransformerClasses
      * @psalm-param class-string<DTOConstructorInterface>|null $dtoConstructorClass
@@ -46,8 +44,8 @@ final class Configuration
     }
 
     /**
-     * @psalm-param class-string<Command>|class-string<Query>|class-string<Workflow> $dtoClass
-     * @psalm-param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>|class-string<WorkflowHandlerInterface> $handlerClass
+     * @psalm-param class-string<Command>|class-string<Query> $dtoClass
+     * @psalm-param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface> $handlerClass
      * @psalm-param class-string<RequestDecoderInterface>|null $requestDecoderClass
      * @psalm-param array<int, class-string<DTODataTransformerInterface>>|null $dtoDataTransformerClasses
      * @psalm-param class-string<DTOConstructorInterface>|null $dtoConstructorClass
@@ -81,8 +79,8 @@ final class Configuration
 
     /**
      * @psalm-param array{
-     *   dtoClass: class-string<Command>|class-string<Query>|class-string<Workflow>,
-     *   handlerClass: class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>|class-string<WorkflowHandlerInterface>,
+     *   dtoClass: class-string<Command>|class-string<Query>,
+     *   handlerClass: class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>,
      *   requestDecoderClass: class-string<RequestDecoderInterface>|null,
      *   dtoDataTransformerClasses: array<int, class-string<DTODataTransformerInterface>>|null,
      *   dtoConstructorClass: class-string<DTOConstructorInterface>|null,
@@ -124,8 +122,8 @@ final class Configuration
 
     /**
      * @psalm-return array{
-     *   dtoClass: class-string<Command>|class-string<Query>|class-string<Workflow>,
-     *   handlerClass: class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>|class-string<WorkflowHandlerInterface>,
+     *   dtoClass: class-string<Command>|class-string<Query>,
+     *   handlerClass: class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>,
      *   requestDecoderClass: class-string<RequestDecoderInterface>|null,
      *   dtoDataTransformerClasses: array<int, class-string<DTODataTransformerInterface>>|null,
      *   dtoConstructorClass: class-string<DTOConstructorInterface>|null,

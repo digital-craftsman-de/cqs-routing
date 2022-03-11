@@ -23,11 +23,9 @@ use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredHandlerWrapperNotAvaila
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredQueryHandlerNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredRequestDecoderNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredResponseConstructorNotAvailable;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredWorkflowHandlerNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\NoDefaultDTOConstructorDefined;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\NoDefaultRequestDecoderDefined;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\NoDefaultResponseConstructorDefined;
-use DigitalCraftsman\CQRS\Workflow\WorkflowHandlerInterface;
 
 final class ServiceMap
 {
@@ -52,9 +50,6 @@ final class ServiceMap
     /** @var array<string, QueryHandlerInterface> */
     private array $queryHandlerMap = [];
 
-    /** @var array<string, WorkflowHandlerInterface> */
-    private array $workflowHandlerMap = [];
-
     /** @var array<string, ResponseConstructorInterface> */
     private array $responseConstructorMap = [];
 
@@ -66,7 +61,6 @@ final class ServiceMap
      * @param array<int, HandlerWrapperInterface>      $handlerWrappers
      * @param array<int, CommandHandlerInterface>      $commandHandlers
      * @param array<int, QueryHandlerInterface>        $queryHandlers
-     * @param array<int, WorkflowHandlerInterface>     $workflowHandlers
      * @param array<int, ResponseConstructorInterface> $responseConstructors
      * @param array<int, DTODataTransformerInterface>  $defaultDTODataTransformers
      * @param array<int, DTOValidatorInterface>        $defaultDTOValidators
@@ -80,7 +74,6 @@ final class ServiceMap
         iterable $handlerWrappers,
         iterable $commandHandlers,
         iterable $queryHandlers,
-        iterable $workflowHandlers,
         iterable $responseConstructors,
     ) {
         foreach ($requestDecoders as $requestDecoder) {
@@ -103,9 +96,6 @@ final class ServiceMap
         }
         foreach ($queryHandlers as $queryHandler) {
             $this->queryHandlerMap[get_class($queryHandler)] = $queryHandler;
-        }
-        foreach ($workflowHandlers as $workflowHandler) {
-            $this->workflowHandlerMap[get_class($workflowHandler)] = $workflowHandler;
         }
         foreach ($responseConstructors as $responseConstructor) {
             $this->responseConstructorMap[get_class($responseConstructor)] = $responseConstructor;
@@ -224,12 +214,6 @@ final class ServiceMap
     {
         return $this->queryHandlerMap[$configuration->handlerClass]
             ?? throw new ConfiguredQueryHandlerNotAvailable($configuration->handlerClass);
-    }
-
-    public function getWorkflowHandler(Configuration $configuration): WorkflowHandlerInterface
-    {
-        return $this->workflowHandlerMap[$configuration->handlerClass]
-            ?? throw new ConfiguredWorkflowHandlerNotAvailable($configuration->handlerClass);
     }
 
     public function getResponseConstructor(
