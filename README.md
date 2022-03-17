@@ -44,7 +44,7 @@ The construct has to following goals:
 1. Make it very fast and easy to understand **what** is happening (from a business logic perspective).
 2. Make the code safer through extensive use of value objects.
 3. Make refactoring safer through the extensive use of types.
-4. Add clear boundries between business logic and application / infrastructe logic.
+4. Add clear boundaries between business logic and application / infrastructure logic.
 
 ### How
 
@@ -65,7 +65,7 @@ The construct consists of two starting points, the `CommandController` and the `
 - **[Response constructor](./docs/response-constructor.md)**  
 *Transforms the gathered data of the handler into a response.*
 
-Through the Symfony routing, we define which instances of the components (if relevant) are used for which route. This is why we use PHP files for the routes instead of the default YAML. So renaming of components is easier through the IDE.
+Through the Symfony routing, we define which instances of the components (if relevant) are used for which route. We use PHP files for the routes instead of the default YAML for more type safety and so that renaming of components is easier through the IDE.
 
 A route might look like this:
 

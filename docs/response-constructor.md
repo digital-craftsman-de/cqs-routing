@@ -47,9 +47,9 @@ final class FileResponseConstructor implements ResponseConstructorInterface
     public function constructResponse($data, Request $request): Response
     {
         return FileManagementHelper::binaryResponse(
-        $data->fileContent,
-        $data->fileExtension
-    );
+            $data->fileContent,
+            $data->fileExtension
+        );
     }
 }
 ```
