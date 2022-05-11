@@ -3,7 +3,7 @@
   "description": "Reduced cost of change through CQRS in Symfony",
   "type": "symfony-bundle",
   "require": {
-    "php": "~8.0.0",
+    "php": "8.0.*|8.1.*",
     "symfony/framework-bundle": "^5.3",
     "symfony/serializer": "^5.3"
   },
