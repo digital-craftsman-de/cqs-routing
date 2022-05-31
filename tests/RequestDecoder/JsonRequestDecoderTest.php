@@ -7,12 +7,16 @@ namespace DigitalCraftsman\CQRS\RequestDecoder;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
+/** @coversDefaultClass \DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder */
 final class JsonRequestDecoderTest extends TestCase
 {
-    /** @test */
+    /**
+     * @test
+     * @covers ::decodeRequest
+     */
     public function json_request_decoder_decodes_json(): void
     {
-        // Arrange
+        // -- Arrange
         $jsonRequestDecoder = new JsonRequestDecoder();
         $json = '{
             "userId": "abf6b545-951e-46d8-b444-dc57b31ee51f",
@@ -29,10 +33,10 @@ final class JsonRequestDecoderTest extends TestCase
             'isRelevant' => true,
         ];
 
-        // Act
+        // -- Act
         $dtoData = $jsonRequestDecoder->decodeRequest($request);
 
-        // Assert
+        // -- Assert
         self::assertSame($expectedDTOData, $dtoData);
     }
 }

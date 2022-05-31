@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\ResponseConstructor\ReadModel;
+namespace DigitalCraftsman\CQRS\Test\ReadModel;
 
 /** @psalm-immutable */
 final class User

@@ -4,18 +4,22 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQRS\DTOConstructor;
 
-use DigitalCraftsman\CQRS\DTOConstructor\Command\CreateNewsArticleCommand;
+use DigitalCraftsman\CQRS\Test\Command\CreateNewsArticleCommand;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
+/** @coversDefaultClass \DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor */
 final class SerializerDTOConstructorTest extends TestCase
 {
-    /** @test */
+    /**
+     * @test
+     * @covers ::constructDTO
+     */
     public function serializer_dto_constructor_constructs_dto(): void
     {
-        // Arrange
+        // -- Arrange
         $serializerDTOConstructor = new SerializerDTOConstructor(
             new Serializer([new PropertyNormalizer()], [new JsonEncoder()]),
         );
@@ -27,11 +31,11 @@ final class SerializerDTOConstructorTest extends TestCase
             'isPublished' => true,
         ];
 
-        // Act
+        // -- Act
         /** @var CreateNewsArticleCommand $command */
         $command = $serializerDTOConstructor->constructDTO($dtoData, CreateNewsArticleCommand::class);
 
-        // Assert
+        // -- Assert
         self::assertSame(CreateNewsArticleCommand::class, $command::class);
         self::assertSame($dtoData['userId'], $command->userId);
         self::assertSame($dtoData['title'], $command->title);
