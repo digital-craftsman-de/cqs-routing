@@ -165,9 +165,8 @@ final class CreateNewsArticleCommandHandler implements CommandHandlerInterface
         CreateProductNewsArticleCommand $command,
         \DateTimeImmutable $commandExecutedAt,
     ): void {
-        $newsArticleId = NewsArticleId::generateRandom();
         $newsArticle = new NewsArticle(
-            $newsArticleId,
+            NewsArticleId::generateRandom(),
             $command->title,
             $command->content,
             $command->isPublished,
