@@ -1,5 +1,7 @@
 # Reduced cost of change through CQRS in Symfony
 
+[![codecov](https://codecov.io/gh/digital-craftsman-de/cqrs/branch/main/graph/badge.svg?token=YUKRDW1L8G)](https://codecov.io/gh/digital-craftsman-de/cqrs)
+
 ## Installation and configuration
 
 Install package through composer:
