@@ -54,7 +54,7 @@ final class CommandController extends AbstractController
         // Transform data
         $dtoDataTransformers = $this->serviceMap->getDTODataTransformers($configuration, $this->defaultDTODataTransformerClasses);
         foreach ($dtoDataTransformers as $dtoDataTransformer) {
-            $commandData = $dtoDataTransformer->transformDTOData($commandData);
+            $queryData = $dtoDataTransformer->transformDTOData($configuration->dtoClass, $queryData);
         }
 
         // Construct command from data
