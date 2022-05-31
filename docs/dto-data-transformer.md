@@ -11,7 +11,8 @@ The interface is the following:
 ```php
 interface DTODataTransformerInterface
 {
-    public function transformDTOData(array $dtoData): array;
+    /** @param class-string $dtoClass */
+    public function transformDTOData(string $dtoClass, array $dtoData): array;
 }
 ```
 
@@ -22,7 +23,8 @@ Imagine you have a client form with a number field for a discount. It's possible
 ```php
 final class UpdateDiscountDTODataTransformer implements DTODataTransformerInterface
 {
-    public function transformDTOData(array $dtoData): array
+    /** @param class-string $dtoClass */
+    public function transformDTOData(string $dtoClass, array $dtoData): array
     {
         $dtoData['discount'] = (float) $dtoData['discount'];
 
@@ -43,7 +45,8 @@ final class UpdateDescriptionDTODataTransformer implements DTODataTransformerInt
     ) {
     }
 
-    public function transformDTOData(array $dtoData): array
+    /** @param class-string $dtoClass */
+    public function transformDTOData(string $dtoClass, array $dtoData): array
     {
         $dtoData['description'] = $this->sanitizer->sanitizeHTML($dtoData['description']);
 
@@ -59,7 +62,8 @@ Sometimes there is data which the user can not or must not have but should be pa
 ```php
 final class AddUserManagementRootIdDataTransformer implements DTODataTransformerInterface
 {
-    public function transformDTOData(array $dtoData): array
+    /** @param class-string $dtoClass */
+    public function transformDTOData(string $dtoClass, array $dtoData): array
     {
         $dtoData['rootId'] = UserManagement::UNIQUE_ROOT_ID;
 
