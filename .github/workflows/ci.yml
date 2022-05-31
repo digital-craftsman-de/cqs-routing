@@ -1,0 +1,21 @@
+name: validation
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install
+        run: |
+          cp .github/workflows/.env .env
+          make install
+      - name: Run code validation
+        run: make php-code-validation
+      - name: Run PHP tests
+        run: make php-tests-ci
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODE_COV_TOKEN }}
+          files: ./coverage.xml
+          verbose: true
