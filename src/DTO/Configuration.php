@@ -18,6 +18,8 @@ use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
 /**
  * The symfony routing does not support the usage of objects as it has to dump them into a php file for caching. Therefore, we create an
  * object and convert into and from an array.
+ *
+ * @codeCoverageIgnore
  */
 final class Configuration
 {

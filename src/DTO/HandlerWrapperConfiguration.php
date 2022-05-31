@@ -6,6 +6,7 @@ namespace DigitalCraftsman\CQRS\DTO;
 
 use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 
+/** @codeCoverageIgnore */
 final class HandlerWrapperConfiguration
 {
     /**

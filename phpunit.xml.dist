@@ -16,10 +16,6 @@
     <include>
       <directory suffix=".php">src</directory>
     </include>
-    <exclude>
-      <directory suffix=".php">src/DTO</directory>
-      <directory suffix=".php">src/**/Exception</directory>
-    </exclude>
   </coverage>
 
   <testsuites>
