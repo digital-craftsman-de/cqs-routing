@@ -1,5 +1,7 @@
 # Reduced cost of change through CQRS in Symfony
 
+[![codecov](https://codecov.io/gh/digital-craftsman-de/cqrs/branch/main/graph/badge.svg?token=YUKRDW1L8G)](https://codecov.io/gh/digital-craftsman-de/cqrs)
+
 ## Installation and configuration
 
 Install package through composer:
@@ -165,9 +167,8 @@ final class CreateNewsArticleCommandHandler implements CommandHandlerInterface
         CreateProductNewsArticleCommand $command,
         \DateTimeImmutable $commandExecutedAt,
     ): void {
-        $newsArticleId = NewsArticleId::generateRandom();
         $newsArticle = new NewsArticle(
-            $newsArticleId,
+            NewsArticleId::generateRandom(),
             $command->title,
             $command->content,
             $command->isPublished,

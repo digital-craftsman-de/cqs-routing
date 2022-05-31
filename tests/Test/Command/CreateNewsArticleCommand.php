@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\DTOConstructor\Command;
+namespace DigitalCraftsman\CQRS\Test\Command;
 
 use DigitalCraftsman\CQRS\Command\Command;
 

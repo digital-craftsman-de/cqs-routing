@@ -54,7 +54,7 @@ final class QueryController extends AbstractController
         // Transform data
         $dtoDataTransformers = $this->serviceMap->getDTODataTransformers($configuration, $this->defaultDTODataTransformerClasses);
         foreach ($dtoDataTransformers as $dtoDataTransformer) {
-            $queryData = $dtoDataTransformer->transformDTOData($queryData);
+            $queryData = $dtoDataTransformer->transformDTOData($configuration->dtoClass, $queryData);
         }
 
         // Construct query from data

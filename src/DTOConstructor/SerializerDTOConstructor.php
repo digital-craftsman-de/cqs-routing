@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class SerializerDTOConstructor implements DTOConstructorInterface
 {
+    /** @codeCoverageIgnore */
     public function __construct(
         private DenormalizerInterface $serializer,
     ) {

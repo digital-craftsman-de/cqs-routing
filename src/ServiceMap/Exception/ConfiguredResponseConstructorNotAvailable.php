@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQRS\ServiceMap\Exception;
 
-/** @psalm-immutable */
+/**
+ * @psalm-immutable
+ * @codeCoverageIgnore
+ */
 final class ConfiguredResponseConstructorNotAvailable extends \DomainException
 {
     public function __construct(string $responseConstructorClass)

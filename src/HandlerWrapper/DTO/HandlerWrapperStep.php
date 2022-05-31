@@ -13,6 +13,8 @@ use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
  * Through priorities, it's possible to define in which order they are executed and this order can change depending on the step.
  * To wrap this logic we first combine the wrappers with the parameters and then sort them by the priority of the handlers for the separate
  * steps. After this the controller is able to simply select a step and get all relevant wrappers in the correct order.
+ *
+ * @codeCoverageIgnore
  */
 final class HandlerWrapperStep
 {

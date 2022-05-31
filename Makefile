@@ -64,6 +64,16 @@ php-cli:
 php-tests:
 	docker-compose run --rm php ./vendor/bin/phpunit
 
+## php-tests		Run the PHP tests with coverage report for CI.
+.PHONY: php-tests-ci
+php-tests-ci:
+	docker-compose run --rm php ./vendor/bin/phpunit --coverage-clover ./coverage.xml
+
+## php-tests		Run the PHP tests with coverage report as HTML.
+.PHONY: php-tests-html-coverage
+php-tests-html-coverage:
+	docker-compose run --rm php ./vendor/bin/phpunit --coverage-html ./coverage
+
 ##
 ## Code validations
 ## ----------------

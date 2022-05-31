@@ -12,6 +12,12 @@
     <server name="SYMFONY_PHPUNIT_VERSION" value="9.5"/>
   </php>
 
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">src</directory>
+    </include>
+  </coverage>
+
   <testsuites>
     <testsuite name="Test Suite">
       <directory>tests</directory>

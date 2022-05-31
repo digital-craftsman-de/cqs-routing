@@ -6,5 +6,6 @@ namespace DigitalCraftsman\CQRS\DTODataTransformer;
 
 interface DTODataTransformerInterface
 {
-    public function transformDTOData(array $dtoData): array;
+    /** @param class-string $dtoClass */
+    public function transformDTOData(string $dtoClass, array $dtoData): array;
 }

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQRS\ServiceMap\Exception;
 
-/** @psalm-immutable */
+/**
+ * @psalm-immutable
+ * @codeCoverageIgnore
+ */
 final class ConfiguredRequestDecoderNotAvailable extends \DomainException
 {
     public function __construct(string $requestDecoderClass)

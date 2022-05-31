@@ -67,3 +67,35 @@ final class AddUserManagementRootIdDataTransformer implements DTODataTransformer
     }
 }
 ```
+
+## Built-in to handle Javascript / Typescript clients with undefined
+
+Javascript / Typescript clients usually don't use `null` but `undefined`. Undefined is a concept that doesn't really exist in PHP. There is optional which is what you would need to define properties in a command / query when the client doesn't send the necessary properties.
+
+So a command might look like this:
+
+```php
+final class CreateUserCommand implements Command
+{
+    public function __construct(
+        public string $id,
+        public string $emailAddress,
+        public ?Name $name,
+        public ?string $registrationReference,
+    ) {
+    }
+}
+```
+
+To be able to work with `undefined`, the command would need these changes to work with the Symfony serializer:
+
+```php
+public ?Name $name = null,
+public ?string $registrationReference = null,
+```
+
+But this is of course not what we usually want and in future PHP versions those properties must be at the end no matter the significance you would put into the order of those properties.
+
+It's possible to create a DTO data transformer for every command that contains nullable values and set them to `null` when they aren't part of the `$dtoData`.
+
+But there's also a built-in DTO data transformer `NullableAsOptionalPropertiesDTODataTransformer` that does this automatically through reflection. You can see it in action in the [test for it](/tests/DTODataTransformer/NullableAsOptionalPropertiesDTODataTransformerTest.php).
