@@ -48,23 +48,26 @@ final class QueryController extends AbstractController
         $configuration = Configuration::fromRoutePayload($routePayload);
 
         // Get data from request
-        $requestDecoder = $this->serviceMap->getRequestDecoder($configuration, $this->defaultRequestDecoderClass);
+        $requestDecoder = $this->serviceMap->getRequestDecoder($configuration->requestDecoderClass, $this->defaultRequestDecoderClass);
         $queryData = $requestDecoder->decodeRequest($request);
 
         // Transform data
-        $dtoDataTransformers = $this->serviceMap->getDTODataTransformers($configuration, $this->defaultDTODataTransformerClasses);
+        $dtoDataTransformers = $this->serviceMap->getDTODataTransformers(
+            $configuration->dtoDataTransformerClasses,
+            $this->defaultDTODataTransformerClasses,
+        );
         foreach ($dtoDataTransformers as $dtoDataTransformer) {
             $queryData = $dtoDataTransformer->transformDTOData($configuration->dtoClass, $queryData);
         }
 
         // Construct query from data
-        $dtoConstructor = $this->serviceMap->getDTOConstructor($configuration, $this->defaultDTOConstructorClass);
+        $dtoConstructor = $this->serviceMap->getDTOConstructor($configuration->dtoConstructorClass, $this->defaultDTOConstructorClass);
 
         /** @var Query $query */
         $query = $dtoConstructor->constructDTO($queryData, $configuration->dtoClass);
 
         // Validate query
-        $dtoValidators = $this->serviceMap->getDTOValidators($configuration, $this->defaultDTOValidatorClasses);
+        $dtoValidators = $this->serviceMap->getDTOValidators($configuration->dtoValidatorClasses, $this->defaultDTOValidatorClasses);
         foreach ($dtoValidators as $dtoValidator) {
             $dtoValidator->validateDTO($request, $query);
         }
@@ -72,7 +75,7 @@ final class QueryController extends AbstractController
         // Wrap handlers
         /** The wrapper handlers are quite complex, so additional explanation can be found in @HandlerWrapperStep */
         $handlerWrappersWithParameters = $this->serviceMap->getHandlerWrappersWithParameters(
-            $configuration,
+            $configuration->handlerWrapperConfigurations,
             $this->defaultHandlerWrapperClasses,
         );
 
@@ -86,12 +89,12 @@ final class QueryController extends AbstractController
         }
 
         // Trigger query through query handler
-        $queryHandler = $this->serviceMap->getQueryHandler($configuration);
+        /** @psalm-suppress PossiblyInvalidArgument */
+        $queryHandler = $this->serviceMap->getQueryHandler($configuration->handlerClass);
 
         $result = null;
 
         try {
-            /** @var mixed $result */
             $result = $queryHandler->handle($query);
 
             $handlerWrapperThenStep = HandlerWrapperStep::then($handlerWrappersWithParameters);
@@ -139,7 +142,10 @@ final class QueryController extends AbstractController
         }
 
         // Construct and return response
-        $responseConstructor = $this->serviceMap->getResponseConstructor($configuration, $this->defaultResponseConstructorClass);
+        $responseConstructor = $this->serviceMap->getResponseConstructor(
+            $configuration->responseConstructorClass,
+            $this->defaultResponseConstructorClass,
+        );
 
         return $responseConstructor->constructResponse($result, $request);
     }
