@@ -33,6 +33,7 @@ use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskDTOCo
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskRequestDecoder;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\DefineTaskHourContingent\DefineTaskHourContingentDTODataTransformer;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
+use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\MarkTaskAsAcceptedCommandHandler;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -53,11 +54,57 @@ final class ServiceMapTest extends AppTestCase
         $this->connection = $this->getContainerService(Connection::class);
     }
 
+    // -- Construction
+
+    /**
+     * @test
+     * @covers ::__construct
+     * @doesNotPerformAssertions
+     */
+    public function construction_works(): void
+    {
+        // -- Arrange & Act & Assert
+        new ServiceMap(
+            requestDecoders: [
+                new CreateTaskRequestDecoder(),
+                new JsonRequestDecoder(),
+            ],
+            dtoDataTransformers: [
+                new CreateNewsArticleDTODataTransformer(),
+                new DefineTaskHourContingentDTODataTransformer(),
+            ],
+            dtoConstructors: [
+                new SerializerDTOConstructor($this->serializer),
+                new CreateTaskDTOConstructor(),
+            ],
+            dtoValidators: [
+                new FileSizeValidator(10),
+                new UserIdValidator($this->security),
+            ],
+            handlerWrappers: [
+                new SilentExceptionWrapper(),
+                new ConnectionTransactionWrapper($this->connection),
+            ],
+            commandHandlers: [
+                new CreateTaskCommandHandler(),
+                new MarkTaskAsAcceptedCommandHandler(),
+            ],
+            queryHandlers: [
+                new GetTasksQueryHandler(),
+            ],
+            responseConstructors: [
+                new EmptyResponseConstructor(),
+                new EmptyJsonResponseConstructor(),
+            ],
+        );
+    }
+
     // -- Request decoders
 
     /**
      * @test
      * @covers ::getRequestDecoder
+     * @covers ::__construct
      */
     public function get_request_decoder_works_with_request_decoder_class(): void
     {
@@ -154,6 +201,7 @@ final class ServiceMapTest extends AppTestCase
     /**
      * @test
      * @covers ::getDTODataTransformers
+     * @covers ::__construct
      */
     public function get_dto_data_transformers_works_with_dto_data_transformer_classes(): void
     {
@@ -274,6 +322,7 @@ final class ServiceMapTest extends AppTestCase
     /**
      * @test
      * @covers ::getDTOConstructor
+     * @covers ::__construct
      */
     public function get_dto_constructor_works_with_dto_constructor_class(): void
     {
@@ -376,6 +425,7 @@ final class ServiceMapTest extends AppTestCase
     /**
      * @test
      * @covers ::getDTOValidators
+     * @covers ::__construct
      */
     public function get_dto_validators_works_with_dto_validators_classes(): void
     {
@@ -493,6 +543,7 @@ final class ServiceMapTest extends AppTestCase
     /**
      * @test
      * @covers ::getHandlerWrappersWithParameters
+     * @covers ::__construct
      */
     public function get_handler_wrappers_works_with_handler_wrapper_configurations(): void
     {
@@ -626,6 +677,7 @@ final class ServiceMapTest extends AppTestCase
     /**
      * @test
      * @covers ::getCommandHandler
+     * @covers ::__construct
      */
     public function get_command_handler_works(): void
     {
@@ -663,6 +715,7 @@ final class ServiceMapTest extends AppTestCase
     /**
      * @test
      * @covers ::getQueryHandler
+     * @covers ::__construct
      */
     public function get_query_handler_works(): void
     {
@@ -700,6 +753,7 @@ final class ServiceMapTest extends AppTestCase
     /**
      * @test
      * @covers ::getResponseConstructor
+     * @covers ::__construct
      */
     public function get_response_constructor_works_with_response_constructor_class(): void
     {
