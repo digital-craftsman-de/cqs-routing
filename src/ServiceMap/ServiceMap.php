@@ -23,8 +23,8 @@ use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredQueryHandlerNotAvailabl
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredRequestDecoderNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredResponseConstructorNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\NoDefaultDTOConstructorDefined;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\NoDefaultResponseConstructorDefined;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\RequestDecoderOrDefaultRequestDecoderMustBeConfigured;
+use DigitalCraftsman\CQRS\ServiceMap\Exception\ResponseConstructorOrDefaultResponseConstructorMustBeConfigured;
 
 /** @internal */
 final class ServiceMap
@@ -256,6 +256,6 @@ final class ServiceMap
                 ?? throw new ConfiguredResponseConstructorNotAvailable($defaultResponseConstructorClass);
         }
 
-        throw new NoDefaultResponseConstructorDefined();
+        throw new ResponseConstructorOrDefaultResponseConstructorMustBeConfigured();
     }
 }
