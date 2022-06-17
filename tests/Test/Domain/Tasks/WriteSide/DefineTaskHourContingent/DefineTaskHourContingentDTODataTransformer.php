@@ -11,7 +11,7 @@ final class DefineTaskHourContingentDTODataTransformer implements DTODataTransfo
     /**
      * @param class-string $dtoClass
      * @param array{
-     *   content: int|float,
+     *   hourContingent: int|float,
      * } $dtoData
      */
     public function transformDTOData(string $dtoClass, array $dtoData): array
