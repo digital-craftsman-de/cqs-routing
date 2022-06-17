@@ -26,6 +26,7 @@ use DigitalCraftsman\CQRS\ServiceMap\Exception\NoDefaultDTOConstructorDefined;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\NoDefaultResponseConstructorDefined;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\RequestDecoderOrDefaultRequestDecoderMustBeConfigured;
 
+/** @internal */
 final class ServiceMap
 {
     /** @var array<string, RequestDecoderInterface> */
