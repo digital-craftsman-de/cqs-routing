@@ -4,23 +4,44 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQRS\ServiceMap;
 
+use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
 use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
 use DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor;
 use DigitalCraftsman\CQRS\ResponseConstructor\EmptyResponseConstructor;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredCommandHandlerNotAvailable;
+use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredDTOConstructorNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredQueryHandlerNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredRequestDecoderNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredResponseConstructorNotAvailable;
+use DigitalCraftsman\CQRS\ServiceMap\Exception\NoDefaultDTOConstructorDefined;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\RequestDecoderOrDefaultRequestDecoderMustBeConfigured;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ResponseConstructorOrDefaultResponseConstructorMustBeConfigured;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQueryHandler;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommandHandler;
+use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskDTOConstructor;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskRequestDecoder;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 /** @coversDefaultClass \DigitalCraftsman\CQRS\ServiceMap\ServiceMap */
 final class ServiceMapTest extends TestCase
 {
+    private DenormalizerInterface $serializer;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->serializer = new Serializer([
+            new PropertyNormalizer(),
+        ], [
+            new JsonEncoder(),
+        ]);
+    }
+
     // -- Request decoders
 
     /**
@@ -115,6 +136,108 @@ final class ServiceMapTest extends TestCase
 
         // -- Act
         $serviceMap->getRequestDecoder(null, null);
+    }
+
+    // -- DTO constructors
+
+    /**
+     * @test
+     * @covers ::getDTOConstructor
+     */
+    public function get_dto_constructor_works_with_dto_constructor_class(): void
+    {
+        // -- Arrange
+        $dtoConstructors = [
+            new SerializerDTOConstructor($this->serializer),
+            $createTaskDTOConstructor = new CreateTaskDTOConstructor(),
+        ];
+        $serviceMap = new ServiceMap(dtoConstructors: $dtoConstructors);
+
+        // -- Act
+        $dtoConstructor = $serviceMap->getDTOConstructor(
+            CreateTaskDTOConstructor::class,
+            null,
+        );
+
+        // -- Assert
+        self::assertSame($createTaskDTOConstructor, $dtoConstructor);
+    }
+
+    /**
+     * @test
+     * @covers ::getDTOConstructor
+     */
+    public function get_dto_constructor_works_with_default_dto_constructor_class(): void
+    {
+        // -- Arrange
+        $dtoConstructors = [
+            $defaultDTOConstructor = new SerializerDTOConstructor($this->serializer),
+            new CreateTaskDTOConstructor(),
+        ];
+        $serviceMap = new ServiceMap(dtoConstructors: $dtoConstructors);
+
+        // -- Act
+        $dtoConstructor = $serviceMap->getDTOConstructor(
+            null,
+            SerializerDTOConstructor::class,
+        );
+
+        // -- Assert
+        self::assertSame($defaultDTOConstructor, $dtoConstructor);
+    }
+
+    /**
+     * @test
+     * @covers ::getDTOConstructor
+     */
+    public function get_dto_constructor_fails_when_dto_constructor_class_is_not_available(): void
+    {
+        // -- Assert
+        $this->expectException(ConfiguredDTOConstructorNotAvailable::class);
+
+        // -- Arrange
+        $dtoConstructors = [
+            new SerializerDTOConstructor($this->serializer),
+        ];
+        $serviceMap = new ServiceMap(dtoConstructors: $dtoConstructors);
+
+        // -- Act
+        $serviceMap->getDTOConstructor(CreateTaskDTOConstructor::class, null);
+    }
+
+    /**
+     * @test
+     * @covers ::getDTOConstructor
+     */
+    public function get_dto_constructor_fails_when_default_dto_constructor_class_is_not_available(): void
+    {
+        // -- Assert
+        $this->expectException(ConfiguredDTOConstructorNotAvailable::class);
+
+        // -- Arrange
+        $dtoConstructors = [
+            new CreateTaskDTOConstructor(),
+        ];
+        $serviceMap = new ServiceMap(dtoConstructors: $dtoConstructors);
+
+        // -- Act
+        $serviceMap->getDTOConstructor(null, SerializerDTOConstructor::class);
+    }
+
+    /**
+     * @test
+     * @covers ::getDTOConstructor
+     */
+    public function get_dto_constructor_fails_when_no_dto_constructor_class_and_default_dto_constructor_class_is_defined(): void
+    {
+        // -- Assert
+        $this->expectException(NoDefaultDTOConstructorDefined::class);
+
+        // -- Arrange
+        $serviceMap = new ServiceMap(dtoConstructors: []);
+
+        // -- Act
+        $serviceMap->getDTOConstructor(null, null);
     }
 
     // -- Command handler
