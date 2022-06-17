@@ -22,7 +22,7 @@ use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredHandlerWrapperNotAvaila
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredQueryHandlerNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredRequestDecoderNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredResponseConstructorNotAvailable;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\NoDefaultDTOConstructorDefined;
+use DigitalCraftsman\CQRS\ServiceMap\Exception\DTOConstructorOrDefaultDTOConstructorMustBeConfigured;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\RequestDecoderOrDefaultRequestDecoderMustBeConfigured;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ResponseConstructorOrDefaultResponseConstructorMustBeConfigured;
 
@@ -164,7 +164,7 @@ final class ServiceMap
                 ?? throw new ConfiguredDTOConstructorNotAvailable($defaultDTOConstructorClass);
         }
 
-        throw new NoDefaultDTOConstructorDefined();
+        throw new DTOConstructorOrDefaultDTOConstructorMustBeConfigured();
     }
 
     /**

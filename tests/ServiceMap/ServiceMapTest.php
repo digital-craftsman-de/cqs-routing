@@ -13,7 +13,7 @@ use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredDTOConstructorNotAvaila
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredQueryHandlerNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredRequestDecoderNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredResponseConstructorNotAvailable;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\NoDefaultDTOConstructorDefined;
+use DigitalCraftsman\CQRS\ServiceMap\Exception\DTOConstructorOrDefaultDTOConstructorMustBeConfigured;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\RequestDecoderOrDefaultRequestDecoderMustBeConfigured;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ResponseConstructorOrDefaultResponseConstructorMustBeConfigured;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQueryHandler;
@@ -231,7 +231,7 @@ final class ServiceMapTest extends TestCase
     public function get_dto_constructor_fails_when_no_dto_constructor_class_and_default_dto_constructor_class_is_defined(): void
     {
         // -- Assert
-        $this->expectException(NoDefaultDTOConstructorDefined::class);
+        $this->expectException(DTOConstructorOrDefaultDTOConstructorMustBeConfigured::class);
 
         // -- Arrange
         $serviceMap = new ServiceMap(dtoConstructors: []);
