@@ -14,7 +14,8 @@
     "phpunit/phpunit": "^9.5",
     "symfony/security-bundle": "^6.1",
     "symfony/yaml": "^6.1",
-    "vimeo/psalm": "^4.12"
+    "vimeo/psalm": "^4.12",
+    "doctrine/doctrine-bundle": "^2.7"
   },
   "autoload": {
     "psr-4": {
