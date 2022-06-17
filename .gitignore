@@ -1,4 +1,5 @@
 # Packages
+/var/
 /vendor/
 
 # PHP CS fixer

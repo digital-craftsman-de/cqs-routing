@@ -1,9 +1,8 @@
 <?php
 
 $finder = (new PhpCsFixer\Finder())
-    ->in(__DIR__)
-    ->exclude('vendor')
-;
+    ->in('src')
+    ->in('tests');
 
 return (new PhpCsFixer\Config())
     ->setRules([
@@ -11,7 +10,7 @@ return (new PhpCsFixer\Config())
 
         // Automatically adds trailing commas in multiline
         'trailing_comma_in_multiline' => [
-            'elements' =>[
+            'elements' => [
                 'arrays',
                 'arguments',
                 'parameters',

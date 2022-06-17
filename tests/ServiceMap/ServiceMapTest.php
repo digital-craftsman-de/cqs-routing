@@ -11,39 +11,38 @@ use DigitalCraftsman\CQRS\ResponseConstructor\EmptyResponseConstructor;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredCommandHandlerNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredDTOConstructorNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredDTODataTransformerNotAvailable;
+use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredDTOValidatorNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredQueryHandlerNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredRequestDecoderNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredResponseConstructorNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\DTOConstructorOrDefaultDTOConstructorMustBeConfigured;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\RequestDecoderOrDefaultRequestDecoderMustBeConfigured;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ResponseConstructorOrDefaultResponseConstructorMustBeConfigured;
-use DigitalCraftsman\CQRS\Test\Application\AddActionHashDTODataTransformer;
+use DigitalCraftsman\CQRS\Test\Application\AddActionIdDTODataTransformer;
+use DigitalCraftsman\CQRS\Test\Application\Authentication\UserIdValidator;
+use DigitalCraftsman\CQRS\Test\Application\FileSizeValidator;
+use DigitalCraftsman\CQRS\Test\AppTestCase;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleDTODataTransformer;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQueryHandler;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommandHandler;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskDTOConstructor;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskRequestDecoder;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\DefineTaskHourContingent\DefineTaskHourContingentDTODataTransformer;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 /** @coversDefaultClass \DigitalCraftsman\CQRS\ServiceMap\ServiceMap */
-final class ServiceMapTest extends TestCase
+final class ServiceMapTest extends AppTestCase
 {
     private DenormalizerInterface $serializer;
+    private Security $security;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->serializer = new Serializer([
-            new PropertyNormalizer(),
-        ], [
-            new JsonEncoder(),
-        ]);
+        $this->serializer = $this->getContainerService(DenormalizerInterface::class);
+        $this->security = $this->getContainerService(Security::class);
     }
 
     // -- Request decoders
@@ -178,14 +177,14 @@ final class ServiceMapTest extends TestCase
         $allDTODataTransformers = [
             new CreateNewsArticleDTODataTransformer(),
             new DefineTaskHourContingentDTODataTransformer(),
-            $defaultDataTransformer = new AddActionHashDTODataTransformer(),
+            $defaultDataTransformer = new AddActionIdDTODataTransformer(),
         ];
         $serviceMap = new ServiceMap(dtoDataTransformers: $allDTODataTransformers);
 
         // -- Act
         $dtoDataTransformers = $serviceMap->getDTODataTransformers(
             null,
-            [AddActionHashDTODataTransformer::class],
+            [AddActionIdDTODataTransformer::class],
         );
 
         // -- Assert
@@ -228,7 +227,7 @@ final class ServiceMapTest extends TestCase
         // -- Arrange
         $allDTODataTransformers = [
             new CreateNewsArticleDTODataTransformer(),
-            new AddActionHashDTODataTransformer(),
+            new AddActionIdDTODataTransformer(),
         ];
         $serviceMap = new ServiceMap(dtoDataTransformers: $allDTODataTransformers);
 
@@ -258,7 +257,7 @@ final class ServiceMapTest extends TestCase
         // -- Act
         $serviceMap->getDTODataTransformers(
             null,
-            [AddActionHashDTODataTransformer::class],
+            [AddActionIdDTODataTransformer::class],
         );
     }
 
@@ -362,6 +361,123 @@ final class ServiceMapTest extends TestCase
 
         // -- Act
         $serviceMap->getDTOConstructor(null, null);
+    }
+
+    // -- DTO validators
+
+    /**
+     * @test
+     * @covers ::getDTOValidators
+     */
+    public function get_dto_validators_works_with_dto_validators_classes(): void
+    {
+        // -- Arrange
+        $allDTOValidators = [
+            $fileSizeValidator = new FileSizeValidator(10),
+            new UserIdValidator($this->security),
+        ];
+        $serviceMap = new ServiceMap(dtoValidators: $allDTOValidators);
+
+        // -- Act
+        $dtoValidators = $serviceMap->getDTOValidators(
+            [FileSizeValidator::class],
+            null,
+        );
+
+        // -- Assert
+        self::assertCount(1, $dtoValidators);
+        self::assertContains($fileSizeValidator, $dtoValidators);
+    }
+
+    /**
+     * @test
+     * @covers ::getDTOValidators
+     */
+    public function get_dto_validators_works_with_default_dto_validator_classes(): void
+    {
+        // -- Arrange
+        $allDTOValidators = [
+            new FileSizeValidator(10),
+            $defaultDataTransformer = new UserIdValidator($this->security),
+        ];
+        $serviceMap = new ServiceMap(dtoValidators: $allDTOValidators);
+
+        // -- Act
+        $dtoValidators = $serviceMap->getDTOValidators(
+            null,
+            [UserIdValidator::class],
+        );
+
+        // -- Assert
+        self::assertCount(1, $dtoValidators);
+        self::assertContains($defaultDataTransformer, $dtoValidators);
+    }
+
+    /**
+     * @test
+     * @covers ::getDTOValidators
+     */
+    public function get_dto_validators_works_with_no_dto_validator_classes_and_no_default_dto_validator_classes(): void
+    {
+        // -- Arrange
+        $allDTOValidators = [
+            new FileSizeValidator(10),
+            new UserIdValidator($this->security),
+        ];
+        $serviceMap = new ServiceMap(dtoValidators: $allDTOValidators);
+
+        // -- Act
+        $dtoValidators = $serviceMap->getDTOValidators(
+            null,
+            null,
+        );
+
+        // -- Assert
+        self::assertCount(0, $dtoValidators);
+    }
+
+    /**
+     * @test
+     * @covers ::getDTOValidators
+     */
+    public function get_dto_validators_fails_when_dto_validator_classes_are_not_available(): void
+    {
+        // -- Assert
+        $this->expectException(ConfiguredDTOValidatorNotAvailable::class);
+
+        // -- Arrange
+        $allDTOValidators = [
+            new UserIdValidator($this->security),
+        ];
+        $serviceMap = new ServiceMap(dtoValidators: $allDTOValidators);
+
+        // -- Act
+        $serviceMap->getDTOValidators(
+            [FileSizeValidator::class],
+            null,
+        );
+    }
+
+    /**
+     * @test
+     * @covers ::getDTOValidators
+     */
+    public function get_dto_validators_fails_when_default_dto_data_transformer_classes_are_not_available(): void
+    {
+        // -- Assert
+        $this->expectException(ConfiguredDTOValidatorNotAvailable::class);
+
+        // -- Arrange
+        $allDTOValidators = [
+            new FileSizeValidator(10),
+        ];
+        $serviceMap = new ServiceMap(dtoValidators: $allDTOValidators);
+
+        // -- Act
+        $serviceMap->getDTOValidators(
+            null,
+            [UserIdValidator::class],
+        );
     }
 
     // -- Command handler
