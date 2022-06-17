@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Command;
+namespace DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle;
 
 use DigitalCraftsman\CQRS\Command\Command;
 

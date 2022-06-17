@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\RequestDecoder;
+namespace DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask;
 
 use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
 use Symfony\Component\HttpFoundation\Request;

@@ -66,14 +66,14 @@ final class ServiceMap
      * @param array<int, HandlerWrapperInterface>      $defaultHandlerWrappers
      */
     public function __construct(
-        iterable $requestDecoders,
-        iterable $dtoDataTransformers,
-        iterable $dtoConstructors,
-        iterable $dtoValidators,
-        iterable $handlerWrappers,
-        iterable $commandHandlers,
-        iterable $queryHandlers,
-        iterable $responseConstructors,
+        iterable $requestDecoders = [],
+        iterable $dtoDataTransformers = [],
+        iterable $dtoConstructors = [],
+        iterable $dtoValidators = [],
+        iterable $handlerWrappers = [],
+        iterable $commandHandlers = [],
+        iterable $queryHandlers = [],
+        iterable $responseConstructors = [],
     ) {
         foreach ($requestDecoders as $requestDecoder) {
             $this->requestDecoderMap[get_class($requestDecoder)] = $requestDecoder;

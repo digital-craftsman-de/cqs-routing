@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQRS\DTOConstructor;
 
-use DigitalCraftsman\CQRS\Test\Command\CreateNewsArticleCommand;
+use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommand;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
