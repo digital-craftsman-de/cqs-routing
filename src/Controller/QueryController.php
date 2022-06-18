@@ -27,6 +27,8 @@ final class QueryController extends AbstractController
      * @psalm-param array<int, class-string<DTOValidatorInterface>>|null $defaultDTOValidatorClasses
      * @psalm-param array<int, class-string<HandlerWrapperInterface>>|null $defaultHandlerWrapperClasses
      * @psalm-param class-string<ResponseConstructorInterface>|null $defaultResponseConstructorClass
+     *
+     * @codeCoverageIgnore
      */
     public function __construct(
         private ServiceMap $serviceMap,
