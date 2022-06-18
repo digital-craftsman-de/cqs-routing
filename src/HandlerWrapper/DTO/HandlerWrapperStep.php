@@ -15,6 +15,7 @@ use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
  * steps. After this the controller is able to simply select a step and get all relevant wrappers in the correct order.
  *
  * @codeCoverageIgnore
+ * @internal
  */
 final class HandlerWrapperStep
 {

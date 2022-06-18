@@ -6,7 +6,10 @@ namespace DigitalCraftsman\CQRS\HandlerWrapper\DTO;
 
 use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 
-/** @codeCoverageIgnore */
+/**
+ * @codeCoverageIgnore
+ * @internal
+ */
 final class HandlerWrapperWithParameters
 {
     /** @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters */
