@@ -34,7 +34,7 @@ use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskReque
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\DefineTaskHourContingent\DefineTaskHourContingentDTODataTransformer;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\MarkTaskAsAcceptedCommandHandler;
-use Doctrine\DBAL\Connection;
+use DigitalCraftsman\CQRS\Test\Utility\ConnectionSimulator;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -43,7 +43,6 @@ final class ServiceMapTest extends AppTestCase
 {
     private DenormalizerInterface $serializer;
     private Security $security;
-    private Connection $connection;
 
     public function setUp(): void
     {
@@ -51,7 +50,6 @@ final class ServiceMapTest extends AppTestCase
 
         $this->serializer = $this->getContainerService(DenormalizerInterface::class);
         $this->security = $this->getContainerService(Security::class);
-        $this->connection = $this->getContainerService(Connection::class);
     }
 
     // -- Construction
@@ -83,7 +81,7 @@ final class ServiceMapTest extends AppTestCase
             ],
             handlerWrappers: [
                 new SilentExceptionWrapper(),
-                new ConnectionTransactionWrapper($this->connection),
+                new ConnectionTransactionWrapper(new ConnectionSimulator()),
             ],
             commandHandlers: [
                 new CreateTaskCommandHandler(),
@@ -550,7 +548,7 @@ final class ServiceMapTest extends AppTestCase
         // -- Arrange
         $handlerWrappers = [
             new SilentExceptionWrapper(),
-            new ConnectionTransactionWrapper($this->connection),
+            new ConnectionTransactionWrapper(new ConnectionSimulator()),
         ];
         $serviceMap = new ServiceMap(handlerWrappers: $handlerWrappers);
 
@@ -582,7 +580,7 @@ final class ServiceMapTest extends AppTestCase
         // -- Arrange
         $handlerWrappers = [
             new SilentExceptionWrapper(),
-            new ConnectionTransactionWrapper($this->connection),
+            new ConnectionTransactionWrapper(new ConnectionSimulator()),
         ];
         $serviceMap = new ServiceMap(handlerWrappers: $handlerWrappers);
 
@@ -607,7 +605,7 @@ final class ServiceMapTest extends AppTestCase
         // -- Arrange
         $handlerWrappers = [
             new SilentExceptionWrapper(),
-            new ConnectionTransactionWrapper($this->connection),
+            new ConnectionTransactionWrapper(new ConnectionSimulator()),
         ];
         $serviceMap = new ServiceMap(handlerWrappers: $handlerWrappers);
 
@@ -632,7 +630,7 @@ final class ServiceMapTest extends AppTestCase
 
         // -- Arrange
         $handlerWrappers = [
-            new ConnectionTransactionWrapper($this->connection),
+            new ConnectionTransactionWrapper(new ConnectionSimulator()),
         ];
         $serviceMap = new ServiceMap(handlerWrappers: $handlerWrappers);
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Lock;
+namespace DigitalCraftsman\CQRS\Test\Utility;
 
 final class LockSimulator
 {

@@ -7,7 +7,7 @@ namespace DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle;
 use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
 use DigitalCraftsman\CQRS\Query\Query;
-use DigitalCraftsman\CQRS\Test\Security\SecuritySimulator;
+use DigitalCraftsman\CQRS\Test\Utility\SecuritySimulator;
 use Symfony\Component\HttpFoundation\Request;
 
 final class CreateNewsArticleDTOValidator implements DTOValidatorInterface

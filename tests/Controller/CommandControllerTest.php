@@ -10,18 +10,24 @@ use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
 use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
 use DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor;
 use DigitalCraftsman\CQRS\ServiceMap\ServiceMap;
+use DigitalCraftsman\CQRS\Test\Application\ConnectionTransactionWrapper;
+use DigitalCraftsman\CQRS\Test\Application\SilentExceptionWrapper;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommand;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommandHandler;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleDTODataTransformer;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleDTOValidator;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleHandlerWrapper;
-use DigitalCraftsman\CQRS\Test\Lock\LockSimulator;
+use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\Exception\NewsArticleAlreadyExists;
+use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\FailingCreateNewsArticleCommandHandler;
 use DigitalCraftsman\CQRS\Test\Repository\NewsArticleInMemoryRepository;
-use DigitalCraftsman\CQRS\Test\Security\SecuritySimulator;
+use DigitalCraftsman\CQRS\Test\Utility\ConnectionSimulator;
+use DigitalCraftsman\CQRS\Test\Utility\LockSimulator;
+use DigitalCraftsman\CQRS\Test\Utility\SecuritySimulator;
 use DigitalCraftsman\CQRS\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Serializer\IdNormalizer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
@@ -37,7 +43,7 @@ final class CommandControllerTest extends TestCase
      * @test
      * @covers ::handle
      */
-    public function handle_works(): void
+    public function handle_works_with_all_components(): void
     {
         // -- Arrange
 
@@ -119,5 +125,151 @@ final class CommandControllerTest extends TestCase
         self::assertCount(1, $newsArticleInMemoryRepository->newsArticles);
         self::assertCount(1, $lockSimulator->lockedActions);
         self::assertCount(1, $lockSimulator->unlockedActions);
+    }
+
+    /**
+     * @test
+     * @covers ::handle
+     */
+    public function handle_works_with_handler_wrapper_in_catch_case_with_multiple_catches(): void
+    {
+        // -- Arrange
+
+        $serializer = new Serializer([
+            new ArrayDenormalizer(),
+            new IdNormalizer(),
+            new PropertyNormalizer(
+                null,
+                null,
+                new PropertyInfoExtractor([], [new PhpDocExtractor(), new ReflectionExtractor()]),
+            ),
+        ], [
+            new JsonEncoder(),
+        ]);
+        $connectionSimulator = new ConnectionSimulator();
+
+        $controller = new CommandController(
+            new ServiceMap(
+                requestDecoders: [
+                    new JsonRequestDecoder(),
+                ],
+                dtoConstructors: [
+                    new SerializerDTOConstructor($serializer),
+                ],
+                handlerWrappers: [
+                    new SilentExceptionWrapper(),
+                    new ConnectionTransactionWrapper($connectionSimulator),
+                ],
+                commandHandlers: [
+                    new FailingCreateNewsArticleCommandHandler(),
+                ],
+                responseConstructors: [
+                    new EmptyJsonResponseConstructor(),
+                ],
+            ),
+            JsonRequestDecoder::class,
+            [],
+            SerializerDTOConstructor::class,
+            [],
+            [],
+            EmptyJsonResponseConstructor::class,
+        );
+
+        $content = [
+            'userId' => (string) UserId::generateRandom(),
+            'title' => 'New feature released',
+            'content' => '<p>We just released <strong>a new feature</strong> <em>but this em is not allowed</em></p>',
+            'isPublished' => false,
+        ];
+
+        $request = new Request(content: json_encode($content, JSON_THROW_ON_ERROR));
+        $routePayload = Configuration::routePayload(
+            dtoClass: CreateNewsArticleCommand::class,
+            handlerClass: FailingCreateNewsArticleCommandHandler::class,
+            handlerWrapperConfigurations: [
+                new HandlerWrapperConfiguration(SilentExceptionWrapper::class, [
+                    NewsArticleAlreadyExists::class,
+                ]),
+                new HandlerWrapperConfiguration(ConnectionTransactionWrapper::class),
+            ],
+        );
+
+        // -- Act
+        $response = $controller->handle($request, $routePayload);
+
+        // -- Assert
+        self::assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        self::assertFalse($connectionSimulator->hasActiveTransaction);
+        self::assertFalse($connectionSimulator->hasCommitted);
+    }
+
+    /**
+     * @test
+     * @covers ::handle
+     */
+    public function handle_works_with_handler_wrapper_with_catch_and_throw(): void
+    {
+        // -- Assert
+        $this->expectException(NewsArticleAlreadyExists::class);
+
+        // -- Arrange
+
+        $serializer = new Serializer([
+            new ArrayDenormalizer(),
+            new IdNormalizer(),
+            new PropertyNormalizer(
+                null,
+                null,
+                new PropertyInfoExtractor([], [new PhpDocExtractor(), new ReflectionExtractor()]),
+            ),
+        ], [
+            new JsonEncoder(),
+        ]);
+        $connectionSimulator = new ConnectionSimulator();
+
+        $controller = new CommandController(
+            new ServiceMap(
+                requestDecoders: [
+                    new JsonRequestDecoder(),
+                ],
+                dtoConstructors: [
+                    new SerializerDTOConstructor($serializer),
+                ],
+                handlerWrappers: [
+                    new ConnectionTransactionWrapper($connectionSimulator),
+                ],
+                commandHandlers: [
+                    new FailingCreateNewsArticleCommandHandler(),
+                ],
+                responseConstructors: [
+                    new EmptyJsonResponseConstructor(),
+                ],
+            ),
+            JsonRequestDecoder::class,
+            [],
+            SerializerDTOConstructor::class,
+            [],
+            [],
+            EmptyJsonResponseConstructor::class,
+        );
+
+        $content = [
+            'userId' => (string) UserId::generateRandom(),
+            'title' => 'New feature released',
+            'content' => '<p>We just released <strong>a new feature</strong> <em>but this em is not allowed</em></p>',
+            'isPublished' => false,
+        ];
+
+        $request = new Request(content: json_encode($content, JSON_THROW_ON_ERROR));
+        $routePayload = Configuration::routePayload(
+            dtoClass: CreateNewsArticleCommand::class,
+            handlerClass: FailingCreateNewsArticleCommandHandler::class,
+            handlerWrapperConfigurations: [
+                new HandlerWrapperConfiguration(ConnectionTransactionWrapper::class),
+            ],
+        );
+
+        // -- Act
+        $controller->handle($request, $routePayload);
     }
 }

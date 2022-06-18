@@ -10,7 +10,6 @@ use DigitalCraftsman\CQRS\Test\Entity\NewsArticle;
 use DigitalCraftsman\CQRS\Test\Repository\NewsArticleInMemoryRepository;
 use DigitalCraftsman\CQRS\Test\ValueObject\NewsArticleId;
 
-/** @psalm-immutable */
 final class CreateNewsArticleCommandHandler implements CommandHandlerInterface
 {
     public function __construct(

@@ -7,13 +7,13 @@ namespace DigitalCraftsman\CQRS\Test\Application;
 use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 use DigitalCraftsman\CQRS\Query\Query;
-use Doctrine\DBAL\Connection;
+use DigitalCraftsman\CQRS\Test\Utility\ConnectionSimulator;
 use Symfony\Component\HttpFoundation\Request;
 
 final class ConnectionTransactionWrapper implements HandlerWrapperInterface
 {
     public function __construct(
-        private Connection $connection,
+        private ConnectionSimulator $connectionSimulator,
     ) {
     }
 
@@ -23,7 +23,7 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
         Request $request,
         mixed $parameters,
     ): void {
-        $this->connection->beginTransaction();
+        $this->connectionSimulator->beginTransaction();
     }
 
     /** @param null $parameters */
@@ -33,9 +33,7 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
         mixed $parameters,
         \Exception $exception,
     ): ?\Exception {
-        if ($this->connection->isTransactionActive()) {
-            $this->connection->rollBack();
-        }
+        $this->connectionSimulator->rollBack();
 
         return $exception;
     }
@@ -46,7 +44,7 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
         Request $request,
         mixed $parameters,
     ): void {
-        $this->connection->commit();
+        $this->connectionSimulator->commit();
     }
 
     // Priorities

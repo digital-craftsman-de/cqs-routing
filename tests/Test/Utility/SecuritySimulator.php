@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Security;
+namespace DigitalCraftsman\CQRS\Test\Utility;
 
 use DigitalCraftsman\CQRS\Test\ValueObject\UserId;
 

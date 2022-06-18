@@ -7,7 +7,7 @@ namespace DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle;
 use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 use DigitalCraftsman\CQRS\Query\Query;
-use DigitalCraftsman\CQRS\Test\Lock\LockSimulator;
+use DigitalCraftsman\CQRS\Test\Utility\LockSimulator;
 use Symfony\Component\HttpFoundation\Request;
 
 final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
