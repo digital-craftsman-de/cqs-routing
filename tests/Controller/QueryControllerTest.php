@@ -146,7 +146,7 @@ final class QueryControllerTest extends TestCase
     {
         // -- Assert
         $this->expectException(TasksNotAccessible::class);
-        
+
         // -- Arrange
 
         $authenticatedUserId = UserId::generateRandom();
