@@ -8,16 +8,15 @@ use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
 use DigitalCraftsman\CQRS\Query\Query;
 use DigitalCraftsman\CQRS\Test\Application\Authentication\Exception\NotRelevantForDTO;
-use DigitalCraftsman\CQRS\Test\Entity\User;
+use DigitalCraftsman\CQRS\Test\Utility\SecuritySimulator;
 use DigitalCraftsman\CQRS\Test\ValueObject\UserId;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Security;
 
 final class UserIdValidator implements DTOValidatorInterface
 {
     public function __construct(
-        private Security $security,
+        private SecuritySimulator $securitySimulator,
     ) {
     }
 
@@ -37,10 +36,7 @@ final class UserIdValidator implements DTOValidatorInterface
          */
         $userId = $dto->userId;
 
-        /** @var User $user */
-        $user = $this->security->getUser();
-
-        if (!$userId->isEqualTo($user->id)) {
+        if ($this->securitySimulator->getAuthenticatedUserId()->isNotEqualTo($userId)) {
             throw new \DomainException('Invalid user id', Response::HTTP_FORBIDDEN);
         }
     }

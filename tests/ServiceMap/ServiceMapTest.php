@@ -36,21 +36,21 @@ use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Excepti
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\MarkTaskAsAcceptedCommandHandler;
 use DigitalCraftsman\CQRS\Test\Repository\TasksInMemoryRepository;
 use DigitalCraftsman\CQRS\Test\Utility\ConnectionSimulator;
-use Symfony\Component\Security\Core\Security;
+use DigitalCraftsman\CQRS\Test\Utility\SecuritySimulator;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /** @coversDefaultClass \DigitalCraftsman\CQRS\ServiceMap\ServiceMap */
 final class ServiceMapTest extends AppTestCase
 {
     private DenormalizerInterface $serializer;
-    private Security $security;
+    private SecuritySimulator $securitySimulator;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->serializer = $this->getContainerService(DenormalizerInterface::class);
-        $this->security = $this->getContainerService(Security::class);
+        $this->securitySimulator = new SecuritySimulator();
     }
 
     // -- Construction
@@ -78,7 +78,7 @@ final class ServiceMapTest extends AppTestCase
             ],
             dtoValidators: [
                 new FileSizeValidator(10),
-                new UserIdValidator($this->security),
+                new UserIdValidator($this->securitySimulator),
             ],
             handlerWrappers: [
                 new SilentExceptionWrapper(),
@@ -431,7 +431,7 @@ final class ServiceMapTest extends AppTestCase
         // -- Arrange
         $allDTOValidators = [
             $fileSizeValidator = new FileSizeValidator(10),
-            new UserIdValidator($this->security),
+            new UserIdValidator($this->securitySimulator),
         ];
         $serviceMap = new ServiceMap(dtoValidators: $allDTOValidators);
 
@@ -455,7 +455,7 @@ final class ServiceMapTest extends AppTestCase
         // -- Arrange
         $allDTOValidators = [
             new FileSizeValidator(10),
-            $defaultDataTransformer = new UserIdValidator($this->security),
+            $defaultDataTransformer = new UserIdValidator($this->securitySimulator),
         ];
         $serviceMap = new ServiceMap(dtoValidators: $allDTOValidators);
 
@@ -479,7 +479,7 @@ final class ServiceMapTest extends AppTestCase
         // -- Arrange
         $allDTOValidators = [
             new FileSizeValidator(10),
-            new UserIdValidator($this->security),
+            new UserIdValidator($this->securitySimulator),
         ];
         $serviceMap = new ServiceMap(dtoValidators: $allDTOValidators);
 
@@ -504,7 +504,7 @@ final class ServiceMapTest extends AppTestCase
 
         // -- Arrange
         $allDTOValidators = [
-            new UserIdValidator($this->security),
+            new UserIdValidator($this->securitySimulator),
         ];
         $serviceMap = new ServiceMap(dtoValidators: $allDTOValidators);
 
