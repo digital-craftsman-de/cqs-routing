@@ -44,15 +44,6 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
         // Nothing to do
     }
 
-    /** @param array<int, string> $parameters */
-    public function finally(
-        Command|Query $dto,
-        Request $request,
-        mixed $parameters,
-    ): void {
-        // Nothing to do
-    }
-
     // Priorities
 
     public static function preparePriority(): int
@@ -66,11 +57,6 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
     }
 
     public static function thenPriority(): int
-    {
-        return 0;
-    }
-
-    public static function finallyPriority(): int
     {
         return 0;
     }

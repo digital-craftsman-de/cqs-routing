@@ -32,7 +32,7 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
         Request $request,
         mixed $parameters,
     ): void {
-        // Nothing to do
+        $this->lockSimulator->unlockAction((string) $dto->userId);
     }
 
     /** @param CreateNewsArticleCommand $dto */
@@ -42,17 +42,9 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
         mixed $parameters,
         \Exception $exception,
     ): ?\Exception {
-        // Nothing to do
-        return $exception;
-    }
-
-    /** @param CreateNewsArticleCommand $dto */
-    public function finally(
-        Command|Query $dto,
-        Request $request,
-        mixed $parameters,
-    ): void {
         $this->lockSimulator->unlockAction((string) $dto->userId);
+
+        return $exception;
     }
 
     public static function preparePriority(): int
@@ -62,15 +54,10 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
 
     public static function catchPriority(): int
     {
-        return 0;
+        return -250;
     }
 
     public static function thenPriority(): int
-    {
-        return 0;
-    }
-
-    public static function finallyPriority(): int
     {
         return -250;
     }

@@ -132,15 +132,6 @@ final class QueryController extends AbstractController
             if ($exceptionToHandle !== null) {
                 throw $exceptionToHandle;
             }
-        } finally {
-            $handlerWrapperFinallyStep = HandlerWrapperStep::finally($handlerWrappersWithParameters);
-            foreach ($handlerWrapperFinallyStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
-                $handlerWrapperWithParameters->handlerWrapper->finally(
-                    $query,
-                    $request,
-                    $handlerWrapperWithParameters->parameters,
-                );
-            }
         }
 
         // Construct and return response

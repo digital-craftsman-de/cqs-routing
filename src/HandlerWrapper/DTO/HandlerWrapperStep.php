@@ -21,7 +21,6 @@ final class HandlerWrapperStep
     public const STEP_PREPARE = 'PREPARE';
     public const STEP_THEN = 'THEN';
     public const STEP_CATCH = 'CATCH';
-    public const STEP_FINALLY = 'FINALLY';
 
     /** @var array<int, HandlerWrapperWithParameters> */
     public array $orderedHandlerWrappersWithParameters;
@@ -70,15 +69,6 @@ final class HandlerWrapperStep
         );
     }
 
-    /** @param array<array-key, HandlerWrapperWithParameters> $handlerWrappersWithParameters */
-    public static function finally(array $handlerWrappersWithParameters): self
-    {
-        return new self(
-            $handlerWrappersWithParameters,
-            self::STEP_FINALLY,
-        );
-    }
-
     /** @psalm-param self::STEP_* $step  */
     private static function getPriorityForStep(HandlerWrapperInterface $handlerWrapper, string $step): ?int
     {
@@ -86,7 +76,6 @@ final class HandlerWrapperStep
             self::STEP_PREPARE => $handlerWrapper::preparePriority(),
             self::STEP_THEN => $handlerWrapper::thenPriority(),
             self::STEP_CATCH => $handlerWrapper::catchPriority(),
-            self::STEP_FINALLY => $handlerWrapper::finallyPriority(),
             default => throw new \InvalidArgumentException(sprintf('Step %s is not valid', $step)),
         };
     }

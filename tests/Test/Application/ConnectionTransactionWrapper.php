@@ -49,15 +49,6 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
         $this->connection->commit();
     }
 
-    /** @param null $parameters */
-    public function finally(
-        Command|Query $dto,
-        Request $request,
-        mixed $parameters,
-    ): void {
-        // Nothing to do
-    }
-
     // Priorities
 
     public static function preparePriority(): int
@@ -73,10 +64,5 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
     public static function thenPriority(): int
     {
         return 50;
-    }
-
-    public static function finallyPriority(): int
-    {
-        return 0;
     }
 }

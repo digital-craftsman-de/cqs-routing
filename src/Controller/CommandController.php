@@ -129,15 +129,6 @@ final class CommandController extends AbstractController
             if ($exceptionToHandle !== null) {
                 throw $exceptionToHandle;
             }
-        } finally {
-            $handlerWrapperFinallyStep = HandlerWrapperStep::finally($handlerWrappersWithParameters);
-            foreach ($handlerWrapperFinallyStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
-                $handlerWrapperWithParameters->handlerWrapper->finally(
-                    $command,
-                    $request,
-                    $handlerWrapperWithParameters->parameters,
-                );
-            }
         }
 
         // Construct and return response
