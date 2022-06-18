@@ -12,6 +12,8 @@ use DigitalCraftsman\CQRS\ResponseConstructor\SerializerJsonResponseConstructor;
 use DigitalCraftsman\CQRS\ServiceMap\ServiceMap;
 use DigitalCraftsman\CQRS\Test\Application\AddActionIdDTODataTransformer;
 use DigitalCraftsman\CQRS\Test\Application\UserIdValidator;
+use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\Exception\TasksNotAccessible;
+use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\FailingGetTasksQueryHandler;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksHandlerWrapper;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQuery;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQueryHandler;
@@ -134,5 +136,88 @@ final class QueryControllerTest extends TestCase
         self::assertCount(2, $tasks);
         self::assertCount(1, $lockSimulator->lockedActions);
         self::assertCount(1, $lockSimulator->unlockedActions);
+    }
+
+    /**
+     * @test
+     * @covers ::handle
+     */
+    public function query_controller_works_with_handler_wrapper_in_catch_case_with_multiple_catches(): void
+    {
+        // -- Assert
+        $this->expectException(TasksNotAccessible::class);
+        
+        // -- Arrange
+
+        $authenticatedUserId = UserId::generateRandom();
+        $serializer = new Serializer([
+            new ArrayDenormalizer(),
+            new IdNormalizer(),
+            new PropertyNormalizer(
+                null,
+                null,
+                new PropertyInfoExtractor([], [new PhpDocExtractor(), new ReflectionExtractor()]),
+            ),
+        ], [
+            new JsonEncoder(),
+        ]);
+        $lockSimulator = new LockSimulator();
+
+        $securitySimulator = new SecuritySimulator();
+        $securitySimulator->fixateAuthenticatedUserId($authenticatedUserId);
+
+        $controller = new QueryController(
+            new ServiceMap(
+                requestDecoders: [
+                    new JsonRequestDecoder(),
+                ],
+                dtoDataTransformers: [
+                    new AddActionIdDTODataTransformer(),
+                ],
+                dtoConstructors: [
+                    new SerializerDTOConstructor($serializer),
+                ],
+                dtoValidators: [
+                    new UserIdValidator($securitySimulator),
+                ],
+                handlerWrappers: [
+                    new GetTasksHandlerWrapper($lockSimulator),
+                ],
+                queryHandlers: [
+                    new FailingGetTasksQueryHandler(),
+                ],
+                responseConstructors: [
+                    new SerializerJsonResponseConstructor($serializer, []),
+                ],
+            ),
+            JsonRequestDecoder::class,
+            [],
+            SerializerDTOConstructor::class,
+            [],
+            [],
+            SerializerJsonResponseConstructor::class,
+        );
+
+        $content = [
+            'userId' => (string) $authenticatedUserId,
+        ];
+
+        $request = new Request(content: json_encode($content, JSON_THROW_ON_ERROR));
+        $routePayload = Configuration::routePayload(
+            dtoClass: GetTasksQuery::class,
+            handlerClass: FailingGetTasksQueryHandler::class,
+            dtoDataTransformerClasses: [
+                AddActionIdDTODataTransformer::class,
+            ],
+            dtoValidatorClasses: [
+                UserIdValidator::class,
+            ],
+            handlerWrapperConfigurations: [
+                new HandlerWrapperConfiguration(GetTasksHandlerWrapper::class),
+            ],
+        );
+
+        // -- Act
+        $controller->handle($request, $routePayload);
     }
 }

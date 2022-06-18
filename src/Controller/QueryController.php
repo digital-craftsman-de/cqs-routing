@@ -112,21 +112,14 @@ final class QueryController extends AbstractController
             $exceptionToHandle = $exception;
             $handlerWrapperCatchStep = HandlerWrapperStep::catch($handlerWrappersWithParameters);
             foreach ($handlerWrapperCatchStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
-                if ($exceptionToHandle === null) {
-                    continue;
+                if ($exceptionToHandle !== null) {
+                    $exceptionToHandle = $handlerWrapperWithParameters->handlerWrapper->catch(
+                        $query,
+                        $request,
+                        $handlerWrapperWithParameters->parameters,
+                        $exceptionToHandle,
+                    );
                 }
-
-                /**
-                 * Psalm seems to think it's in the try block because of the catch.
-                 *
-                 * @psalm-suppress PossiblyUndefinedVariable
-                 */
-                $exceptionToHandle = $handlerWrapperWithParameters->handlerWrapper->catch(
-                    $query,
-                    $request,
-                    $handlerWrapperWithParameters->parameters,
-                    $exceptionToHandle,
-                );
             }
 
             if ($exceptionToHandle !== null) {
