@@ -13,9 +13,11 @@ use DigitalCraftsman\CQRS\ServiceMap\ServiceMap;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommand;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommandHandler;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleDTODataTransformer;
+use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleDTOValidator;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleHandlerWrapper;
 use DigitalCraftsman\CQRS\Test\Lock\LockSimulator;
 use DigitalCraftsman\CQRS\Test\Repository\NewsArticleInMemoryRepository;
+use DigitalCraftsman\CQRS\Test\Security\SecuritySimulator;
 use DigitalCraftsman\CQRS\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Serializer\IdNormalizer;
 use PHPUnit\Framework\TestCase;
@@ -39,6 +41,7 @@ final class CommandControllerTest extends TestCase
     {
         // -- Arrange
 
+        $authenticatedUserId = UserId::generateRandom();
         $serializer = new Serializer([
             new ArrayDenormalizer(),
             new IdNormalizer(),
@@ -52,6 +55,8 @@ final class CommandControllerTest extends TestCase
         ]);
         $newsArticleInMemoryRepository = new NewsArticleInMemoryRepository();
         $lockSimulator = new LockSimulator();
+        $securitySimulator = new SecuritySimulator();
+        $securitySimulator->fixateAuthenticatedUserId($authenticatedUserId);
 
         $controller = new CommandController(
             new ServiceMap(
@@ -63,6 +68,9 @@ final class CommandControllerTest extends TestCase
                 ],
                 dtoConstructors: [
                     new SerializerDTOConstructor($serializer),
+                ],
+                dtoValidators: [
+                    new CreateNewsArticleDTOValidator($securitySimulator),
                 ],
                 handlerWrappers: [
                     new CreateNewsArticleHandlerWrapper($lockSimulator),
@@ -83,7 +91,7 @@ final class CommandControllerTest extends TestCase
         );
 
         $content = [
-            'userId' => (string) UserId::generateRandom(),
+            'userId' => (string) $authenticatedUserId,
             'title' => 'New feature released',
             'content' => '<p>We just released <strong>a new feature</strong> <em>but this em is not allowed</em></p>',
             'isPublished' => false,
@@ -95,6 +103,9 @@ final class CommandControllerTest extends TestCase
             handlerClass: CreateNewsArticleCommandHandler::class,
             dtoDataTransformerClasses: [
                 CreateNewsArticleDTODataTransformer::class,
+            ],
+            dtoValidatorClasses: [
+                CreateNewsArticleDTOValidator::class,
             ],
             handlerWrapperConfigurations: [
                 new HandlerWrapperConfiguration(CreateNewsArticleHandlerWrapper::class),
