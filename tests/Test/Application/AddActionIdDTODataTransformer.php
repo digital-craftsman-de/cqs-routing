@@ -12,7 +12,7 @@ final class AddActionIdDTODataTransformer implements DTODataTransformerInterface
     /** @param class-string $dtoClass */
     public function transformDTOData(string $dtoClass, array $dtoData): array
     {
-        $dtoData['actionId'] = ActionId::generateRandom();
+        $dtoData['actionId'] = (string) ActionId::generateRandom();
 
         return $dtoData;
     }

@@ -12,10 +12,10 @@ use DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor;
 use DigitalCraftsman\CQRS\ServiceMap\ServiceMap;
 use DigitalCraftsman\CQRS\Test\Application\ConnectionTransactionWrapper;
 use DigitalCraftsman\CQRS\Test\Application\SilentExceptionWrapper;
+use DigitalCraftsman\CQRS\Test\Application\UserIdValidator;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommand;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommandHandler;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleDTODataTransformer;
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleDTOValidator;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleHandlerWrapper;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\Exception\NewsArticleAlreadyExists;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\FailingCreateNewsArticleCommandHandler;
@@ -43,7 +43,7 @@ final class CommandControllerTest extends TestCase
      * @test
      * @covers ::handle
      */
-    public function handle_works_with_all_components(): void
+    public function command_controller_works_with_all_components(): void
     {
         // -- Arrange
 
@@ -76,7 +76,7 @@ final class CommandControllerTest extends TestCase
                     new SerializerDTOConstructor($serializer),
                 ],
                 dtoValidators: [
-                    new CreateNewsArticleDTOValidator($securitySimulator),
+                    new UserIdValidator($securitySimulator),
                 ],
                 handlerWrappers: [
                     new CreateNewsArticleHandlerWrapper($lockSimulator),
@@ -111,7 +111,7 @@ final class CommandControllerTest extends TestCase
                 CreateNewsArticleDTODataTransformer::class,
             ],
             dtoValidatorClasses: [
-                CreateNewsArticleDTOValidator::class,
+                UserIdValidator::class,
             ],
             handlerWrapperConfigurations: [
                 new HandlerWrapperConfiguration(CreateNewsArticleHandlerWrapper::class),
@@ -131,7 +131,7 @@ final class CommandControllerTest extends TestCase
      * @test
      * @covers ::handle
      */
-    public function handle_works_with_handler_wrapper_in_catch_case_with_multiple_catches(): void
+    public function command_controller_works_with_handler_wrapper_in_catch_case_with_multiple_catches(): void
     {
         // -- Arrange
 
@@ -207,7 +207,7 @@ final class CommandControllerTest extends TestCase
      * @test
      * @covers ::handle
      */
-    public function handle_works_with_handler_wrapper_with_catch_and_throw(): void
+    public function command_controller_works_with_handler_wrapper_with_catch_and_throw(): void
     {
         // -- Assert
         $this->expectException(NewsArticleAlreadyExists::class);

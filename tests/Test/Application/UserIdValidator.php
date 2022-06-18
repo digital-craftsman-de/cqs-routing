@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle;
+namespace DigitalCraftsman\CQRS\Test\Application;
 
 use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
 use DigitalCraftsman\CQRS\Query\Query;
+use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommand;
 use DigitalCraftsman\CQRS\Test\Utility\SecuritySimulator;
 use Symfony\Component\HttpFoundation\Request;
 
-final class CreateNewsArticleDTOValidator implements DTOValidatorInterface
+final class UserIdValidator implements DTOValidatorInterface
 {
     public function __construct(
         private SecuritySimulator $securitySimulator,

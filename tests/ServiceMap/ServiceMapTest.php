@@ -34,6 +34,7 @@ use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskReque
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\DefineTaskHourContingent\DefineTaskHourContingentDTODataTransformer;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\MarkTaskAsAcceptedCommandHandler;
+use DigitalCraftsman\CQRS\Test\Repository\TasksInMemoryRepository;
 use DigitalCraftsman\CQRS\Test\Utility\ConnectionSimulator;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -88,7 +89,7 @@ final class ServiceMapTest extends AppTestCase
                 new MarkTaskAsAcceptedCommandHandler(),
             ],
             queryHandlers: [
-                new GetTasksQueryHandler(),
+                new GetTasksQueryHandler(new TasksInMemoryRepository()),
             ],
             responseConstructors: [
                 new EmptyResponseConstructor(),
@@ -719,7 +720,7 @@ final class ServiceMapTest extends AppTestCase
     {
         // -- Arrange
         $queryHandlers = [
-            $getTasksQueryHandler = new GetTasksQueryHandler(),
+            $getTasksQueryHandler = new GetTasksQueryHandler(new TasksInMemoryRepository()),
         ];
         $serviceMap = new ServiceMap(queryHandlers: $queryHandlers);
 
