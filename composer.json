@@ -9,7 +9,6 @@
   },
   "require-dev": {
     "digital-craftsman/ids": "0.1.0-beta.2",
-    "doctrine/orm": "^2.12",
     "friendsofphp/php-cs-fixer": "^3.3",
     "phpunit/phpunit": "^9.5",
     "symfony/security-bundle": "^6.1",
