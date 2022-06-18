@@ -3,7 +3,7 @@
 ## 0.5.0
 
 - **Breaking change:** `DTOConstructorInterface` now returns `Command|Query` instead of `object`.
-- **Breaking change:** `HandlerWrapperInterface` lost "finally logic". It turns out that there are no cases that can't be handled with just `then` and `catch` and on the other hand, there might be issues when multiple handler wrappers are used and can't be matched with the priority, because `finally` was always triggered last.
+- **Breaking change:** `HandlerWrapperInterface` lost "finally logic". It turns out that there are no cases that can't be handled with just `then` and `catch` and on the other hand, there might be issues when multiple handler wrappers are used and can't be matched with the priority, because `finally` was always triggered last. The methods `finally` and `finallyPriority` have been removed from the interface. The logic of implementations must be adapted in a way that the logic is moved from `finally` into `then` and `catch`.
 - Increased test code coverage of the moving parts to 100%.
 - Marked internal parts as `@internal`.
 
