@@ -1,6 +1,6 @@
 # Handler wrapper
 
-Handler wrappers are components that allow executation of code before (`prepare`), after success (`then`), after error (`catch`) and after in both cases (`finally`). Each method has its own priority with which it's executed in relation to other handler wrappers. Through this priority it's possible to have the `prepare` method be called first for one handler wrapper but the `finally` method be triggered last. The priority mirrors the event listener logic from Symfony in that it's `0` as default and can usually range from `-256` to `256`. 
+Handler wrappers are components that allow execution of code before (`prepare`), after success (`then`) and after error (`catch`). Each method has its own priority with which it's executed in relation to other handler wrappers. Through this priority it's possible to have the `prepare` method be called first for one handler wrapper but the `catch` method be triggered last. The priority mirrors the event listener logic from Symfony in that it's `0` as default and can usually range from `-256` to `256`. 
 
 With handle wrappers it's possible to implement automatic transaction rollbacks, locking of requests or silent exceptions. All things that are generally part of an application layer and not part of the domain.
 
@@ -64,15 +64,6 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
         $this->connection->commit();
     }
 
-    /** @param null $parameters */
-    public function finally(
-        Command | Query $dto,
-        Request $request,
-        mixed $parameters,
-    ): void {
-        // Nothing to do
-    }
-
     // Priorities
 
     public static function preparePriority(): int
@@ -88,11 +79,6 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
     public static function thenPriority(): int
     {
         return 50;
-    }
-
-    public static function finallyPriority(): int
-    {
-        return 0;
     }
 }
 ```
@@ -150,15 +136,6 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
         // Nothing to do
     }
 
-    /** @param array<int, string> $parameters */
-    public function finally(
-        Command | Query $dto,
-        Request $request,
-        mixed $parameters,
-    ): void {
-        // Nothing to do
-    }
-
     // Priorities
 
     public static function preparePriority(): int
@@ -175,17 +152,12 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
     {
         return 0;
     }
-
-    public static function finallyPriority(): int
-    {
-        return 0;
-    }
 }
 ```
 
 This might be useful when the flow of a command handler should be stopped, but no error must be shown to the user. As an example, imagine a command to change an email address where the email address hasn't changed. No confirmation email must be send out and no data must be stored. But the user must also not get an error because the email address itself is valid. With this handler wrapper, we can throw an `EmailAddressDidNotChange` exception to exit the flow.
 
-The priority of the `catch` method is set to a low value like `-100` to make sure it's executed last and doesn't prevent another handler wrapper (that for example rolls back a doctrine transation) to be executed.
+The priority of the `catch` method is set to a low value like `-100` to make sure it's executed last and doesn't prevent another handler wrapper (that for example rolls back a doctrine transaction) to be executed.
 
 Handler wrappers in a route are not defined like other components with just the class names, but instead as `HandlerWrapperConfiguration`. They still contain the class of the implementation but additionally can define parameters that can be used in the handler wrapper.
 
@@ -208,7 +180,7 @@ There are some requests which must not be run in parallel. For such requests we 
 
 With our example we create and acquire a lock depending on the user id. So we prevent that a user is able to create multiple news articles at the same time.
 
-The priority of `prepare` is very high and the priority of `finally` is very low. This way we can make sure that the lock is created before a doctrine transation is created and released after the transaction is commited or rolled back. So we know that those handler wrappers don't interfere with each other.
+The priority of `prepare` is very high and the priority of `then` is very low. This way we can make sure that the lock is created before a doctrine transaction is created and released after the transaction is committed or rolled back. So we know that those handler wrappers don't interfere with each other.
 
 ```php
 <?php
@@ -250,21 +222,13 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
         mixed $parameters,
         \Exception $exception,
     ): ?\Exception {
-        // Nothing to do
+        $this->lock->release();
+        
         return $exception;
     }
 
     /** @param null $parameters */
     public function then(
-        Command | Query $dto,
-        Request $request,
-        mixed $parameters,
-    ): void {
-        // Nothing to do
-    }
-
-    /** @param null $parameters */
-    public function finally(
         Command | Query $dto,
         Request $request,
         mixed $parameters,
@@ -285,11 +249,6 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
     }
 
     public static function thenPriority(): int
-    {
-        return 0;
-    }
-
-    public static function finallyPriority(): int
     {
         return -200;
     }

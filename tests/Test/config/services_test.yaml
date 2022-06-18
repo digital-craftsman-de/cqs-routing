@@ -1,0 +1,20 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  DigitalCraftsman\CQRS\Test\:
+    resource: '..'
+    exclude:
+      - '../**/Exception'
+      - '../config/**'
+      - '../Domain/**/*Command.php'
+      - '../Domain/**/*Query.php'
+      - '../**/Entity/**'
+      - '../**/ReadModel/**'
+      - '../**/ValueObject/**'
+    public: true
+
+  DigitalCraftsman\CQRS\Test\Application\FileSizeValidator:
+    arguments:
+      $maxUploadSizeInMB: 10

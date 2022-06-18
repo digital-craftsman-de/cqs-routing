@@ -52,22 +52,9 @@ interface HandlerWrapperInterface
         \Exception $exception,
     ): ?\Exception;
 
-    /**
-     * Triggered as part of finally whether the handler was run successfully or failed.
-     *
-     * @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters
-     */
-    public function finally(
-        Command|Query $dto,
-        Request $request,
-        mixed $parameters,
-    ): void;
-
     public static function preparePriority(): int;
 
     public static function thenPriority(): int;
 
     public static function catchPriority(): int;
-
-    public static function finallyPriority(): int;
 }

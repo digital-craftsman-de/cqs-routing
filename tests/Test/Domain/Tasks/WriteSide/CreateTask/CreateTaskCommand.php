@@ -2,18 +2,17 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Command;
+namespace DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask;
 
 use DigitalCraftsman\CQRS\Command\Command;
 
 /** @psalm-immutable */
-final class CreateNewsArticleCommand implements Command
+final class CreateTaskCommand implements Command
 {
     public function __construct(
-       public string $userId,
        public string $title,
        public string $content,
-       public bool $isPublished,
+       public string $priority,
     ) {
     }
 }

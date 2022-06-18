@@ -27,6 +27,8 @@ final class CommandController extends AbstractController
      * @psalm-param array<int, class-string<DTOValidatorInterface>>|null $defaultDTOValidatorClasses
      * @psalm-param array<int, class-string<HandlerWrapperInterface>>|null $defaultHandlerWrapperClasses
      * @psalm-param class-string<ResponseConstructorInterface>|null $defaultResponseConstructorClass
+     *
+     * @codeCoverageIgnore
      */
     public function __construct(
         private ServiceMap $serviceMap,
@@ -48,23 +50,26 @@ final class CommandController extends AbstractController
         $configuration = Configuration::fromRoutePayload($routePayload);
 
         // Get data from request
-        $requestDecoder = $this->serviceMap->getRequestDecoder($configuration, $this->defaultRequestDecoderClass);
+        $requestDecoder = $this->serviceMap->getRequestDecoder($configuration->requestDecoderClass, $this->defaultRequestDecoderClass);
         $commandData = $requestDecoder->decodeRequest($request);
 
         // Transform data
-        $dtoDataTransformers = $this->serviceMap->getDTODataTransformers($configuration, $this->defaultDTODataTransformerClasses);
+        $dtoDataTransformers = $this->serviceMap->getDTODataTransformers(
+            $configuration->dtoDataTransformerClasses,
+            $this->defaultDTODataTransformerClasses,
+        );
         foreach ($dtoDataTransformers as $dtoDataTransformer) {
             $commandData = $dtoDataTransformer->transformDTOData($configuration->dtoClass, $commandData);
         }
 
         // Construct command from data
-        $dtoConstructor = $this->serviceMap->getDTOConstructor($configuration, $this->defaultDTOConstructorClass);
+        $dtoConstructor = $this->serviceMap->getDTOConstructor($configuration->dtoConstructorClass, $this->defaultDTOConstructorClass);
 
         /** @var Command $command */
         $command = $dtoConstructor->constructDTO($commandData, $configuration->dtoClass);
 
         // Validate command
-        $dtoValidators = $this->serviceMap->getDTOValidators($configuration, $this->defaultDTOValidatorClasses);
+        $dtoValidators = $this->serviceMap->getDTOValidators($configuration->dtoValidatorClasses, $this->defaultDTOValidatorClasses);
         foreach ($dtoValidators as $dtoValidator) {
             $dtoValidator->validateDTO($request, $command);
         }
@@ -72,7 +77,7 @@ final class CommandController extends AbstractController
         // Wrap handlers
         /** The wrapper handlers are quite complex, so additional explanation can be found in @HandlerWrapperStep */
         $handlerWrappersWithParameters = $this->serviceMap->getHandlerWrappersWithParameters(
-            $configuration,
+            $configuration->handlerWrapperConfigurations,
             $this->defaultHandlerWrapperClasses,
         );
 
@@ -87,7 +92,8 @@ final class CommandController extends AbstractController
 
         try {
             // Trigger command through command handler
-            $commandHandler = $this->serviceMap->getCommandHandler($configuration);
+            /** @psalm-suppress PossiblyInvalidArgument */
+            $commandHandler = $this->serviceMap->getCommandHandler($configuration->handlerClass);
             $commandHandler->handle($command);
 
             $handlerWrapperThenStep = HandlerWrapperStep::then($handlerWrappersWithParameters);
@@ -103,39 +109,26 @@ final class CommandController extends AbstractController
             $exceptionToHandle = $exception;
             $handlerWrapperCatchStep = HandlerWrapperStep::catch($handlerWrappersWithParameters);
             foreach ($handlerWrapperCatchStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
-                if ($exceptionToHandle === null) {
-                    continue;
+                if ($exceptionToHandle !== null) {
+                    $exceptionToHandle = $handlerWrapperWithParameters->handlerWrapper->catch(
+                        $command,
+                        $request,
+                        $handlerWrapperWithParameters->parameters,
+                        $exceptionToHandle,
+                    );
                 }
-
-                /**
-                 * Psalm seems to think it's in the try block because of the catch.
-                 *
-                 * @psalm-suppress PossiblyUndefinedVariable
-                 */
-                $exceptionToHandle = $handlerWrapperWithParameters->handlerWrapper->catch(
-                    $command,
-                    $request,
-                    $handlerWrapperWithParameters->parameters,
-                    $exceptionToHandle,
-                );
             }
 
             if ($exceptionToHandle !== null) {
                 throw $exceptionToHandle;
             }
-        } finally {
-            $handlerWrapperFinallyStep = HandlerWrapperStep::finally($handlerWrappersWithParameters);
-            foreach ($handlerWrapperFinallyStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
-                $handlerWrapperWithParameters->handlerWrapper->finally(
-                    $command,
-                    $request,
-                    $handlerWrapperWithParameters->parameters,
-                );
-            }
         }
 
         // Construct and return response
-        $responseConstructor = $this->serviceMap->getResponseConstructor($configuration, $this->defaultResponseConstructorClass);
+        $responseConstructor = $this->serviceMap->getResponseConstructor(
+            $configuration->responseConstructorClass,
+            $this->defaultResponseConstructorClass,
+        );
 
         return $responseConstructor->constructResponse(null, $request);
     }
