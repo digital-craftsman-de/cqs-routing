@@ -10,7 +10,7 @@ Install package through composer:
 composer require digital-craftsman/cqrs
 ```
 
-> ⚠️ This bundle is still in the major version 0. Therefore, there will be breaking changes between minor versions. I'd recommend that you require the bundle only with the current minor version like `composer require digital-craftsman/cqrs:0.5.*`.
+> ⚠️ This bundle can be used in production, but hasn't reached version 1.0 yet. Therefore, there will be breaking changes between minor versions. I'd recommend that you require the bundle only with the current minor version like `composer require digital-craftsman/cqrs:0.5.*`.
 
 Then add the following `cqrs.yaml` file to your `config/packages` and replace it with your instances of the interfaces:
 
