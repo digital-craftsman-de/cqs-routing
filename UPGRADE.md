@@ -2,7 +2,9 @@
 
 ## From 0.4.* to 0.5.0
 
-The `DTOConstructorInterface` now returns `Command|Query` instead of `object`. You need to adapt your implementations and also adapt the return type.
+**Changes to the `DTOConstructorInterface`**
+
+The `DTOConstructorInterface` now returns `Command|Query` instead of `object`. You need to adapt the return types in your implementations.
 
 Before:
 
@@ -39,6 +41,8 @@ final class YourCustomDTOConstructor implements DTOConstructorInterface
     }
 }
 ```
+
+**Changes to the `HandlerWrapperInterface`**
 
 The `HandlerWrapperInterface` lost "finally logic". It turns out that there are no cases that can't be handled with just `then` and `catch` and on the other hand, there might be issues when multiple handler wrappers are used and can't be matched with the priority, because `finally` was always triggered last. The methods `finally` and `finallyPriority` have been removed from the interface. The logic of implementations must be adapted in a way that the logic is moved from `finally` into `then` and `catch`.
 
