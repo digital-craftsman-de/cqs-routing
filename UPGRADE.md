@@ -258,7 +258,7 @@ Before:
 ```php
 final class YourCustomDTODataTransformer implements DTODataTransformerInterface
 {
-    public function transformDTOData(string $dtoClass, array $dtoData): array
+    public function transformDTOData(array $dtoData): array
     {
         ...
     }
@@ -270,7 +270,7 @@ After:
 ```php
 final class YourCustomDTODataTransformer implements DTODataTransformerInterface
 {
-    public function transformDTOData(array $dtoData): array
+    public function transformDTOData(string $dtoClass, array $dtoData): array
     {
         ...
     }
