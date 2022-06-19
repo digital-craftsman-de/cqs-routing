@@ -1,6 +1,6 @@
 # Upgrade guide
 
-## 0.5.0
+## From 0.4.* to 0.5.0
 
 The `DTOConstructorInterface` now returns `Command|Query` instead of `object`. You need to adapt your implementations and also adapt the return type.
 
