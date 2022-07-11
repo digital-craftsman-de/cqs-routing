@@ -7,6 +7,7 @@ namespace DigitalCraftsman\CQRS\ServiceMap\Exception;
 /**
  * @psalm-immutable
  * @codeCoverageIgnore
+ *
  * @internal
  */
 final class DTOConstructorOrDefaultDTOConstructorMustBeConfigured extends \DomainException

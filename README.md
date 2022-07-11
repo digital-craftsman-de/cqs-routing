@@ -80,15 +80,13 @@ $routes->add(
 )
     ->controller([CommandController::class, 'handle'])
     ->methods([Request::METHOD_POST])
-    ->defaults([
-        'routePayload' => Configuration::routePayload(
-            dtoClass: CreateNewsArticleCommand::class,
-            handlerClass: CreateNewsArticleCommandHandler::class,
-            dtoValidatorClasses: [
-                UserIdValidator::class,
-            ],
-        ),
-    ]);
+    ->options(RouteConfiguration::routeOptions(
+        dtoClass: CreateNewsArticleCommand::class,
+        handlerClass: CreateNewsArticleCommandHandler::class,
+        dtoValidatorClasses: [
+            UserIdValidator::class,
+        ],
+    ));
 ```
 
 You only need to define the components that differ from the defaults configured in the `cqrs.yaml` configuration. Read more about [routing here](./docs/routing.md).

@@ -25,7 +25,7 @@ final class HandlerWrapperConfiguration
      *   parameters: array<int, string|int|float|bool>|string|int|float|bool|null,
      * }
      */
-    public function toRoutePayload(): array
+    public function toRouteOptions(): array
     {
         return [
             'handlerWrapperClass' => $this->handlerWrapperClass,
@@ -39,7 +39,7 @@ final class HandlerWrapperConfiguration
      *   parameters: array<int, string|int|float|bool>|string|int|float|bool|null,
      * } $routingConfiguration
      */
-    public static function fromRoutePayload(array $routingConfiguration): self
+    public static function fromRouteOptions(array $routingConfiguration): self
     {
         return new self(
             $routingConfiguration['handlerWrapperClass'],

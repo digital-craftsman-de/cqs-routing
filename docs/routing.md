@@ -11,16 +11,14 @@ $routes->add(
 )
     ->controller([CommandController::class, 'handle'])
     ->methods([Request::METHOD_POST])
-    ->defaults([
-        'routePayload' => Configuration::routePayload(
-            dtoClass: CreateProductNewsArticleCommand::class,
-            handlerClass: CreateProductNewsArticleCommandHandler::class,
-            requestDecoderClass: CommandWithFilesRequestDecoder::class,
-            dtoValidatorClasses: [
-                UserIdValidator::class,
-            ],
-        ),
-    ]);
+    ->options(RouteConfiguration::routeOptions(
+        dtoClass: CreateProductNewsArticleCommand::class,
+        handlerClass: CreateProductNewsArticleCommandHandler::class,
+        requestDecoderClass: CommandWithFilesRequestDecoder::class,
+        dtoValidatorClasses: [
+            UserIdValidator::class,
+        ],
+    ));
 ```
 
 All parameters except `dtoClass` and `handlerClass` are optional. You might only need to define those when you only need the default components for the other parameters ([configured in the `cqrs.yaml`](./configuration.md)).
@@ -41,7 +39,7 @@ cqrs:
 And you then adapt it like this:
 
 ```php
-'routePayload' => Configuration::routePayload(
+RouteConfiguration::routeOptions(
     dtoValidatorClasses: [
         FilesizeValidator::class,
     ],
@@ -53,7 +51,7 @@ The end result is that only the `FilesizeValidator` is left. You need to include
 This way you're also able to remove all default DTO validators from a route like this:
 
 ```php
-'routePayload' => Configuration::routePayload(
+RouteConfiguration::routeOptions(
     dtoValidatorClasses: [],
 ),
 ```

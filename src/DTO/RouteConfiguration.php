@@ -21,7 +21,7 @@ use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
  *
  * @codeCoverageIgnore
  */
-final class Configuration
+final class RouteConfiguration
 {
     /**
      * @psalm-param class-string<Command>|class-string<Query> $dtoClass
@@ -55,7 +55,7 @@ final class Configuration
      * @psalm-param array<int, HandlerWrapperConfiguration>|null $handlerWrapperConfigurations
      * @psalm-param class-string<ResponseConstructorInterface>|null $responseConstructorClass
      */
-    public static function routePayload(
+    public static function routeOptions(
         string $dtoClass,
         string $handlerClass,
         ?string $requestDecoderClass = null,
@@ -76,7 +76,7 @@ final class Configuration
             $responseConstructorClass,
         );
 
-        return $configuration->toRoutePayload();
+        return $configuration->toRouteOptions();
     }
 
     /**
@@ -94,10 +94,10 @@ final class Configuration
      *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
      * } $routePayload
      */
-    public static function fromRoutePayload(array $routePayload): self
+    public static function fromRouteOptions(array $routeOptions): self
     {
         $handlerWrapperConfigurations = null;
-        if ($routePayload['handlerWrapperConfigurations'] !== null) {
+        if ($routeOptions['handlerWrapperConfigurations'] !== null) {
             $handlerWrapperConfigurations = array_map(
                 /**
                  * @psalm-param array{
@@ -105,20 +105,20 @@ final class Configuration
                  *   parameters: array<int, string|int|float|bool>|string|int|float|bool|null,
                  * } $handlerWrapperRoutePayload
                  */
-                static fn (array $handlerWrapperRoutePayload) => HandlerWrapperConfiguration::fromRoutePayload($handlerWrapperRoutePayload),
-                $routePayload['handlerWrapperConfigurations'],
+                static fn (array $handlerWrapperRoutePayload) => HandlerWrapperConfiguration::fromRouteOptions($handlerWrapperRoutePayload),
+                $routeOptions['handlerWrapperConfigurations'],
             );
         }
 
         return new self(
-            $routePayload['dtoClass'],
-            $routePayload['handlerClass'],
-            $routePayload['requestDecoderClass'],
-            $routePayload['dtoDataTransformerClasses'],
-            $routePayload['dtoConstructorClass'],
-            $routePayload['dtoValidatorClasses'],
+            $routeOptions['dtoClass'],
+            $routeOptions['handlerClass'],
+            $routeOptions['requestDecoderClass'],
+            $routeOptions['dtoDataTransformerClasses'],
+            $routeOptions['dtoConstructorClass'],
+            $routeOptions['dtoValidatorClasses'],
             $handlerWrapperConfigurations,
-            $routePayload['responseConstructorClass'],
+            $routeOptions['responseConstructorClass'],
         );
     }
 
@@ -137,7 +137,7 @@ final class Configuration
      *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
      * }
      */
-    private function toRoutePayload(): array
+    private function toRouteOptions(): array
     {
         return [
             'dtoClass' => $this->dtoClass,
@@ -148,7 +148,7 @@ final class Configuration
             'dtoValidatorClasses' => $this->dtoValidatorClasses,
             'handlerWrapperConfigurations' => $this->handlerWrapperConfigurations !== null
                 ? array_map(
-                    static fn (HandlerWrapperConfiguration $handlerWrapperConfiguration) => $handlerWrapperConfiguration->toRoutePayload(),
+                    static fn (HandlerWrapperConfiguration $handlerWrapperConfiguration) => $handlerWrapperConfiguration->toRouteOptions(),
                     $this->handlerWrapperConfigurations,
                 )
                 : null,

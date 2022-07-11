@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQRS\Controller;
 
-use DigitalCraftsman\CQRS\DTO\Configuration;
 use DigitalCraftsman\CQRS\DTO\HandlerWrapperConfiguration;
+use DigitalCraftsman\CQRS\DTO\RouteConfiguration;
 use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
 use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
 use DigitalCraftsman\CQRS\ResponseConstructor\SerializerJsonResponseConstructor;
@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
@@ -111,7 +112,7 @@ final class QueryControllerTest extends TestCase
         ];
 
         $request = new Request(content: json_encode($content, JSON_THROW_ON_ERROR));
-        $routePayload = Configuration::routePayload(
+        $routeOptions = RouteConfiguration::routeOptions(
             dtoClass: GetTasksQuery::class,
             handlerClass: GetTasksQueryHandler::class,
             dtoDataTransformerClasses: [
@@ -125,8 +126,13 @@ final class QueryControllerTest extends TestCase
             ],
         );
 
+        $route = new Route(
+            path: '/api/tasks/get-tasks-query',
+            options: $routeOptions,
+        );
+
         // -- Act
-        $response = $controller->handle($request, $routePayload);
+        $response = $controller->handle($request, $route);
 
         // -- Assert
         /** @var string $body */
@@ -203,7 +209,7 @@ final class QueryControllerTest extends TestCase
         ];
 
         $request = new Request(content: json_encode($content, JSON_THROW_ON_ERROR));
-        $routePayload = Configuration::routePayload(
+        $routeOptions = RouteConfiguration::routeOptions(
             dtoClass: GetTasksQuery::class,
             handlerClass: FailingGetTasksQueryHandler::class,
             dtoDataTransformerClasses: [
@@ -217,7 +223,12 @@ final class QueryControllerTest extends TestCase
             ],
         );
 
+        $route = new Route(
+            path: '/api/tasks/get-tasks-query',
+            options: $routeOptions,
+        );
+
         // -- Act
-        $controller->handle($request, $routePayload);
+        $controller->handle($request, $route);
     }
 }

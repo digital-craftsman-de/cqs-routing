@@ -162,7 +162,7 @@ The priority of the `catch` method is set to a low value like `-100` to make sur
 Handler wrappers in a route are not defined like other components with just the class names, but instead as `HandlerWrapperConfiguration`. They still contain the class of the implementation but additionally can define parameters that can be used in the handler wrapper.
 
 ```php
-'routePayload' => Configuration::routePayload(
+RouteConfiguration::routeOptions(
     handlerWrapperConfigurations: [
         new HandlerWrapperConfiguration(
             handlerWrapperClass: SilentExceptionWrapper::class,

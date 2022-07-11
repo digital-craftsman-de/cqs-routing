@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DigitalCraftsman\CQRS\Controller;
 
 use DigitalCraftsman\CQRS\Command\Command;
-use DigitalCraftsman\CQRS\DTO\Configuration;
+use DigitalCraftsman\CQRS\DTO\RouteConfiguration;
 use DigitalCraftsman\CQRS\DTOConstructor\DTOConstructorInterface;
 use DigitalCraftsman\CQRS\DTODataTransformer\DTODataTransformerInterface;
 use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
@@ -17,6 +17,7 @@ use DigitalCraftsman\CQRS\ServiceMap\ServiceMap;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Route;
 
 final class CommandController extends AbstractController
 {
@@ -41,35 +42,34 @@ final class CommandController extends AbstractController
     ) {
     }
 
-    /** We don't type the $routePayload because we never trigger it manually, it's only supplied through Symfony. */
     public function handle(
         Request $request,
-        array $routePayload,
+        Route $route,
     ): Response {
         /** @psalm-suppress MixedArgumentTypeCoercion */
-        $configuration = Configuration::fromRoutePayload($routePayload);
+        $routeConfiguration = RouteConfiguration::fromRouteOptions($route->getOptions());
 
         // Get data from request
-        $requestDecoder = $this->serviceMap->getRequestDecoder($configuration->requestDecoderClass, $this->defaultRequestDecoderClass);
+        $requestDecoder = $this->serviceMap->getRequestDecoder($routeConfiguration->requestDecoderClass, $this->defaultRequestDecoderClass);
         $commandData = $requestDecoder->decodeRequest($request);
 
         // Transform data
         $dtoDataTransformers = $this->serviceMap->getDTODataTransformers(
-            $configuration->dtoDataTransformerClasses,
+            $routeConfiguration->dtoDataTransformerClasses,
             $this->defaultDTODataTransformerClasses,
         );
         foreach ($dtoDataTransformers as $dtoDataTransformer) {
-            $commandData = $dtoDataTransformer->transformDTOData($configuration->dtoClass, $commandData);
+            $commandData = $dtoDataTransformer->transformDTOData($routeConfiguration->dtoClass, $commandData);
         }
 
         // Construct command from data
-        $dtoConstructor = $this->serviceMap->getDTOConstructor($configuration->dtoConstructorClass, $this->defaultDTOConstructorClass);
+        $dtoConstructor = $this->serviceMap->getDTOConstructor($routeConfiguration->dtoConstructorClass, $this->defaultDTOConstructorClass);
 
         /** @var Command $command */
-        $command = $dtoConstructor->constructDTO($commandData, $configuration->dtoClass);
+        $command = $dtoConstructor->constructDTO($commandData, $routeConfiguration->dtoClass);
 
         // Validate command
-        $dtoValidators = $this->serviceMap->getDTOValidators($configuration->dtoValidatorClasses, $this->defaultDTOValidatorClasses);
+        $dtoValidators = $this->serviceMap->getDTOValidators($routeConfiguration->dtoValidatorClasses, $this->defaultDTOValidatorClasses);
         foreach ($dtoValidators as $dtoValidator) {
             $dtoValidator->validateDTO($request, $command);
         }
@@ -77,7 +77,7 @@ final class CommandController extends AbstractController
         // Wrap handlers
         /** The wrapper handlers are quite complex, so additional explanation can be found in @HandlerWrapperStep */
         $handlerWrappersWithParameters = $this->serviceMap->getHandlerWrappersWithParameters(
-            $configuration->handlerWrapperConfigurations,
+            $routeConfiguration->handlerWrapperConfigurations,
             $this->defaultHandlerWrapperClasses,
         );
 
@@ -93,7 +93,7 @@ final class CommandController extends AbstractController
         try {
             // Trigger command through command handler
             /** @psalm-suppress PossiblyInvalidArgument */
-            $commandHandler = $this->serviceMap->getCommandHandler($configuration->handlerClass);
+            $commandHandler = $this->serviceMap->getCommandHandler($routeConfiguration->handlerClass);
             $commandHandler->handle($command);
 
             $handlerWrapperThenStep = HandlerWrapperStep::then($handlerWrappersWithParameters);
@@ -126,7 +126,7 @@ final class CommandController extends AbstractController
 
         // Construct and return response
         $responseConstructor = $this->serviceMap->getResponseConstructor(
-            $configuration->responseConstructorClass,
+            $routeConfiguration->responseConstructorClass,
             $this->defaultResponseConstructorClass,
         );
 

@@ -1,5 +1,45 @@
 # Upgrade guide
 
+## From 0.5.* to 0.6.0
+
+**Route configuration uses options**
+
+Previously the route configuration was configured using the `defaults()` method of the route. But this was kind of hack to transport the information to the controller. The defaults aren't really meant to be used for configuration. A more appropriate way is using the `options()` method. And that's what was introduced in 0.6.0 including a few other class and method name changes.
+
+Relevant for updating to the new version: `Configuration` was renamed to `RouteConfiguration` and the method `routePayload` was renamed to `routeOptions`.
+
+Before:
+
+```php
+$routes->add(
+    'api_blog_create_blog_article_command',
+    '/api/blog/create-blog-article-command',
+)
+    ->controller([CommandController::class, 'handle'])
+    ->methods([Request::METHOD_POST])
+    ->defaults([
+        'routePayload' => Configuration::routePayload(
+            dtoClass: CreateBlogArticleCommand::class,
+            handlerClass: CreateBlogArticleCommandHandler::class,
+        ),
+    ]);
+```
+
+After:
+
+```php
+$routes->add(
+    'api_blog_create_blog_article_command',
+    '/api/blog/create-blog-article-command',
+)
+    ->controller([CommandController::class, 'handle'])
+    ->methods([Request::METHOD_POST])
+    ->options(RouteConfiguration::routeOptions(
+        dtoClass: CreateBlogArticleCommand::class,
+        handlerClass: CreateBlogArticleCommandHandler::class,
+    ));
+```
+
 ## From 0.4.* to 0.5.0
 
 **Changes to the `DTOConstructorInterface`**
