@@ -1,6 +1,10 @@
 # Reduced cost of change through CQRS in Symfony
 
+[![Latest Stable Version](http://poser.pugx.org/digital-craftsman/cqrs/v)](https://packagist.org/packages/digital-craftsman/cqrs)
+[![PHP Version Require](http://poser.pugx.org/digital-craftsman/cqrs/require/php)](https://packagist.org/packages/digital-craftsman/cqrs)
 [![codecov](https://codecov.io/gh/digital-craftsman-de/cqrs/branch/main/graph/badge.svg?token=YUKRDW1L8G)](https://codecov.io/gh/digital-craftsman-de/cqrs)
+[![Total Downloads](http://poser.pugx.org/digital-craftsman/cqrs/downloads)](https://packagist.org/packages/digital-craftsman/cqrs)
+[![License](http://poser.pugx.org/digital-craftsman/cqrs/license)](https://packagist.org/packages/digital-craftsman/cqrs)
 
 ## Installation and configuration
 
@@ -10,7 +14,7 @@ Install package through composer:
 composer require digital-craftsman/cqrs
 ```
 
-> ⚠️ This bundle can be used in production, but hasn't reached version 1.0 yet. Therefore, there will be breaking changes between minor versions. I'd recommend that you require the bundle only with the current minor version like `composer require digital-craftsman/cqrs:0.5.*`. Breaking changes are described in the releases and [the changelog](./CHANGELOG.md). Updates are described in the [upgrade guide](./UPGRADE.md).
+> ⚠️ This bundle can be used (and is being used) in production, but hasn't reached version 1.0 yet. Therefore, there will be breaking changes between minor versions. I'd recommend that you require the bundle only with the current minor version like `composer require digital-craftsman/cqrs:0.5.*`. Breaking changes are described in the releases and [the changelog](./CHANGELOG.md). Updates are described in the [upgrade guide](./UPGRADE.md).
 
 Then add the following `cqrs.yaml` file to your `config/packages` and replace it with your instances of the interfaces:
 
@@ -182,3 +186,7 @@ final class CreateNewsArticleCommandHandler implements CommandHandlerInterface
     }
 }
 ```
+
+## Sponsors
+
+[![Blackfire](./sponsors/blackfire.png)](https://blackfire.io)
