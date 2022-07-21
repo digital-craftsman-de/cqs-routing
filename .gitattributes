@@ -12,3 +12,4 @@ Makefile export-ignore
 phpunit.xml.dist export-ignore
 psalm.xml export-ignore
 UPGRADE.md export-ignore
+sponsors export-ignore

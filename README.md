@@ -1,10 +1,10 @@
 # Reduced cost of change through CQRS in Symfony
 
 [![Latest Stable Version](http://poser.pugx.org/digital-craftsman/cqrs/v)](https://packagist.org/packages/digital-craftsman/cqrs)
+[![PHP Version Require](http://poser.pugx.org/digital-craftsman/cqrs/require/php)](https://packagist.org/packages/digital-craftsman/cqrs)
 [![codecov](https://codecov.io/gh/digital-craftsman-de/cqrs/branch/main/graph/badge.svg?token=YUKRDW1L8G)](https://codecov.io/gh/digital-craftsman-de/cqrs)
 [![Total Downloads](http://poser.pugx.org/digital-craftsman/cqrs/downloads)](https://packagist.org/packages/digital-craftsman/cqrs)
 [![License](http://poser.pugx.org/digital-craftsman/cqrs/license)](https://packagist.org/packages/digital-craftsman/cqrs)
-[![PHP Version Require](http://poser.pugx.org/digital-craftsman/cqrs/require/php)](https://packagist.org/packages/digital-craftsman/cqrs)
 
 ## Installation and configuration
 
@@ -186,3 +186,7 @@ final class CreateNewsArticleCommandHandler implements CommandHandlerInterface
     }
 }
 ```
+
+## Sponsors
+
+[![Blackfire](./sponsors/blackfire.png)](https://blackfire.io)
