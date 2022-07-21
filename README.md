@@ -189,4 +189,4 @@ final class CreateNewsArticleCommandHandler implements CommandHandlerInterface
 
 ## Sponsors
 
-[![Blackfire](./sponsors/blackfire.png =x250)](https://blackfire.io)
+[![Blackfire](./sponsors/blackfire.png)](https://blackfire.io)
