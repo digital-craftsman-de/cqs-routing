@@ -58,21 +58,21 @@ The construct has to following goals:
 
 The construct consists of two starting points, the `CommandController` and the `QueryController` and the following components:
 
-- **[Request validator](./docs/request-validator.md)**  
+- **[Request validator](./docs/examples/request-validator.md)**  
 *Validates request on an application level.*
-- **[Request decoder](./docs/request-decoder.md)**  
+- **[Request decoder](./docs/examples/request-decoder.md)**  
 *Decodes the request and transforms it into request data as an array structure.*
-- **[Request data transformer](./docs/request-data-transformer.md)**  
+- **[Request data transformer](./docs/examples/request-data-transformer.md)**  
 *Transforms the previously generated request data.*
-- **[DTO constructor](./docs/dto-constructor.md)**  
+- **[DTO constructor](./docs/examples/dto-constructor.md)**  
 *Generates a command or query from the request data.*
-- **[DTO validator](./docs/dto-validator.md)**  
+- **[DTO validator](./docs/examples/dto-validator.md)**  
 *Validates the created command or query.*
-- **[Handler](./docs/handler.md)**  
+- **[Handler](./docs/examples/handler.md)**  
 *Command or query handler which contains the business logic.*
-- **[Handler wrapper](./docs/handler-wrapper.md)**  
+- **[Handler wrapper](./docs/examples/handler-wrapper.md)**  
 *Wraps handler to execute logic as a prepare / try / catch logic.*
-- **[Response constructor](./docs/response-constructor.md)**  
+- **[Response constructor](./docs/examples/response-constructor.md)**  
 *Transforms the gathered data of the handler into a response.*
 
 The process how the controller handles a request can be and when to use which component is [described here](./docs/process.md).

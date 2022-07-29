@@ -1,10 +1,6 @@
-# Request validator
+# Request validator examples
 
-Request validation is there to validate information that is only accessible from the request itself and will not be part of the DTO or must be validated before a DTO is constructed from the request data.
-
-Multiple request validators can be applied on each request.
-
-It's quite abstract and more clear with an example. But first, this is the interface for it:
+**Interface**
 
 ```php
 interface RequestValidatorInterface
