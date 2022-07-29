@@ -47,7 +47,7 @@ A request validator is there to validate information that is only accessible fro
 
 Multiple request validators can be applied on each request.
 
-It must not be used to:
+**It must not be used to:**
 
 - Validate request content according to business rules.
 - Validate the existence of content that is needed for construction of command or query objects. That must be handled in the DTO constructor.
@@ -58,7 +58,7 @@ It must not be used to:
 
 The request decoder takes the request object and turns its content into request data in form of an array. It doesn't matter how this data is collected. It might be GET parameters, the body as JSON or files as part of the request.
 
-It must not be used to:
+**It must not be used to:**
 
 - Validate the request in any way.
 
@@ -72,7 +72,7 @@ The data transformer can have three kinds of tasks and multiple data transformer
 - Sanitize existing data.
 - Add additional data not present in the request.
 
-It must not be used to:
+**It must not be used to:**
 
 - Validate the request data in any way. That must be handled in the DTO validator.
 
@@ -86,8 +86,46 @@ The DTO constructor is there to construct the command or query from the request 
 
 ### DTO validator
 
+DTO validators are there to validate data within the DTO against information on an application and infrastructure level.
+
+Multiple DTO validators can be applied on each request.
+
+**It must not be used to:**
+
+- Validate the integrity of the DTO itself
+- Validate any of the value objects in it (that's the task of the constructors). 
+- Validate any kind of business logic including access validation.
+
+[Examples](./examples/dto-validator.md)
+
 ### Handler
+
+The handlers are now freed to only concern themselves with the business logic. They receive either a command or query, but only the query returns a result which is later converted into a response.
+
+**It must not be used to:**
+
+- Access the request.
+
+[Examples](./examples/handler.md)
 
 ### Handler wrapper
 
+Handler wrappers are components that allow execution of code before (`prepare`), after success (`then`) and after error (`catch`) of a handler. Each method has its own priority with which it's executed in relation to other handler wrappers. Through this priority it's possible to have the `prepare` method be called first for one handler wrapper but the `catch` method be triggered last. The priority mirrors the event listener logic from Symfony in that it's `0` as default and can usually range from `-256` to `256`.
+
+With handle wrappers it's possible to implement automatic transaction rollbacks, locking of requests or silent exceptions. All things that are generally part of an application layer and not part of the domain.
+
+For now there are no built-in handler wrappers because they are highly dependant of the domain implementation and / or depend on external libraries.
+
+**It must not be used to:**
+
+- Handle any kind of business logic.
+
+[Examples](./examples/handler-wrapper.md)
+
 ### Response constructor
+
+A response constructor is there to construct a response from the data that is returned from the handler. A command handler won't return anything. Therefore, most of the time a response handler like the `EmptyResponseConstructor` will be configured for it.
+
+The query handler on the other hand will return a value nearly every time and depending on the use case, the value might be serialized to JSON, send as binary data or even be streamed as part of a streamed response.
+
+[Examples](./examples/response-constructor.md)
