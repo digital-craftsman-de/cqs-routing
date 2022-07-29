@@ -78,7 +78,7 @@ The construct consists of two starting points, the `CommandController` and the `
 **Minimal process**
 
 ```mermaid
-graph TD;
+graph LR;
     A[New request] --> |Routing| B(Decode request);
     B --> C[Request data];
     C --> D(Construct command/query);
