@@ -75,7 +75,7 @@ The construct consists of two starting points, the `CommandController` and the `
 - **[Response constructor](./docs/response-constructor.md)**  
 *Transforms the gathered data of the handler into a response.*
 
-The process how the controller handles a request can be [seen here](./docs/process.md).
+The process how the controller handles a request can be and when to use which component is [described here](./docs/process.md).
 
 **Routing**
 
