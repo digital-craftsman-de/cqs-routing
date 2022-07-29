@@ -8,6 +8,7 @@ use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 
 /**
  * @codeCoverageIgnore
+ *
  * @internal
  */
 final class HandlerWrapperWithParameters

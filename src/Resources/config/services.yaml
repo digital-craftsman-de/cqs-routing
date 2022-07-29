@@ -38,14 +38,14 @@ services:
   # Service map
   DigitalCraftsman\CQRS\ServiceMap\ServiceMap:
     arguments:
-      $requestDecoders: !tagged_iterator cqrs.request_decoder
-      $dtoDataTransformers: !tagged_iterator cqrs.dto_data_transformer
-      $dtoConstructors: !tagged_iterator cqrs.dto_constructor
-      $dtoValidators: !tagged_iterator cqrs.dto_validator
-      $handlerWrappers: !tagged_iterator cqrs.handler_wrapper
-      $commandHandlers: !tagged_iterator cqrs.command_handler
-      $queryHandlers: !tagged_iterator cqrs.query_handler
-      $responseConstructors: !tagged_iterator cqrs.response_constructor
+      $requestDecoders: !tagged_locator cqrs.request_decoder
+      $dtoDataTransformers: !tagged_locator cqrs.dto_data_transformer
+      $dtoConstructors: !tagged_locator cqrs.dto_constructor
+      $dtoValidators: !tagged_locator cqrs.dto_validator
+      $handlerWrappers: !tagged_locator cqrs.handler_wrapper
+      $commandHandlers: !tagged_locator cqrs.command_handler
+      $queryHandlers: !tagged_locator cqrs.query_handler
+      $responseConstructors: !tagged_locator cqrs.response_constructor
 
   # Controllers
   DigitalCraftsman\CQRS\Controller\CommandController:

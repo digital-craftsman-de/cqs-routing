@@ -34,9 +34,11 @@ use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskReque
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\DefineTaskHourContingent\DefineTaskHourContingentDTODataTransformer;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\MarkTaskAsAcceptedCommandHandler;
+use DigitalCraftsman\CQRS\Test\Helper\ServiceMapHelper;
 use DigitalCraftsman\CQRS\Test\Repository\TasksInMemoryRepository;
 use DigitalCraftsman\CQRS\Test\Utility\ConnectionSimulator;
 use DigitalCraftsman\CQRS\Test\Utility\SecuritySimulator;
+use DigitalCraftsman\CQRS\Test\Utility\ServiceLocatorSimulator;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /** @coversDefaultClass \DigitalCraftsman\CQRS\ServiceMap\ServiceMap */
@@ -59,42 +61,43 @@ final class ServiceMapTest extends AppTestCase
      * @test
      * @covers ::__construct
      * @doesNotPerformAssertions
+     * @noinspection PhpExpressionResultUnusedInspection
      */
     public function construction_works(): void
     {
         // -- Arrange & Act & Assert
         new ServiceMap(
-            requestDecoders: [
-                new CreateTaskRequestDecoder(),
-                new JsonRequestDecoder(),
-            ],
-            dtoDataTransformers: [
-                new CreateNewsArticleDTODataTransformer(),
-                new DefineTaskHourContingentDTODataTransformer(),
-            ],
-            dtoConstructors: [
-                new SerializerDTOConstructor($this->serializer),
-                new CreateTaskDTOConstructor(),
-            ],
-            dtoValidators: [
-                new FileSizeValidator(10),
-                new UserIdValidator($this->securitySimulator),
-            ],
-            handlerWrappers: [
-                new SilentExceptionWrapper(),
-                new ConnectionTransactionWrapper(new ConnectionSimulator()),
-            ],
-            commandHandlers: [
-                new CreateTaskCommandHandler(),
-                new MarkTaskAsAcceptedCommandHandler(),
-            ],
-            queryHandlers: [
-                new GetTasksQueryHandler(new TasksInMemoryRepository()),
-            ],
-            responseConstructors: [
-                new EmptyResponseConstructor(),
-                new EmptyJsonResponseConstructor(),
-            ],
+            requestDecoders: new ServiceLocatorSimulator([
+                CreateTaskRequestDecoder::class => new CreateTaskRequestDecoder(),
+                JsonRequestDecoder::class => new JsonRequestDecoder(),
+            ]),
+            dtoDataTransformers: new ServiceLocatorSimulator([
+                CreateNewsArticleDTODataTransformer::class => new CreateNewsArticleDTODataTransformer(),
+                DefineTaskHourContingentDTODataTransformer::class => new DefineTaskHourContingentDTODataTransformer(),
+            ]),
+            dtoConstructors: new ServiceLocatorSimulator([
+                SerializerDTOConstructor::class => new SerializerDTOConstructor($this->serializer),
+                CreateTaskDTOConstructor::class => new CreateTaskDTOConstructor(),
+            ]),
+            dtoValidators: new ServiceLocatorSimulator([
+                FileSizeValidator::class => new FileSizeValidator(10),
+                UserIdValidator::class => new UserIdValidator($this->securitySimulator),
+            ]),
+            handlerWrappers: new ServiceLocatorSimulator([
+                SilentExceptionWrapper::class => new SilentExceptionWrapper(),
+                ConnectionTransactionWrapper::class => new ConnectionTransactionWrapper(new ConnectionSimulator()),
+            ]),
+            commandHandlers: new ServiceLocatorSimulator([
+                CreateTaskCommandHandler::class => new CreateTaskCommandHandler(),
+                MarkTaskAsAcceptedCommandHandler::class => new MarkTaskAsAcceptedCommandHandler(),
+            ]),
+            queryHandlers: new ServiceLocatorSimulator([
+                GetTasksQueryHandler::class => new GetTasksQueryHandler(new TasksInMemoryRepository()),
+            ]),
+            responseConstructors: new ServiceLocatorSimulator([
+                EmptyResponseConstructor::class => new EmptyResponseConstructor(),
+                EmptyJsonResponseConstructor::class => new EmptyJsonResponseConstructor(),
+            ]),
         );
     }
 
@@ -112,7 +115,7 @@ final class ServiceMapTest extends AppTestCase
             $createTaskRequestDecoder = new CreateTaskRequestDecoder(),
             new JsonRequestDecoder(),
         ];
-        $serviceMap = new ServiceMap(requestDecoders: $requestDecoders);
+        $serviceMap = ServiceMapHelper::serviceMap(requestDecoders: $requestDecoders);
 
         // -- Act
         $requestDecoder = $serviceMap->getRequestDecoder(CreateTaskRequestDecoder::class, null);
@@ -132,7 +135,7 @@ final class ServiceMapTest extends AppTestCase
             new CreateTaskRequestDecoder(),
             $defaultRequestDecoder = new JsonRequestDecoder(),
         ];
-        $serviceMap = new ServiceMap(requestDecoders: $requestDecoders);
+        $serviceMap = ServiceMapHelper::serviceMap(requestDecoders: $requestDecoders);
 
         // -- Act
         $requestDecoder = $serviceMap->getRequestDecoder(null, JsonRequestDecoder::class);
@@ -154,7 +157,7 @@ final class ServiceMapTest extends AppTestCase
         $requestDecoders = [
             new JsonRequestDecoder(),
         ];
-        $serviceMap = new ServiceMap(requestDecoders: $requestDecoders);
+        $serviceMap = ServiceMapHelper::serviceMap(requestDecoders: $requestDecoders);
 
         // -- Act
         $serviceMap->getRequestDecoder(CreateTaskRequestDecoder::class, null);
@@ -173,7 +176,7 @@ final class ServiceMapTest extends AppTestCase
         $requestDecoders = [
             new CreateTaskRequestDecoder(),
         ];
-        $serviceMap = new ServiceMap(requestDecoders: $requestDecoders);
+        $serviceMap = ServiceMapHelper::serviceMap(requestDecoders: $requestDecoders);
 
         // -- Act
         $serviceMap->getRequestDecoder(null, JsonRequestDecoder::class);
@@ -189,7 +192,7 @@ final class ServiceMapTest extends AppTestCase
         $this->expectException(RequestDecoderOrDefaultRequestDecoderMustBeConfigured::class);
 
         // -- Arrange
-        $serviceMap = new ServiceMap(requestDecoders: []);
+        $serviceMap = ServiceMapHelper::serviceMap(requestDecoders: []);
 
         // -- Act
         $serviceMap->getRequestDecoder(null, null);
@@ -209,7 +212,7 @@ final class ServiceMapTest extends AppTestCase
             new CreateNewsArticleDTODataTransformer(),
             $defineTaskHourContingentDTODataTransformer = new DefineTaskHourContingentDTODataTransformer(),
         ];
-        $serviceMap = new ServiceMap(dtoDataTransformers: $allDTODataTransformers);
+        $serviceMap = ServiceMapHelper::serviceMap(dtoDataTransformers: $allDTODataTransformers);
 
         // -- Act
         $dtoDataTransformers = $serviceMap->getDTODataTransformers(
@@ -234,7 +237,7 @@ final class ServiceMapTest extends AppTestCase
             new DefineTaskHourContingentDTODataTransformer(),
             $defaultDataTransformer = new AddActionIdDTODataTransformer(),
         ];
-        $serviceMap = new ServiceMap(dtoDataTransformers: $allDTODataTransformers);
+        $serviceMap = ServiceMapHelper::serviceMap(dtoDataTransformers: $allDTODataTransformers);
 
         // -- Act
         $dtoDataTransformers = $serviceMap->getDTODataTransformers(
@@ -258,7 +261,7 @@ final class ServiceMapTest extends AppTestCase
             new CreateNewsArticleDTODataTransformer(),
             new DefineTaskHourContingentDTODataTransformer(),
         ];
-        $serviceMap = new ServiceMap(dtoDataTransformers: $allDTODataTransformers);
+        $serviceMap = ServiceMapHelper::serviceMap(dtoDataTransformers: $allDTODataTransformers);
 
         // -- Act
         $dtoDataTransformers = $serviceMap->getDTODataTransformers(
@@ -284,7 +287,7 @@ final class ServiceMapTest extends AppTestCase
             new CreateNewsArticleDTODataTransformer(),
             new AddActionIdDTODataTransformer(),
         ];
-        $serviceMap = new ServiceMap(dtoDataTransformers: $allDTODataTransformers);
+        $serviceMap = ServiceMapHelper::serviceMap(dtoDataTransformers: $allDTODataTransformers);
 
         // -- Act
         $serviceMap->getDTODataTransformers(
@@ -307,7 +310,7 @@ final class ServiceMapTest extends AppTestCase
             new CreateNewsArticleDTODataTransformer(),
             new DefineTaskHourContingentDTODataTransformer(),
         ];
-        $serviceMap = new ServiceMap(dtoDataTransformers: $allDTODataTransformers);
+        $serviceMap = ServiceMapHelper::serviceMap(dtoDataTransformers: $allDTODataTransformers);
 
         // -- Act
         $serviceMap->getDTODataTransformers(
@@ -330,7 +333,7 @@ final class ServiceMapTest extends AppTestCase
             new SerializerDTOConstructor($this->serializer),
             $createTaskDTOConstructor = new CreateTaskDTOConstructor(),
         ];
-        $serviceMap = new ServiceMap(dtoConstructors: $dtoConstructors);
+        $serviceMap = ServiceMapHelper::serviceMap(dtoConstructors: $dtoConstructors);
 
         // -- Act
         $dtoConstructor = $serviceMap->getDTOConstructor(
@@ -353,7 +356,7 @@ final class ServiceMapTest extends AppTestCase
             $defaultDTOConstructor = new SerializerDTOConstructor($this->serializer),
             new CreateTaskDTOConstructor(),
         ];
-        $serviceMap = new ServiceMap(dtoConstructors: $dtoConstructors);
+        $serviceMap = ServiceMapHelper::serviceMap(dtoConstructors: $dtoConstructors);
 
         // -- Act
         $dtoConstructor = $serviceMap->getDTOConstructor(
@@ -378,7 +381,7 @@ final class ServiceMapTest extends AppTestCase
         $dtoConstructors = [
             new SerializerDTOConstructor($this->serializer),
         ];
-        $serviceMap = new ServiceMap(dtoConstructors: $dtoConstructors);
+        $serviceMap = ServiceMapHelper::serviceMap(dtoConstructors: $dtoConstructors);
 
         // -- Act
         $serviceMap->getDTOConstructor(CreateTaskDTOConstructor::class, null);
@@ -397,7 +400,7 @@ final class ServiceMapTest extends AppTestCase
         $dtoConstructors = [
             new CreateTaskDTOConstructor(),
         ];
-        $serviceMap = new ServiceMap(dtoConstructors: $dtoConstructors);
+        $serviceMap = ServiceMapHelper::serviceMap(dtoConstructors: $dtoConstructors);
 
         // -- Act
         $serviceMap->getDTOConstructor(null, SerializerDTOConstructor::class);
@@ -413,7 +416,7 @@ final class ServiceMapTest extends AppTestCase
         $this->expectException(DTOConstructorOrDefaultDTOConstructorMustBeConfigured::class);
 
         // -- Arrange
-        $serviceMap = new ServiceMap(dtoConstructors: []);
+        $serviceMap = ServiceMapHelper::serviceMap(dtoConstructors: []);
 
         // -- Act
         $serviceMap->getDTOConstructor(null, null);
@@ -433,7 +436,7 @@ final class ServiceMapTest extends AppTestCase
             $fileSizeValidator = new FileSizeValidator(10),
             new UserIdValidator($this->securitySimulator),
         ];
-        $serviceMap = new ServiceMap(dtoValidators: $allDTOValidators);
+        $serviceMap = ServiceMapHelper::serviceMap(dtoValidators: $allDTOValidators);
 
         // -- Act
         $dtoValidators = $serviceMap->getDTOValidators(
@@ -457,7 +460,7 @@ final class ServiceMapTest extends AppTestCase
             new FileSizeValidator(10),
             $defaultDataTransformer = new UserIdValidator($this->securitySimulator),
         ];
-        $serviceMap = new ServiceMap(dtoValidators: $allDTOValidators);
+        $serviceMap = ServiceMapHelper::serviceMap(dtoValidators: $allDTOValidators);
 
         // -- Act
         $dtoValidators = $serviceMap->getDTOValidators(
@@ -481,7 +484,7 @@ final class ServiceMapTest extends AppTestCase
             new FileSizeValidator(10),
             new UserIdValidator($this->securitySimulator),
         ];
-        $serviceMap = new ServiceMap(dtoValidators: $allDTOValidators);
+        $serviceMap = ServiceMapHelper::serviceMap(dtoValidators: $allDTOValidators);
 
         // -- Act
         $dtoValidators = $serviceMap->getDTOValidators(
@@ -506,7 +509,7 @@ final class ServiceMapTest extends AppTestCase
         $allDTOValidators = [
             new UserIdValidator($this->securitySimulator),
         ];
-        $serviceMap = new ServiceMap(dtoValidators: $allDTOValidators);
+        $serviceMap = ServiceMapHelper::serviceMap(dtoValidators: $allDTOValidators);
 
         // -- Act
         $serviceMap->getDTOValidators(
@@ -528,7 +531,7 @@ final class ServiceMapTest extends AppTestCase
         $allDTOValidators = [
             new FileSizeValidator(10),
         ];
-        $serviceMap = new ServiceMap(dtoValidators: $allDTOValidators);
+        $serviceMap = ServiceMapHelper::serviceMap(dtoValidators: $allDTOValidators);
 
         // -- Act
         $serviceMap->getDTOValidators(
@@ -551,7 +554,7 @@ final class ServiceMapTest extends AppTestCase
             new SilentExceptionWrapper(),
             new ConnectionTransactionWrapper(new ConnectionSimulator()),
         ];
-        $serviceMap = new ServiceMap(handlerWrappers: $handlerWrappers);
+        $serviceMap = ServiceMapHelper::serviceMap(handlerWrappers: $handlerWrappers);
 
         $handlerWrapperConfiguration = new HandlerWrapperConfiguration(
             SilentExceptionWrapper::class,
@@ -583,7 +586,7 @@ final class ServiceMapTest extends AppTestCase
             new SilentExceptionWrapper(),
             new ConnectionTransactionWrapper(new ConnectionSimulator()),
         ];
-        $serviceMap = new ServiceMap(handlerWrappers: $handlerWrappers);
+        $serviceMap = ServiceMapHelper::serviceMap(handlerWrappers: $handlerWrappers);
 
         // -- Act
         $handlerWrappersWithParameters = $serviceMap->getHandlerWrappersWithParameters(
@@ -608,7 +611,7 @@ final class ServiceMapTest extends AppTestCase
             new SilentExceptionWrapper(),
             new ConnectionTransactionWrapper(new ConnectionSimulator()),
         ];
-        $serviceMap = new ServiceMap(handlerWrappers: $handlerWrappers);
+        $serviceMap = ServiceMapHelper::serviceMap(handlerWrappers: $handlerWrappers);
 
         // -- Act
         $handlerWrappersWithParameters = $serviceMap->getHandlerWrappersWithParameters(
@@ -633,7 +636,7 @@ final class ServiceMapTest extends AppTestCase
         $handlerWrappers = [
             new ConnectionTransactionWrapper(new ConnectionSimulator()),
         ];
-        $serviceMap = new ServiceMap(handlerWrappers: $handlerWrappers);
+        $serviceMap = ServiceMapHelper::serviceMap(handlerWrappers: $handlerWrappers);
 
         $handlerWrapperConfiguration = new HandlerWrapperConfiguration(
             SilentExceptionWrapper::class,
@@ -662,7 +665,7 @@ final class ServiceMapTest extends AppTestCase
         $handlerWrappers = [
             new SilentExceptionWrapper(),
         ];
-        $serviceMap = new ServiceMap(handlerWrappers: $handlerWrappers);
+        $serviceMap = ServiceMapHelper::serviceMap(handlerWrappers: $handlerWrappers);
 
         // -- Act
         $serviceMap->getHandlerWrappersWithParameters(
@@ -684,7 +687,7 @@ final class ServiceMapTest extends AppTestCase
         $commandHandlers = [
             $createTaskCommandHandler = new CreateTaskCommandHandler(),
         ];
-        $serviceMap = new ServiceMap(commandHandlers: $commandHandlers);
+        $serviceMap = ServiceMapHelper::serviceMap(commandHandlers: $commandHandlers);
 
         // -- Act
         $commandHandler = $serviceMap->getCommandHandler(CreateTaskCommandHandler::class);
@@ -703,7 +706,7 @@ final class ServiceMapTest extends AppTestCase
         $this->expectException(ConfiguredCommandHandlerNotAvailable::class);
 
         // -- Arrange
-        $serviceMap = new ServiceMap(commandHandlers: []);
+        $serviceMap = ServiceMapHelper::serviceMap(commandHandlers: []);
 
         // -- Act
         $serviceMap->getCommandHandler(CreateTaskCommandHandler::class);
@@ -722,7 +725,7 @@ final class ServiceMapTest extends AppTestCase
         $queryHandlers = [
             $getTasksQueryHandler = new GetTasksQueryHandler(new TasksInMemoryRepository()),
         ];
-        $serviceMap = new ServiceMap(queryHandlers: $queryHandlers);
+        $serviceMap = ServiceMapHelper::serviceMap(queryHandlers: $queryHandlers);
 
         // -- Act
         $queryHandler = $serviceMap->getQueryHandler(GetTasksQueryHandler::class);
@@ -741,7 +744,7 @@ final class ServiceMapTest extends AppTestCase
         $this->expectException(ConfiguredQueryHandlerNotAvailable::class);
 
         // -- Arrange
-        $serviceMap = new ServiceMap(queryHandlers: []);
+        $serviceMap = ServiceMapHelper::serviceMap(queryHandlers: []);
 
         // -- Act
         $serviceMap->getQueryHandler(GetTasksQueryHandler::class);
@@ -761,7 +764,7 @@ final class ServiceMapTest extends AppTestCase
             new EmptyResponseConstructor(),
             $emptyJsonResponseConstructor = new EmptyJsonResponseConstructor(),
         ];
-        $serviceMap = new ServiceMap(responseConstructors: $responseConstructors);
+        $serviceMap = ServiceMapHelper::serviceMap(responseConstructors: $responseConstructors);
 
         // -- Act
         $responseConstructor = $serviceMap->getResponseConstructor(
@@ -784,7 +787,7 @@ final class ServiceMapTest extends AppTestCase
             new EmptyResponseConstructor(),
             $defaultResponseConstructor = new EmptyJsonResponseConstructor(),
         ];
-        $serviceMap = new ServiceMap(responseConstructors: $responseConstructors);
+        $serviceMap = ServiceMapHelper::serviceMap(responseConstructors: $responseConstructors);
 
         // -- Act
         $responseConstructor = $serviceMap->getResponseConstructor(
@@ -809,7 +812,7 @@ final class ServiceMapTest extends AppTestCase
         $responseConstructors = [
             new EmptyJsonResponseConstructor(),
         ];
-        $serviceMap = new ServiceMap(responseConstructors: $responseConstructors);
+        $serviceMap = ServiceMapHelper::serviceMap(responseConstructors: $responseConstructors);
 
         // -- Act
         $serviceMap->getResponseConstructor(EmptyResponseConstructor::class, null);
@@ -828,7 +831,7 @@ final class ServiceMapTest extends AppTestCase
         $responseConstructors = [
             new EmptyResponseConstructor(),
         ];
-        $serviceMap = new ServiceMap(responseConstructors: $responseConstructors);
+        $serviceMap = ServiceMapHelper::serviceMap(responseConstructors: $responseConstructors);
 
         // -- Act
         $serviceMap->getResponseConstructor(null, EmptyJsonResponseConstructor::class);
@@ -844,7 +847,7 @@ final class ServiceMapTest extends AppTestCase
         $this->expectException(ResponseConstructorOrDefaultResponseConstructorMustBeConfigured::class);
 
         // -- Arrange
-        $serviceMap = new ServiceMap(responseConstructors: []);
+        $serviceMap = ServiceMapHelper::serviceMap(responseConstructors: []);
 
         // -- Act
         $serviceMap->getResponseConstructor(null, null);

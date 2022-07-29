@@ -13,6 +13,7 @@ services:
       - '../**/Entity/**'
       - '../**/ReadModel/**'
       - '../**/ValueObject/**'
+      - '../Utility/ServiceLocatorSimulator.php'
     public: true
 
   DigitalCraftsman\CQRS\Test\Application\FileSizeValidator:

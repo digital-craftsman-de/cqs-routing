@@ -9,7 +9,6 @@ use DigitalCraftsman\CQRS\DTO\HandlerWrapperConfiguration;
 use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
 use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
 use DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor;
-use DigitalCraftsman\CQRS\ServiceMap\ServiceMap;
 use DigitalCraftsman\CQRS\Test\Application\ConnectionTransactionWrapper;
 use DigitalCraftsman\CQRS\Test\Application\SilentExceptionWrapper;
 use DigitalCraftsman\CQRS\Test\Application\UserIdValidator;
@@ -19,6 +18,7 @@ use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNew
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleHandlerWrapper;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\Exception\NewsArticleAlreadyExists;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\FailingCreateNewsArticleCommandHandler;
+use DigitalCraftsman\CQRS\Test\Helper\ServiceMapHelper;
 use DigitalCraftsman\CQRS\Test\Repository\NewsArticleInMemoryRepository;
 use DigitalCraftsman\CQRS\Test\Utility\ConnectionSimulator;
 use DigitalCraftsman\CQRS\Test\Utility\LockSimulator;
@@ -65,7 +65,7 @@ final class CommandControllerTest extends TestCase
         $securitySimulator->fixateAuthenticatedUserId($authenticatedUserId);
 
         $controller = new CommandController(
-            new ServiceMap(
+            ServiceMapHelper::serviceMap(
                 requestDecoders: [
                     new JsonRequestDecoder(),
                 ],
@@ -149,7 +149,7 @@ final class CommandControllerTest extends TestCase
         $connectionSimulator = new ConnectionSimulator();
 
         $controller = new CommandController(
-            new ServiceMap(
+            ServiceMapHelper::serviceMap(
                 requestDecoders: [
                     new JsonRequestDecoder(),
                 ],
@@ -228,7 +228,7 @@ final class CommandControllerTest extends TestCase
         $connectionSimulator = new ConnectionSimulator();
 
         $controller = new CommandController(
-            new ServiceMap(
+            ServiceMapHelper::serviceMap(
                 requestDecoders: [
                     new JsonRequestDecoder(),
                 ],
