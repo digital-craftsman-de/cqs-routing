@@ -58,7 +58,7 @@ The construct has to following goals:
 
 The construct consists of two starting points, the `CommandController` and the `QueryController` and the following components:
 
-- **[Request validator](./docs/request-validator.md)**
+- **[Request validator](./docs/request-validator.md)**  
 *Validates request on an application level.*
 - **[Request decoder](./docs/request-decoder.md)**  
 *Parses the request and transforms it into an array structure.*
