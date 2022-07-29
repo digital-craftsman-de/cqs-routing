@@ -168,18 +168,25 @@ final class CreateNewsArticleCommandHandler implements CommandHandlerInterface
         $requestingUser->mustHavePermissionToWriteArticle();
 
         // Apply
-        $this->createNewsArticle($command, $commandExecutedAt);
+        $this->createNewsArticle(
+            $command->title,
+            $command->content,
+            $command->isPublished,
+            $commandExecutedAt,
+        );
     }
 
     private function createNewsArticle(
-        CreateProductNewsArticleCommand $command,
+        string $title,
+        string $content,
+        bool $isPublished,
         \DateTimeImmutable $commandExecutedAt,
     ): void {
         $newsArticle = new NewsArticle(
             NewsArticleId::generateRandom(),
-            $command->title,
-            $command->content,
-            $command->isPublished,
+            $title,
+            $content,
+            $isPublished,
             $commandExecutedAt,
         );
 
