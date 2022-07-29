@@ -9,7 +9,6 @@ use DigitalCraftsman\CQRS\DTO\HandlerWrapperConfiguration;
 use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
 use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
 use DigitalCraftsman\CQRS\ResponseConstructor\SerializerJsonResponseConstructor;
-use DigitalCraftsman\CQRS\ServiceMap\ServiceMap;
 use DigitalCraftsman\CQRS\Test\Application\AddActionIdDTODataTransformer;
 use DigitalCraftsman\CQRS\Test\Application\UserIdValidator;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\Exception\TasksNotAccessible;
@@ -18,6 +17,7 @@ use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksHandlerWra
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQuery;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQueryHandler;
 use DigitalCraftsman\CQRS\Test\Entity\Task;
+use DigitalCraftsman\CQRS\Test\Helper\ServiceMapHelper;
 use DigitalCraftsman\CQRS\Test\Repository\TasksInMemoryRepository;
 use DigitalCraftsman\CQRS\Test\Utility\LockSimulator;
 use DigitalCraftsman\CQRS\Test\Utility\SecuritySimulator;
@@ -75,7 +75,7 @@ final class QueryControllerTest extends TestCase
         $securitySimulator->fixateAuthenticatedUserId($authenticatedUserId);
 
         $controller = new QueryController(
-            new ServiceMap(
+            ServiceMapHelper::serviceMap(
                 requestDecoders: [
                     new JsonRequestDecoder(),
                 ],
@@ -167,7 +167,7 @@ final class QueryControllerTest extends TestCase
         $securitySimulator->fixateAuthenticatedUserId($authenticatedUserId);
 
         $controller = new QueryController(
-            new ServiceMap(
+            ServiceMapHelper::serviceMap(
                 requestDecoders: [
                     new JsonRequestDecoder(),
                 ],
