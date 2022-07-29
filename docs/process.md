@@ -52,7 +52,7 @@ Multiple request validators can be applied on each request.
 - Validate request content according to business rules.
 - Validate the existence of content that is needed for construction of command or query objects. That must be handled in the DTO constructor.
 
-[Examples](./examples/request-validator.md)
+[Request validator examples](./examples/request-validator.md)
 
 ### Request decoder
 
@@ -62,7 +62,7 @@ The request decoder takes the request object and turns its content into request 
 
 - Validate the request in any way.
 
-[Examples](./examples/request-decoder.md)
+[Request decoder examples](./examples/request-decoder.md)
 
 ### Request data transformer
 
@@ -76,13 +76,13 @@ The data transformer can have three kinds of tasks and multiple data transformer
 
 - Validate the request data in any way. That must be handled in the DTO validator.
 
-[Examples](./examples/request-data-transformer.md)
+[Request data transformer examples](./examples/request-data-transformer.md)
 
 ### DTO constructor
 
 The DTO constructor is there to construct the command or query from the request data. It also has to throw exceptions when there is data missing. Depending on the implementation that might already be handled by the hydration method.
 
-[Examples](./examples/dto-constructor.md)
+[DTO constructor examples](./examples/dto-constructor.md)
 
 ### DTO validator
 
@@ -96,7 +96,7 @@ Multiple DTO validators can be applied on each request.
 - Validate any of the value objects in it (that's the task of the constructors). 
 - Validate any kind of business logic including access validation.
 
-[Examples](./examples/dto-validator.md)
+[DTO validator examples](./examples/dto-validator.md)
 
 ### Handler
 
@@ -106,7 +106,7 @@ The handlers are now freed to only concern themselves with the business logic. T
 
 - Access the request.
 
-[Examples](./examples/handler.md)
+[Handler examples](./examples/handler.md)
 
 ### Handler wrapper
 
@@ -120,7 +120,7 @@ For now there are no built-in handler wrappers because they are highly dependant
 
 - Handle any kind of business logic.
 
-[Examples](./examples/handler-wrapper.md)
+[Handler wrapper examples](./examples/handler-wrapper.md)
 
 ### Response constructor
 
@@ -128,4 +128,4 @@ A response constructor is there to construct a response from the data that is re
 
 The query handler on the other hand will return a value nearly every time and depending on the use case, the value might be serialized to JSON, send as binary data or even be streamed as part of a streamed response.
 
-[Examples](./examples/response-constructor.md)
+[Response constructor examples](./examples/response-constructor.md)
