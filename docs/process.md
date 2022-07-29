@@ -52,7 +52,7 @@ graph LR;
     ConstructResponse --> Response[/Response/]
 ```
 
-*The loops that are in there and ask for the existing of a component are meant as a "are there additional components" after the first one.*
+*The loops that are in there and ask for the existence of a component are meant as a "are there additional components" after the first one.*
 
 ## Component usage description
 
