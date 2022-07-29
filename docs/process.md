@@ -110,7 +110,7 @@ The handlers are now freed to only concern themselves with the business logic. T
 
 ### Handler wrapper
 
-Handler wrappers are components that allow execution of code before (`prepare`), after success (`then`) and after error (`catch`) of a handler. Each method has its own priority with which it's executed in relation to other handler wrappers. Through this priority it's possible to have the `prepare` method be called first for one handler wrapper but the `catch` method be triggered last. The priority mirrors the event listener logic from Symfony in that it's `0` as default and can usually range from `-256` to `256`.
+Handler wrappers are components that allow execution of code before (`prepare`), after success (`then`) and after error (`catch`) of a handler. Each method has its own priority with which it's executed in relation to other handler wrappers. Through this priority it's possible to have the `prepare` method be called first for one handler wrapper but the `catch` method be triggered last. This way it's possible to configure a `prepare` method of TransactionWrapper to be executed *before* the method for the LockWrapper, but have the `catch` method of TransactionWrapper be triggered *after* the method of LockWrapper. The priority mirrors the event listener logic from Symfony in that it's `0` as default and can usually range from `-256` to `256`.
 
 With handle wrappers it's possible to implement automatic transaction rollbacks, locking of requests or silent exceptions. All things that are generally part of an application layer and not part of the domain.
 
