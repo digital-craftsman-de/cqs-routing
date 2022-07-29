@@ -1,39 +1,54 @@
 # Process
 
-This is the outline of what the controller does:
+This is the most straightforward variant that can be configured:
+
+```mermaid
+graph LR;
+    Request[/Request/] --> DecodeRequest(Decode request)
+    DecodeRequest --> RequestData[/Request data/]
+    RequestData --> ConstructDTO(Construct DTO)
+    ConstructDTO --> DTO[/"Command/Query"/]
+    DTO --> Handle(Handle command/query)
+    Handle --> ReturnValue[/Return value/]
+    ReturnValue --> ConstructResponse(Construct response)
+    ConstructResponse --> Response[/Response/]
+```
+
+And this is the full process when using all components are used:
 
 ```mermaid
 graph LR;
     Request[/Request/] --> IsRequestValidatorDefined{Is request <br>validator defined?}
-    
     IsRequestValidatorDefined -- Yes --> ValidateRequest(Validate request)
     ValidateRequest --> IsRequestValid{Is request valid?}
     IsRequestValid -- Yes --> Request
     IsRequestValid -- No --> RequestValidationException{{Exception}}
     IsRequestValidatorDefined -- No --> DecodeRequest(Decode request)
-
     DecodeRequest --> RequestData[/Request data/]
-
     RequestData --> IsRequestDataTransformationDefined{Is request data<br>transformer defined?}
     IsRequestDataTransformationDefined -- Yes --> TransformRequestData(Transform request data)
     TransformRequestData --> RequestData
-    
     IsRequestDataTransformationDefined -- No --> ConstructDTO(Construct DTO)
     ConstructDTO --> DTO[/"Command/Query"/]
-
     DTO --> IsDTOValidatorDefined{Is DTO<br> validator defined?}
     IsDTOValidatorDefined -- Yes --> ValidateDTO(Validate DTO)
-
     ValidateDTO --> IsDTOValid{Is DTO valid?}
     IsDTOValid -- No --> DTOValidationException{{Exception}}
     IsDTOValid -- Yes --> IsDTOValidatorDefined
-
-    IsDTOValidatorDefined -- No --> Handle(Handle command/query)
-
-    Handle --> ReturnValue[/Return value/]
-
+    IsDTOValidatorDefined -- No --> IsPrepareHandlerWrapperConfigured{Is handler<br>wrapper configured?}
+    IsPrepareHandlerWrapperConfigured -- Yes --> PrepareHandlerWrapper(Prepare handler wapper)
+    PrepareHandlerWrapper --> IsPrepareHandlerWrapperConfigured
+    IsPrepareHandlerWrapperConfigured -- No --> Handle(Handle command/query)
+    Handle --> IsHandleSuccessful{Is handle<br >successful?}
+    IsHandleSuccessful -- No --> IsCatchHandlerWrapperConfigured{Is handler<br>wrapper configured?}
+    IsCatchHandlerWrapperConfigured -- Yes --> CatchHandlerWrapper(Catch exception)
+    IsCatchHandlerWrapperConfigured -- No --> HandlerException{{Excpetion}}
+    CatchHandlerWrapper --> IsCatchHandlerWrapperConfigured
+    IsHandleSuccessful -- Yes --> IsThenHandlerWrapperConfigured{Is handler<br>wrapper configured?}
+    IsThenHandlerWrapperConfigured -- No --> ReturnValue[/Return value/]
+    IsThenHandlerWrapperConfigured -- Yes --> ThenHandlerWrapper(Then handling)
+    ThenHandlerWrapper --> IsThenHandlerWrapperConfigured
     ReturnValue --> ConstructResponse(Construct response)
-
     ConstructResponse --> Response[/Response/]
 ```
 
