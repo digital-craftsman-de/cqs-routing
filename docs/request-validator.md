@@ -15,7 +15,7 @@ interface RequestValidatorInterface
 
 ## Scan for viruses in files
 
-You might want to validate files that are uploaded against virus databases before they are given to any the business logic. You might have a separate class `VirusFreeFile` that extends `UploadedFile` and is constructed as part of the DTO. So you need to do the virus scan process before you construct the command. Your validator might look like the following:
+You might want to validate files that are uploaded against virus databases before they are given to the business logic. You might have a separate class `VirusFreeFile` that extends `UploadedFile` and is constructed as part of the DTO. So you need to do the virus scan process before you construct the command. Your validator might look like the following:
 
 ```php
 final class VirusFreeFilesRequestValidator implements RequestValidatorInterface
@@ -35,4 +35,4 @@ final class VirusFreeFilesRequestValidator implements RequestValidatorInterface
 }
 ```
 
-With such a validator in place there is no way of a file with a virus reaching the business logic. Using such a validator as one of the default validators means you're safe throughout your application.
+With such a validator in place, there is no way for a file with a virus to reach the business logic. Using such a validator as one of the default validators means you're safe throughout your application.
