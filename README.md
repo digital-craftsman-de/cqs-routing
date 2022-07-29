@@ -75,19 +75,7 @@ The construct consists of two starting points, the `CommandController` and the `
 - **[Response constructor](./docs/response-constructor.md)**  
 *Transforms the gathered data of the handler into a response.*
 
-**Minimal process**
-
-```mermaid
-graph LR;
-    A[Request] --> B(Decode request);
-    B --> C[Request data];
-    C --> D(Construct command/query);
-    D --> E[Command/Query];
-    E --> F(Handle command/query);
-    F --> G[Returned data];
-    G --> H(Construct response);
-    H --> I[Response];
-```
+The process how the controller handles a request can be [seen here](./docs/process.md).
 
 **Routing**
 
