@@ -4,20 +4,28 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQRS\Test\Helper;
 
+use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
+use DigitalCraftsman\CQRS\DTOConstructor\DTOConstructorInterface;
+use DigitalCraftsman\CQRS\DTODataTransformer\DTODataTransformerInterface;
+use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
+use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQRS\Query\QueryHandlerInterface;
+use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
+use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
 use DigitalCraftsman\CQRS\ServiceMap\ServiceMap;
 use DigitalCraftsman\CQRS\Test\Utility\ServiceLocatorSimulator;
 
 final class ServiceMapHelper
 {
     /**
-     * @param array<int, object>|null $requestDecoders
-     * @param array<int, object>|null $dtoDataTransformers
-     * @param array<int, object>|null $dtoConstructors
-     * @param array<int, object>|null $dtoValidators
-     * @param array<int, object>|null $handlerWrappers
-     * @param array<int, object>|null $commandHandlers
-     * @param array<int, object>|null $queryHandlers
-     * @param array<int, object>|null $responseConstructors
+     * @param array<int, RequestDecoderInterface>|null      $requestDecoders
+     * @param array<int, DTODataTransformerInterface>|null  $dtoDataTransformers
+     * @param array<int, DTOConstructorInterface>|null      $dtoConstructors
+     * @param array<int, DTOValidatorInterface>|null        $dtoValidators
+     * @param array<int, HandlerWrapperInterface>|null      $handlerWrappers
+     * @param array<int, CommandHandlerInterface>|null      $commandHandlers
+     * @param array<int, QueryHandlerInterface>|null        $queryHandlers
+     * @param array<int, ResponseConstructorInterface>|null $responseConstructors
      */
     public static function serviceMap(
         ?array $requestDecoders = null,
