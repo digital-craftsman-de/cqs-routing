@@ -79,7 +79,7 @@ The construct consists of two starting points, the `CommandController` and the `
 
 ```mermaid
 graph LR;
-    A[New request] --> |Routing| B(Decode request);
+    A[Request] --> B(Decode request);
     B --> C[Request data];
     C --> D(Construct command/query);
     D --> E[Command/Query];
