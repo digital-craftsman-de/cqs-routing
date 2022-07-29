@@ -12,7 +12,7 @@ interface DTOConstructorInterface
     * @psalm-param class-string<T> $dtoClass
     * @psalm-return T
     */
-    public function constructDTO(array $dtoData, string $dtoClass): object;
+    public function constructDTO(array $requestData, string $dtoClass): object;
 }
 ```
 

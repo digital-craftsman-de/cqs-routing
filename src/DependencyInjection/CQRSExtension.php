@@ -6,10 +6,10 @@ namespace DigitalCraftsman\CQRS\DependencyInjection;
 
 use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
 use DigitalCraftsman\CQRS\DTOConstructor\DTOConstructorInterface;
-use DigitalCraftsman\CQRS\DTODataTransformer\DTODataTransformerInterface;
 use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
 use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 use DigitalCraftsman\CQRS\Query\QueryHandlerInterface;
+use DigitalCraftsman\CQRS\RequestDataTransformer\RequestDataTransformerInterface;
 use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
 use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
 use Symfony\Component\Config\FileLocator;
@@ -29,8 +29,8 @@ final class CQRSExtension extends Extension
             ->addTag('cqrs.request_decoder');
 
         $container
-            ->registerForAutoconfiguration(DTODataTransformerInterface::class)
-            ->addTag('cqrs.dto_data_transformer');
+            ->registerForAutoconfiguration(RequestDataTransformerInterface::class)
+            ->addTag('cqrs.request_data_transformer');
 
         $container
             ->registerForAutoconfiguration(DTOConstructorInterface::class)
@@ -62,6 +62,7 @@ final class CQRSExtension extends Extension
          * @psalm-var array{
          *   query_controller: array{
          *     default_request_decoder_class: ?string,
+         *     default_request_data_tranformer_classes: ?array<int, string>,
          *     default_dto_constructor_class: ?string,
          *     default_dto_validator_classes: ?array<int, string>,
          *     default_handler_wrapper_classes: ?array<int, string>,
@@ -69,6 +70,7 @@ final class CQRSExtension extends Extension
          *   },
          *   command_controller: array{
          *     default_request_decoder_class: ?string,
+         *     default_request_data_tranformer_classes: ?array<int, string>,
          *     default_dto_constructor_class: ?string,
          *     default_dto_validator_classes: ?array<int, string>,
          *     default_handler_wrapper_classes: ?array<int, string>,

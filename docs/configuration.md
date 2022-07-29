@@ -10,6 +10,10 @@ cqrs:
     # Class of the default request decoder of command controller when there is none defined for the route
     default_request_decoder_class: 'DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder'
 
+    # Classes of the default request data transformer of command controller when there is none defined for the route
+    default_request_data_transformer_classes:
+      - 'App\CQRS\RequestDataTransformer\AddActionIdRequestDataTransformer'
+    
     # Class of the default DTO constructor of command controller when there is none defined for the route
     default_dto_constructor_class: 'DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor'
 
@@ -29,6 +33,10 @@ cqrs:
     
     # Class of the default request decoder of query controller when there is none defined for the route
     default_request_decoder_class: 'DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder'
+
+    # Classes of the default request data transformer of query controller when there is none defined for the route
+    default_request_data_transformer_classes:
+      - 'App\CQRS\RequestDataTransformer\AddActionIdRequestDataTransformer'
     
     # Class of the default DTO constructor of query controller when there is none defined for the route
     default_dto_constructor_class: 'DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor'

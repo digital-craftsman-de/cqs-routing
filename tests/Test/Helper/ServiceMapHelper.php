@@ -6,10 +6,10 @@ namespace DigitalCraftsman\CQRS\Test\Helper;
 
 use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
 use DigitalCraftsman\CQRS\DTOConstructor\DTOConstructorInterface;
-use DigitalCraftsman\CQRS\DTODataTransformer\DTODataTransformerInterface;
 use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
 use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 use DigitalCraftsman\CQRS\Query\QueryHandlerInterface;
+use DigitalCraftsman\CQRS\RequestDataTransformer\RequestDataTransformerInterface;
 use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
 use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
 use DigitalCraftsman\CQRS\ServiceMap\ServiceMap;
@@ -18,18 +18,18 @@ use DigitalCraftsman\CQRS\Test\Utility\ServiceLocatorSimulator;
 final class ServiceMapHelper
 {
     /**
-     * @param array<int, RequestDecoderInterface>|null      $requestDecoders
-     * @param array<int, DTODataTransformerInterface>|null  $dtoDataTransformers
-     * @param array<int, DTOConstructorInterface>|null      $dtoConstructors
-     * @param array<int, DTOValidatorInterface>|null        $dtoValidators
-     * @param array<int, HandlerWrapperInterface>|null      $handlerWrappers
-     * @param array<int, CommandHandlerInterface>|null      $commandHandlers
-     * @param array<int, QueryHandlerInterface>|null        $queryHandlers
-     * @param array<int, ResponseConstructorInterface>|null $responseConstructors
+     * @param array<int, RequestDecoderInterface>|null         $requestDecoders
+     * @param array<int, RequestDataTransformerInterface>|null $requestDataTransformers
+     * @param array<int, DTOConstructorInterface>|null         $dtoConstructors
+     * @param array<int, DTOValidatorInterface>|null           $dtoValidators
+     * @param array<int, HandlerWrapperInterface>|null         $handlerWrappers
+     * @param array<int, CommandHandlerInterface>|null         $commandHandlers
+     * @param array<int, QueryHandlerInterface>|null           $queryHandlers
+     * @param array<int, ResponseConstructorInterface>|null    $responseConstructors
      */
     public static function serviceMap(
         ?array $requestDecoders = null,
-        ?array $dtoDataTransformers = null,
+        ?array $requestDataTransformers = null,
         ?array $dtoConstructors = null,
         ?array $dtoValidators = null,
         ?array $handlerWrappers = null,
@@ -42,9 +42,9 @@ final class ServiceMapHelper
             $requestDecodersMap[$requestDecoder::class] = $requestDecoder;
         }
 
-        $dtoDataTransformersMap = [];
-        foreach ($dtoDataTransformers ?? [] as $dtoDataTransformer) {
-            $dtoDataTransformersMap[$dtoDataTransformer::class] = $dtoDataTransformer;
+        $requestDataTransformersMap = [];
+        foreach ($requestDataTransformers ?? [] as $requestDataTransformer) {
+            $requestDataTransformersMap[$requestDataTransformer::class] = $requestDataTransformer;
         }
 
         $dtoConstructorsMap = [];
@@ -79,7 +79,7 @@ final class ServiceMapHelper
 
         return new ServiceMap(
             requestDecoders: new ServiceLocatorSimulator($requestDecodersMap),
-            dtoDataTransformers: new ServiceLocatorSimulator($dtoDataTransformersMap),
+            requestDataTransformers: new ServiceLocatorSimulator($requestDataTransformersMap),
             dtoConstructors: new ServiceLocatorSimulator($dtoConstructorsMap),
             dtoValidators: new ServiceLocatorSimulator($dtoValidatorsMap),
             handlerWrappers: new ServiceLocatorSimulator($handlerWrappersMap),

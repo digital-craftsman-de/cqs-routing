@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.0
+
+- **Breaking change:** The interface `DTODataTransformerInterface` was renamed to `RequestDataTransformerInterface`. The method in it was renamed from `transformDTOData` to `transformRequestData` and the parameter from `$dtoData` to `$requestData`.
+- **Breaking change:** The parameter `$dtoData` of `DTOConstructorInterface` was renamed to `$requestData`.
+
 ## 0.5.0
 
 - **Breaking change:** `DTOConstructorInterface` now returns `Command|Query` instead of `object`.

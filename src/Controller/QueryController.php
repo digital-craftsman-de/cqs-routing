@@ -6,11 +6,11 @@ namespace DigitalCraftsman\CQRS\Controller;
 
 use DigitalCraftsman\CQRS\DTO\Configuration;
 use DigitalCraftsman\CQRS\DTOConstructor\DTOConstructorInterface;
-use DigitalCraftsman\CQRS\DTODataTransformer\DTODataTransformerInterface;
 use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
 use DigitalCraftsman\CQRS\HandlerWrapper\DTO\HandlerWrapperStep;
 use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 use DigitalCraftsman\CQRS\Query\Query;
+use DigitalCraftsman\CQRS\RequestDataTransformer\RequestDataTransformerInterface;
 use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
 use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
 use DigitalCraftsman\CQRS\ServiceMap\ServiceMap;
@@ -22,7 +22,7 @@ final class QueryController extends AbstractController
 {
     /**
      * @psalm-param class-string<RequestDecoderInterface>|null $defaultRequestDecoderClass
-     * @psalm-param array<int, class-string<DTODataTransformerInterface>>|null $defaultDTODataTransformerClasses
+     * @psalm-param array<int, class-string<RequestDataTransformerInterface>>|null $defaultRequestDataTransformerClasses
      * @psalm-param class-string<DTOConstructorInterface>|null $defaultDTOConstructorClass
      * @psalm-param array<int, class-string<DTOValidatorInterface>>|null $defaultDTOValidatorClasses
      * @psalm-param array<int, class-string<HandlerWrapperInterface>>|null $defaultHandlerWrapperClasses
@@ -33,7 +33,7 @@ final class QueryController extends AbstractController
     public function __construct(
         private ServiceMap $serviceMap,
         private ?string $defaultRequestDecoderClass,
-        private ?array $defaultDTODataTransformerClasses,
+        private ?array $defaultRequestDataTransformerClasses,
         private ?string $defaultDTOConstructorClass,
         private ?array $defaultDTOValidatorClasses,
         private ?array $defaultHandlerWrapperClasses,
@@ -51,22 +51,22 @@ final class QueryController extends AbstractController
 
         // Get data from request
         $requestDecoder = $this->serviceMap->getRequestDecoder($configuration->requestDecoderClass, $this->defaultRequestDecoderClass);
-        $queryData = $requestDecoder->decodeRequest($request);
+        $requestData = $requestDecoder->decodeRequest($request);
 
         // Transform data
-        $dtoDataTransformers = $this->serviceMap->getDTODataTransformers(
-            $configuration->dtoDataTransformerClasses,
-            $this->defaultDTODataTransformerClasses,
+        $requestDataTransformers = $this->serviceMap->getRequestDataTransformers(
+            $configuration->requestDataTransformerClasses,
+            $this->defaultRequestDataTransformerClasses,
         );
-        foreach ($dtoDataTransformers as $dtoDataTransformer) {
-            $queryData = $dtoDataTransformer->transformDTOData($configuration->dtoClass, $queryData);
+        foreach ($requestDataTransformers as $requestDataTransformer) {
+            $requestData = $requestDataTransformer->transformRequestData($configuration->dtoClass, $requestData);
         }
 
         // Construct query from data
         $dtoConstructor = $this->serviceMap->getDTOConstructor($configuration->dtoConstructorClass, $this->defaultDTOConstructorClass);
 
         /** @var Query $query */
-        $query = $dtoConstructor->constructDTO($queryData, $configuration->dtoClass);
+        $query = $dtoConstructor->constructDTO($requestData, $configuration->dtoClass);
 
         // Validate query
         $dtoValidators = $this->serviceMap->getDTOValidators($configuration->dtoValidatorClasses, $this->defaultDTOValidatorClasses);

@@ -39,7 +39,7 @@ services:
   DigitalCraftsman\CQRS\ServiceMap\ServiceMap:
     arguments:
       $requestDecoders: !tagged_locator cqrs.request_decoder
-      $dtoDataTransformers: !tagged_locator cqrs.dto_data_transformer
+      $requestDataTransformers: !tagged_locator cqrs.request_data_transformer
       $dtoConstructors: !tagged_locator cqrs.dto_constructor
       $dtoValidators: !tagged_locator cqrs.dto_validator
       $handlerWrappers: !tagged_locator cqrs.handler_wrapper
@@ -53,7 +53,7 @@ services:
     autowire: true
     arguments:
       $defaultRequestDecoderClass: '%cqrs.command_controller.default_request_decoder_class%'
-      $defaultDTODataTransformerClasses: '%cqrs.command_controller.default_dto_data_transformer_classes%'
+      $defaultRequestDataTransformerClasses: '%cqrs.command_controller.default_request_data_transformer_classes%'
       $defaultDTOConstructorClass: '%cqrs.command_controller.default_dto_constructor_class%'
       $defaultDTOValidatorClasses: '%cqrs.command_controller.default_dto_validator_classes%'
       $defaultHandlerWrapperClasses: '%cqrs.command_controller.default_handler_wrapper_classes%'
@@ -65,7 +65,7 @@ services:
     autowire: true
     arguments:
       $defaultRequestDecoderClass: '%cqrs.query_controller.default_request_decoder_class%'
-      $defaultDTODataTransformerClasses: '%cqrs.query_controller.default_dto_data_transformer_classes%'
+      $defaultRequestDataTransformerClasses: '%cqrs.query_controller.default_request_data_transformer_classes%'
       $defaultDTOConstructorClass: '%cqrs.query_controller.default_dto_constructor_class%'
       $defaultDTOValidatorClasses: '%cqrs.query_controller.default_dto_validator_classes%'
       $defaultHandlerWrapperClasses: '%cqrs.query_controller.default_handler_wrapper_classes%'
