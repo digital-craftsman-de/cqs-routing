@@ -75,11 +75,13 @@ The construct consists of two starting points, the `CommandController` and the `
 - **[Response constructor](./docs/response-constructor.md)**  
 *Transforms the gathered data of the handler into a response.*
 
-The minimal process has the following steps:
+**Minimal process**
 
 1. Request is decoded and turned into request data.
 2. The request data is turned into a command or query.
 3. The command or query is handled by a command handler or query handler.
+
+**Routing**
 
 Through the Symfony routing, we define which instances of the components (if relevant) are used for which route. We use PHP files for the routes instead of the default YAML for more type safety and so that renaming of components is easier through the IDE.
 
