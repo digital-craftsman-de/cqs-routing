@@ -13,17 +13,17 @@ final class CreateTaskDTOConstructor implements DTOConstructorInterface
      *   title: string,
      *   content: string,
      *   priority: string,
-     * } $dtoData
+     * } $requestData
      * @psalm-suppress ImplementedReturnTypeMismatch
      */
     public function constructDTO(
-        array $dtoData,
+        array $requestData,
         string $dtoClass,
     ): CreateTaskCommand {
         return new CreateTaskCommand(
-            $dtoData['title'],
-            $dtoData['content'],
-            $dtoData['priority'],
+            $requestData['title'],
+            $requestData['content'],
+            $requestData['priority'],
         );
     }
 }

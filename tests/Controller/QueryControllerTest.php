@@ -9,7 +9,7 @@ use DigitalCraftsman\CQRS\DTO\HandlerWrapperConfiguration;
 use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
 use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
 use DigitalCraftsman\CQRS\ResponseConstructor\SerializerJsonResponseConstructor;
-use DigitalCraftsman\CQRS\Test\Application\AddActionIdDTODataTransformer;
+use DigitalCraftsman\CQRS\Test\Application\AddActionIdRequestDataTransformer;
 use DigitalCraftsman\CQRS\Test\Application\UserIdValidator;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\Exception\TasksNotAccessible;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\FailingGetTasksQueryHandler;
@@ -79,8 +79,8 @@ final class QueryControllerTest extends TestCase
                 requestDecoders: [
                     new JsonRequestDecoder(),
                 ],
-                dtoDataTransformers: [
-                    new AddActionIdDTODataTransformer(),
+                requestDataTransformers: [
+                    new AddActionIdRequestDataTransformer(),
                 ],
                 dtoConstructors: [
                     new SerializerDTOConstructor($serializer),
@@ -114,8 +114,8 @@ final class QueryControllerTest extends TestCase
         $routePayload = Configuration::routePayload(
             dtoClass: GetTasksQuery::class,
             handlerClass: GetTasksQueryHandler::class,
-            dtoDataTransformerClasses: [
-                AddActionIdDTODataTransformer::class,
+            requestDataTransformerClasses: [
+                AddActionIdRequestDataTransformer::class,
             ],
             dtoValidatorClasses: [
                 UserIdValidator::class,
@@ -171,8 +171,8 @@ final class QueryControllerTest extends TestCase
                 requestDecoders: [
                     new JsonRequestDecoder(),
                 ],
-                dtoDataTransformers: [
-                    new AddActionIdDTODataTransformer(),
+                requestDataTransformers: [
+                    new AddActionIdRequestDataTransformer(),
                 ],
                 dtoConstructors: [
                     new SerializerDTOConstructor($serializer),
@@ -206,8 +206,8 @@ final class QueryControllerTest extends TestCase
         $routePayload = Configuration::routePayload(
             dtoClass: GetTasksQuery::class,
             handlerClass: FailingGetTasksQueryHandler::class,
-            dtoDataTransformerClasses: [
-                AddActionIdDTODataTransformer::class,
+            requestDataTransformerClasses: [
+                AddActionIdRequestDataTransformer::class,
             ],
             dtoValidatorClasses: [
                 UserIdValidator::class,

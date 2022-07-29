@@ -7,19 +7,19 @@ namespace DigitalCraftsman\CQRS\ServiceMap;
 use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
 use DigitalCraftsman\CQRS\DTO\HandlerWrapperConfiguration;
 use DigitalCraftsman\CQRS\DTOConstructor\DTOConstructorInterface;
-use DigitalCraftsman\CQRS\DTODataTransformer\DTODataTransformerInterface;
 use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
 use DigitalCraftsman\CQRS\HandlerWrapper\DTO\HandlerWrapperWithParameters;
 use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 use DigitalCraftsman\CQRS\Query\QueryHandlerInterface;
+use DigitalCraftsman\CQRS\RequestDataTransformer\RequestDataTransformerInterface;
 use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
 use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredCommandHandlerNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredDTOConstructorNotAvailable;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredDTODataTransformerNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredDTOValidatorNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredHandlerWrapperNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredQueryHandlerNotAvailable;
+use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredRequestDataTransformerNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredRequestDecoderNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredResponseConstructorNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\DTOConstructorOrDefaultDTOConstructorMustBeConfigured;
@@ -34,7 +34,7 @@ final class ServiceMap
 {
     public function __construct(
         private ServiceProviderInterface $requestDecoders,
-        private ServiceProviderInterface $dtoDataTransformers,
+        private ServiceProviderInterface $requestDataTransformers,
         private ServiceProviderInterface $dtoConstructors,
         private ServiceProviderInterface $dtoValidators,
         private ServiceProviderInterface $handlerWrappers,
@@ -63,24 +63,24 @@ final class ServiceMap
     }
 
     /**
-     * @param array<array-key, class-string<DTODataTransformerInterface>>|null $dtoDataTransformerClasses
-     * @param array<array-key, class-string<DTODataTransformerInterface>>|null $defaultDTODataTransformerClasses
+     * @param array<array-key, class-string<RequestDataTransformerInterface>>|null $requestDataTransformerClasses
+     * @param array<array-key, class-string<RequestDataTransformerInterface>>|null $defaultRequestDataTransformerClasses
      *
-     * @return array<array-key, DTODataTransformerInterface>
+     * @return array<array-key, RequestDataTransformerInterface>
      */
-    public function getDTODataTransformers(?array $dtoDataTransformerClasses, ?array $defaultDTODataTransformerClasses): array
+    public function getRequestDataTransformers(?array $requestDataTransformerClasses, ?array $defaultRequestDataTransformerClasses): array
     {
-        if ($dtoDataTransformerClasses === null && $defaultDTODataTransformerClasses === null) {
+        if ($requestDataTransformerClasses === null && $defaultRequestDataTransformerClasses === null) {
             return [];
         }
 
-        $selectedDTODataTransformerClasses = $dtoDataTransformerClasses ?? $defaultDTODataTransformerClasses;
+        $selectedRequestDataTransformerClasses = $requestDataTransformerClasses ?? $defaultRequestDataTransformerClasses;
 
         return array_map(
-            fn (string $dtoDataTransformerClass) => $this->dtoDataTransformers->has($dtoDataTransformerClass)
-                ? $this->dtoDataTransformers->get($dtoDataTransformerClass)
-                : throw new ConfiguredDTODataTransformerNotAvailable($dtoDataTransformerClass),
-            $selectedDTODataTransformerClasses,
+            fn (string $requestDataTransformerClass) => $this->requestDataTransformers->has($requestDataTransformerClass)
+                ? $this->requestDataTransformers->get($requestDataTransformerClass)
+                : throw new ConfiguredRequestDataTransformerNotAvailable($requestDataTransformerClass),
+            $selectedRequestDataTransformerClasses,
         );
     }
 

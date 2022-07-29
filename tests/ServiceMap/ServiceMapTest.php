@@ -11,27 +11,27 @@ use DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor;
 use DigitalCraftsman\CQRS\ResponseConstructor\EmptyResponseConstructor;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredCommandHandlerNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredDTOConstructorNotAvailable;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredDTODataTransformerNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredDTOValidatorNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredHandlerWrapperNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredQueryHandlerNotAvailable;
+use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredRequestDataTransformerNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredRequestDecoderNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredResponseConstructorNotAvailable;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\DTOConstructorOrDefaultDTOConstructorMustBeConfigured;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\RequestDecoderOrDefaultRequestDecoderMustBeConfigured;
 use DigitalCraftsman\CQRS\ServiceMap\Exception\ResponseConstructorOrDefaultResponseConstructorMustBeConfigured;
-use DigitalCraftsman\CQRS\Test\Application\AddActionIdDTODataTransformer;
+use DigitalCraftsman\CQRS\Test\Application\AddActionIdRequestDataTransformer;
 use DigitalCraftsman\CQRS\Test\Application\Authentication\UserIdValidator;
 use DigitalCraftsman\CQRS\Test\Application\ConnectionTransactionWrapper;
 use DigitalCraftsman\CQRS\Test\Application\FileSizeValidator;
 use DigitalCraftsman\CQRS\Test\Application\SilentExceptionWrapper;
 use DigitalCraftsman\CQRS\Test\AppTestCase;
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleDTODataTransformer;
+use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleRequestDataTransformer;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQueryHandler;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommandHandler;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskDTOConstructor;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskRequestDecoder;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\DefineTaskHourContingent\DefineTaskHourContingentDTODataTransformer;
+use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\DefineTaskHourContingent\DefineTaskHourContingentRequestDataTransformer;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\MarkTaskAsAcceptedCommandHandler;
 use DigitalCraftsman\CQRS\Test\Helper\ServiceMapHelper;
@@ -71,9 +71,9 @@ final class ServiceMapTest extends AppTestCase
                 CreateTaskRequestDecoder::class => new CreateTaskRequestDecoder(),
                 JsonRequestDecoder::class => new JsonRequestDecoder(),
             ]),
-            dtoDataTransformers: new ServiceLocatorSimulator([
-                CreateNewsArticleDTODataTransformer::class => new CreateNewsArticleDTODataTransformer(),
-                DefineTaskHourContingentDTODataTransformer::class => new DefineTaskHourContingentDTODataTransformer(),
+            requestDataTransformers: new ServiceLocatorSimulator([
+                CreateNewsArticleRequestDataTransformer::class => new CreateNewsArticleRequestDataTransformer(),
+                DefineTaskHourContingentRequestDataTransformer::class => new DefineTaskHourContingentRequestDataTransformer(),
             ]),
             dtoConstructors: new ServiceLocatorSimulator([
                 SerializerDTOConstructor::class => new SerializerDTOConstructor($this->serializer),
@@ -198,124 +198,124 @@ final class ServiceMapTest extends AppTestCase
         $serviceMap->getRequestDecoder(null, null);
     }
 
-    // -- DTO data transformers
+    // -- Request data transformers
 
     /**
      * @test
-     * @covers ::getDTODataTransformers
+     * @covers ::getRequestDataTransformers
      * @covers ::__construct
      */
-    public function get_dto_data_transformers_works_with_dto_data_transformer_classes(): void
+    public function get_request_data_transformers_works_with_request_data_transformer_classes(): void
     {
         // -- Arrange
-        $allDTODataTransformers = [
-            new CreateNewsArticleDTODataTransformer(),
-            $defineTaskHourContingentDTODataTransformer = new DefineTaskHourContingentDTODataTransformer(),
+        $allRequestDataTransformers = [
+            new CreateNewsArticleRequestDataTransformer(),
+            $defineTaskHourContingentRequestDataTransformer = new DefineTaskHourContingentRequestDataTransformer(),
         ];
-        $serviceMap = ServiceMapHelper::serviceMap(dtoDataTransformers: $allDTODataTransformers);
+        $serviceMap = ServiceMapHelper::serviceMap(requestDataTransformers: $allRequestDataTransformers);
 
         // -- Act
-        $dtoDataTransformers = $serviceMap->getDTODataTransformers(
-            [DefineTaskHourContingentDTODataTransformer::class],
+        $requestDataTransformers = $serviceMap->getRequestDataTransformers(
+            [DefineTaskHourContingentRequestDataTransformer::class],
             null,
         );
 
         // -- Assert
-        self::assertCount(1, $dtoDataTransformers);
-        self::assertContains($defineTaskHourContingentDTODataTransformer, $dtoDataTransformers);
+        self::assertCount(1, $requestDataTransformers);
+        self::assertContains($defineTaskHourContingentRequestDataTransformer, $requestDataTransformers);
     }
 
     /**
      * @test
-     * @covers ::getDTODataTransformers
+     * @covers ::getRequestDataTransformers
      */
-    public function get_dto_data_transformers_works_with_default_dto_data_transformer_classes(): void
+    public function get_request_data_transformers_works_with_default_request_data_transformer_classes(): void
     {
         // -- Arrange
-        $allDTODataTransformers = [
-            new CreateNewsArticleDTODataTransformer(),
-            new DefineTaskHourContingentDTODataTransformer(),
-            $defaultDataTransformer = new AddActionIdDTODataTransformer(),
+        $allRequestDataTransformers = [
+            new CreateNewsArticleRequestDataTransformer(),
+            new DefineTaskHourContingentRequestDataTransformer(),
+            $defaultRequestDataTransformer = new AddActionIdRequestDataTransformer(),
         ];
-        $serviceMap = ServiceMapHelper::serviceMap(dtoDataTransformers: $allDTODataTransformers);
+        $serviceMap = ServiceMapHelper::serviceMap(requestDataTransformers: $allRequestDataTransformers);
 
         // -- Act
-        $dtoDataTransformers = $serviceMap->getDTODataTransformers(
+        $requestDataTransformers = $serviceMap->getRequestDataTransformers(
             null,
-            [AddActionIdDTODataTransformer::class],
+            [AddActionIdRequestDataTransformer::class],
         );
 
         // -- Assert
-        self::assertCount(1, $dtoDataTransformers);
-        self::assertContains($defaultDataTransformer, $dtoDataTransformers);
+        self::assertCount(1, $requestDataTransformers);
+        self::assertContains($defaultRequestDataTransformer, $requestDataTransformers);
     }
 
     /**
      * @test
-     * @covers ::getDTODataTransformers
+     * @covers ::getRequestDataTransformers
      */
-    public function get_dto_data_transformers_works_with_no_dto_data_transformer_classes_and_no_default_dto_data_transformer_classes(): void
+    public function get_request_data_transformers_works_with_no_dto_data_transformer_classes_and_no_default_request_data_transformer_classes(): void
     {
         // -- Arrange
-        $allDTODataTransformers = [
-            new CreateNewsArticleDTODataTransformer(),
-            new DefineTaskHourContingentDTODataTransformer(),
+        $allRequestDataTransformers = [
+            new CreateNewsArticleRequestDataTransformer(),
+            new DefineTaskHourContingentRequestDataTransformer(),
         ];
-        $serviceMap = ServiceMapHelper::serviceMap(dtoDataTransformers: $allDTODataTransformers);
+        $serviceMap = ServiceMapHelper::serviceMap(requestDataTransformers: $allRequestDataTransformers);
 
         // -- Act
-        $dtoDataTransformers = $serviceMap->getDTODataTransformers(
+        $requestDataTransformers = $serviceMap->getRequestDataTransformers(
             null,
             null,
         );
 
         // -- Assert
-        self::assertCount(0, $dtoDataTransformers);
+        self::assertCount(0, $requestDataTransformers);
     }
 
     /**
      * @test
-     * @covers ::getDTODataTransformers
+     * @covers ::getRequestDataTransformers
      */
-    public function get_dto_data_transformers_fails_when_dto_data_transformer_classes_are_not_available(): void
+    public function get_request_data_transformers_fails_when_request_data_transformer_classes_are_not_available(): void
     {
         // -- Assert
-        $this->expectException(ConfiguredDTODataTransformerNotAvailable::class);
+        $this->expectException(ConfiguredRequestDataTransformerNotAvailable::class);
 
         // -- Arrange
-        $allDTODataTransformers = [
-            new CreateNewsArticleDTODataTransformer(),
-            new AddActionIdDTODataTransformer(),
+        $allRequestDataTransformers = [
+            new CreateNewsArticleRequestDataTransformer(),
+            new AddActionIdRequestDataTransformer(),
         ];
-        $serviceMap = ServiceMapHelper::serviceMap(dtoDataTransformers: $allDTODataTransformers);
+        $serviceMap = ServiceMapHelper::serviceMap(requestDataTransformers: $allRequestDataTransformers);
 
         // -- Act
-        $serviceMap->getDTODataTransformers(
-            [DefineTaskHourContingentDTODataTransformer::class],
+        $serviceMap->getRequestDataTransformers(
+            [DefineTaskHourContingentRequestDataTransformer::class],
             null,
         );
     }
 
     /**
      * @test
-     * @covers ::getDTODataTransformers
+     * @covers ::getRequestDataTransformers
      */
-    public function get_dto_data_transformers_fails_when_default_dto_data_transformer_classes_are_not_available(): void
+    public function get_request_data_transformers_fails_when_default_request_data_transformer_classes_are_not_available(): void
     {
         // -- Assert
-        $this->expectException(ConfiguredDTODataTransformerNotAvailable::class);
+        $this->expectException(ConfiguredRequestDataTransformerNotAvailable::class);
 
         // -- Arrange
-        $allDTODataTransformers = [
-            new CreateNewsArticleDTODataTransformer(),
-            new DefineTaskHourContingentDTODataTransformer(),
+        $allRequestDataTransformers = [
+            new CreateNewsArticleRequestDataTransformer(),
+            new DefineTaskHourContingentRequestDataTransformer(),
         ];
-        $serviceMap = ServiceMapHelper::serviceMap(dtoDataTransformers: $allDTODataTransformers);
+        $serviceMap = ServiceMapHelper::serviceMap(requestDataTransformers: $allRequestDataTransformers);
 
         // -- Act
-        $serviceMap->getDTODataTransformers(
+        $serviceMap->getRequestDataTransformers(
             null,
-            [AddActionIdDTODataTransformer::class],
+            [AddActionIdRequestDataTransformer::class],
         );
     }
 

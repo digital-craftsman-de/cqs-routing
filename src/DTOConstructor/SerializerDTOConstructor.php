@@ -21,9 +21,9 @@ final class SerializerDTOConstructor implements DTOConstructorInterface
      * @psalm-param class-string<T> $dtoClass
      * @psalm-return T
      */
-    public function constructDTO(array $dtoData, string $dtoClass): Command|Query
+    public function constructDTO(array $requestData, string $dtoClass): Command|Query
     {
         /** @psalm-var T */
-        return $this->serializer->denormalize($dtoData, $dtoClass);
+        return $this->serializer->denormalize($requestData, $dtoClass);
     }
 }

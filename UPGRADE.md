@@ -1,5 +1,77 @@
 # Upgrade guide
 
+## From 0.5.* to 0.6.0
+
+**Interface `DTODataTransformerInterface` was renamed to `RequestDataTransformerInterface`**
+
+The method was renamed from `transformDTOData` to `transformRequestData` and the parameter `$dtoData` was renamed to `$requestData`.
+
+Before:
+
+```php
+final class YourCustomDTODataTransformer implements DTODataTransformerInterface
+{
+    /** @param class-string $dtoClass */
+    public function transformDTOData(string $dtoClass, array $dtoData): object
+    {
+        ...
+    }
+}
+```
+
+After:
+
+```php
+final class YourCustomRequestDataTransformer implements RequestDataTransformerInterface
+{
+    /** @param class-string $dtoClass */
+    public function transformRequestData(string $dtoClass, array $requestData): object
+    {
+        ...
+    }
+}
+```
+
+**Changes to the `DTOConstructorInterface`**
+
+The parameter `$dtoData` was renamed to `$requestData`.
+
+Before:
+
+```php
+final class YourCustomDTOConstructor implements DTOConstructorInterface
+{
+    /**
+     * @return Command|Query
+     * 
+     * @psalm-template T of Command|Query
+     * @psalm-param class-string<T> $dtoClass
+     * @psalm-return T
+     */
+    public function constructDTO(array $dtoData, string $dtoClass): object
+    {
+        ...
+    }
+}
+```
+
+After:
+
+```php
+final class YourCustomDTOConstructor implements DTOConstructorInterface
+{
+    /**
+     * @psalm-template T of Command|Query
+     * @psalm-param class-string<T> $dtoClass
+     * @psalm-return T
+     */
+    public function constructDTO(array $requestData, string $dtoClass): Command|Query
+    {
+        ...
+    }
+}
+```
+
 ## From 0.4.* to 0.5.0
 
 **Changes to the `DTOConstructorInterface`**

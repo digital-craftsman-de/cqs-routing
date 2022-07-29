@@ -60,7 +60,7 @@ The construct consists of two starting points, the `CommandController` and the `
 
 - **[Request decoder](./docs/request-decoder.md)**  
 *Parses the request and transforms it into an array structure.*
-- **[DTO data transformer](./docs/dto-data-transformer.md)**  
+- **[Request data transformer](./docs/request-data-transformer.md)**  
 *Transforms the previously generated array structure.*
 - **[DTO constructor](./docs/dto-constructor.md)**  
 *Generates a command or query from the array structure.*

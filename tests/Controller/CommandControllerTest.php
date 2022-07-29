@@ -14,8 +14,8 @@ use DigitalCraftsman\CQRS\Test\Application\SilentExceptionWrapper;
 use DigitalCraftsman\CQRS\Test\Application\UserIdValidator;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommand;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommandHandler;
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleDTODataTransformer;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleHandlerWrapper;
+use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleRequestDataTransformer;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\Exception\NewsArticleAlreadyExists;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\FailingCreateNewsArticleCommandHandler;
 use DigitalCraftsman\CQRS\Test\Helper\ServiceMapHelper;
@@ -69,8 +69,8 @@ final class CommandControllerTest extends TestCase
                 requestDecoders: [
                     new JsonRequestDecoder(),
                 ],
-                dtoDataTransformers: [
-                    new CreateNewsArticleDTODataTransformer(),
+                requestDataTransformers: [
+                    new CreateNewsArticleRequestDataTransformer(),
                 ],
                 dtoConstructors: [
                     new SerializerDTOConstructor($serializer),
@@ -107,8 +107,8 @@ final class CommandControllerTest extends TestCase
         $routePayload = Configuration::routePayload(
             dtoClass: CreateNewsArticleCommand::class,
             handlerClass: CreateNewsArticleCommandHandler::class,
-            dtoDataTransformerClasses: [
-                CreateNewsArticleDTODataTransformer::class,
+            requestDataTransformerClasses: [
+                CreateNewsArticleRequestDataTransformer::class,
             ],
             dtoValidatorClasses: [
                 UserIdValidator::class,

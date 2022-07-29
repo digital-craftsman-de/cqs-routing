@@ -31,7 +31,7 @@ final class SerializerDTOConstructorTest extends TestCase
             ]),
         );
 
-        $dtoData = [
+        $requestData = [
             'userId' => (string) UserId::generateRandom(),
             'title' => 'New project',
             'content' => 'We published a new project.',
@@ -40,13 +40,13 @@ final class SerializerDTOConstructorTest extends TestCase
 
         // -- Act
         /** @var CreateNewsArticleCommand $command */
-        $command = $serializerDTOConstructor->constructDTO($dtoData, CreateNewsArticleCommand::class);
+        $command = $serializerDTOConstructor->constructDTO($requestData, CreateNewsArticleCommand::class);
 
         // -- Assert
         self::assertSame(CreateNewsArticleCommand::class, $command::class);
-        self::assertSame($dtoData['userId'], (string) $command->userId);
-        self::assertSame($dtoData['title'], $command->title);
-        self::assertSame($dtoData['content'], $command->content);
-        self::assertSame($dtoData['isPublished'], $command->isPublished);
+        self::assertSame($requestData['userId'], (string) $command->userId);
+        self::assertSame($requestData['title'], $command->title);
+        self::assertSame($requestData['content'], $command->content);
+        self::assertSame($requestData['isPublished'], $command->isPublished);
     }
 }
