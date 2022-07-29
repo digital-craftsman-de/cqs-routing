@@ -16,6 +16,8 @@ interface DTOConstructorInterface
 }
 ```
 
+See [position in process](../process.md#dto-constructor)
+
 ## Construction through serializer
 
 A possible implementation of a constructor is one that uses the Symfony serializer like this that is already built-in:

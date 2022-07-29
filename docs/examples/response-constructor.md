@@ -10,6 +10,8 @@ interface ResponseConstructorInterface
 }
 ```
 
+See [position in process](../process.md#response-constructor)
+
 ## JSON response constructor
 
 Most of the time the result will be an object or array and be converted into JSON throught the JSONResponseConstructor. Obviously it needs the custom normalizers for the values objects to be able to do so.

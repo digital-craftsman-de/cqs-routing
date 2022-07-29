@@ -9,6 +9,8 @@ interface RequestDecoderInterface
 }
 ```
 
+See [position in process](../process.md#request-decoder)
+
 ## JSON request decoder
 
 The simple implementation of a request decoder is the `JsonRequestDecoder`:

@@ -10,6 +10,8 @@ interface DTOValidatorInterface
 }
 ```
 
+See [position in process](../process.md#dto-validator)
+
 ## User id validator
 
 A command or query must contain everything relevant to perform it without having to rely on session data in the handlers. Therefore, the DTOs must contain a reference to the user that is issuing the request like a $userId. And this is something we can only validate on an infrastructure level where the DTO validators are located and might look like the following:

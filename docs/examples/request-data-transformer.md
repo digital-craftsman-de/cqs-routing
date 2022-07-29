@@ -1,7 +1,5 @@
 # Request data transformer examples
 
-See [position in process](../process.md)
-
 **Interface**
 
 ```php
@@ -11,6 +9,8 @@ interface RequestDataTransformerInterface
     public function transformRequestData(string $dtoClass, array $requestData): array;
 }
 ```
+
+See [position in process](../process.md#request-data-transformer)
 
 ## Cast existing data into other formats
 

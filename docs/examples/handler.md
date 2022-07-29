@@ -16,6 +16,8 @@ interface QueryHandlerInterface
 }
 ```
 
+See [position in process](../process.md#handler)
+
 ## Command handler
 
 A command handler implementation to create a new user account might look like this:

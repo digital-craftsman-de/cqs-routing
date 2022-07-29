@@ -48,6 +48,8 @@ interface HandlerWrapperInterface
 }
 ```
 
+See [position in process](../process.md#handler-wrapper)
+
 ## Automatic rollback of doctrine transactions
 
 The logic here is pretty simple: Before running a handler, we start a new transaction. When everything worked we simply commit it. And when there was any exception, we roll back the transaction.
