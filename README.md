@@ -77,9 +77,17 @@ The construct consists of two starting points, the `CommandController` and the `
 
 **Minimal process**
 
-1. Request is decoded and turned into request data.
-2. The request data is turned into a command or query.
-3. The command or query is handled by a command handler or query handler.
+```mermaid
+graph TD;
+    A[New request] --> |Routing| B(Decode request);
+    B --> C[Request data];
+    C --> D(Construct command/query);
+    D --> E[Command/Query];
+    E --> F(Handle command/query);
+    F --> G[Returned data];
+    G --> H(Construct response);
+    H --> I[Response];
+```
 
 **Routing**
 
