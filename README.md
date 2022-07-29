@@ -61,11 +61,11 @@ The construct consists of two starting points, the `CommandController` and the `
 - **[Request validator](./docs/request-validator.md)**  
 *Validates request on an application level.*
 - **[Request decoder](./docs/request-decoder.md)**  
-*Parses the request and transforms it into an array structure.*
+*Decodes the request and transforms it into request data as an array structure.*
 - **[Request data transformer](./docs/request-data-transformer.md)**  
-*Transforms the previously generated array structure.*
+*Transforms the previously generated request data.*
 - **[DTO constructor](./docs/dto-constructor.md)**  
-*Generates a command or query from the array structure.*
+*Generates a command or query from the request data.*
 - **[DTO validator](./docs/dto-validator.md)**  
 *Validates the created command or query.*
 - **[Handler](./docs/handler.md)**  
@@ -74,6 +74,12 @@ The construct consists of two starting points, the `CommandController` and the `
 *Wraps handler to execute logic as a prepare / try / catch logic.*
 - **[Response constructor](./docs/response-constructor.md)**  
 *Transforms the gathered data of the handler into a response.*
+
+The minimal process has the following steps:
+
+1. Request is decoded and turned into request data.
+2. The request data is turned into a command or query.
+3. The command or query is handled by a command handler or query handler.
 
 Through the Symfony routing, we define which instances of the components (if relevant) are used for which route. We use PHP files for the routes instead of the default YAML for more type safety and so that renaming of components is easier through the IDE.
 
