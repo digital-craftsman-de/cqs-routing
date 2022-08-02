@@ -2,7 +2,7 @@
 
 ## From 0.5.* to 0.6.0
 
-**Interface `DTODataTransformerInterface` was renamed to `RequestDataTransformerInterface`**
+### Interface `DTODataTransformerInterface` was renamed to `RequestDataTransformerInterface`
 
 The method was renamed from `transformDTOData` to `transformRequestData` and the parameter `$dtoData` was renamed to `$requestData`.
 
@@ -32,7 +32,7 @@ final class YourCustomRequestDataTransformer implements RequestDataTransformerIn
 }
 ```
 
-**Changes to the `DTOConstructorInterface`**
+### Request data parameter in `DTOConstructorInterface`
 
 The parameter `$dtoData` was renamed to `$requestData`.
 
@@ -74,7 +74,7 @@ final class YourCustomDTOConstructor implements DTOConstructorInterface
 
 ## From 0.4.* to 0.5.0
 
-**Changes to the `DTOConstructorInterface`**
+### More specific return type for `DTOConstructorInterface`
 
 The `DTOConstructorInterface` now returns `Command|Query` instead of `object`. You need to adapt the return types in your implementations.
 
@@ -114,7 +114,7 @@ final class YourCustomDTOConstructor implements DTOConstructorInterface
 }
 ```
 
-**Changes to the `HandlerWrapperInterface`**
+### Removed finally logic in `HandlerWrapperInterface`
 
 The `HandlerWrapperInterface` lost "finally logic". It turns out that there are no cases that can't be handled with just `then` and `catch` and on the other hand, there might be issues when multiple handler wrappers are used and can't be matched with the priority, because `finally` was always triggered last. The methods `finally` and `finallyPriority` have been removed from the interface. The logic of implementations must be adapted in a way that the logic is moved from `finally` into `then` and `catch`.
 
@@ -282,6 +282,8 @@ final class YourCustomHandlerWrapper implements HandlerWrapperInterface
 
 ## From 0.3.* to 0.4.0
 
+### Removed `NullableAsOptionalPropertiesDTODataTransformer`
+
 It turned out that the `NullableAsOptionalPropertiesDTODataTransformer` isn't of any use, as the Symfony serializer in the supported range, already set's nullable properties to `null` when they aren't supplied as data. Therefore, you just have to remove it from all routes you added it to. 
 
 Before:
@@ -322,6 +324,8 @@ $routes->add(
 ```
 
 ## From 0.2.* to 0.3.0
+
+### New parameter `string $dtoClass` for `DTODataTransformerInterface`
 
 The `transformDTOData` method in the `DTODataTransformerInterface` was extended with a new parameter `string $dtoClass`. Add this new parameter in your implementations of the interface.
 
