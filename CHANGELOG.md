@@ -4,6 +4,8 @@
 
 - **[Breaking change](./UPGRADE.md#interface-dtodatatransformerinterface-was-renamed-to-requestdatatransformerinterface):** The interface `DTODataTransformerInterface` was renamed to `RequestDataTransformerInterface`. The method in it was renamed from `transformDTOData` to `transformRequestData` and the parameter from `$dtoData` to `$requestData`.
 - **[Breaking change](./UPGRADE.md#request-data-parameter-in-dtoconstructorinterface):** The parameter `$dtoData` of `DTOConstructorInterface` was renamed to `$requestData`.
+- New component `RequestValidatorInterface` to validate information that is only accessible from the request itself and will not be part of the DTO or must be validated before a DTO is constructed from the request data.
+- Added process description as part of the documentation including graph.
 
 ## 0.5.0
 
