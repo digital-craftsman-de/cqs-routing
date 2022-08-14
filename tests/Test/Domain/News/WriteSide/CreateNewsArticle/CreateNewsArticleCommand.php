@@ -11,10 +11,10 @@ use DigitalCraftsman\CQRS\Test\ValueObject\UserId;
 final class CreateNewsArticleCommand implements Command
 {
     public function __construct(
-       public UserId $userId,
-       public string $title,
-       public string $content,
-       public bool $isPublished,
+        public UserId $userId,
+        public string $title,
+        public string $content,
+        public bool $isPublished,
     ) {
     }
 }

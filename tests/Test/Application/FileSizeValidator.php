@@ -24,13 +24,13 @@ final class FileSizeValidator implements DTOValidatorInterface
     ): void {
         $reflection = new \ReflectionClass($dto);
         foreach ($reflection->getProperties() as $prop) {
-            $name = (string) $prop->name;
+            $name = $prop->name;
             /** @psalm-suppress MixedAssignment */
             $dtoProp = $dto->$name;
-            if ($dtoProp instanceof UploadedFile) {
-                if ($dtoProp->getSize() > self::megabyteToByte($this->maxUploadSizeInMB)) {
-                    throw new FileSizeTooLarge(self::byteToMegabyte($dtoProp->getSize()), $this->maxUploadSizeInMB);
-                }
+            if ($dtoProp instanceof UploadedFile
+                && $dtoProp->getSize() > self::megabyteToByte($this->maxUploadSizeInMB)
+            ) {
+                throw new FileSizeTooLarge(self::byteToMegabyte($dtoProp->getSize()), $this->maxUploadSizeInMB);
             }
         }
     }
