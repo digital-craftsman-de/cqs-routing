@@ -8,7 +8,7 @@
     "symfony/serializer": "^5.3|^6.0"
   },
   "require-dev": {
-    "digital-craftsman/ids": "0.1.0-beta.2",
+    "digital-craftsman/ids": "0.3.*",
     "friendsofphp/php-cs-fixer": "^3.3",
     "phpunit/phpunit": "^9.5",
     "symfony/property-info": "^6.1",

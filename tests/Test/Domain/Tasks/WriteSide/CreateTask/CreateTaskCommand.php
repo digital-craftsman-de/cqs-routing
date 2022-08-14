@@ -10,9 +10,9 @@ use DigitalCraftsman\CQRS\Command\Command;
 final class CreateTaskCommand implements Command
 {
     public function __construct(
-       public string $title,
-       public string $content,
-       public string $priority,
+        public string $title,
+        public string $content,
+        public string $priority,
     ) {
     }
 }
