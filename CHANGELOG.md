@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.0
+
+- Drop support for PHP 8.0.
+- Add support for PHP 8.2.
+
 ## 0.6.0
 
 - **[Breaking change](./UPGRADE.md#interface-dtodatatransformerinterface-was-renamed-to-requestdatatransformerinterface):** The interface `DTODataTransformerInterface` was renamed to `RequestDataTransformerInterface`. The method in it was renamed from `transformDTOData` to `transformRequestData` and the parameter from `$dtoData` to `$requestData`.
