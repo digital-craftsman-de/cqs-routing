@@ -17,6 +17,7 @@ final class SerializerDTOConstructorTest extends TestCase
 {
     /**
      * @test
+     *
      * @covers ::constructDTO
      */
     public function serializer_dto_constructor_constructs_dto(): void

@@ -6,6 +6,7 @@ namespace DigitalCraftsman\CQRS\ServiceMap\Exception;
 
 /**
  * @psalm-immutable
+ *
  * @codeCoverageIgnore
  *
  * @internal

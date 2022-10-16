@@ -41,6 +41,7 @@ final class QueryControllerTest extends TestCase
 {
     /**
      * @test
+     *
      * @covers ::handle
      */
     public function query_controller_works_with_all_components(): void
@@ -149,6 +150,7 @@ final class QueryControllerTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::handle
      */
     public function query_controller_works_with_handler_wrapper_in_catch_case_with_multiple_catches(): void

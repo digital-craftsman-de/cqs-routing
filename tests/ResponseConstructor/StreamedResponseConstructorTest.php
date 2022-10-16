@@ -13,6 +13,7 @@ final class StreamedResponseConstructorTest extends TestCase
 {
     /**
      * @test
+     *
      * @covers ::constructResponse
      */
     public function streamed_response_constructor_constructs_response(): void

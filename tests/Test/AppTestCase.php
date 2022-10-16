@@ -10,6 +10,7 @@ abstract class AppTestCase extends KernelTestCase
 {
     /**
      * @template T
+     *
      * @psalm-param class-string<T> $serviceClass
      *
      * @return T

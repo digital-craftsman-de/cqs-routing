@@ -43,6 +43,7 @@ final class CommandControllerTest extends TestCase
 {
     /**
      * @test
+     *
      * @covers ::handle
      */
     public function command_controller_works_with_all_components(): void
@@ -138,6 +139,7 @@ final class CommandControllerTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::handle
      */
     public function command_controller_works_with_handler_wrapper_in_catch_case_with_multiple_catches(): void
@@ -215,6 +217,7 @@ final class CommandControllerTest extends TestCase
 
     /**
      * @test
+     *
      * @covers ::handle
      */
     public function command_controller_works_with_handler_wrapper_with_catch_and_throw(): void

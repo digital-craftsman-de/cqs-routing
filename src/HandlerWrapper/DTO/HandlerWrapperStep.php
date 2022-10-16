@@ -29,6 +29,7 @@ final class HandlerWrapperStep
 
     /**
      * @param array<array-key, HandlerWrapperWithParameters> $handlerWrappersWithParameters
+     *
      * @psalm-param self::STEP_* $step
      */
     private function __construct(

@@ -31,6 +31,7 @@ final class UserIdValidator implements DTOValidatorInterface
 
         /**
          * @var UserId $userId
+         *
          * @psalm-suppress UndefinedPropertyFetch
          * @psalm-suppress NoInterfaceProperties
          */

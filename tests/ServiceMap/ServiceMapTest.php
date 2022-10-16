@@ -63,8 +63,11 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::__construct
+     *
      * @doesNotPerformAssertions
+     *
      * @noinspection PhpExpressionResultUnusedInspection
      */
     public function construction_works(): void
@@ -112,6 +115,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getRequestValidators
      * @covers ::__construct
      */
@@ -137,6 +141,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getRequestValidators
      */
     public function get_request_validator_works_with_default_request_validator_classes(): void
@@ -161,6 +166,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getRequestValidators
      */
     public function get_request_validators_works_with_no_dto_validator_classes_and_no_default_request_validator_classes(): void
@@ -184,6 +190,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getRequestValidators
      */
     public function get_request_validators_fails_when_request_validator_classes_are_not_available(): void
@@ -206,6 +213,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getRequestValidators
      */
     public function get_request_validators_fails_when_default_request_validator_classes_are_not_available(): void
@@ -230,6 +238,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getRequestDecoder
      * @covers ::__construct
      */
@@ -251,6 +260,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getRequestDecoder
      */
     public function get_request_decoder_works_with_default_request_decoder_class(): void
@@ -271,6 +281,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getRequestDecoder
      */
     public function get_request_decoder_fails_when_request_decoder_class_is_not_available(): void
@@ -290,6 +301,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getRequestDecoder
      */
     public function get_request_decoder_fails_when_default_request_decoder_class_is_not_available(): void
@@ -309,6 +321,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getRequestDecoder
      */
     public function get_request_decoder_fails_when_no_request_decoder_class_and_default_request_decoder_class_is_defined(): void
@@ -327,6 +340,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getRequestDataTransformers
      * @covers ::__construct
      */
@@ -352,6 +366,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getRequestDataTransformers
      */
     public function get_request_data_transformers_works_with_default_request_data_transformer_classes(): void
@@ -377,6 +392,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getRequestDataTransformers
      */
     public function get_request_data_transformers_works_with_no_dto_data_transformer_classes_and_no_default_request_data_transformer_classes(): void
@@ -400,6 +416,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getRequestDataTransformers
      */
     public function get_request_data_transformers_fails_when_request_data_transformer_classes_are_not_available(): void
@@ -423,6 +440,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getRequestDataTransformers
      */
     public function get_request_data_transformers_fails_when_default_request_data_transformer_classes_are_not_available(): void
@@ -448,6 +466,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getDTOConstructor
      * @covers ::__construct
      */
@@ -472,6 +491,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getDTOConstructor
      */
     public function get_dto_constructor_works_with_default_dto_constructor_class(): void
@@ -495,6 +515,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getDTOConstructor
      */
     public function get_dto_constructor_fails_when_dto_constructor_class_is_not_available(): void
@@ -514,6 +535,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getDTOConstructor
      */
     public function get_dto_constructor_fails_when_default_dto_constructor_class_is_not_available(): void
@@ -533,6 +555,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getDTOConstructor
      */
     public function get_dto_constructor_fails_when_no_dto_constructor_class_and_default_dto_constructor_class_is_defined(): void
@@ -551,6 +574,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getDTOValidators
      * @covers ::__construct
      */
@@ -576,6 +600,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getDTOValidators
      */
     public function get_dto_validators_works_with_default_dto_validator_classes(): void
@@ -600,6 +625,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getDTOValidators
      */
     public function get_dto_validators_works_with_no_dto_validator_classes_and_no_default_dto_validator_classes(): void
@@ -623,6 +649,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getDTOValidators
      */
     public function get_dto_validators_fails_when_dto_validator_classes_are_not_available(): void
@@ -645,6 +672,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getDTOValidators
      */
     public function get_dto_validators_fails_when_default_dto_data_transformer_classes_are_not_available(): void
@@ -669,6 +697,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getHandlerWrappersWithParameters
      * @covers ::__construct
      */
@@ -702,6 +731,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getHandlerWrappersWithParameters
      */
     public function get_handler_wrappers_works_with_default_handler_wrapper_classes(): void
@@ -727,6 +757,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getHandlerWrappersWithParameters
      */
     public function get_handler_wrappers_works_with_no_handler_wrapper_configurations_and_no_default_handler_wrapper_classes(): void
@@ -750,6 +781,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getHandlerWrappersWithParameters
      */
     public function get_handler_wrappers_fails_when_handler_wrapper_in_configuration_is_not_available(): void
@@ -779,6 +811,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getHandlerWrappersWithParameters
      */
     public function get_handler_wrappers_fails_when_default_handler_wrapper_classes_are_not_available(): void
@@ -803,6 +836,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getCommandHandler
      * @covers ::__construct
      */
@@ -823,6 +857,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getCommandHandler
      */
     public function get_command_handler_fails_if_not_available(): void
@@ -841,6 +876,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getQueryHandler
      * @covers ::__construct
      */
@@ -861,6 +897,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getQueryHandler
      */
     public function get_query_handler_fails_if_not_available(): void
@@ -879,6 +916,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getResponseConstructor
      * @covers ::__construct
      */
@@ -903,6 +941,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getResponseConstructor
      */
     public function get_response_constructor_works_with_default_response_constructor_class(): void
@@ -926,6 +965,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getResponseConstructor
      */
     public function get_response_constructor_fails_when_response_constructor_class_is_not_available(): void
@@ -945,6 +985,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getResponseConstructor
      */
     public function get_response_constructor_fails_when_default_response_constructor_class_is_not_available(): void
@@ -964,6 +1005,7 @@ final class ServiceMapTest extends AppTestCase
 
     /**
      * @test
+     *
      * @covers ::getResponseConstructor
      */
     public function get_response_constructor_fails_when_no_response_constructor_class_and_default_response_constructor_class_is_defined(): void
