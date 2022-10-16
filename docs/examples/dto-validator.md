@@ -20,7 +20,7 @@ A command or query must contain everything relevant to perform it without having
 final class UserIdValidator implements DTOValidatorInterface
 {
     public function __construct(
-        private Security $security,
+        private readonly Security $security,
     ) {
     }
 

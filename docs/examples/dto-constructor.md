@@ -26,7 +26,7 @@ A possible implementation of a constructor is one that uses the Symfony serializ
 final class SerializerDTOConstructor implements DTOConstructorInterface
 {
     public function __construct(
-        private DenormalizerInterface $serializer,
+        private readonly DenormalizerInterface $serializer,
     ) {
     }
 
@@ -63,10 +63,10 @@ Into a DTO like this:
 final class CreateUserAccountCommand implements Command
 {
     public function __construct(
-        public UserId $userId,
-        public EmailAddress $emailAddress,
-        public Name $name,
-        public PlainTextPassword $password,
+        public readonly UserId $userId,
+        public readonly EmailAddress $emailAddress,
+        public readonly Name $name,
+        public readonly PlainTextPassword $password,
     ) {
     }
 }

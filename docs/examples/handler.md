@@ -26,9 +26,9 @@ A command handler implementation to create a new user account might look like th
 final class CreateUserAccountCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private PasswordHasherFactoryInterface $passwordHasherFactory,
-        private EntityManagerInterface $entityManager,
-        private UserRepository $userRepository,
+        private readonly PasswordHasherFactoryInterface $passwordHasherFactory,
+        private readonly EntityManagerInterface $entityManager,
+        private readonly UserRepository $userRepository,
     ) {
     }
 
@@ -59,7 +59,7 @@ The query handler always returns a value (if there is no exception). This return
 final class GetUserQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
-        private UserRepository $userRepository,
+        private readonly UserRepository $userRepository,
     ) {
     }
 

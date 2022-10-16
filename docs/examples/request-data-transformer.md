@@ -37,7 +37,7 @@ We can't always trust the data a user sends. This is especially true when it's n
 final class UpdateDescriptionRequestDataTransformer implements RequestDataTransformerInterface
 {
     public function __construct(
-        public SanitizationService $sanitizer,
+        public readonly SanitizationService $sanitizer,
     ) {
     }
 

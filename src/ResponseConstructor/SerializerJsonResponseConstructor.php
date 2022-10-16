@@ -14,8 +14,8 @@ final class SerializerJsonResponseConstructor implements ResponseConstructorInte
 {
     /** @codeCoverageIgnore */
     public function __construct(
-        private SerializerInterface $serializer,
-        private array $serializerContext,
+        private readonly SerializerInterface $serializer,
+        private readonly array $serializerContext,
     ) {
     }
 

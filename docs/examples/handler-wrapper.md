@@ -70,7 +70,7 @@ use Symfony\Component\HttpFoundation\Request;
 final class ConnectionTransactionWrapper implements HandlerWrapperInterface
 {
     public function __construct(
-        private Connection $connection,
+        private readonly Connection $connection,
     ) {
     }
 
@@ -243,7 +243,7 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
     private ?LockInterface $lock = null;
 
     public function __construct(
-        private LockService $lockService,
+        private readonly LockService $lockService,
     ) {
     }
 

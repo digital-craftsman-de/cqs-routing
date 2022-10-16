@@ -12,7 +12,7 @@ final class SerializerDTOConstructor implements DTOConstructorInterface
 {
     /** @codeCoverageIgnore */
     public function __construct(
-        private DenormalizerInterface $serializer,
+        private readonly DenormalizerInterface $serializer,
     ) {
     }
 
