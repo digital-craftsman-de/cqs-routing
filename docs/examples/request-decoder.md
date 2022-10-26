@@ -64,7 +64,7 @@ Another use case would be accessing data outside the body. This is needed when w
 final class UserImageRequestDecoder implements RequestDecoderInterface
 {
     public function __construct(
-        private Security $security,
+        private readonly Security $security,
     ) {
     }
 

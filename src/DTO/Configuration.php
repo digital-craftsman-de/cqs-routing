@@ -36,15 +36,15 @@ final class Configuration
      * @psalm-param class-string<ResponseConstructorInterface>|null $responseConstructorClass
      */
     private function __construct(
-        public string $dtoClass,
-        public string $handlerClass,
-        public ?array $requestValidatorClasses = null,
-        public ?string $requestDecoderClass = null,
-        public ?array $requestDataTransformerClasses = null,
-        public ?string $dtoConstructorClass = null,
-        public ?array $dtoValidatorClasses = null,
-        public ?array $handlerWrapperConfigurations = null,
-        public ?string $responseConstructorClass = null,
+        public readonly string $dtoClass,
+        public readonly string $handlerClass,
+        public readonly ?array $requestValidatorClasses = null,
+        public readonly ?string $requestDecoderClass = null,
+        public readonly ?array $requestDataTransformerClasses = null,
+        public readonly ?string $dtoConstructorClass = null,
+        public readonly ?array $dtoValidatorClasses = null,
+        public readonly ?array $handlerWrapperConfigurations = null,
+        public readonly ?string $responseConstructorClass = null,
     ) {
     }
 

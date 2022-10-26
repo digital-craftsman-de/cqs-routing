@@ -13,6 +13,7 @@ final class EmptyResponseConstructorTest extends TestCase
 {
     /**
      * @test
+     *
      * @covers ::constructResponse
      */
     public function empty_response_constructor_constructs_response(): void

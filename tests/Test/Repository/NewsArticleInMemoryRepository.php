@@ -10,6 +10,7 @@ final class NewsArticleInMemoryRepository
 {
     /**
      * @var array<int, NewsArticle>
+     *
      * @psalm-readonly-allow-private-mutation
      */
     public array $newsArticles = [];

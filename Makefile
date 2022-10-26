@@ -4,83 +4,132 @@ uid = $$(id -u)
 gid = $$(id -g)
 pwd = $$(pwd)
 
-default: up
+default: help
 
-## update		Rebuild Docker images and start stack.
-.PHONY: update
-update: build up
+##
+## Help
+## ----
+##
 
-## reset		Teardown stack, install and start.
-.PHONY: reset
-reset: .reset
+## help				Print commands help.
+.PHONY: help
 
-.PHONY: .reset
-.reset: .down .install .up
+help: Makefile
+	@sed -n 's/^##//p' $<
 
 ##
 ## Docker
 ## ------
 ##
 
-## install	Install API and client dependencies as well as setup the database.
-.PHONY: install
-install: .install
-
-.PHONY: .install
-.install:
-	docker-compose run --rm php composer install
-
-## build		Build the Docker images.
+## build				Build the Docker images.
 .PHONY: build
 build:
 	docker-compose build
 
-## up		Start the Docker stack.
+## up				Start the Docker stack.
 .PHONY: up
 up: .up
 
 .up:
 	docker-compose up -d
 
-## down		Stop the Docker stack.
+## down				Stop the Docker stack.
 .PHONY: down
 down: .down
 
 .down:
 	docker-compose down
 
-## php-cli	Enter a shell for the API.
+## update				Rebuild Docker images and start stack.
+.PHONY: update
+update: build up
+
+## reset				Teardown stack, install and start.
+.PHONY: reset
+reset: .reset
+
+.PHONY: .reset
+.reset: .down .install .up
+
+## install			Install PHP dependencies with the default PHP version (8.1).
+.PHONY: .install
+install: install-8.1
+
+## install-8.1			Install PHP dependencies with PHP 8.1.
+.PHONY: install-8.1
+install-8.1:
+	docker-compose run --rm php-8.1 composer install
+
+## install-8.2			Install PHP dependencies with PHP 8.2.
+.PHONY: install-8.2
+install-8.2:
+	docker-compose run --rm php-8.2 composer install
+
+## php-cli			Enter a shell for the default PHP version (8.1).
 .PHONY: php-cli
-php-cli:
-	docker-compose run --rm php sh
+php-cli: php-8.1-cli
+
+## php-8.1-cli			Enter a shell for PHP 8.1.
+.PHONY: php-8.1-cli
+php-8.1-cli:
+	docker-compose run --rm php-8.1 sh
+
+## php-8.2-cli			Enter a shell for PHP 8.2.
+.PHONY: php-8.2-cli
+php-8.2-cli:
+	docker-compose run --rm php-8.2 sh
 
 ##
-## Tests
-## -----
+## Tests and code validation
+## -------------------------
 ##
 
-## php-tests		Run the PHP tests.
+## verify				Run all validations and tests.
+.PHONY: verify
+verify: php-code-validation php-tests
+
+## php-tests			Run the tests for all relevant PHP versions.
 .PHONY: php-tests
-php-tests:
-	docker-compose run --rm php ./vendor/bin/phpunit
+php-tests: php-8.1-tests php-8.2-tests
 
-## php-tests		Run the PHP tests with coverage report for CI.
-.PHONY: php-tests-ci
-php-tests-ci:
-	docker-compose run --rm php ./vendor/bin/phpunit --coverage-clover ./coverage.xml
+## php-8.1-tests			Run tests with PHP 8.1.
+.PHONY: php-8.1-tests
+php-8.1-tests:
+	docker-compose run --rm php-8.1 ./vendor/bin/phpunit
 
-## php-tests		Run the PHP tests with coverage report as HTML.
-.PHONY: php-tests-html-coverage
-php-tests-html-coverage:
-	docker-compose run --rm php ./vendor/bin/phpunit --coverage-html ./coverage
+## php-8.2-tests			Run tests with PHP 8.2.
+.PHONY: php-8.2-tests
+php-8.2-tests:
+	docker-compose run --rm php-8.2 ./vendor/bin/phpunit
 
-##
-## Code validations
-## ----------------
-##
+## php-8.1-tests-html-coverage	Run the tests with PHP 8.1 including coverage report as HTML.
+.PHONY: php-8.1-tests-html-coverage
+php-8.1-tests-html-coverage:
+	docker-compose run --rm php-8.1 ./vendor/bin/phpunit --coverage-html ./coverage
 
-## php-code-validation		Run code fixers and linters for PHP.
+## php-8.2-tests-html-coverage	Run the tests with PHP 8.2 including coverage report as HTML.
+.PHONY: php-8.2-tests-html-coverage
+php-8.2-tests-html-coverage:
+	docker-compose run --rm php-8.2 ./vendor/bin/phpunit --coverage-html ./coverage
+
+## php-code-validation		Run code fixers and linters with default PHP version (8.1).
 .PHONY: php-code-validation
 php-code-validation:
-	docker-compose run --rm php ./vendor/bin/php-cs-fixer fix
-	docker-compose run --rm php ./vendor/bin/psalm --show-info=false --no-diff
+	docker-compose run --rm php-8.1 ./vendor/bin/php-cs-fixer fix
+	docker-compose run --rm php-8.1 ./vendor/bin/psalm --show-info=false --no-diff
+
+##
+## CI
+## --
+##
+
+## php-8.1-tests-ci		Run the tests for PHP 8.1 for CI.
+.PHONY: php-8.1-tests-ci
+php-8.1-tests-ci:
+	docker-compose run --rm php-8.1 ./vendor/bin/phpunit
+
+## php-8.2-tests-ci		Run the tests for PHP 8.2 for CI.
+.PHONY: php-8.2-tests-ci
+php-8.2-tests-ci:
+	docker-compose run --rm php-8.2 ./vendor/bin/phpunit

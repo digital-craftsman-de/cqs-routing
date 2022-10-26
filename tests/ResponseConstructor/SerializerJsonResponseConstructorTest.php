@@ -18,6 +18,7 @@ final class SerializerJsonResponseConstructorTest extends TestCase
 {
     /**
      * @test
+     *
      * @covers ::constructResponse
      */
     public function serializer_json_response_constructor_constructs_response(): void

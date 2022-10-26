@@ -12,6 +12,7 @@ final class CQRSExtensionTest extends TestCase
 {
     /**
      * @test
+     *
      * @covers ::load
      *
      * The auto tagging works only for files in "src" and therefore the others below the "tests" directory can't be validated.

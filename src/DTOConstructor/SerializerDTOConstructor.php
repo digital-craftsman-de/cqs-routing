@@ -12,13 +12,15 @@ final class SerializerDTOConstructor implements DTOConstructorInterface
 {
     /** @codeCoverageIgnore */
     public function __construct(
-        private DenormalizerInterface $serializer,
+        private readonly DenormalizerInterface $serializer,
     ) {
     }
 
     /**
      * @psalm-template T of Command|Query
+     *
      * @psalm-param class-string<T> $dtoClass
+     *
      * @psalm-return T
      */
     public function constructDTO(array $requestData, string $dtoClass): Command|Query

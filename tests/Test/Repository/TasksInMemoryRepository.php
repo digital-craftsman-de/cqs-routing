@@ -10,6 +10,7 @@ final class TasksInMemoryRepository
 {
     /**
      * @var array<int, Task>
+     *
      * @psalm-readonly-allow-private-mutation
      */
     public array $tasks;

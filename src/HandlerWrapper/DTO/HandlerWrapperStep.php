@@ -25,10 +25,11 @@ final class HandlerWrapperStep
     public const STEP_CATCH = 'CATCH';
 
     /** @var array<int, HandlerWrapperWithParameters> */
-    public array $orderedHandlerWrappersWithParameters;
+    public readonly array $orderedHandlerWrappersWithParameters;
 
     /**
      * @param array<array-key, HandlerWrapperWithParameters> $handlerWrappersWithParameters
+     *
      * @psalm-param self::STEP_* $step
      */
     private function __construct(

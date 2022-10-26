@@ -15,8 +15,8 @@ final class HandlerWrapperWithParameters
 {
     /** @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters */
     public function __construct(
-        public HandlerWrapperInterface $handlerWrapper,
-        public mixed $parameters,
+        public readonly HandlerWrapperInterface $handlerWrapper,
+        public readonly mixed $parameters,
     ) {
     }
 }

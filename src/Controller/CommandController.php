@@ -33,14 +33,14 @@ final class CommandController extends AbstractController
      * @codeCoverageIgnore
      */
     public function __construct(
-        private ServiceMap $serviceMap,
-        private ?array $defaultRequestValidatorClasses,
-        private ?string $defaultRequestDecoderClass,
-        private ?array $defaultRequestDataTransformerClasses,
-        private ?string $defaultDTOConstructorClass,
-        private ?array $defaultDTOValidatorClasses,
-        private ?array $defaultHandlerWrapperClasses,
-        private ?string $defaultResponseConstructorClass,
+        private readonly ServiceMap $serviceMap,
+        private readonly ?array $defaultRequestValidatorClasses,
+        private readonly ?string $defaultRequestDecoderClass,
+        private readonly ?array $defaultRequestDataTransformerClasses,
+        private readonly ?string $defaultDTOConstructorClass,
+        private readonly ?array $defaultDTOValidatorClasses,
+        private readonly ?array $defaultHandlerWrapperClasses,
+        private readonly ?string $defaultResponseConstructorClass,
     ) {
     }
 

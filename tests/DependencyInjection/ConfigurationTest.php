@@ -18,6 +18,7 @@ final class ConfigurationTest extends TestCase
 {
     /**
      * @test
+     *
      * @covers ::getConfigTreeBuilder
      */
     public function configuration_can_be_processed(): void

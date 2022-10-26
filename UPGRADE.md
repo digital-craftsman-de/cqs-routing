@@ -1,5 +1,11 @@
 # Upgrade guide
 
+## From 0.6.* to 0.7.0
+
+### Upgrade to at least PHP 8.1
+
+Support for PHP 8.0 was dropped, so you have to upgrade to at least PHP 8.1.
+
 ## From 0.5.* to 0.6.0
 
 ### Interface `DTODataTransformerInterface` was renamed to `RequestDataTransformerInterface`

@@ -35,15 +35,15 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 final class ServiceMap
 {
     public function __construct(
-        private ServiceProviderInterface $requestValidators,
-        private ServiceProviderInterface $requestDecoders,
-        private ServiceProviderInterface $requestDataTransformers,
-        private ServiceProviderInterface $dtoConstructors,
-        private ServiceProviderInterface $dtoValidators,
-        private ServiceProviderInterface $handlerWrappers,
-        private ServiceProviderInterface $commandHandlers,
-        private ServiceProviderInterface $queryHandlers,
-        private ServiceProviderInterface $responseConstructors,
+        private readonly ServiceProviderInterface $requestValidators,
+        private readonly ServiceProviderInterface $requestDecoders,
+        private readonly ServiceProviderInterface $requestDataTransformers,
+        private readonly ServiceProviderInterface $dtoConstructors,
+        private readonly ServiceProviderInterface $dtoValidators,
+        private readonly ServiceProviderInterface $handlerWrappers,
+        private readonly ServiceProviderInterface $commandHandlers,
+        private readonly ServiceProviderInterface $queryHandlers,
+        private readonly ServiceProviderInterface $responseConstructors,
     ) {
     }
 

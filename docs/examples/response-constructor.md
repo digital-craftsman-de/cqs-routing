@@ -20,7 +20,7 @@ Most of the time the result will be an object or array and be converted into JSO
 final class SerializerJsonResponseConstructor implements ResponseConstructorInterface
 {
     public function __construct(
-        private SerializerInterface $serializer,
+        private readonly SerializerInterface $serializer,
     ) {
     }
 
@@ -62,9 +62,9 @@ There are cases where it's not feasible to return the full response at once. For
 final class GetAllFilesInDirectoryAsDownloadQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
-        private FileManagement $fileManagement,
-        private UserRepository $userRepository,
-        private DirectoryRepository $directoryRepository,
+        private readonly FileManagement $fileManagement,
+        private readonly UserRepository $userRepository,
+        private readonly DirectoryRepository $directoryRepository,
     ) {
     }
 

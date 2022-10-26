@@ -19,7 +19,7 @@ You might want to validate files that are uploaded against virus databases befor
 final class VirusFreeFilesRequestValidator implements RequestValidatorInterface
 {
     public function __construct(
-        private VirusScanner $virusScanner,
+        private readonly VirusScanner $virusScanner,
     ) {
     }
 

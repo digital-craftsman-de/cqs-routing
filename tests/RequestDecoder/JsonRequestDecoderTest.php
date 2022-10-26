@@ -12,6 +12,7 @@ final class JsonRequestDecoderTest extends TestCase
 {
     /**
      * @test
+     *
      * @covers ::decodeRequest
      */
     public function json_request_decoder_decodes_json(): void

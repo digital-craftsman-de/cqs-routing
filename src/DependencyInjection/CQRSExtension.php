@@ -84,7 +84,7 @@ final class CQRSExtension extends Extension
          *     default_response_constructor_class: ?string,
          *   },
          *   serializer_context: array,
-         * }
+         * } $config
          */
         $config = $this->processConfiguration($configuration, $configs);
 
