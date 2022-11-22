@@ -6,6 +6,7 @@ namespace DigitalCraftsman\CQRS\DTO;
 
 use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
+use DigitalCraftsman\CQRS\DTO\Exception\InvalidConfiguration;
 use DigitalCraftsman\CQRS\DTOConstructor\DTOConstructorInterface;
 use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
 use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
@@ -46,6 +47,15 @@ final class Configuration
         public readonly ?array $handlerWrapperClasses = null,
         public readonly ?string $responseConstructorClass = null,
     ) {
+        if ($this->handlerWrapperClasses !== null) {
+            foreach ($this->handlerWrapperClasses as $class => $parameters) {
+                if (!is_string($class)
+                    || !class_exists($class)
+                ) {
+                    throw new InvalidConfiguration($class);
+                }
+            }
+        }
     }
 
     /**
