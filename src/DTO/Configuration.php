@@ -26,15 +26,15 @@ use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
 final class Configuration
 {
     /**
-     * @psalm-param class-string<Command>|class-string<Query> $dtoClass
-     * @psalm-param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface> $handlerClass
-     * @psalm-param array<int, class-string<RequestValidatorInterface>>|null $requestValidatorClasses
-     * @psalm-param class-string<RequestDecoderInterface>|null $requestDecoderClass
-     * @psalm-param array<int, class-string<RequestDataTransformerInterface>>|null $requestDataTransformerClasses
-     * @psalm-param class-string<DTOConstructorInterface>|null $dtoConstructorClass
-     * @psalm-param array<int, class-string<DTOValidatorInterface>>|null $dtoValidatorClasses
-     * @psalm-param null|array<class-string<HandlerWrapperInterface>, null|string|int|float|bool|array<array-key, null|string|int|float|bool>> $handlerWrapperClasses
-     * @psalm-param class-string<ResponseConstructorInterface>|null $responseConstructorClass
+     * @param class-string<Command>|class-string<Query>                                                    $dtoClass
+     * @param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>                    $handlerClass
+     * @param array<int, class-string<RequestValidatorInterface>>|null                                     $requestValidatorClasses
+     * @param class-string<RequestDecoderInterface>|null                                                   $requestDecoderClass
+     * @param array<int, class-string<RequestDataTransformerInterface>>|null                               $requestDataTransformerClasses
+     * @param class-string<DTOConstructorInterface>|null                                                   $dtoConstructorClass
+     * @param array<int, class-string<DTOValidatorInterface>>|null                                         $dtoValidatorClasses
+     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null $handlerWrapperClasses
+     * @param class-string<ResponseConstructorInterface>|null                                              $responseConstructorClass
      */
     private function __construct(
         public readonly string $dtoClass,
@@ -59,15 +59,15 @@ final class Configuration
     }
 
     /**
-     * @psalm-param class-string<Command>|class-string<Query> $dtoClass
-     * @psalm-param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface> $handlerClass
-     * @psalm-param array<int, class-string<RequestValidatorInterface>>|null $requestValidatorClasses
-     * @psalm-param class-string<RequestDecoderInterface>|null $requestDecoderClass
-     * @psalm-param array<int, class-string<RequestDataTransformerInterface>>|null $requestDataTransformerClasses
-     * @psalm-param class-string<DTOConstructorInterface>|null $dtoConstructorClass
-     * @psalm-param array<int, class-string<DTOValidatorInterface>>|null $dtoValidatorClasses
-     * @@psalm-param array<class-string<HandlerWrapperInterface>, null|string|int|float|bool|array<array-key, null|string|int|float|bool>> $handlerWrapperClasses
-     * @psalm-param class-string<ResponseConstructorInterface>|null $responseConstructorClass
+     * @param class-string<Command>|class-string<Query>                                                    $dtoClass
+     * @param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>                    $handlerClass
+     * @param array<int, class-string<RequestValidatorInterface>>|null                                     $requestValidatorClasses
+     * @param class-string<RequestDecoderInterface>|null                                                   $requestDecoderClass
+     * @param array<int, class-string<RequestDataTransformerInterface>>|null                               $requestDataTransformerClasses
+     * @param class-string<DTOConstructorInterface>|null                                                   $dtoConstructorClass
+     * @param array<int, class-string<DTOValidatorInterface>>|null                                         $dtoValidatorClasses
+     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|bool|null>|null> $handlerWrapperClasses
+     * @param class-string<ResponseConstructorInterface>|null                                              $responseConstructorClass
      */
     public static function routePayload(
         string $dtoClass,
@@ -96,7 +96,7 @@ final class Configuration
     }
 
     /**
-     * @psalm-param array{
+     * @param array{
      *   dtoClass: class-string<Command>|class-string<Query>,
      *   handlerClass: class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>,
      *   requestValidatorClasses: array<int, class-string<RequestValidatorInterface>>|null,
@@ -104,7 +104,7 @@ final class Configuration
      *   requestDataTransformerClasses: array<int, class-string<RequestDataTransformerInterface>>|null,
      *   dtoConstructorClass: class-string<DTOConstructorInterface>|null,
      *   dtoValidatorClasses: array<int, class-string<DTOValidatorInterface>>|null,
-     *   handlerWrapperClasses: array<class-string<HandlerWrapperInterface>, null|string|int|float|bool|array<array-key, null|string|int|float|bool>>,
+     *   handlerWrapperClasses: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, null|scalar>|null>,
      *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
      * } $routePayload
      */
@@ -124,7 +124,7 @@ final class Configuration
     }
 
     /**
-     * @psalm-return array{
+     * @return array{
      *   dtoClass: class-string<Command>|class-string<Query>,
      *   handlerClass: class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>,
      *   requestValidatorClasses: array<int, class-string<RequestValidatorInterface>>|null,
@@ -132,7 +132,7 @@ final class Configuration
      *   requestDataTransformerClasses: array<int, class-string<RequestDataTransformerInterface>>|null,
      *   dtoConstructorClass: class-string<DTOConstructorInterface>|null,
      *   dtoValidatorClasses: array<int, class-string<DTOValidatorInterface>>|null,
-     *   handlerWrapperClasses: array<class-string<HandlerWrapperInterface>, null|string|int|float|bool|array<array-key, null|string|int|float|bool>>,
+     *   handlerWrapperClasses: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, null|scalar>|null>,
      *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
      * }
      */
