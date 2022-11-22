@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQRS\ServiceMap;
 
-use DigitalCraftsman\CQRS\DTO\HandlerWrapperConfiguration;
 use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
 use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
 use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
@@ -30,6 +29,7 @@ use DigitalCraftsman\CQRS\Test\Application\FileSizeValidator;
 use DigitalCraftsman\CQRS\Test\Application\SilentExceptionWrapper;
 use DigitalCraftsman\CQRS\Test\AppTestCase;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleRequestDataTransformer;
+use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\Exception\TasksNotAccessible;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQueryHandler;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommandHandler;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskDTOConstructor;
@@ -698,43 +698,78 @@ final class ServiceMapTest extends AppTestCase
     /**
      * @test
      *
-     * @covers ::getHandlerWrappersWithParameters
+     * @covers ::mergeHandlerWrapperClasses
+     */
+    public function get_handler_wrapper_classes_works(): void
+    {
+        // -- Arrange
+        $serviceMap = ServiceMapHelper::serviceMap();
+
+        $handlerWrapperClassesFromConfiguration = [
+            ConnectionTransactionWrapper::class => null,
+            SilentExceptionWrapper::class => [
+                TaskAlreadyAccepted::class,
+            ],
+        ];
+
+        // -- Act
+        $handlerWrapperClasses = $serviceMap->mergeHandlerWrapperClasses(
+            $handlerWrapperClassesFromConfiguration,
+            null,
+        );
+
+        // -- Assert
+        self::assertCount(2, $handlerWrapperClasses);
+        self::assertArrayHasKey(ConnectionTransactionWrapper::class, $handlerWrapperClasses);
+        self::assertArrayHasKey(SilentExceptionWrapper::class, $handlerWrapperClasses);
+        self::assertSame([TaskAlreadyAccepted::class], $handlerWrapperClasses[SilentExceptionWrapper::class]);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mergeHandlerWrapperClasses
+     */
+    public function get_handler_wrapper_classes_works_with_overwrite(): void
+    {
+        // -- Arrange
+        $serviceMap = ServiceMapHelper::serviceMap();
+
+        $defaultHandlerWrapperClasses = [
+            ConnectionTransactionWrapper::class => null,
+            SilentExceptionWrapper::class => [
+                TaskAlreadyAccepted::class,
+            ],
+        ];
+        $handlerWrapperClassesFromConfiguration = [
+            ConnectionTransactionWrapper::class => null,
+            SilentExceptionWrapper::class => [
+                TasksNotAccessible::class,
+            ],
+        ];
+
+        // -- Act
+        $handlerWrapperClasses = $serviceMap->mergeHandlerWrapperClasses(
+            $handlerWrapperClassesFromConfiguration,
+            $defaultHandlerWrapperClasses,
+        );
+
+        // -- Assert
+        self::assertCount(2, $handlerWrapperClasses);
+        self::assertArrayHasKey(ConnectionTransactionWrapper::class, $handlerWrapperClasses);
+        self::assertArrayHasKey(SilentExceptionWrapper::class, $handlerWrapperClasses);
+
+        // Default parameters have been overwritten bei route configuration
+        self::assertSame([TasksNotAccessible::class], $handlerWrapperClasses[SilentExceptionWrapper::class]);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::getHandlerWrapper
      * @covers ::__construct
      */
-    public function get_handler_wrappers_works_with_handler_wrapper_configurations(): void
-    {
-        // -- Arrange
-        $handlerWrappers = [
-            new SilentExceptionWrapper(),
-            new ConnectionTransactionWrapper(new ConnectionSimulator()),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(handlerWrappers: $handlerWrappers);
-
-        $handlerWrapperConfiguration = new HandlerWrapperConfiguration(
-            SilentExceptionWrapper::class,
-            [
-                TaskAlreadyAccepted::class,
-            ],
-        );
-
-        // -- Act
-        $handlerWrappersWithParameters = $serviceMap->getHandlerWrappersWithParameters(
-            [$handlerWrapperConfiguration],
-            null,
-        );
-
-        // -- Assert
-        self::assertCount(1, $handlerWrappersWithParameters);
-        self::assertSame(SilentExceptionWrapper::class, $handlerWrappersWithParameters[0]->handlerWrapper::class);
-        self::assertSame([TaskAlreadyAccepted::class], $handlerWrappersWithParameters[0]->parameters);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getHandlerWrappersWithParameters
-     */
-    public function get_handler_wrappers_works_with_default_handler_wrapper_classes(): void
+    public function get_handler_wrapper_works(): void
     {
         // -- Arrange
         $handlerWrappers = [
@@ -744,77 +779,18 @@ final class ServiceMapTest extends AppTestCase
         $serviceMap = ServiceMapHelper::serviceMap(handlerWrappers: $handlerWrappers);
 
         // -- Act
-        $handlerWrappersWithParameters = $serviceMap->getHandlerWrappersWithParameters(
-            null,
-            [ConnectionTransactionWrapper::class],
-        );
+        $handlerWrapper = $serviceMap->getHandlerWrapper(ConnectionTransactionWrapper::class);
 
         // -- Assert
-        self::assertCount(1, $handlerWrappersWithParameters);
-        self::assertSame(ConnectionTransactionWrapper::class, $handlerWrappersWithParameters[0]->handlerWrapper::class);
-        self::assertNull($handlerWrappersWithParameters[0]->parameters);
+        self::assertSame(ConnectionTransactionWrapper::class, $handlerWrapper::class);
     }
 
     /**
      * @test
      *
-     * @covers ::getHandlerWrappersWithParameters
+     * @covers ::getHandlerWrapper
      */
-    public function get_handler_wrappers_works_with_no_handler_wrapper_configurations_and_no_default_handler_wrapper_classes(): void
-    {
-        // -- Arrange
-        $handlerWrappers = [
-            new SilentExceptionWrapper(),
-            new ConnectionTransactionWrapper(new ConnectionSimulator()),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(handlerWrappers: $handlerWrappers);
-
-        // -- Act
-        $handlerWrappersWithParameters = $serviceMap->getHandlerWrappersWithParameters(
-            null,
-            null,
-        );
-
-        // -- Assert
-        self::assertCount(0, $handlerWrappersWithParameters);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getHandlerWrappersWithParameters
-     */
-    public function get_handler_wrappers_fails_when_handler_wrapper_in_configuration_is_not_available(): void
-    {
-        // -- Assert
-        $this->expectException(ConfiguredHandlerWrapperNotAvailable::class);
-
-        // -- Arrange
-        $handlerWrappers = [
-            new ConnectionTransactionWrapper(new ConnectionSimulator()),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(handlerWrappers: $handlerWrappers);
-
-        $handlerWrapperConfiguration = new HandlerWrapperConfiguration(
-            SilentExceptionWrapper::class,
-            [
-                TaskAlreadyAccepted::class,
-            ],
-        );
-
-        // -- Act
-        $serviceMap->getHandlerWrappersWithParameters(
-            [$handlerWrapperConfiguration],
-            null,
-        );
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getHandlerWrappersWithParameters
-     */
-    public function get_handler_wrappers_fails_when_default_handler_wrapper_classes_are_not_available(): void
+    public function get_handler_wrapper_fails_when_handler_wrapper_is_missing(): void
     {
         // -- Assert
         $this->expectException(ConfiguredHandlerWrapperNotAvailable::class);
@@ -826,10 +802,7 @@ final class ServiceMapTest extends AppTestCase
         $serviceMap = ServiceMapHelper::serviceMap(handlerWrappers: $handlerWrappers);
 
         // -- Act
-        $serviceMap->getHandlerWrappersWithParameters(
-            null,
-            [ConnectionTransactionWrapper::class],
-        );
+        $handlerWrapper = $serviceMap->getHandlerWrapper(ConnectionTransactionWrapper::class);
     }
 
     // -- Command handler

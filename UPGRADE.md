@@ -1,5 +1,72 @@
 # Upgrade guide
 
+## From 0.7.* to 0.8.0
+
+### Update handler wrapper configuration
+
+The `HandlerWrapperConfiguration` object was dropped in favor of using the class name as key and supplying the parameters directly as value.
+
+Before:
+
+```php
+'routePayload' => Configuration::routePayload(
+    handlerWrapperConfigurations: [
+        new HandlerWrapperConfiguration(ConnectionTransactionWrapper::class),
+        new HandlerWrapperConfiguration(
+            handlerWrapperClass: SilentExceptionWrapper::class,
+            parameters: [
+                EmailAddressDidNotChange::class,
+            ],
+        ),
+    ],
+),
+```
+
+After:
+
+```php
+'routePayload' => Configuration::routePayload(
+    handlerWrapperClasses: [
+        ConnectionTransactionWrapper::class => null,
+        SilentExceptionWrapper::class => [
+              EmailAddressDidNotChange::class,
+        ],
+    ],
+),
+```
+
+You also need to set the classes as key in the configuration of the default handler wrappers and use parameters as value. Use `null` when no parameter is needed. This change enabled the default handler wrappers to use parameters.
+
+Before:
+
+```php
+return static function (CqrsConfig $cqrsConfig) {
+    $cqrsConfig->queryController()
+        ->defaultHandlerWrapperClasses([
+            ConnectionTransactionWrapper::class,
+        ]);
+
+    $cqrsConfig->commandController()
+        ->defaultHandlerWrapperClasses([
+            ConnectionTransactionWrapper::class,
+        ]);
+```
+
+After:
+
+```php
+return static function (CqrsConfig $cqrsConfig) {
+    $cqrsConfig->queryController()
+        ->defaultHandlerWrapperClasses([
+            ConnectionTransactionWrapper::class => null,
+        ]);
+
+    $cqrsConfig->commandController()
+        ->defaultHandlerWrapperClasses([
+            ConnectionTransactionWrapper::class => null,
+        ]);
+```
+
 ## From 0.6.* to 0.7.0
 
 ### Upgrade to at least PHP 8.1

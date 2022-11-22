@@ -64,14 +64,14 @@ final class CQRSExtension extends Extension
         $configuration = new Configuration();
 
         /**
-         * @psalm-var array{
+         * @var array{
          *   query_controller: array{
          *     default_request_validator_classes: ?array<int, string>,
          *     default_request_decoder_class: ?string,
          *     default_request_data_tranformer_classes: ?array<int, string>,
          *     default_dto_constructor_class: ?string,
          *     default_dto_validator_classes: ?array<int, string>,
-         *     default_handler_wrapper_classes: ?array<int, string>,
+         *     default_handler_wrapper_classes: null|array<class-string<HandlerWrapperInterface>, null|scalar|array<array-key, null|scalar>>,
          *     default_response_constructor_class: ?string,
          *   },
          *   command_controller: array{
@@ -80,7 +80,7 @@ final class CQRSExtension extends Extension
          *     default_request_data_tranformer_classes: ?array<int, string>,
          *     default_dto_constructor_class: ?string,
          *     default_dto_validator_classes: ?array<int, string>,
-         *     default_handler_wrapper_classes: ?array<int, string>,
+         *     default_handler_wrapper_classes: null|array<class-string<HandlerWrapperInterface>, null|scalar|array<array-key, null|scalar>>,
          *     default_response_constructor_class: ?string,
          *   },
          *   serializer_context: array,

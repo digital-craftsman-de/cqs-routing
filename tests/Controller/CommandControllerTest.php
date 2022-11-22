@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DigitalCraftsman\CQRS\Controller;
 
 use DigitalCraftsman\CQRS\DTO\Configuration;
-use DigitalCraftsman\CQRS\DTO\HandlerWrapperConfiguration;
 use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
 use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
 use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
@@ -123,8 +122,8 @@ final class CommandControllerTest extends TestCase
             dtoValidatorClasses: [
                 UserIdValidator::class,
             ],
-            handlerWrapperConfigurations: [
-                new HandlerWrapperConfiguration(CreateNewsArticleHandlerWrapper::class),
+            handlerWrapperClasses: [
+                CreateNewsArticleHandlerWrapper::class => null,
             ],
         );
 
@@ -198,11 +197,11 @@ final class CommandControllerTest extends TestCase
         $routePayload = Configuration::routePayload(
             dtoClass: CreateNewsArticleCommand::class,
             handlerClass: FailingCreateNewsArticleCommandHandler::class,
-            handlerWrapperConfigurations: [
-                new HandlerWrapperConfiguration(SilentExceptionWrapper::class, [
+            handlerWrapperClasses: [
+                SilentExceptionWrapper::class => [
                     NewsArticleAlreadyExists::class,
-                ]),
-                new HandlerWrapperConfiguration(ConnectionTransactionWrapper::class),
+                ],
+                ConnectionTransactionWrapper::class => null,
             ],
         );
 
@@ -278,8 +277,8 @@ final class CommandControllerTest extends TestCase
         $routePayload = Configuration::routePayload(
             dtoClass: CreateNewsArticleCommand::class,
             handlerClass: FailingCreateNewsArticleCommandHandler::class,
-            handlerWrapperConfigurations: [
-                new HandlerWrapperConfiguration(ConnectionTransactionWrapper::class),
+            handlerWrapperClasses: [
+                ConnectionTransactionWrapper::class => null,
             ],
         );
 

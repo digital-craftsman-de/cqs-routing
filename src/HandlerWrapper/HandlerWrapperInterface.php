@@ -33,7 +33,7 @@ interface HandlerWrapperInterface
     /**
      * Triggered right before the handler is triggered.
      *
-     * @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters
+     * @param scalar|array<array-key, scalar|null>|null $parameters
      */
     public function prepare(
         Command|Query $dto,
@@ -44,7 +44,7 @@ interface HandlerWrapperInterface
     /**
      * Triggered only if the handler was run without exception.
      *
-     * @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters
+     * @param scalar|array<array-key, scalar|null>|null $parameters
      */
     public function then(
         Command|Query $dto,
@@ -56,7 +56,7 @@ interface HandlerWrapperInterface
      * Triggered only when an exception occurred while executing the handler.
      * The exception must be returned if it's not explicitly the last exception that should be handled.
      *
-     * @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters
+     * @param scalar|array<array-key, scalar|null>|null $parameters
      */
     public function catch(
         Command|Query $dto,

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.0
+
+- **[Breaking change](./UPGRADE.md#update-handler-wrapper-configuration)**: Replaced `HandlerWrapperConfiguration` with simple map configuration.
+- Enabled usage of parameters for default handler wrappers.
+
 ## 0.7.0
 
 - Drop support for PHP 8.0.
