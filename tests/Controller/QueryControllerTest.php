@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DigitalCraftsman\CQRS\Controller;
 
 use DigitalCraftsman\CQRS\DTO\Configuration;
-use DigitalCraftsman\CQRS\DTO\HandlerWrapperConfiguration;
 use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
 use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
 use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
@@ -130,8 +129,8 @@ final class QueryControllerTest extends TestCase
             dtoValidatorClasses: [
                 UserIdValidator::class,
             ],
-            handlerWrapperConfigurations: [
-                new HandlerWrapperConfiguration(GetTasksHandlerWrapper::class),
+            handlerWrapperClasses: [
+                GetTasksHandlerWrapper::class => null,
             ],
         );
 
@@ -224,8 +223,8 @@ final class QueryControllerTest extends TestCase
             dtoValidatorClasses: [
                 UserIdValidator::class,
             ],
-            handlerWrapperConfigurations: [
-                new HandlerWrapperConfiguration(GetTasksHandlerWrapper::class),
+            handlerWrapperClasses: [
+                GetTasksHandlerWrapper::class => null,
             ],
         );
 

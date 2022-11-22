@@ -24,61 +24,70 @@ final class HandlerWrapperStep
     public const STEP_THEN = 'THEN';
     public const STEP_CATCH = 'CATCH';
 
-    /** @var array<int, HandlerWrapperWithParameters> */
-    public readonly array $orderedHandlerWrappersWithParameters;
+    /** @var array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null> */
+    public readonly array $orderedHandlerWrapperClasses;
 
     /**
-     * @param array<array-key, HandlerWrapperWithParameters> $handlerWrappersWithParameters
-     *
-     * @psalm-param self::STEP_* $step
+     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null> $handlerWrapperClasses
+     * @param self::STEP_*                                                                            $step
      */
     private function __construct(
-        array $handlerWrappersWithParameters,
+        array $handlerWrapperClasses,
         string $step,
     ) {
         // Wrappers are sorted descending by priority of the relevant step.
-        usort(
-            $handlerWrappersWithParameters,
-            static fn (HandlerWrapperWithParameters $handlerWrapperWithParametersA, HandlerWrapperWithParameters $handlerWrapperWithParametersB) => self::getPriorityForStep($handlerWrapperWithParametersB->handlerWrapper, $step) <=> self::getPriorityForStep($handlerWrapperWithParametersA->handlerWrapper, $step),
+        uksort(
+            $handlerWrapperClasses,
+            /**
+             * @param class-string<HandlerWrapperInterface> $handlerWrapperClassA
+             * @param class-string<HandlerWrapperInterface> $handlerWrapperClassB
+             */
+            static fn (
+                string $handlerWrapperClassA,
+                string $handlerWrapperClassB,
+            ) => self::getPriorityForStep($handlerWrapperClassB, $step) <=> self::getPriorityForStep($handlerWrapperClassA, $step),
         );
 
-        $this->orderedHandlerWrappersWithParameters = $handlerWrappersWithParameters;
+        $this->orderedHandlerWrapperClasses = $handlerWrapperClasses;
     }
 
-    /** @param array<array-key, HandlerWrapperWithParameters> $handlerWrappersWithParameters */
-    public static function prepare(array $handlerWrappersWithParameters): self
+    /** @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null> $handlerWrapperClasses */
+    public static function prepare(array $handlerWrapperClasses): self
     {
         return new self(
-            $handlerWrappersWithParameters,
+            $handlerWrapperClasses,
             self::STEP_PREPARE,
         );
     }
 
-    /** @param array<array-key, HandlerWrapperWithParameters> $handlerWrappersWithParameters */
-    public static function then(array $handlerWrappersWithParameters): self
+    /** @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null> $handlerWrapperClasses */
+    public static function then(array $handlerWrapperClasses): self
     {
         return new self(
-            $handlerWrappersWithParameters,
+            $handlerWrapperClasses,
             self::STEP_THEN,
         );
     }
 
-    /** @param array<array-key, HandlerWrapperWithParameters> $handlerWrappersWithParameters */
-    public static function catch(array $handlerWrappersWithParameters): self
+    /** @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null> $handlerWrapperClasses */
+    public static function catch(array $handlerWrapperClasses): self
     {
         return new self(
-            $handlerWrappersWithParameters,
+            $handlerWrapperClasses,
             self::STEP_CATCH,
         );
     }
 
-    /** @psalm-param self::STEP_* $step  */
-    private static function getPriorityForStep(HandlerWrapperInterface $handlerWrapper, string $step): ?int
+    /**
+     * @param class-string<HandlerWrapperInterface> $handlerWrapperClass
+     * @param self::STEP_*                          $step
+     */
+    private static function getPriorityForStep(string $handlerWrapperClass, string $step): ?int
     {
         return match ($step) {
-            self::STEP_PREPARE => $handlerWrapper::preparePriority(),
-            self::STEP_THEN => $handlerWrapper::thenPriority(),
-            self::STEP_CATCH => $handlerWrapper::catchPriority(),
+            self::STEP_PREPARE => $handlerWrapperClass::preparePriority(),
+            self::STEP_THEN => $handlerWrapperClass::thenPriority(),
+            self::STEP_CATCH => $handlerWrapperClass::catchPriority(),
             default => throw new \InvalidArgumentException(sprintf('Step %s is not valid', $step)),
         };
     }

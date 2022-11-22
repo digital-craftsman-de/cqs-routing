@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace DigitalCraftsman\CQRS\ServiceMap;
 
 use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
-use DigitalCraftsman\CQRS\DTO\HandlerWrapperConfiguration;
 use DigitalCraftsman\CQRS\DTOConstructor\DTOConstructorInterface;
 use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
-use DigitalCraftsman\CQRS\HandlerWrapper\DTO\HandlerWrapperWithParameters;
 use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 use DigitalCraftsman\CQRS\Query\QueryHandlerInterface;
 use DigitalCraftsman\CQRS\RequestDataTransformer\RequestDataTransformerInterface;
@@ -150,38 +148,38 @@ final class ServiceMap
     }
 
     /**
-     * @param array<int, HandlerWrapperConfiguration>|null           $handlerWrapperConfigurations
-     * @param array<int, class-string<HandlerWrapperInterface>>|null $defaultHandlerWrapperClasses
+     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null $handlerWrapperClasses
+     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null $defaultHandlerWrapperClasses
      *
-     * @return array<array-key, HandlerWrapperWithParameters>
+     * @return array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>
      */
-    public function getHandlerWrappersWithParameters(?array $handlerWrapperConfigurations, ?array $defaultHandlerWrapperClasses): array
-    {
-        if ($handlerWrapperConfigurations === null && $defaultHandlerWrapperClasses === null) {
+    public function getHandlerWrapperClasses(
+        ?array $handlerWrapperClasses,
+        ?array $defaultHandlerWrapperClasses,
+    ): array {
+        if ($handlerWrapperClasses === null
+            && $defaultHandlerWrapperClasses === null
+        ) {
             return [];
         }
 
-        if ($handlerWrapperConfigurations === null) {
-            return array_map(
-                fn (string $handlerWrapperClass) => new HandlerWrapperWithParameters(
-                    $this->handlerWrappers->has($handlerWrapperClass)
-                        ? $this->handlerWrappers->get($handlerWrapperClass)
-                        : throw new ConfiguredHandlerWrapperNotAvailable($handlerWrapperClass),
-                    null,
-                ),
-                $defaultHandlerWrapperClasses,
-            );
+        $mergedHandlerWrappers = $defaultHandlerWrapperClasses ?? [];
+        if ($handlerWrapperClasses !== null) {
+            foreach ($handlerWrapperClasses as $handlerWrapperClass => $parameters) {
+                $mergedHandlerWrappers[$handlerWrapperClass] = $parameters;
+            }
         }
 
-        return array_map(
-            fn (HandlerWrapperConfiguration $handlerWrapperConfiguration) => new HandlerWrapperWithParameters(
-                $this->handlerWrappers->has($handlerWrapperConfiguration->handlerWrapperClass)
-                    ? $this->handlerWrappers->get($handlerWrapperConfiguration->handlerWrapperClass)
-                    : throw new ConfiguredHandlerWrapperNotAvailable($handlerWrapperConfiguration->handlerWrapperClass),
-                $handlerWrapperConfiguration->parameters,
-            ),
-            $handlerWrapperConfigurations,
-        );
+        return $mergedHandlerWrappers;
+    }
+
+    public function getHandlerWrapper(string $handlerWrapperClass): HandlerWrapperInterface
+    {
+        try {
+            return $this->handlerWrappers->get($handlerWrapperClass);
+        } catch (ContainerExceptionInterface) {
+            throw new ConfiguredHandlerWrapperNotAvailable($handlerWrapperClass);
+        }
     }
 
     /** @param class-string<CommandHandlerInterface> $handlerClass */

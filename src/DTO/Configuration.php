@@ -32,7 +32,7 @@ final class Configuration
      * @psalm-param array<int, class-string<RequestDataTransformerInterface>>|null $requestDataTransformerClasses
      * @psalm-param class-string<DTOConstructorInterface>|null $dtoConstructorClass
      * @psalm-param array<int, class-string<DTOValidatorInterface>>|null $dtoValidatorClasses
-     * @psalm-param array<int, HandlerWrapperConfiguration>|null $handlerWrapperConfigurations
+     * @psalm-param null|array<class-string<HandlerWrapperInterface>, null|string|int|float|bool|array<array-key, null|string|int|float|bool>> $handlerWrapperClasses
      * @psalm-param class-string<ResponseConstructorInterface>|null $responseConstructorClass
      */
     private function __construct(
@@ -43,7 +43,7 @@ final class Configuration
         public readonly ?array $requestDataTransformerClasses = null,
         public readonly ?string $dtoConstructorClass = null,
         public readonly ?array $dtoValidatorClasses = null,
-        public readonly ?array $handlerWrapperConfigurations = null,
+        public readonly ?array $handlerWrapperClasses = null,
         public readonly ?string $responseConstructorClass = null,
     ) {
     }
@@ -56,7 +56,7 @@ final class Configuration
      * @psalm-param array<int, class-string<RequestDataTransformerInterface>>|null $requestDataTransformerClasses
      * @psalm-param class-string<DTOConstructorInterface>|null $dtoConstructorClass
      * @psalm-param array<int, class-string<DTOValidatorInterface>>|null $dtoValidatorClasses
-     * @psalm-param array<int, HandlerWrapperConfiguration>|null $handlerWrapperConfigurations
+     * @@psalm-param array<class-string<HandlerWrapperInterface>, null|string|int|float|bool|array<array-key, null|string|int|float|bool>> $handlerWrapperClasses
      * @psalm-param class-string<ResponseConstructorInterface>|null $responseConstructorClass
      */
     public static function routePayload(
@@ -67,7 +67,7 @@ final class Configuration
         ?array $requestDataTransformerClasses = null,
         ?string $dtoConstructorClass = null,
         ?array $dtoValidatorClasses = null,
-        ?array $handlerWrapperConfigurations = null,
+        ?array $handlerWrapperClasses = null,
         ?string $responseConstructorClass = null,
     ): array {
         $configuration = new self(
@@ -78,7 +78,7 @@ final class Configuration
             $requestDataTransformerClasses,
             $dtoConstructorClass,
             $dtoValidatorClasses,
-            $handlerWrapperConfigurations,
+            $handlerWrapperClasses,
             $responseConstructorClass,
         );
 
@@ -94,29 +94,12 @@ final class Configuration
      *   requestDataTransformerClasses: array<int, class-string<RequestDataTransformerInterface>>|null,
      *   dtoConstructorClass: class-string<DTOConstructorInterface>|null,
      *   dtoValidatorClasses: array<int, class-string<DTOValidatorInterface>>|null,
-     *   handlerWrapperConfigurations: array<int, array{
-     *     handlerWrapperClass: class-string<HandlerWrapperInterface>,
-     *     parameters: array<int, string|int|float|bool>|string|int|float|bool|null,
-     *   }>|null,
+     *   handlerWrapperClasses: array<class-string<HandlerWrapperInterface>, null|string|int|float|bool|array<array-key, null|string|int|float|bool>>,
      *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
      * } $routePayload
      */
     public static function fromRoutePayload(array $routePayload): self
     {
-        $handlerWrapperConfigurations = null;
-        if ($routePayload['handlerWrapperConfigurations'] !== null) {
-            $handlerWrapperConfigurations = array_map(
-                /**
-                 * @psalm-param array{
-                 *   handlerWrapperClass: class-string<HandlerWrapperInterface>,
-                 *   parameters: array<int, string|int|float|bool>|string|int|float|bool|null,
-                 * } $handlerWrapperRoutePayload
-                 */
-                static fn (array $handlerWrapperRoutePayload) => HandlerWrapperConfiguration::fromRoutePayload($handlerWrapperRoutePayload),
-                $routePayload['handlerWrapperConfigurations'],
-            );
-        }
-
         return new self(
             $routePayload['dtoClass'],
             $routePayload['handlerClass'],
@@ -125,7 +108,7 @@ final class Configuration
             $routePayload['requestDataTransformerClasses'],
             $routePayload['dtoConstructorClass'],
             $routePayload['dtoValidatorClasses'],
-            $handlerWrapperConfigurations,
+            $routePayload['handlerWrapperClasses'],
             $routePayload['responseConstructorClass'],
         );
     }
@@ -139,10 +122,7 @@ final class Configuration
      *   requestDataTransformerClasses: array<int, class-string<RequestDataTransformerInterface>>|null,
      *   dtoConstructorClass: class-string<DTOConstructorInterface>|null,
      *   dtoValidatorClasses: array<int, class-string<DTOValidatorInterface>>|null,
-     *   handlerWrapperConfigurations: array<int, array{
-     *     handlerWrapperClass: class-string<HandlerWrapperInterface>,
-     *     parameters: array<int, string|int|float|bool>|string|int|float|bool|null,
-     *   }>|null,
+     *   handlerWrapperClasses: array<class-string<HandlerWrapperInterface>, null|string|int|float|bool|array<array-key, null|string|int|float|bool>>,
      *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
      * }
      */
@@ -156,12 +136,7 @@ final class Configuration
             'requestDataTransformerClasses' => $this->requestDataTransformerClasses,
             'dtoConstructorClass' => $this->dtoConstructorClass,
             'dtoValidatorClasses' => $this->dtoValidatorClasses,
-            'handlerWrapperConfigurations' => $this->handlerWrapperConfigurations !== null
-                ? array_map(
-                    static fn (HandlerWrapperConfiguration $handlerWrapperConfiguration) => $handlerWrapperConfiguration->toRoutePayload(),
-                    $this->handlerWrapperConfigurations,
-                )
-                : null,
+            'handlerWrapperClasses' => $this->handlerWrapperClasses,
             'responseConstructorClass' => $this->responseConstructorClass,
         ];
     }

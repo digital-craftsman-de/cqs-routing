@@ -22,13 +22,13 @@ use Symfony\Component\HttpFoundation\Response;
 final class QueryController extends AbstractController
 {
     /**
-     * @psalm-param array<int, class-string<RequestValidatorInterface>>|null $defaultRequestValidatorClasses
-     * @psalm-param class-string<RequestDecoderInterface>|null $defaultRequestDecoderClass
-     * @psalm-param array<int, class-string<RequestDataTransformerInterface>>|null $defaultRequestDataTransformerClasses
-     * @psalm-param class-string<DTOConstructorInterface>|null $defaultDTOConstructorClass
-     * @psalm-param array<int, class-string<DTOValidatorInterface>>|null $defaultDTOValidatorClasses
-     * @psalm-param array<int, class-string<HandlerWrapperInterface>>|null $defaultHandlerWrapperClasses
-     * @psalm-param class-string<ResponseConstructorInterface>|null $defaultResponseConstructorClass
+     * @param array<int, class-string<RequestValidatorInterface>>|null                                     $defaultRequestValidatorClasses
+     * @param class-string<RequestDecoderInterface>|null                                                   $defaultRequestDecoderClass
+     * @param array<int, class-string<RequestDataTransformerInterface>>|null                               $defaultRequestDataTransformerClasses
+     * @param class-string<DTOConstructorInterface>|null                                                   $defaultDTOConstructorClass
+     * @param array<int, class-string<DTOValidatorInterface>>|null                                         $defaultDTOValidatorClasses
+     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null $defaultHandlerWrapperClasses
+     * @param class-string<ResponseConstructorInterface>|null                                              $defaultResponseConstructorClass
      *
      * @codeCoverageIgnore
      */
@@ -88,17 +88,18 @@ final class QueryController extends AbstractController
 
         // Wrap handlers
         /** The wrapper handlers are quite complex, so additional explanation can be found in @HandlerWrapperStep */
-        $handlerWrappersWithParameters = $this->serviceMap->getHandlerWrappersWithParameters(
-            $configuration->handlerWrapperConfigurations,
+        $handlerWrapperClasses = $this->serviceMap->getHandlerWrapperClasses(
+            $configuration->handlerWrapperClasses,
             $this->defaultHandlerWrapperClasses,
         );
 
-        $handlerWrapperPrepareStep = HandlerWrapperStep::prepare($handlerWrappersWithParameters);
-        foreach ($handlerWrapperPrepareStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
-            $handlerWrapperWithParameters->handlerWrapper->prepare(
+        $handlerWrapperClassesForPrepareStep = HandlerWrapperStep::prepare($handlerWrapperClasses);
+        foreach ($handlerWrapperClassesForPrepareStep->orderedHandlerWrapperClasses as $handlerWrapperClass => $parameters) {
+            $handlerWrapper = $this->serviceMap->getHandlerWrapper($handlerWrapperClass);
+            $handlerWrapper->prepare(
                 $query,
                 $request,
-                $handlerWrapperWithParameters->parameters,
+                $parameters,
             );
         }
 
@@ -111,24 +112,26 @@ final class QueryController extends AbstractController
         try {
             $result = $queryHandler->handle($query);
 
-            $handlerWrapperThenStep = HandlerWrapperStep::then($handlerWrappersWithParameters);
-            foreach ($handlerWrapperThenStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
-                $handlerWrapperWithParameters->handlerWrapper->then(
+            $handlerWrapperClassesForThenStep = HandlerWrapperStep::then($handlerWrapperClasses);
+            foreach ($handlerWrapperClassesForThenStep->orderedHandlerWrapperClasses as $handlerWrapperClass => $parameters) {
+                $handlerWrapper = $this->serviceMap->getHandlerWrapper($handlerWrapperClass);
+                $handlerWrapper->then(
                     $query,
                     $request,
-                    $handlerWrapperWithParameters->parameters,
+                    $parameters,
                 );
             }
         } catch (\Exception $exception) {
             // Exception is handled by every handler wrapper until one does not return the exception anymore.
             $exceptionToHandle = $exception;
-            $handlerWrapperCatchStep = HandlerWrapperStep::catch($handlerWrappersWithParameters);
-            foreach ($handlerWrapperCatchStep->orderedHandlerWrappersWithParameters as $handlerWrapperWithParameters) {
+            $handlerWrapperCatchStep = HandlerWrapperStep::catch($handlerWrapperClasses);
+            foreach ($handlerWrapperCatchStep->orderedHandlerWrapperClasses as $handlerWrapperClass => $parameters) {
                 if ($exceptionToHandle !== null) {
-                    $exceptionToHandle = $handlerWrapperWithParameters->handlerWrapper->catch(
+                    $handlerWrapper = $this->serviceMap->getHandlerWrapper($handlerWrapperClass);
+                    $exceptionToHandle = $handlerWrapper->catch(
                         $query,
                         $request,
-                        $handlerWrapperWithParameters->parameters,
+                        $parameters,
                         $exceptionToHandle,
                     );
                 }
