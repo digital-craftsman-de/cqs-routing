@@ -88,7 +88,7 @@ final class QueryController extends AbstractController
 
         // Wrap handlers
         /** The wrapper handlers are quite complex, so additional explanation can be found in @HandlerWrapperStep */
-        $handlerWrapperClasses = $this->serviceMap->getHandlerWrapperClasses(
+        $handlerWrapperClasses = $this->serviceMap->mergeHandlerWrapperClasses(
             $configuration->handlerWrapperClasses,
             $this->defaultHandlerWrapperClasses,
         );

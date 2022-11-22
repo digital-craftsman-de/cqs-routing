@@ -148,29 +148,22 @@ final class ServiceMap
     }
 
     /**
-     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null $handlerWrapperClasses
+     * Handler wrapper classes are merged. The parameters of the default configuration are overwritten with those of the route
+     * configuration.
+     *
+     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null $routeHandlerWrapperClasses
      * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null $defaultHandlerWrapperClasses
      *
      * @return array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>
      */
-    public function getHandlerWrapperClasses(
-        ?array $handlerWrapperClasses,
+    public function mergeHandlerWrapperClasses(
+        ?array $routeHandlerWrapperClasses,
         ?array $defaultHandlerWrapperClasses,
     ): array {
-        if ($handlerWrapperClasses === null
-            && $defaultHandlerWrapperClasses === null
-        ) {
-            return [];
-        }
-
-        $mergedHandlerWrappers = $defaultHandlerWrapperClasses ?? [];
-        if ($handlerWrapperClasses !== null) {
-            foreach ($handlerWrapperClasses as $handlerWrapperClass => $parameters) {
-                $mergedHandlerWrappers[$handlerWrapperClass] = $parameters;
-            }
-        }
-
-        return $mergedHandlerWrappers;
+        return array_merge(
+            $defaultHandlerWrapperClasses ?? [],
+            $routeHandlerWrapperClasses ?? [],
+        );
     }
 
     public function getHandlerWrapper(string $handlerWrapperClass): HandlerWrapperInterface
