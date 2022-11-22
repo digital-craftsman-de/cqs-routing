@@ -8,7 +8,7 @@ interface HandlerWrapperInterface
     /**
      * Triggered right before the handler is triggered.
      *
-     * @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters
+     * @param scalar|array<array-key, scalar|null>|null $parameters
      */
     public function prepare(
         Command|Query $dto,
@@ -19,7 +19,7 @@ interface HandlerWrapperInterface
     /**
      * Triggered only if the handler was run without exception.
      *
-     * @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters
+     * @param scalar|array<array-key, scalar|null>|null $parameters
      */
     public function then(
         Command|Query $dto,
@@ -31,7 +31,7 @@ interface HandlerWrapperInterface
      * Triggered only when an exception occurred while executing the handler.
      * The exception must be returned if it's not explicitly the last exception that should be handled.
      *
-     * @psalm-param array<int, string|int|float|bool>|string|int|float|bool|null $parameters
+     * @param scalar|array<array-key, scalar|null>|null $parameters
      */
     public function catch(
         Command|Query $dto,
@@ -201,17 +201,15 @@ This might be useful when the flow of a command handler should be stopped, but n
 
 The priority of the `catch` method is set to a low value like `-100` to make sure it's executed last and doesn't prevent another handler wrapper (that for example rolls back a doctrine transaction) to be executed.
 
-Handler wrappers in a route are not defined like other components with just the class names, but instead as `HandlerWrapperConfiguration`. They still contain the class of the implementation but additionally can define parameters that can be used in the handler wrapper.
+Handler wrappers are configured with the parameter that is given to the instance on execution. The key of the array must be the handler wrapper class and the parameter is supplied through the value. If there is no relevant parameter use `null` as value.
 
 ```php
 'routePayload' => Configuration::routePayload(
-    handlerWrapperConfigurations: [
-        new HandlerWrapperConfiguration(
-            handlerWrapperClass: SilentExceptionWrapper::class,
-            parameters: [
-                EmailAddressDidNotChange::class,
-            ],
-        ),
+    handlerWrapperClasses: [
+        ConnectionTransactionWrapper::class => null,
+        SilentExceptionWrapper::class => [
+            EmailAddressDidNotChange::class,
+        ],
     ],
 ),
 ```
