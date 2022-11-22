@@ -28,7 +28,7 @@ cqrs:
 
     # Classes of the default wrapper handler of command controller when there is none defined for the route
     default_handler_wrapper_classes:
-      - 'App\CQRS\HandlerWrapper\ConnectionTransactionWrapper'
+      'App\CQRS\HandlerWrapper\ConnectionTransactionWrapper': null
 
     # Class of the default response constructor of command controller when there is none defined for the route
     default_response_constructor_class: 'DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor'
@@ -56,7 +56,7 @@ cqrs:
 
     # Classes of the default wrapper handler of query controller when there is none defined for the route
     default_handler_wrapper_classes:
-      - 'App\CQRS\HandlerWrapper\ConnectionTransactionWrapper'
+      'App\CQRS\HandlerWrapper\ConnectionTransactionWrapper': null
     
     # Class of the default response constructor of query controller when there is none defined for the route
     default_response_constructor_class: 'DigitalCraftsman\CQRS\ResponseConstructor\SerializerJsonResponseConstructor'
