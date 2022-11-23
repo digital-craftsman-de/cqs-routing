@@ -6,6 +6,7 @@
 - **[Breaking change](./UPGRADE.md#new-method-for-requestvalidatorinterface-requestdatatransformerinterface-dtovalidatorinterface-and-handlerwrapperinterface)**: Added `areParametersValid` method to `RequestValidatorInterface`, `RequestDataTransformerInterface`, `DTOValidatorInterface` and `HandlerWrapperInterface`
 - **[Breaking change](./UPGRADE.md#update-handler-wrapper-configuration)**: Replaced `HandlerWrapperConfiguration` with simple map configuration.
 - Enabled usage of parameters for default handler wrappers.
+- Enabled usage of parameters for default request validators, request data transformers and DTO validators and when using them in routes.
 
 ## 0.7.0
 
