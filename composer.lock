@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7fce04178f36eff765a10a0fbd8ecdce",
+    "content-hash": "c3ef7a9661e0b904201ec45b08caf473",
     "packages": [
         {
             "name": "psr/cache",
@@ -2370,16 +2370,16 @@
         },
         {
             "name": "digital-craftsman/ids",
-            "version": "v0.4.0",
+            "version": "v0.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/digital-craftsman-de/ids.git",
-                "reference": "7ac914a46dcbcf66b2e60b1aa4ac01769328fc11"
+                "reference": "a1079e0967e168897a0d90afded9a7e211dbbd35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/digital-craftsman-de/ids/zipball/7ac914a46dcbcf66b2e60b1aa4ac01769328fc11",
-                "reference": "7ac914a46dcbcf66b2e60b1aa4ac01769328fc11",
+                "url": "https://api.github.com/repos/digital-craftsman-de/ids/zipball/a1079e0967e168897a0d90afded9a7e211dbbd35",
+                "reference": "a1079e0967e168897a0d90afded9a7e211dbbd35",
                 "shasum": ""
             },
             "require": {
@@ -2391,6 +2391,8 @@
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "^3.3",
+                "infection/infection": "^0.26.15",
+                "phpstan/phpstan": "^1.9",
                 "phpunit/phpunit": "^9.5",
                 "vimeo/psalm": "^4.12"
             },
@@ -2416,9 +2418,9 @@
             "description": "Working with value objects for ids in Symfony",
             "support": {
                 "issues": "https://github.com/digital-craftsman-de/ids/issues",
-                "source": "https://github.com/digital-craftsman-de/ids/tree/v0.4.0"
+                "source": "https://github.com/digital-craftsman-de/ids/tree/v0.5.1"
             },
-            "time": "2022-10-16T13:51:47+00:00"
+            "time": "2022-11-21T09:57:21+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
