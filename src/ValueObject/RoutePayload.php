@@ -106,6 +106,8 @@ final class RoutePayload
      *   handlerWrapperClasses: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, null|scalar>|null>,
      *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
      * } $payload
+     *
+     * @internal
      */
     public static function fromPayload(array $payload): self
     {
@@ -134,6 +136,8 @@ final class RoutePayload
      *   handlerWrapperClasses: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, null|scalar>|null>,
      *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
      * }
+     *
+     * @internal
      */
     private function toPayload(): array
     {
@@ -150,7 +154,11 @@ final class RoutePayload
         ];
     }
 
-    /** @param class-string<Command|Query> $dtoClass */
+    /**
+     * @param class-string<Command|Query> $dtoClass
+     *
+     * @internal
+     */
     public static function validateDTOClass(string $dtoClass): void
     {
         if (!class_exists($dtoClass)) {
@@ -158,7 +166,11 @@ final class RoutePayload
         }
     }
 
-    /** @param class-string<CommandHandlerInterface|QueryHandlerInterface> $dtoClass */
+    /**
+     * @param class-string<CommandHandlerInterface|QueryHandlerInterface> $dtoClass
+     *
+     * @internal
+     */
     public static function validateHandlerClass(string $handlerClass): void
     {
         if (!class_exists($handlerClass)) {
@@ -166,7 +178,11 @@ final class RoutePayload
         }
     }
 
-    /** @param array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null $requestValidatorClasses */
+    /**
+     * @param array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null $requestValidatorClasses
+     *
+     * @internal
+     */
     public static function validateRequestValidatorClasses(?array $requestValidatorClasses): void
     {
         if ($requestValidatorClasses !== null) {
@@ -186,6 +202,11 @@ final class RoutePayload
         }
     }
 
+    /**
+     * @param class-string<RequestDecoderInterface> $dtoClass
+     *
+     * @internal
+     */
     public static function validateRequestDecoderClass(?string $requestDecoderClass): void
     {
         if ($requestDecoderClass !== null
@@ -195,7 +216,11 @@ final class RoutePayload
         }
     }
 
-    /** @param array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null $requestDataTransformerClasses */
+    /**
+     * @param array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null $requestDataTransformerClasses
+     *
+     * @internal
+     */
     public static function validateRequestDataTransformerClasses(?array $requestDataTransformerClasses): void
     {
         if ($requestDataTransformerClasses !== null) {
@@ -215,6 +240,11 @@ final class RoutePayload
         }
     }
 
+    /**
+     * @param class-string<DTOConstructorInterface> $dtoClass
+     *
+     * @internal
+     */
     public static function validateDTOConstructorClass(?string $dtoConstructorClass): void
     {
         if ($dtoConstructorClass !== null
@@ -224,7 +254,11 @@ final class RoutePayload
         }
     }
 
-    /** @param array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null $dtoValidatorClasses */
+    /**
+     * @param array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null $dtoValidatorClasses
+     *
+     * @internal
+     */
     public static function validateDTOValidatorClasses(?array $dtoValidatorClasses): void
     {
         if ($dtoValidatorClasses !== null) {
@@ -244,7 +278,11 @@ final class RoutePayload
         }
     }
 
-    /** @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|bool|null>|null>|null $handlerWrapperClasses */
+    /**
+     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|bool|null>|null>|null $handlerWrapperClasses
+     *
+     * @internal
+     */
     public static function validateHandlerWrapperClasses(?array $handlerWrapperClasses): void
     {
         if ($handlerWrapperClasses !== null) {
@@ -264,6 +302,11 @@ final class RoutePayload
         }
     }
 
+    /**
+     * @param class-string<ResponseConstructorInterface> $dtoClass
+     *
+     * @internal
+     */
     public static function validateResponseConstructorClass(?string $responseConstructorClass): void
     {
         if ($responseConstructorClass !== null
@@ -282,6 +325,8 @@ final class RoutePayload
      * @param array<class-string<T>, scalar|array<array-key, scalar|null>|null>|null $classesFromDefault
      *
      * @return array<class-string<T>, scalar|array<array-key, scalar|null>|null>
+     *
+     * @internal
      */
     public static function mergeClassesFromRouteWithDefaults(
         ?array $classesFromRoute,
