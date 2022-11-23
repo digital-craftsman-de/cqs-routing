@@ -2,6 +2,32 @@
 
 ## From 0.7.* to 0.8.0
 
+### Renamed `Configuration` to `RoutePayload` and converted to a value object
+
+The dto `Configuration` was renamed to `RoutePayload` and moved from `DigitalCraftsman\CQRS\DTO` to `DigitalCraftsman\CQRS\ValueObject`. The named constructor was also renamed from `routePayload` to `generate`.
+
+The method `generate` now validates the input (through the constructor) and doesn't just rely on Psalm for the validation. The validation is done on warmup of the cache for all routes and for the specific route when triggered. The bundle configuration is validated now as well.
+
+Before:
+
+```php
+use DigitalCraftsman\CQRS\DTO\Configuration;
+
+'routePayload' => Configuration::routePayload(
+    ...
+),
+```
+
+After:
+
+```php
+use DigitalCraftsman\CQRS\ValueObject\RoutePayload;
+
+'routePayload' => RoutePayload::generate(
+    ...
+),
+```
+
 ### New method for `RequestValidatorInterface`, `RequestDataTransformerInterface`, `DTOValidatorInterface` and `HandlerWrapperInterface`
 
 The interfaces have been extended with `areParametersValid(mixed $parameters): bool` which validates the parameters of the configuration on cache warmup. All request validators, request data transformers, dto validators and handler wrappers therefore need to implement this new method.
