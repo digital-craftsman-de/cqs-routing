@@ -89,20 +89,44 @@ final class CQRSExtension extends Extension
          */
         $config = $this->processConfiguration($configuration, $configs);
 
-        RoutePayload::validateRequestValidatorClasses($config['query_controller']['default_request_validator_classes']);
+        RoutePayload::validateRequestValidatorClasses(
+            $config['query_controller']['default_request_validator_classes'],
+            null,
+        );
         RoutePayload::validateRequestDecoderClass($config['query_controller']['default_request_decoder_class']);
-        RoutePayload::validateRequestDataTransformerClasses($config['query_controller']['default_request_data_transformer_classes']);
+        RoutePayload::validateRequestDataTransformerClasses(
+            $config['query_controller']['default_request_data_transformer_classes'],
+            null,
+        );
         RoutePayload::validateDTOConstructorClass($config['query_controller']['default_dto_constructor_class']);
-        RoutePayload::validateDTOValidatorClasses($config['query_controller']['default_dto_validator_classes']);
-        RoutePayload::validateHandlerWrapperClasses($config['query_controller']['default_handler_wrapper_classes']);
+        RoutePayload::validateDTOValidatorClasses(
+            $config['query_controller']['default_dto_validator_classes'],
+            null,
+        );
+        RoutePayload::validateHandlerWrapperClasses(
+            $config['query_controller']['default_handler_wrapper_classes'],
+            null,
+        );
         RoutePayload::validateResponseConstructorClass($config['query_controller']['default_response_constructor_class']);
 
-        RoutePayload::validateRequestValidatorClasses($config['command_controller']['default_request_validator_classes']);
+        RoutePayload::validateRequestValidatorClasses(
+            $config['command_controller']['default_request_validator_classes'],
+            null,
+        );
         RoutePayload::validateRequestDecoderClass($config['command_controller']['default_request_decoder_class']);
-        RoutePayload::validateRequestDataTransformerClasses($config['command_controller']['default_request_data_transformer_classes']);
+        RoutePayload::validateRequestDataTransformerClasses(
+            $config['command_controller']['default_request_data_transformer_classes'],
+            null,
+        );
         RoutePayload::validateDTOConstructorClass($config['command_controller']['default_dto_constructor_class']);
-        RoutePayload::validateDTOValidatorClasses($config['command_controller']['default_dto_validator_classes']);
-        RoutePayload::validateHandlerWrapperClasses($config['command_controller']['default_handler_wrapper_classes']);
+        RoutePayload::validateDTOValidatorClasses(
+            $config['command_controller']['default_dto_validator_classes'],
+            null,
+        );
+        RoutePayload::validateHandlerWrapperClasses(
+            $config['command_controller']['default_handler_wrapper_classes'],
+            null,
+        );
         RoutePayload::validateResponseConstructorClass($config['command_controller']['default_response_constructor_class']);
 
         foreach ($config['query_controller'] as $key => $value) {

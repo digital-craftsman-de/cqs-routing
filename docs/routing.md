@@ -25,9 +25,9 @@ $routes->add(
 
 All parameters except `dtoClass` and `handlerClass` are optional. You might only need to define those when you only need the default components for the other parameters ([configured in the `cqrs.yaml`](./configuration.md)).
 
-## Overwrite DTO validators or handler wrappers
+## Overwrite request validators, request data transformers, DTO validators and handler wrappers
 
-The DTO validators and handler wrappers are defined as an array. It's imporant to know that when you use the `dtoValidatorClasses` or `handlerWrapperConfigurations` parameter, the defaults are overwritten and not extended.
+The request validators, request data transformers, DTO validators and handler wrappers are defined as an array. It's important to know that when you use the `requestValidatorClasses`, `requestDataTransformerClasses`, `dtoValidatorClasses` or `handlerWrapperClasses` parameters, the defaults are overwritten and not extended.
 
 Meaning when your default DTO validators are defined with one validator like this:
 
@@ -58,3 +58,56 @@ This way you're also able to remove all default DTO validators from a route like
     dtoValidatorClasses: [],
 ),
 ```
+
+## Merge configuration from request validators, request data transformers, DTO validators and handler wrappers with default
+
+Another option is to merge the route parameters with the defaults. You can use the properties `requestValidatorClassesToMergeWithDefault`, `requestDataTransformerClassesToMergeWithDefault`, `dtoValidatorClassesToMergeWithDefault` and `handlerWrapperClassesToMergeWithDefault` for this.
+
+Meaning when your default DTO validators are defined with one validator like this:
+
+```php
+return static function (CqrsConfig $cqrsConfig) {
+    $cqrsConfig->commandController()
+        ->defaultDtoValidatorClasses([
+            UserIdValidator::class => null,
+        ]);
+```
+
+And you then use the following route configuration:
+
+```php
+'routePayload' => RoutePayload::generate(
+    dtoValidatorClassesToMergeWithDefault: [
+        CourseIdValidator::class => null,
+    ],
+),
+```
+
+The end result is the combination, meaning `UserIdValidator` and `CourseIdValidator`.
+
+### Overwrite default parameters
+
+When the same class is used in the default configuration and in the route configuration, then the parameters of the route configuration has priority and will be used.
+
+With the following default configuration:
+
+```php
+return static function (CqrsConfig $cqrsConfig) {
+    $cqrsConfig->commandController()
+        ->defaultDtoValidatorClasses([
+            UserIdValidator::class => null,
+            FilesizeValidator::class => 5,
+        ]);
+```
+
+And the following route configuration:
+
+```php
+'routePayload' => RoutePayload::generate(
+    dtoValidatorClassesToMergeWithDefault: [
+        FilesizeValidator::class => 10,
+    ],
+),
+```
+
+The end result will be `UserIdValidator` with parameter `null` and `FilesizeValidator` with a parameter of `10`.

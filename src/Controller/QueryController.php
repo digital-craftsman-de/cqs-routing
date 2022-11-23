@@ -55,6 +55,7 @@ final class QueryController extends AbstractController
         // -- Validate request
         $requestValidatorClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
             $configuration->requestValidatorClasses,
+            $configuration->requestValidatorClassesToMergeWithDefault,
             $this->defaultRequestValidatorClasses,
         );
         foreach ($requestValidatorClasses as $requestValidatorClass => $parameters) {
@@ -72,6 +73,7 @@ final class QueryController extends AbstractController
         // -- Transform request data
         $requestDataTransformerClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
             $configuration->requestDataTransformerClasses,
+            $configuration->requestDataTransformerClassesToMergeWithDefault,
             $this->defaultRequestDataTransformerClasses,
         );
         foreach ($requestDataTransformerClasses as $requestDataTransformerClass => $parameters) {
@@ -91,6 +93,7 @@ final class QueryController extends AbstractController
         // -- Validate query
         $dtoValidatorClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
             $configuration->dtoValidatorClasses,
+            $configuration->dtoValidatorClassesToMergeWithDefault,
             $this->defaultDTOValidatorClasses,
         );
         foreach ($dtoValidatorClasses as $dtoValidatorClass => $parameters) {
@@ -102,6 +105,7 @@ final class QueryController extends AbstractController
         /** The wrapper handlers are quite complex, so additional explanation can be found in @HandlerWrapperStep */
         $handlerWrapperClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
             $configuration->handlerWrapperClasses,
+            $configuration->handlerWrapperClassesToMergeWithDefault,
             $this->defaultHandlerWrapperClasses,
         );
 
