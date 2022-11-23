@@ -27,4 +27,7 @@ interface RequestDataTransformerInterface
         array $requestData,
         mixed $parameters,
     ): array;
+
+    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    public static function areParametersValid(mixed $parameters): bool;
 }

@@ -43,4 +43,10 @@ final class UserIdValidator implements DTOValidatorInterface
             throw new \DomainException('Invalid user id', Response::HTTP_FORBIDDEN);
         }
     }
+
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
+    }
 }

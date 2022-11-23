@@ -31,4 +31,10 @@ final class UserIdValidator implements DTOValidatorInterface
             throw new \DomainException('Supplied user id is invalid');
         }
     }
+
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
+    }
 }

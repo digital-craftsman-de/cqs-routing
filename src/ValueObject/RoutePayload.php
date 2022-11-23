@@ -16,6 +16,7 @@ use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
 use DigitalCraftsman\CQRS\RequestValidator\RequestValidatorInterface;
 use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
 use DigitalCraftsman\CQRS\ValueObject\Exception\InvalidClassInRoutePayload;
+use DigitalCraftsman\CQRS\ValueObject\Exception\InvalidParametersInRoutePayload;
 
 /**
  * The symfony routing does not support the usage of objects as it has to dump them into a php file for caching. Therefore, we create an
@@ -45,7 +46,6 @@ final class RoutePayload
         public readonly ?array $handlerWrapperClasses = null,
         public readonly ?string $responseConstructorClass = null,
     ) {
-        // TODO: Add isValidParameter method to all interfaces with parameters and validate here on build time
         self::validateDTOClass($this->dtoClass);
         self::validateHandlerClass($this->handlerClass);
         self::validateRequestValidatorClasses($this->requestValidatorClasses);
@@ -65,7 +65,7 @@ final class RoutePayload
      * @param array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null $requestDataTransformerClasses
      * @param class-string<DTOConstructorInterface>|null                                                           $dtoConstructorClass
      * @param array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null           $dtoValidatorClasses
-     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|bool|null>|null>         $handlerWrapperClasses
+     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|bool|null>|null>|null    $handlerWrapperClasses
      * @param class-string<ResponseConstructorInterface>|null                                                      $responseConstructorClass
      */
     public static function generate(
@@ -164,14 +164,21 @@ final class RoutePayload
         }
     }
 
+    /** @param array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null $requestValidatorClasses */
     public static function validateRequestValidatorClasses(?array $requestValidatorClasses): void
     {
         if ($requestValidatorClasses !== null) {
             foreach ($requestValidatorClasses as $class => $parameters) {
-                if (!is_string($class)
-                    || !class_exists($class)
-                ) {
+                if (!is_string($class)) {
                     throw new InvalidClassInRoutePayload($class);
+                }
+
+                if (!class_exists($class)) {
+                    throw new InvalidClassInRoutePayload($class);
+                }
+
+                if (!$class::areParametersValid($parameters)) {
+                    throw new InvalidParametersInRoutePayload($class);
                 }
             }
         }
@@ -186,14 +193,21 @@ final class RoutePayload
         }
     }
 
+    /** @param array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null $requestDataTransformerClasses */
     public static function validateRequestDataTransformerClasses(?array $requestDataTransformerClasses): void
     {
         if ($requestDataTransformerClasses !== null) {
             foreach ($requestDataTransformerClasses as $class => $parameters) {
-                if (!is_string($class)
-                    || !class_exists($class)
-                ) {
+                if (!is_string($class)) {
                     throw new InvalidClassInRoutePayload($class);
+                }
+
+                if (!class_exists($class)) {
+                    throw new InvalidClassInRoutePayload($class);
+                }
+
+                if (!$class::areParametersValid($parameters)) {
+                    throw new InvalidParametersInRoutePayload($class);
                 }
             }
         }
@@ -208,27 +222,41 @@ final class RoutePayload
         }
     }
 
+    /** @param array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null $dtoValidatorClasses */
     public static function validateDTOValidateClasses(?array $dtoValidatorClasses): void
     {
         if ($dtoValidatorClasses !== null) {
             foreach ($dtoValidatorClasses as $class => $parameters) {
-                if (!is_string($class)
-                    || !class_exists($class)
-                ) {
+                if (!is_string($class)) {
                     throw new InvalidClassInRoutePayload($class);
+                }
+
+                if (!class_exists($class)) {
+                    throw new InvalidClassInRoutePayload($class);
+                }
+
+                if (!$class::areParametersValid($parameters)) {
+                    throw new InvalidParametersInRoutePayload($class);
                 }
             }
         }
     }
 
+    /** @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|bool|null>|null>|null $handlerWrapperClasses */
     public static function validateHandlerWrapperClasses(?array $handlerWrapperClasses): void
     {
         if ($handlerWrapperClasses !== null) {
             foreach ($handlerWrapperClasses as $class => $parameters) {
-                if (!is_string($class)
-                    || !class_exists($class)
-                ) {
+                if (!is_string($class)) {
                     throw new InvalidClassInRoutePayload($class);
+                }
+
+                if (!class_exists($class)) {
+                    throw new InvalidClassInRoutePayload($class);
+                }
+
+                if (!$class::areParametersValid($parameters)) {
+                    throw new InvalidParametersInRoutePayload($class);
                 }
             }
         }

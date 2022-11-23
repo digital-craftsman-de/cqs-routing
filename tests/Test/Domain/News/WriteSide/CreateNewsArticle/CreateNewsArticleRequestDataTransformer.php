@@ -21,4 +21,10 @@ final class CreateNewsArticleRequestDataTransformer implements RequestDataTransf
 
         return $requestData;
     }
+
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
+    }
 }

@@ -17,4 +17,10 @@ final class GuardAgainstTokenInHeaderRequestValidator implements RequestValidato
             throw new \InvalidArgumentException('Token must not be supplied');
         }
     }
+
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
+    }
 }

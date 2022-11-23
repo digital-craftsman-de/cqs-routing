@@ -60,4 +60,25 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
     {
         return 0;
     }
+
+    /** @param array<array-key, class-string<\Throwable>> $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        if (!is_array($parameters)) {
+            return false;
+        }
+
+        foreach ($parameters as $exceptionClass) {
+            if (!class_exists($exceptionClass)) {
+                return false;
+            }
+
+            $reflectionClass = new \ReflectionClass($exceptionClass);
+            if (!$reflectionClass->implementsInterface(\Throwable::class)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

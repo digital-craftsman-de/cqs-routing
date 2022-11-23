@@ -23,4 +23,10 @@ final class GuardAgainstFileWithVirusRequestValidator implements RequestValidato
             $this->virusScanner->scanForVirus($file);
         }
     }
+
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
+    }
 }

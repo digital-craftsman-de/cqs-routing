@@ -41,4 +41,11 @@ final class FileSizeValidator implements DTOValidatorInterface
     {
         return (int) round($bytes / 1024 / 1024);
     }
+
+    /** @param int $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return is_int($parameters)
+            && $parameters > 0;
+    }
 }

@@ -24,4 +24,10 @@ final class AddActionIdRequestDataTransformer implements RequestDataTransformerI
 
         return $requestData;
     }
+
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
+    }
 }
