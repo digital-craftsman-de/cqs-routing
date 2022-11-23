@@ -93,7 +93,7 @@ final class CQRSExtension extends Extension
         RoutePayload::validateRequestDecoderClass($config['query_controller']['default_request_decoder_class']);
         RoutePayload::validateRequestDataTransformerClasses($config['query_controller']['default_request_data_transformer_classes']);
         RoutePayload::validateDTOConstructorClass($config['query_controller']['default_dto_constructor_class']);
-        RoutePayload::validateDTOValidateClasses($config['query_controller']['default_dto_validator_classes']);
+        RoutePayload::validateDTOValidatorClasses($config['query_controller']['default_dto_validator_classes']);
         RoutePayload::validateHandlerWrapperClasses($config['query_controller']['default_handler_wrapper_classes']);
         RoutePayload::validateResponseConstructorClass($config['query_controller']['default_response_constructor_class']);
 
@@ -101,7 +101,7 @@ final class CQRSExtension extends Extension
         RoutePayload::validateRequestDecoderClass($config['command_controller']['default_request_decoder_class']);
         RoutePayload::validateRequestDataTransformerClasses($config['command_controller']['default_request_data_transformer_classes']);
         RoutePayload::validateDTOConstructorClass($config['command_controller']['default_dto_constructor_class']);
-        RoutePayload::validateDTOValidateClasses($config['command_controller']['default_dto_validator_classes']);
+        RoutePayload::validateDTOValidatorClasses($config['command_controller']['default_dto_validator_classes']);
         RoutePayload::validateHandlerWrapperClasses($config['command_controller']['default_handler_wrapper_classes']);
         RoutePayload::validateResponseConstructorClass($config['command_controller']['default_response_constructor_class']);
 

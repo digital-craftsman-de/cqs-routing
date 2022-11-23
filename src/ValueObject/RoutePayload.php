@@ -52,7 +52,7 @@ final class RoutePayload
         self::validateRequestDecoderClass($this->requestDecoderClass);
         self::validateRequestDataTransformerClasses($this->requestDataTransformerClasses);
         self::validateDTOConstructorClass($this->dtoConstructorClass);
-        self::validateDTOValidateClasses($this->dtoValidatorClasses);
+        self::validateDTOValidatorClasses($this->dtoValidatorClasses);
         self::validateHandlerWrapperClasses($this->handlerWrapperClasses);
         self::validateResponseConstructorClass($this->responseConstructorClass);
     }
@@ -150,14 +150,16 @@ final class RoutePayload
         ];
     }
 
-    private static function validateDTOClass(string $dtoClass): void
+    /** @param class-string<Command|Query> $dtoClass */
+    public static function validateDTOClass(string $dtoClass): void
     {
         if (!class_exists($dtoClass)) {
             throw new InvalidClassInRoutePayload($dtoClass);
         }
     }
 
-    private static function validateHandlerClass(string $handlerClass): void
+    /** @param class-string<CommandHandlerInterface|QueryHandlerInterface> $dtoClass */
+    public static function validateHandlerClass(string $handlerClass): void
     {
         if (!class_exists($handlerClass)) {
             throw new InvalidClassInRoutePayload($handlerClass);
@@ -223,7 +225,7 @@ final class RoutePayload
     }
 
     /** @param array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null $dtoValidatorClasses */
-    public static function validateDTOValidateClasses(?array $dtoValidatorClasses): void
+    public static function validateDTOValidatorClasses(?array $dtoValidatorClasses): void
     {
         if ($dtoValidatorClasses !== null) {
             foreach ($dtoValidatorClasses as $class => $parameters) {
