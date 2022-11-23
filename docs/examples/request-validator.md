@@ -5,7 +5,14 @@
 ```php
 interface RequestValidatorInterface
 {
-    public function validateRequest(Request $request): void;
+    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    public function validateRequest(
+        Request $request,
+        mixed $parameters,
+    ): void;
+
+    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    public static function areParametersValid(mixed $parameters): bool;
 }
 ```
 
@@ -23,12 +30,21 @@ final class VirusFreeFilesRequestValidator implements RequestValidatorInterface
     ) {
     }
 
-    public function validateRequest(Request $request): void
-    {
+    /** @param null $parameters */
+    public function validateRequest(
+        Request $request,
+        mixed $parameters,
+    ): void {
         foreach ($request->files as $file) {
             // Throws exception if it finds a virus in the file.
             $this->virusScanner->scanFile($file);
         }
+    }
+    
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
     }
 }
 ```
