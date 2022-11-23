@@ -44,14 +44,6 @@ return static function (CqrsConfig $cqrsConfig) {
             ConnectionTransactionWrapper::class => null,
         ])
         ->defaultResponseConstructorClass(EmptyJsonResponseConstructor::class);
-
-    // -- Serializer
-
-    // See https://symfony.com/doc/current/components/serializer.html#option-2-using-the-context
-    $cqrsConfig->serializerContext([
-        AbstractObjectNormalizer::SKIP_NULL_VALUES => true,
-        AbstractObjectNormalizer::PRESERVE_EMPTY_OBJECTS => true,
-    ]);
 };
 ```
 
@@ -115,10 +107,4 @@ cqrs:
     
     # Class of the default response constructor of query controller when there is none defined for the route
     default_response_constructor_class: 'DigitalCraftsman\CQRS\ResponseConstructor\SerializerJsonResponseConstructor'
-
-  # Define the context that will be used by the JSON serializer
-  # See https://symfony.com/doc/current/components/serializer.html#option-2-using-the-context
-  serializer_context:
-    skip_null_values: true
-    preserve_empty_objects: true
 ```

@@ -56,8 +56,5 @@ final class CQRSExtensionTest extends TestCase
         /** @psalm-suppress PossiblyInvalidArgument */
         self::assertCount(0, $container->getParameter('cqrs.command_controller.default_handler_wrapper_classes'));
         self::assertNull($container->getParameter('cqrs.command_controller.default_response_constructor_class'));
-
-        /** @psalm-suppress PossiblyInvalidArgument */
-        self::assertCount(0, $container->getParameter('cqrs.serializer_context'));
     }
 }

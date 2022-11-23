@@ -80,11 +80,6 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('default_response_constructor_class')->defaultNull()->end()
                     ->end()
                 ->end()
-                ->arrayNode('serializer_context')
-                    ->beforeNormalization()->castToArray()->end()
-                    ->defaultValue([])
-                    ->prototype('scalar')->end()
-                ->end()
             ->end()
         ;
 
