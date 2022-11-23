@@ -85,7 +85,7 @@ And you then adapt it like this:
 
 The end result is the combination, meaning `UserIdValidator` and `CourseIdValidator`.
 
-When the same class is used in the default and in the route, then the parameters of the route have priority and will be taken.
+When the same class is used in the default and in the route, then the parameters of the route have priority and will be used.
 
 ```php
 return static function (CqrsConfig $cqrsConfig) {
