@@ -15,6 +15,11 @@ use DigitalCraftsman\CQRS\RequestDataTransformer\RequestDataTransformerInterface
 use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
 use DigitalCraftsman\CQRS\RequestValidator\RequestValidatorInterface;
 use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNetherCommandHandlerNorQueryHandler;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNetherCommandNorQuery;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoDTOConstructor;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestDecoder;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoResponseConstructor;
 use DigitalCraftsman\CQRS\ValueObject\Exception\InvalidClassInRoutePayload;
 use DigitalCraftsman\CQRS\ValueObject\Exception\InvalidParametersInRoutePayload;
 use DigitalCraftsman\CQRS\ValueObject\Exception\OnlyOverwriteOrMergeCanBeSuppliedToRoutePayload;
@@ -218,7 +223,7 @@ final class RoutePayload
         if (!$reflectionClass->implementsInterface(Command::class)
             && !$reflectionClass->implementsInterface(Query::class)
         ) {
-            throw new InvalidClassInRoutePayload($dtoClass);
+            throw new ClassIsNetherCommandNorQuery($dtoClass);
         }
     }
 
@@ -237,7 +242,7 @@ final class RoutePayload
         if (!$reflectionClass->implementsInterface(CommandHandlerInterface::class)
             && !$reflectionClass->implementsInterface(QueryHandlerInterface::class)
         ) {
-            throw new InvalidClassInRoutePayload($handlerClass);
+            throw new ClassIsNetherCommandHandlerNorQueryHandler($handlerClass);
         }
     }
 
@@ -314,7 +319,7 @@ final class RoutePayload
 
             $reflectionClass = new \ReflectionClass($requestDecoderClass);
             if (!$reflectionClass->implementsInterface(RequestDecoderInterface::class)) {
-                throw new InvalidClassInRoutePayload($requestDecoderClass);
+                throw new ClassIsNoRequestDecoder($requestDecoderClass);
             }
         }
     }
@@ -392,7 +397,7 @@ final class RoutePayload
 
             $reflectionClass = new \ReflectionClass($dtoConstructorClass);
             if (!$reflectionClass->implementsInterface(DTOConstructorInterface::class)) {
-                throw new InvalidClassInRoutePayload($dtoConstructorClass);
+                throw new ClassIsNoDTOConstructor($dtoConstructorClass);
             }
         }
     }
@@ -529,7 +534,7 @@ final class RoutePayload
 
             $reflectionClass = new \ReflectionClass($responseConstructorClass);
             if (!$reflectionClass->implementsInterface(ResponseConstructorInterface::class)) {
-                throw new InvalidClassInRoutePayload($responseConstructorClass);
+                throw new ClassIsNoResponseConstructor($responseConstructorClass);
             }
         }
     }

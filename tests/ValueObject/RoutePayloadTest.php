@@ -16,6 +16,11 @@ use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskComma
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskDTOConstructor;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskRequestDecoder;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNetherCommandHandlerNorQueryHandler;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNetherCommandNorQuery;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoDTOConstructor;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestDecoder;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoResponseConstructor;
 use DigitalCraftsman\CQRS\ValueObject\Exception\InvalidClassInRoutePayload;
 use DigitalCraftsman\CQRS\ValueObject\Exception\InvalidParametersInRoutePayload;
 use PHPUnit\Framework\TestCase;
@@ -177,6 +182,20 @@ final class RoutePayloadTest extends TestCase
         RoutePayload::validateDTOClass('App\DoesNotExist');
     }
 
+    /**
+     * @test
+     *
+     * @covers ::validateDTOClass
+     */
+    public function validate_dto_class_fails_when_class_is_not_a_command_or_a_query(): void
+    {
+        // -- Assert
+        $this->expectException(ClassIsNetherCommandNorQuery::class);
+
+        // -- Act
+        RoutePayload::validateDTOClass(UserIdValidator::class);
+    }
+
     // -- Validate handler class
 
     /**
@@ -191,6 +210,20 @@ final class RoutePayloadTest extends TestCase
 
         // -- Act
         RoutePayload::validateHandlerClass('App\DoesNotExist');
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::validateHandlerClass
+     */
+    public function validate_handler_class_fails_when_class_is_not_a_command_handler_or_a_query_handler(): void
+    {
+        // -- Assert
+        $this->expectException(ClassIsNetherCommandHandlerNorQueryHandler::class);
+
+        // -- Act
+        RoutePayload::validateHandlerClass(UserIdValidator::class);
     }
 
     // -- Validate request validator classes
@@ -245,7 +278,7 @@ final class RoutePayloadTest extends TestCase
         ], null);
     }
 
-    // -- Validate request data class
+    // -- Validate request decoder class
 
     /**
      * @test
@@ -259,6 +292,20 @@ final class RoutePayloadTest extends TestCase
 
         // -- Act
         RoutePayload::validateRequestDecoderClass('App\DoesNotExist');
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::validateRequestDecoderClass
+     */
+    public function validate_request_decoder_class_fails_when_class_is_no_request_decoder(): void
+    {
+        // -- Assert
+        $this->expectException(ClassIsNoRequestDecoder::class);
+
+        // -- Act
+        RoutePayload::validateRequestDecoderClass(UserIdValidator::class);
     }
 
     // -- Validate request data transformer classes
@@ -327,6 +374,20 @@ final class RoutePayloadTest extends TestCase
 
         // -- Act
         RoutePayload::validateDTOConstructorClass('App\DoesNotExist');
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::validateDTOConstructorClass
+     */
+    public function validate_dto_constructor_class_fails_when_class_is_no_dto_constructor(): void
+    {
+        // -- Assert
+        $this->expectException(ClassIsNoDTOConstructor::class);
+
+        // -- Act
+        RoutePayload::validateDTOConstructorClass(UserIdValidator::class);
     }
 
     // -- Validate DTO validator classes
@@ -449,6 +510,20 @@ final class RoutePayloadTest extends TestCase
 
         // -- Act
         RoutePayload::validateResponseConstructorClass('App\DoesNotExist');
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::validateResponseConstructorClass
+     */
+    public function validate_response_constructor_class_fails_when_class_is_no_response_constructor(): void
+    {
+        // -- Assert
+        $this->expectException(ClassIsNoResponseConstructor::class);
+
+        // -- Act
+        RoutePayload::validateResponseConstructorClass(UserIdValidator::class);
     }
 
     // -- Merge classes from route with defaults
