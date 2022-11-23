@@ -6,6 +6,7 @@
 - **[Breaking change](./UPGRADE.md#new-method-for-requestvalidatorinterface-requestdatatransformerinterface-dtovalidatorinterface-and-handlerwrapperinterface)**: Added `areParametersValid` method to `RequestValidatorInterface`, `RequestDataTransformerInterface`, `DTOValidatorInterface` and `HandlerWrapperInterface`
 - **[Breaking change](./UPGRADE.md#update-handler-wrapper-configuration)**: Replaced `HandlerWrapperConfiguration` with simple map configuration.
 - **Breaking change**: Added the parameters `requestValidatorClassesToMergeWithDefault`, `requestDataTransformerClassesToMergeWithDefault`, `dtoValidatorClassesToMergeWithDefault` or `handlerWrapperClassesToMergeWithDefault` to `RoutePayload`. This change is only breaking when you don't use named parameters in your routing (which is highly recommended). Using those parameters instead the version without `*ToMergeWithDefault` merges the configuration with the default instead of replacing it ([see routing docs](./docs/routing.md#merge-configuration-from-request-validators-request-data-transformers-dto-validators-and-handler-wrappers-with-default)).
+- **Breaking change**: Removed `serializer_context` configuration. It was identical with the one that can be defined in the Symfony framework configuration.
 - Enabled usage of parameters in route configuration for request validators, request data transformers and DTO validators.
 - Enabled usage of parameters in default configuration for request validators, request data transformers, DTO validators and handler wrappers.
 
