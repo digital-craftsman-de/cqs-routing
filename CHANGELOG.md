@@ -10,7 +10,7 @@
 
 ## 0.7.0
 
-- Drop support for PHP 8.0.
+- **[Breaking change](./UPGRADE.md#upgrade-to-at-least-php-81)**: Drop support for PHP 8.0.
 - Add support for PHP 8.2.
 
 ## 0.6.0
