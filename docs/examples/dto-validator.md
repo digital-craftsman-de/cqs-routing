@@ -5,8 +5,15 @@
 ```php
 interface DTOValidatorInterface
 {
-    /** @param Command|Query $dto */
-    public function validateDTO(Request $request, object $dto): void;
+    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    public function validateDTO(
+        Request $request,
+        Command|Query $dto,
+        mixed $parameters,
+    ): void;
+
+    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    public static function areParametersValid(mixed $parameters): bool;
 }
 ```
 
@@ -24,9 +31,12 @@ final class UserIdValidator implements DTOValidatorInterface
     ) {
     }
 
-    /** @param object $dto */
-    public function validateDTO(Request $request, object $dto): void
-    {
+    /** @param null $parameters */
+    public function validateDTO(
+        Request $request, 
+        Command|Query $dto,
+        mixed $parameters,
+    ): void {
         $reflection = new \ReflectionClass($dto);
         if (!$reflection->hasProperty('userId')) {
             throw new NotRelevantForDTO($dto);
@@ -41,6 +51,12 @@ final class UserIdValidator implements DTOValidatorInterface
         if ($userId->isNotEqualTo($user->id)) {
             throw new WrongUserId($userId, $user->id);
         }
+    }
+    
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
     }
 }
 ```
