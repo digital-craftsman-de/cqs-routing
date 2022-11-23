@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQRS\RequestDataTransformer;
 
+use DigitalCraftsman\CQRS\Command\Command;
+use DigitalCraftsman\CQRS\Query\Query;
+
 /**
  * The data transformer can have three kinds of tasks and multiple data transformers can be used with one request.
  * - Cast existing data into other formats.
  * - Sanitize existing data.
  * - Add additional data not present in the request.
-
  *  It must not be used to:
  * - Validate the request data in any way. That must be handled in the DTO validator.
  *
@@ -19,7 +21,7 @@ namespace DigitalCraftsman\CQRS\RequestDataTransformer;
 interface RequestDataTransformerInterface
 {
     /**
-     * @param class-string                              $dtoClass
+     * @param class-string<Command|Query>               $dtoClass
      * @param scalar|array<array-key, scalar|null>|null $parameters
      */
     public function transformRequestData(

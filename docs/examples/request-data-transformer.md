@@ -5,8 +5,18 @@
 ```php
 interface RequestDataTransformerInterface
 {
-    /** @param class-string $dtoClass */
-    public function transformRequestData(string $dtoClass, array $requestData): array;
+    /**
+     * @param class-string<Command|Query>               $dtoClass
+     * @param scalar|array<array-key, scalar|null>|null $parameters
+     */
+    public function transformRequestData(
+        string $dtoClass,
+        array $requestData,
+        mixed $parameters,
+    ): array;
+
+    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    public static function areParametersValid(mixed $parameters): bool;
 }
 ```
 
@@ -19,12 +29,24 @@ Imagine you have a client form with a number field for a discount. It's possible
 ```php
 final class UpdateDiscountRequestDataTransformer implements RequestDataTransformerInterface
 {
-    /** @param class-string $dtoClass */
-    public function transformRequestData(string $dtoClass, array $requestData): array
-    {
+    /**
+     * @param class-string<UpdateDiscountCommand> $dtoClass
+     * @param null                                $parameters
+     */
+    public function transformRequestData(
+        string $dtoClass, 
+        array $requestData,
+        mixed $parameters,
+    ): array {
         $requestData['discount'] = (float) $requestData['discount'];
 
         return $requestData;
+    }
+    
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
     }
 }
 ```
@@ -41,12 +63,24 @@ final class UpdateDescriptionRequestDataTransformer implements RequestDataTransf
     ) {
     }
 
-    /** @param class-string $dtoClass */
-    public function transformRequestData(string $dtoClass, array $requestData): array
-    {
+    /**
+     * @param class-string<UpdateDescriptionCommand> $dtoClass
+     * @param null                                   $parameters
+     */
+    public function transformRequestData(
+        string $dtoClass, 
+        array $requestData,
+        mixed $parameters,
+    ): array {
         $requestData['description'] = $this->sanitizer->sanitizeHTML($requestData['description']);
 
         return $requestData;
+    }
+    
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
     }
 }
 ```
@@ -58,12 +92,24 @@ Sometimes there is data which the user can not or must not have but should be pa
 ```php
 final class AddUserManagementRootIdRequestDataTransformer implements RequestDataTransformerInterface
 {
-    /** @param class-string $dtoClass */
-    public function transformRequestData(string $dtoClass, array $requestData): array
-    {
+    /**
+     * @param class-string<Command|Query> $dtoClass
+     * @param null                        $parameters
+     */
+    public function transformRequestData(
+        string $dtoClass, 
+        array $requestData,
+        mixed $parameters,
+    ): array {
         $requestData['rootId'] = UserManagement::UNIQUE_ROOT_ID;
 
         return $requestData;
+    }
+    
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
     }
 }
 ```
