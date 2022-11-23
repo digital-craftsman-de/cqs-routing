@@ -73,7 +73,7 @@ return static function (CqrsConfig $cqrsConfig) {
         ]);
 ```
 
-And you then adapt it like this:
+And you then use the following route configuration:
 
 ```php
 'routePayload' => RoutePayload::generate(
@@ -84,6 +84,8 @@ And you then adapt it like this:
 ```
 
 The end result is the combination, meaning `UserIdValidator` and `CourseIdValidator`.
+
+### Overwrite default parameters
 
 When the same class is used in the default and in the route, then the parameters of the route have priority and will be used.
 
@@ -96,7 +98,7 @@ return static function (CqrsConfig $cqrsConfig) {
         ]);
 ```
 
-And you then adapt it like this:
+And you then use the following route configuration:
 
 ```php
 'routePayload' => RoutePayload::generate(
@@ -106,4 +108,4 @@ And you then adapt it like this:
 ),
 ```
 
-Which would be `10` in this example.
+The end result will be `UserIdValidator` with parameter `null` and `FilesizeValidator` with a parameter of `10`.
