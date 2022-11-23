@@ -10,6 +10,7 @@ use DigitalCraftsman\CQRS\Test\Application\AddActionIdRequestDataTransformer;
 use DigitalCraftsman\CQRS\Test\Application\Authentication\UserIdValidator;
 use DigitalCraftsman\CQRS\Test\Application\ConnectionTransactionWrapper;
 use DigitalCraftsman\CQRS\Test\Application\SilentExceptionWrapper;
+use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\Exception\TasksNotAccessible;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommand;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommandHandler;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskDTOConstructor;
@@ -49,19 +50,23 @@ final class RoutePayloadTest extends TestCase
             requestValidatorClasses: [
                 GuardAgainstTokenInHeaderRequestValidator::class => null,
             ],
+            requestValidatorClassesToMergeWithDefault: null,
             requestDecoderClass: CreateTaskRequestDecoder::class,
             requestDataTransformerClasses: [
                 AddActionIdRequestDataTransformer::class => null,
             ],
+            requestDataTransformerClassesToMergeWithDefault: null,
             dtoConstructorClass: CreateTaskDTOConstructor::class,
             dtoValidatorClasses: [
                 UserIdValidator::class => null,
             ],
+            dtoValidatorClassesToMergeWithDefault: null,
             handlerWrapperClasses: [
                 SilentExceptionWrapper::class => [
                     TaskAlreadyAccepted::class,
                 ],
             ],
+            handlerWrapperClassesToMergeWithDefault: null,
             responseConstructorClass: EmptyJsonResponseConstructor::class,
         );
 
@@ -72,19 +77,23 @@ final class RoutePayloadTest extends TestCase
             'requestValidatorClasses' => [
                 GuardAgainstTokenInHeaderRequestValidator::class => null,
             ],
+            'requestValidatorClassesToMergeWithDefault' => null,
             'requestDecoderClass' => CreateTaskRequestDecoder::class,
             'requestDataTransformerClasses' => [
                 AddActionIdRequestDataTransformer::class => null,
             ],
+            'requestDataTransformerClassesToMergeWithDefault' => null,
             'dtoConstructorClass' => CreateTaskDTOConstructor::class,
             'dtoValidatorClasses' => [
                 UserIdValidator::class => null,
             ],
+            'dtoValidatorClassesToMergeWithDefault' => null,
             'handlerWrapperClasses' => [
                 SilentExceptionWrapper::class => [
                     TaskAlreadyAccepted::class,
                 ],
             ],
+            'handlerWrapperClassesToMergeWithDefault' => null,
             'responseConstructorClass' => EmptyJsonResponseConstructor::class,
         ], $payload);
     }
@@ -103,19 +112,23 @@ final class RoutePayloadTest extends TestCase
             'requestValidatorClasses' => [
                 GuardAgainstTokenInHeaderRequestValidator::class => null,
             ],
+            'requestValidatorClassesToMergeWithDefault' => null,
             'requestDecoderClass' => CreateTaskRequestDecoder::class,
             'requestDataTransformerClasses' => [
                 AddActionIdRequestDataTransformer::class => null,
             ],
+            'requestDataTransformerClassesToMergeWithDefault' => null,
             'dtoConstructorClass' => CreateTaskDTOConstructor::class,
             'dtoValidatorClasses' => [
                 UserIdValidator::class => null,
             ],
+            'dtoValidatorClassesToMergeWithDefault' => null,
             'handlerWrapperClasses' => [
                 SilentExceptionWrapper::class => [
                     TaskAlreadyAccepted::class,
                 ],
             ],
+            'handlerWrapperClassesToMergeWithDefault' => null,
             'responseConstructorClass' => EmptyJsonResponseConstructor::class,
         ];
 
@@ -128,19 +141,23 @@ final class RoutePayloadTest extends TestCase
         self::assertSame([
             GuardAgainstTokenInHeaderRequestValidator::class => null,
         ], $routePayload->requestValidatorClasses);
+        self::assertNull($routePayload->requestValidatorClassesToMergeWithDefault);
         self::assertSame(CreateTaskRequestDecoder::class, $routePayload->requestDecoderClass);
         self::assertSame([
             AddActionIdRequestDataTransformer::class => null,
         ], $routePayload->requestDataTransformerClasses);
+        self::assertNull($routePayload->requestDataTransformerClassesToMergeWithDefault);
         self::assertSame(CreateTaskDTOConstructor::class, $routePayload->dtoConstructorClass);
         self::assertSame([
             UserIdValidator::class => null,
         ], $routePayload->dtoValidatorClasses);
+        self::assertNull($routePayload->dtoValidatorClassesToMergeWithDefault);
         self::assertSame([
             SilentExceptionWrapper::class => [
                 TaskAlreadyAccepted::class,
             ],
         ], $routePayload->handlerWrapperClasses);
+        self::assertNull($routePayload->handlerWrapperClassesToMergeWithDefault);
         self::assertSame(EmptyJsonResponseConstructor::class, $routePayload->responseConstructorClass);
     }
 
@@ -192,7 +209,7 @@ final class RoutePayloadTest extends TestCase
         /** @psalm-suppress InvalidScalarArgument */
         RoutePayload::validateRequestValidatorClasses([
             'App\DoesNotExist',
-        ]);
+        ], null);
     }
 
     /**
@@ -209,7 +226,7 @@ final class RoutePayloadTest extends TestCase
         /** @psalm-suppress ArgumentTypeCoercion */
         RoutePayload::validateRequestValidatorClasses([
             'App\DoesNotExist' => null,
-        ]);
+        ], null);
     }
 
     /**
@@ -225,7 +242,7 @@ final class RoutePayloadTest extends TestCase
         // -- Act
         RoutePayload::validateRequestValidatorClasses([
             GuardAgainstTokenInHeaderRequestValidator::class => 'invalid-parameter',
-        ]);
+        ], null);
     }
 
     // -- Validate request data class
@@ -260,7 +277,7 @@ final class RoutePayloadTest extends TestCase
         /** @psalm-suppress InvalidScalarArgument */
         RoutePayload::validateRequestDataTransformerClasses([
             'App\DoesNotExist',
-        ]);
+        ], null);
     }
 
     /**
@@ -277,7 +294,7 @@ final class RoutePayloadTest extends TestCase
         /** @psalm-suppress ArgumentTypeCoercion */
         RoutePayload::validateRequestDataTransformerClasses([
             'App\DoesNotExist' => null,
-        ]);
+        ], null);
     }
 
     /**
@@ -293,7 +310,7 @@ final class RoutePayloadTest extends TestCase
         // -- Act
         RoutePayload::validateRequestDataTransformerClasses([
             AddActionIdRequestDataTransformer::class => 'invalid-parameter',
-        ]);
+        ], null);
     }
 
     // -- Validate DTO constructor class
@@ -328,7 +345,7 @@ final class RoutePayloadTest extends TestCase
         /** @psalm-suppress InvalidScalarArgument */
         RoutePayload::validateDTOValidatorClasses([
             'App\DoesNotExist',
-        ]);
+        ], null);
     }
 
     /**
@@ -345,7 +362,7 @@ final class RoutePayloadTest extends TestCase
         /** @psalm-suppress ArgumentTypeCoercion */
         RoutePayload::validateDTOValidatorClasses([
             'App\DoesNotExist' => null,
-        ]);
+        ], null);
     }
 
     /**
@@ -361,7 +378,7 @@ final class RoutePayloadTest extends TestCase
         // -- Act
         RoutePayload::validateDTOValidatorClasses([
             UserIdValidator::class => 'invalid-parameter',
-        ]);
+        ], null);
     }
 
     // -- Validate handler wrapper classes
@@ -380,7 +397,7 @@ final class RoutePayloadTest extends TestCase
         /** @psalm-suppress InvalidScalarArgument */
         RoutePayload::validateHandlerWrapperClasses([
             'App\DoesNotExist',
-        ]);
+        ], null);
     }
 
     /**
@@ -397,7 +414,7 @@ final class RoutePayloadTest extends TestCase
         /** @psalm-suppress ArgumentTypeCoercion */
         RoutePayload::validateHandlerWrapperClasses([
             'App\DoesNotExist' => null,
-        ]);
+        ], null);
     }
 
     /**
@@ -415,7 +432,7 @@ final class RoutePayloadTest extends TestCase
             SilentExceptionWrapper::class => [
                 UserIdValidator::class,
             ],
-        ]);
+        ], null);
     }
 
     // -- Validate response constructor class
@@ -452,12 +469,88 @@ final class RoutePayloadTest extends TestCase
                 TaskAlreadyAccepted::class,
             ],
         ];
+        $classesFromRouteToMergeWithDefault = null;
 
         // -- Act
-        $relevantClasses = RoutePayload::mergeClassesFromRouteWithDefaults($classesFromRoute, $classesFromDefault);
+        $relevantClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
+            $classesFromRoute,
+            $classesFromRouteToMergeWithDefault,
+            $classesFromDefault,
+        );
 
         // -- Assert
         self::assertSame($classesFromRoute, $relevantClasses);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mergeClassesFromRouteWithDefaults
+     */
+    public function merge_classes_from_route_with_defaults_works_with_merge_into_defaults(): void
+    {
+        // -- Arrange
+        $classesFromDefault = [
+            ConnectionTransactionWrapper::class => null,
+        ];
+        $classesFromRoute = null;
+        $classesFromRouteToMergeWithDefault = [
+            SilentExceptionWrapper::class => [
+                TaskAlreadyAccepted::class,
+            ],
+        ];
+
+        // -- Act
+        $relevantClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
+            $classesFromRoute,
+            $classesFromRouteToMergeWithDefault,
+            $classesFromDefault,
+        );
+
+        // -- Assert
+        self::assertSame([
+            ConnectionTransactionWrapper::class => null,
+            SilentExceptionWrapper::class => [
+                TaskAlreadyAccepted::class,
+            ],
+        ], $relevantClasses);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::mergeClassesFromRouteWithDefaults
+     */
+    public function merge_classes_from_route_with_defaults_works_with_merge_into_defaults_and_parameters_are_used_from_route(): void
+    {
+        // -- Arrange
+        $classesFromDefault = [
+            ConnectionTransactionWrapper::class => null,
+            SilentExceptionWrapper::class => [
+                TasksNotAccessible::class,
+            ],
+        ];
+        $classesFromRoute = null;
+        $classesFromRouteToMergeWithDefault = [
+            SilentExceptionWrapper::class => [
+                TaskAlreadyAccepted::class,
+            ],
+        ];
+
+        // -- Act
+        $relevantClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
+            $classesFromRoute,
+            $classesFromRouteToMergeWithDefault,
+            $classesFromDefault,
+        );
+
+        // -- Assert
+        self::assertSame([
+            ConnectionTransactionWrapper::class => null,
+            SilentExceptionWrapper::class => [
+                TaskAlreadyAccepted::class,
+            ],
+        ], $relevantClasses);
     }
 
     /**
@@ -472,9 +565,14 @@ final class RoutePayloadTest extends TestCase
             ConnectionTransactionWrapper::class => null,
         ];
         $classesFromRoute = null;
+        $classesFromRouteToMergeWithDefault = null;
 
         // -- Act
-        $relevantClasses = RoutePayload::mergeClassesFromRouteWithDefaults($classesFromRoute, $classesFromDefault);
+        $relevantClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
+            $classesFromRoute,
+            $classesFromRouteToMergeWithDefault,
+            $classesFromDefault,
+        );
 
         // -- Assert
 
@@ -494,9 +592,14 @@ final class RoutePayloadTest extends TestCase
             ConnectionTransactionWrapper::class => null,
         ];
         $classesFromRoute = [];
+        $classesFromRouteToMergeWithDefault = null;
 
         // -- Act
-        $relevantClasses = RoutePayload::mergeClassesFromRouteWithDefaults($classesFromRoute, $classesFromDefault);
+        $relevantClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
+            $classesFromRoute,
+            $classesFromRouteToMergeWithDefault,
+            $classesFromDefault,
+        );
 
         // -- Assert
 
@@ -512,7 +615,11 @@ final class RoutePayloadTest extends TestCase
     public function merge_classes_from_route_with_defaults_works_without_values(): void
     {
         // -- Arrange && Act
-        $relevantClasses = RoutePayload::mergeClassesFromRouteWithDefaults(null, null);
+        $relevantClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
+            null,
+            null,
+            null,
+        );
 
         // -- Assert
         self::assertSame([], $relevantClasses);
