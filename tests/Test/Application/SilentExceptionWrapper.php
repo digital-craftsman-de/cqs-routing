@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class SilentExceptionWrapper implements HandlerWrapperInterface
 {
-    /** @param array<int, string> $parameters */
+    /** @param array<array-key, class-string<\Throwable>> $parameters */
     public function prepare(
         Command|Query $dto,
         Request $request,
@@ -20,7 +20,7 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
         // Nothing to do
     }
 
-    /** @param array<int, string> $parameters Exception class strings to be swallowed */
+    /** @param array<array-key, class-string<\Throwable>> $parameters */
     public function catch(
         Command|Query $dto,
         Request $request,
@@ -35,7 +35,7 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
         return $exception;
     }
 
-    /** @param array<int, string> $parameters */
+    /** @param array<array-key, class-string<\Throwable>> $parameters */
     public function then(
         Command|Query $dto,
         Request $request,
