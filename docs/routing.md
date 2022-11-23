@@ -87,7 +87,9 @@ The end result is the combination, meaning `UserIdValidator` and `CourseIdValida
 
 ### Overwrite default parameters
 
-When the same class is used in the default and in the route, then the parameters of the route have priority and will be used.
+When the same class is used in the default configuration and in the route configuration, then the parameters of the route configuration has priority and will be used.
+
+With the following default configuration:
 
 ```php
 return static function (CqrsConfig $cqrsConfig) {
@@ -98,7 +100,7 @@ return static function (CqrsConfig $cqrsConfig) {
         ]);
 ```
 
-And you then use the following route configuration:
+And the following route configuration:
 
 ```php
 'routePayload' => RoutePayload::generate(
