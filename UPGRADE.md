@@ -2,6 +2,45 @@
 
 ## From 0.7.* to 0.8.0
 
+### New method for `RequestValidatorInterface`, `RequestDataTransformerInterface`, `DTOValidatorInterface` and `HandlerWrapperInterface`
+
+The interfaces have been extended with `areParametersValid(mixed $parameters): bool` which validates the parameters of the configuration on cache warmup. All request validators, request data transformers, dto validators and handler wrappers therefore need to implement this new method.
+
+For example the `SilentExceptionWrapper` validates whether the parameters are an array of exceptions.
+
+```php
+/** @param array<array-key, class-string<\Throwable>> $parameters */
+public static function areParametersValid(mixed $parameters): bool
+{
+    if (!is_array($parameters)) {
+        return false;
+    }
+
+    foreach ($parameters as $exceptionClass) {
+        if (!class_exists($exceptionClass)) {
+            return false;
+        }
+
+        $reflectionClass = new \ReflectionClass($exceptionClass);
+        if (!$reflectionClass->implementsInterface(\Throwable::class)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+```
+
+When there are no parameters needed, the validation can look as simple as this:
+
+```php
+/** @param null $parameters */
+public static function areParametersValid(mixed $parameters): bool
+{
+    return $parameters === null;
+}
+```
+
 ### Update handler wrapper configuration
 
 The `HandlerWrapperConfiguration` object was dropped in favor of using the class name as key and supplying the parameters directly as value.
@@ -35,7 +74,7 @@ After:
 ),
 ```
 
-You also need to set the classes as key in the configuration of the default handler wrappers and use parameters as value. Use `null` when no parameter is needed. This change enabled the default handler wrappers to use parameters.
+The bundle configuration also needs to be updated to set the classes as key in the configuration of the default handler wrappers and use parameters as value. Use `null` when no parameter is needed. This change enabled the default handler wrappers to use parameters.
 
 Before:
 

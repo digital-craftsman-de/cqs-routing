@@ -2,6 +2,7 @@
 
 ## 0.8.0
 
+- **Breaking change**: Added `areParametersValid` method to `RequestValidatorInterface`, `RequestDataTransformerInterface`, `DTOValidatorInterface` and `HandlerWrapperInterface`
 - **[Breaking change](./UPGRADE.md#update-handler-wrapper-configuration)**: Replaced `HandlerWrapperConfiguration` with simple map configuration.
 - Enabled usage of parameters for default handler wrappers.
 
