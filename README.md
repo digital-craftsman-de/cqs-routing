@@ -32,7 +32,7 @@ return static function (CqrsConfig $cqrsConfig) {
 };
 ```
 
-You can find the [full configuration here](./docs/configuration.md). 
+You can find the [full configuration here](./docs/configuration.md) (including an example configured with yaml). 
 
 The package contains instances for request decoder, DTO constructor and response constructor. With this you can already use it. You only need to create your own DTO validators, request data transformers and handler wrappers when you want to use those. 
 
