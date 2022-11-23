@@ -18,11 +18,15 @@ use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
 use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNetherCommandHandlerNorQueryHandler;
 use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNetherCommandNorQuery;
 use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoDTOConstructor;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoDTOValidator;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoHandlerWrapper;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestDataTransformer;
 use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestDecoder;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestValidator;
 use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoResponseConstructor;
 use DigitalCraftsman\CQRS\ValueObject\Exception\InvalidClassInRoutePayload;
 use DigitalCraftsman\CQRS\ValueObject\Exception\InvalidParametersInRoutePayload;
-use DigitalCraftsman\CQRS\ValueObject\Exception\OnlyOverwriteOrMergeCanBeSuppliedToRoutePayload;
+use DigitalCraftsman\CQRS\ValueObject\Exception\OnlyOverwriteOrMergeCanBeUsedInRoutePayload;
 
 /**
  * The symfony routing does not support the usage of objects as it has to dump them into a php file for caching. Therefore, we create an
@@ -259,48 +263,29 @@ final class RoutePayload
         if ($requestValidatorClasses !== null
             && $requestValidatorClassesToMergeWithDefault !== null
         ) {
-            throw new OnlyOverwriteOrMergeCanBeSuppliedToRoutePayload();
+            throw new OnlyOverwriteOrMergeCanBeUsedInRoutePayload();
         }
 
-        if ($requestValidatorClasses !== null) {
-            foreach ($requestValidatorClasses as $class => $parameters) {
-                if (!is_string($class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
+        $classesToValidate = $requestValidatorClasses
+            ?? $requestValidatorClassesToMergeWithDefault
+            ?? [];
 
-                if (!class_exists($class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
-
-                $reflectionClass = new \ReflectionClass($class);
-                if (!$reflectionClass->implementsInterface(RequestValidatorInterface::class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
-
-                if (!$class::areParametersValid($parameters)) {
-                    throw new InvalidParametersInRoutePayload($class);
-                }
+        foreach ($classesToValidate as $class => $parameters) {
+            if (!is_string($class)) {
+                throw new InvalidClassInRoutePayload($class);
             }
-        }
 
-        if ($requestValidatorClassesToMergeWithDefault !== null) {
-            foreach ($requestValidatorClassesToMergeWithDefault as $class => $parameters) {
-                if (!is_string($class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
+            if (!class_exists($class)) {
+                throw new InvalidClassInRoutePayload($class);
+            }
 
-                if (!class_exists($class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
+            $reflectionClass = new \ReflectionClass($class);
+            if (!$reflectionClass->implementsInterface(RequestValidatorInterface::class)) {
+                throw new ClassIsNoRequestValidator($class);
+            }
 
-                $reflectionClass = new \ReflectionClass($class);
-                if (!$reflectionClass->implementsInterface(RequestValidatorInterface::class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
-
-                if (!$class::areParametersValid($parameters)) {
-                    throw new InvalidParametersInRoutePayload($class);
-                }
+            if (!$class::areParametersValid($parameters)) {
+                throw new InvalidParametersInRoutePayload($class);
             }
         }
     }
@@ -337,48 +322,29 @@ final class RoutePayload
         if ($requestDataTransformerClasses !== null
             && $requestDataTransformerClassesToMergeWithDefault !== null
         ) {
-            throw new OnlyOverwriteOrMergeCanBeSuppliedToRoutePayload();
+            throw new OnlyOverwriteOrMergeCanBeUsedInRoutePayload();
         }
 
-        if ($requestDataTransformerClasses !== null) {
-            foreach ($requestDataTransformerClasses as $class => $parameters) {
-                if (!is_string($class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
+        $classesToValidate = $requestDataTransformerClasses
+            ?? $requestDataTransformerClassesToMergeWithDefault
+            ?? [];
 
-                if (!class_exists($class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
-
-                $reflectionClass = new \ReflectionClass($class);
-                if (!$reflectionClass->implementsInterface(RequestDataTransformerInterface::class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
-
-                if (!$class::areParametersValid($parameters)) {
-                    throw new InvalidParametersInRoutePayload($class);
-                }
+        foreach ($classesToValidate as $class => $parameters) {
+            if (!is_string($class)) {
+                throw new InvalidClassInRoutePayload($class);
             }
-        }
 
-        if ($requestDataTransformerClassesToMergeWithDefault !== null) {
-            foreach ($requestDataTransformerClassesToMergeWithDefault as $class => $parameters) {
-                if (!is_string($class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
+            if (!class_exists($class)) {
+                throw new InvalidClassInRoutePayload($class);
+            }
 
-                if (!class_exists($class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
+            $reflectionClass = new \ReflectionClass($class);
+            if (!$reflectionClass->implementsInterface(RequestDataTransformerInterface::class)) {
+                throw new ClassIsNoRequestDataTransformer($class);
+            }
 
-                $reflectionClass = new \ReflectionClass($class);
-                if (!$reflectionClass->implementsInterface(RequestDataTransformerInterface::class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
-
-                if (!$class::areParametersValid($parameters)) {
-                    throw new InvalidParametersInRoutePayload($class);
-                }
+            if (!$class::areParametersValid($parameters)) {
+                throw new InvalidParametersInRoutePayload($class);
             }
         }
     }
@@ -415,48 +381,29 @@ final class RoutePayload
         if ($dtoValidatorClasses !== null
             && $dtoValidatorClassesToMergeWithDefault !== null
         ) {
-            throw new OnlyOverwriteOrMergeCanBeSuppliedToRoutePayload();
+            throw new OnlyOverwriteOrMergeCanBeUsedInRoutePayload();
         }
 
-        if ($dtoValidatorClasses !== null) {
-            foreach ($dtoValidatorClasses as $class => $parameters) {
-                if (!is_string($class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
+        $classesToValidate = $dtoValidatorClasses
+            ?? $dtoValidatorClassesToMergeWithDefault
+            ?? [];
 
-                if (!class_exists($class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
-
-                $reflectionClass = new \ReflectionClass($class);
-                if (!$reflectionClass->implementsInterface(DTOValidatorInterface::class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
-
-                if (!$class::areParametersValid($parameters)) {
-                    throw new InvalidParametersInRoutePayload($class);
-                }
+        foreach ($classesToValidate as $class => $parameters) {
+            if (!is_string($class)) {
+                throw new InvalidClassInRoutePayload($class);
             }
-        }
 
-        if ($dtoValidatorClassesToMergeWithDefault !== null) {
-            foreach ($dtoValidatorClassesToMergeWithDefault as $class => $parameters) {
-                if (!is_string($class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
+            if (!class_exists($class)) {
+                throw new InvalidClassInRoutePayload($class);
+            }
 
-                if (!class_exists($class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
+            $reflectionClass = new \ReflectionClass($class);
+            if (!$reflectionClass->implementsInterface(DTOValidatorInterface::class)) {
+                throw new ClassIsNoDTOValidator($class);
+            }
 
-                $reflectionClass = new \ReflectionClass($class);
-                if (!$reflectionClass->implementsInterface(DTOValidatorInterface::class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
-
-                if (!$class::areParametersValid($parameters)) {
-                    throw new InvalidParametersInRoutePayload($class);
-                }
+            if (!$class::areParametersValid($parameters)) {
+                throw new InvalidParametersInRoutePayload($class);
             }
         }
     }
@@ -474,48 +421,29 @@ final class RoutePayload
         if ($handlerWrapperClasses !== null
             && $handlerWrapperClassesToMergeWithDefault !== null
         ) {
-            throw new OnlyOverwriteOrMergeCanBeSuppliedToRoutePayload();
+            throw new OnlyOverwriteOrMergeCanBeUsedInRoutePayload();
         }
 
-        if ($handlerWrapperClasses !== null) {
-            foreach ($handlerWrapperClasses as $class => $parameters) {
-                if (!is_string($class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
+        $classesToValidate = $handlerWrapperClasses
+            ?? $handlerWrapperClassesToMergeWithDefault
+            ?? [];
 
-                if (!class_exists($class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
-
-                $reflectionClass = new \ReflectionClass($class);
-                if (!$reflectionClass->implementsInterface(HandlerWrapperInterface::class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
-
-                if (!$class::areParametersValid($parameters)) {
-                    throw new InvalidParametersInRoutePayload($class);
-                }
+        foreach ($classesToValidate as $class => $parameters) {
+            if (!is_string($class)) {
+                throw new InvalidClassInRoutePayload($class);
             }
-        }
 
-        if ($handlerWrapperClassesToMergeWithDefault !== null) {
-            foreach ($handlerWrapperClassesToMergeWithDefault as $class => $parameters) {
-                if (!is_string($class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
+            if (!class_exists($class)) {
+                throw new InvalidClassInRoutePayload($class);
+            }
 
-                if (!class_exists($class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
+            $reflectionClass = new \ReflectionClass($class);
+            if (!$reflectionClass->implementsInterface(HandlerWrapperInterface::class)) {
+                throw new ClassIsNoHandlerWrapper($class);
+            }
 
-                $reflectionClass = new \ReflectionClass($class);
-                if (!$reflectionClass->implementsInterface(HandlerWrapperInterface::class)) {
-                    throw new InvalidClassInRoutePayload($class);
-                }
-
-                if (!$class::areParametersValid($parameters)) {
-                    throw new InvalidParametersInRoutePayload($class);
-                }
+            if (!$class::areParametersValid($parameters)) {
+                throw new InvalidParametersInRoutePayload($class);
             }
         }
     }

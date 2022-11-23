@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQRS\ValueObject;
 
+use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
 use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstTokenInHeaderRequestValidator;
 use DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor;
 use DigitalCraftsman\CQRS\Test\Application\AddActionIdRequestDataTransformer;
 use DigitalCraftsman\CQRS\Test\Application\Authentication\UserIdValidator;
 use DigitalCraftsman\CQRS\Test\Application\ConnectionTransactionWrapper;
 use DigitalCraftsman\CQRS\Test\Application\SilentExceptionWrapper;
+use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleRequestDataTransformer;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\Exception\TasksNotAccessible;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommand;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommandHandler;
@@ -19,10 +21,15 @@ use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Excepti
 use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNetherCommandHandlerNorQueryHandler;
 use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNetherCommandNorQuery;
 use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoDTOConstructor;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoDTOValidator;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoHandlerWrapper;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestDataTransformer;
 use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestDecoder;
+use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestValidator;
 use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoResponseConstructor;
 use DigitalCraftsman\CQRS\ValueObject\Exception\InvalidClassInRoutePayload;
 use DigitalCraftsman\CQRS\ValueObject\Exception\InvalidParametersInRoutePayload;
+use DigitalCraftsman\CQRS\ValueObject\Exception\OnlyOverwriteOrMergeCanBeUsedInRoutePayload;
 use PHPUnit\Framework\TestCase;
 
 /** @coversDefaultClass \DigitalCraftsman\CQRS\ValueObject\RoutePayload */
@@ -278,6 +285,41 @@ final class RoutePayloadTest extends TestCase
         ], null);
     }
 
+    /**
+     * @test
+     *
+     * @covers ::validateRequestValidatorClasses
+     */
+    public function validate_request_validator_classes_fails_when_overwrite_and_merge_are_defined(): void
+    {
+        // -- Assert
+        $this->expectException(OnlyOverwriteOrMergeCanBeUsedInRoutePayload::class);
+
+        // -- Act
+        RoutePayload::validateRequestValidatorClasses([
+            GuardAgainstTokenInHeaderRequestValidator::class => null,
+        ], [
+            GuardAgainstFileWithVirusRequestValidator::class => null,
+        ]);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::validateRequestValidatorClasses
+     */
+    public function validate_request_validator_classes_fails_when_class_in_merge_list_is_no_request_validator(): void
+    {
+        // -- Assert
+        $this->expectException(ClassIsNoRequestValidator::class);
+
+        // -- Act
+        /** @psalm-suppress InvalidArgument */
+        RoutePayload::validateRequestValidatorClasses(null, [
+            UserIdValidator::class => null,
+        ]);
+    }
+
     // -- Validate request decoder class
 
     /**
@@ -358,6 +400,41 @@ final class RoutePayloadTest extends TestCase
         RoutePayload::validateRequestDataTransformerClasses([
             AddActionIdRequestDataTransformer::class => 'invalid-parameter',
         ], null);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::validateRequestDataTransformerClasses
+     */
+    public function validate_request_data_transformer_classes_fails_when_overwrite_and_merge_list_are_used(): void
+    {
+        // -- Assert
+        $this->expectException(OnlyOverwriteOrMergeCanBeUsedInRoutePayload::class);
+
+        // -- Act
+        RoutePayload::validateRequestDataTransformerClasses([
+            AddActionIdRequestDataTransformer::class => null,
+        ], [
+            CreateNewsArticleRequestDataTransformer::class => null,
+        ]);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::validateRequestDataTransformerClasses
+     */
+    public function validate_request_data_transformer_classes_fails_when_class_in_merge_list_is_no_request_data_transformer(): void
+    {
+        // -- Assert
+        $this->expectException(ClassIsNoRequestDataTransformer::class);
+
+        // -- Act
+        /** @psalm-suppress InvalidArgument */
+        RoutePayload::validateRequestDataTransformerClasses(null, [
+            UserIdValidator::class => null,
+        ]);
     }
 
     // -- Validate DTO constructor class
@@ -442,6 +519,41 @@ final class RoutePayloadTest extends TestCase
         ], null);
     }
 
+    /**
+     * @test
+     *
+     * @covers ::validateDTOValidatorClasses
+     */
+    public function validate_dto_validator_classes_fails_when_overwrite_and_merge_list_are_used(): void
+    {
+        // -- Assert
+        $this->expectException(OnlyOverwriteOrMergeCanBeUsedInRoutePayload::class);
+
+        // -- Act
+        RoutePayload::validateDTOValidatorClasses([
+            UserIdValidator::class => null,
+        ], [
+            UserIdValidator::class => null,
+        ]);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::validateDTOValidatorClasses
+     */
+    public function validate_dto_validator_classes_fails_when_class_in_merge_list_is_no_dto_validator(): void
+    {
+        // -- Assert
+        $this->expectException(ClassIsNoDTOValidator::class);
+
+        // -- Act
+        /** @psalm-suppress InvalidArgument */
+        RoutePayload::validateDTOValidatorClasses(null, [
+            AddActionIdRequestDataTransformer::class => null,
+        ]);
+    }
+
     // -- Validate handler wrapper classes
 
     /**
@@ -494,6 +606,43 @@ final class RoutePayloadTest extends TestCase
                 UserIdValidator::class,
             ],
         ], null);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::validateHandlerWrapperClasses
+     */
+    public function validate_handler_wrapper_classes_fails_when_overwrite_and_merge_list_are_used(): void
+    {
+        // -- Assert
+        $this->expectException(OnlyOverwriteOrMergeCanBeUsedInRoutePayload::class);
+
+        // -- Act
+        RoutePayload::validateHandlerWrapperClasses([
+            SilentExceptionWrapper::class => [
+                UserIdValidator::class,
+            ],
+        ], [
+            ConnectionTransactionWrapper::class => null,
+        ]);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::validateHandlerWrapperClasses
+     */
+    public function validate_handler_wrapper_classes_fails_when_class_in_merge_list_is_no_handler_wrapper(): void
+    {
+        // -- Assert
+        $this->expectException(ClassIsNoHandlerWrapper::class);
+
+        // -- Act
+        /** @psalm-suppress InvalidArgument */
+        RoutePayload::validateHandlerWrapperClasses(null, [
+            UserIdValidator::class => null,
+        ]);
     }
 
     // -- Validate response constructor class
