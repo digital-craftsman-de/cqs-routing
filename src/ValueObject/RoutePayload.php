@@ -270,4 +270,23 @@ final class RoutePayload
             throw new InvalidClassInRoutePayload($responseConstructorClass);
         }
     }
+
+    /**
+     * Classes with parameters are taken from request configuration if available. Otherwise, the ones from default are used.
+     *
+     * @template T of RequestValidatorInterface|RequestDataTransformerInterface|DTOValidatorInterface|HandlerWrapperInterface
+     *
+     * @param array<class-string<T>, scalar|array<array-key, scalar|null>|null>|null $classesFromRoute
+     * @param array<class-string<T>, scalar|array<array-key, scalar|null>|null>|null $classesFromDefault
+     *
+     * @return array<class-string<T>, scalar|array<array-key, scalar|null>|null>
+     */
+    public static function mergeClassesFromRouteWithDefaults(
+        ?array $classesFromRoute,
+        ?array $classesFromDefault,
+    ): array {
+        return $classesFromRoute
+            ?? $classesFromDefault
+            ?? [];
+    }
 }

@@ -53,7 +53,7 @@ final class QueryController extends AbstractController
         $configuration = RoutePayload::fromPayload($routePayload);
 
         // -- Validate request
-        $requestValidatorClasses = $this->mergeClasses(
+        $requestValidatorClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
             $configuration->requestValidatorClasses,
             $this->defaultRequestValidatorClasses,
         );
@@ -63,11 +63,14 @@ final class QueryController extends AbstractController
         }
 
         // -- Get request data from request
-        $requestDecoder = $this->serviceMap->getRequestDecoder($configuration->requestDecoderClass, $this->defaultRequestDecoderClass);
+        $requestDecoder = $this->serviceMap->getRequestDecoder(
+            $configuration->requestDecoderClass,
+            $this->defaultRequestDecoderClass,
+        );
         $requestData = $requestDecoder->decodeRequest($request);
 
         // -- Transform request data
-        $requestDataTransformerClasses = $this->mergeClasses(
+        $requestDataTransformerClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
             $configuration->requestDataTransformerClasses,
             $this->defaultRequestDataTransformerClasses,
         );
@@ -86,7 +89,7 @@ final class QueryController extends AbstractController
         $query = $dtoConstructor->constructDTO($requestData, $configuration->dtoClass);
 
         // -- Validate query
-        $dtoValidatorClasses = $this->mergeClasses(
+        $dtoValidatorClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
             $configuration->dtoValidatorClasses,
             $this->defaultDTOValidatorClasses,
         );
@@ -97,7 +100,7 @@ final class QueryController extends AbstractController
 
         // -- Wrap handlers
         /** The wrapper handlers are quite complex, so additional explanation can be found in @HandlerWrapperStep */
-        $handlerWrapperClasses = $this->mergeClasses(
+        $handlerWrapperClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
             $configuration->handlerWrapperClasses,
             $this->defaultHandlerWrapperClasses,
         );
@@ -158,24 +161,5 @@ final class QueryController extends AbstractController
         );
 
         return $responseConstructor->constructResponse($result, $request);
-    }
-
-    /**
-     * Classes with parameters are taken from request configuration if available. Otherwise, the ones from default are used.
-     *
-     * @template T of RequestValidatorInterface|RequestDataTransformerInterface|DTOValidatorInterface|HandlerWrapperInterface
-     *
-     * @param array<class-string<T>, scalar|array<array-key, scalar|null>|null>|null $classesFromRoute
-     * @param array<class-string<T>, scalar|array<array-key, scalar|null>|null>|null $classesFromDefault
-     *
-     * @return array<class-string<T>, scalar|array<array-key, scalar|null>|null>
-     */
-    public function mergeClasses(
-        ?array $classesFromRoute,
-        ?array $classesFromDefault,
-    ): array {
-        return $classesFromRoute
-            ?? $classesFromDefault
-            ?? [];
     }
 }
