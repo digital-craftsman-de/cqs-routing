@@ -213,6 +213,13 @@ final class RoutePayload
         if (!class_exists($dtoClass)) {
             throw new InvalidClassInRoutePayload($dtoClass);
         }
+
+        $reflectionClass = new \ReflectionClass($dtoClass);
+        if (!$reflectionClass->implementsInterface(Command::class)
+            && !$reflectionClass->implementsInterface(Query::class)
+        ) {
+            throw new InvalidClassInRoutePayload($dtoClass);
+        }
     }
 
     /**
@@ -223,6 +230,13 @@ final class RoutePayload
     public static function validateHandlerClass(string $handlerClass): void
     {
         if (!class_exists($handlerClass)) {
+            throw new InvalidClassInRoutePayload($handlerClass);
+        }
+
+        $reflectionClass = new \ReflectionClass($handlerClass);
+        if (!$reflectionClass->implementsInterface(CommandHandlerInterface::class)
+            && !$reflectionClass->implementsInterface(QueryHandlerInterface::class)
+        ) {
             throw new InvalidClassInRoutePayload($handlerClass);
         }
     }
@@ -253,6 +267,11 @@ final class RoutePayload
                     throw new InvalidClassInRoutePayload($class);
                 }
 
+                $reflectionClass = new \ReflectionClass($class);
+                if (!$reflectionClass->implementsInterface(RequestValidatorInterface::class)) {
+                    throw new InvalidClassInRoutePayload($class);
+                }
+
                 if (!$class::areParametersValid($parameters)) {
                     throw new InvalidParametersInRoutePayload($class);
                 }
@@ -266,6 +285,11 @@ final class RoutePayload
                 }
 
                 if (!class_exists($class)) {
+                    throw new InvalidClassInRoutePayload($class);
+                }
+
+                $reflectionClass = new \ReflectionClass($class);
+                if (!$reflectionClass->implementsInterface(RequestValidatorInterface::class)) {
                     throw new InvalidClassInRoutePayload($class);
                 }
 
@@ -283,10 +307,15 @@ final class RoutePayload
      */
     public static function validateRequestDecoderClass(?string $requestDecoderClass): void
     {
-        if ($requestDecoderClass !== null
-            && !class_exists($requestDecoderClass)
-        ) {
-            throw new InvalidClassInRoutePayload($requestDecoderClass);
+        if ($requestDecoderClass !== null) {
+            if (!class_exists($requestDecoderClass)) {
+                throw new InvalidClassInRoutePayload($requestDecoderClass);
+            }
+
+            $reflectionClass = new \ReflectionClass($requestDecoderClass);
+            if (!$reflectionClass->implementsInterface(RequestDecoderInterface::class)) {
+                throw new InvalidClassInRoutePayload($requestDecoderClass);
+            }
         }
     }
 
@@ -316,6 +345,11 @@ final class RoutePayload
                     throw new InvalidClassInRoutePayload($class);
                 }
 
+                $reflectionClass = new \ReflectionClass($class);
+                if (!$reflectionClass->implementsInterface(RequestDataTransformerInterface::class)) {
+                    throw new InvalidClassInRoutePayload($class);
+                }
+
                 if (!$class::areParametersValid($parameters)) {
                     throw new InvalidParametersInRoutePayload($class);
                 }
@@ -329,6 +363,11 @@ final class RoutePayload
                 }
 
                 if (!class_exists($class)) {
+                    throw new InvalidClassInRoutePayload($class);
+                }
+
+                $reflectionClass = new \ReflectionClass($class);
+                if (!$reflectionClass->implementsInterface(RequestDataTransformerInterface::class)) {
                     throw new InvalidClassInRoutePayload($class);
                 }
 
@@ -346,10 +385,15 @@ final class RoutePayload
      */
     public static function validateDTOConstructorClass(?string $dtoConstructorClass): void
     {
-        if ($dtoConstructorClass !== null
-            && !class_exists($dtoConstructorClass)
-        ) {
-            throw new InvalidClassInRoutePayload($dtoConstructorClass);
+        if ($dtoConstructorClass !== null) {
+            if (!class_exists($dtoConstructorClass)) {
+                throw new InvalidClassInRoutePayload($dtoConstructorClass);
+            }
+
+            $reflectionClass = new \ReflectionClass($dtoConstructorClass);
+            if (!$reflectionClass->implementsInterface(DTOConstructorInterface::class)) {
+                throw new InvalidClassInRoutePayload($dtoConstructorClass);
+            }
         }
     }
 
@@ -379,6 +423,11 @@ final class RoutePayload
                     throw new InvalidClassInRoutePayload($class);
                 }
 
+                $reflectionClass = new \ReflectionClass($class);
+                if (!$reflectionClass->implementsInterface(DTOValidatorInterface::class)) {
+                    throw new InvalidClassInRoutePayload($class);
+                }
+
                 if (!$class::areParametersValid($parameters)) {
                     throw new InvalidParametersInRoutePayload($class);
                 }
@@ -392,6 +441,11 @@ final class RoutePayload
                 }
 
                 if (!class_exists($class)) {
+                    throw new InvalidClassInRoutePayload($class);
+                }
+
+                $reflectionClass = new \ReflectionClass($class);
+                if (!$reflectionClass->implementsInterface(DTOValidatorInterface::class)) {
                     throw new InvalidClassInRoutePayload($class);
                 }
 
@@ -428,6 +482,11 @@ final class RoutePayload
                     throw new InvalidClassInRoutePayload($class);
                 }
 
+                $reflectionClass = new \ReflectionClass($class);
+                if (!$reflectionClass->implementsInterface(HandlerWrapperInterface::class)) {
+                    throw new InvalidClassInRoutePayload($class);
+                }
+
                 if (!$class::areParametersValid($parameters)) {
                     throw new InvalidParametersInRoutePayload($class);
                 }
@@ -441,6 +500,11 @@ final class RoutePayload
                 }
 
                 if (!class_exists($class)) {
+                    throw new InvalidClassInRoutePayload($class);
+                }
+
+                $reflectionClass = new \ReflectionClass($class);
+                if (!$reflectionClass->implementsInterface(HandlerWrapperInterface::class)) {
                     throw new InvalidClassInRoutePayload($class);
                 }
 
@@ -458,10 +522,15 @@ final class RoutePayload
      */
     public static function validateResponseConstructorClass(?string $responseConstructorClass): void
     {
-        if ($responseConstructorClass !== null
-            && !class_exists($responseConstructorClass)
-        ) {
-            throw new InvalidClassInRoutePayload($responseConstructorClass);
+        if ($responseConstructorClass !== null) {
+            if (!class_exists($responseConstructorClass)) {
+                throw new InvalidClassInRoutePayload($responseConstructorClass);
+            }
+
+            $reflectionClass = new \ReflectionClass($responseConstructorClass);
+            if (!$reflectionClass->implementsInterface(ResponseConstructorInterface::class)) {
+                throw new InvalidClassInRoutePayload($responseConstructorClass);
+            }
         }
     }
 
