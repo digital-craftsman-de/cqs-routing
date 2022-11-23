@@ -100,7 +100,7 @@ final class QueryControllerTest extends TestCase
                     new GetTasksQueryHandler($tasksInMemoryRepository),
                 ],
                 responseConstructors: [
-                    new SerializerJsonResponseConstructor($serializer, []),
+                    new SerializerJsonResponseConstructor($serializer),
                 ],
             ),
             [],
@@ -197,7 +197,7 @@ final class QueryControllerTest extends TestCase
                     new FailingGetTasksQueryHandler(),
                 ],
                 responseConstructors: [
-                    new SerializerJsonResponseConstructor($serializer, []),
+                    new SerializerJsonResponseConstructor($serializer),
                 ],
             ),
             [],

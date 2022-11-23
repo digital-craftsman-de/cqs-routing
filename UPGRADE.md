@@ -132,6 +132,21 @@ return static function (CqrsConfig $cqrsConfig) {
         ]);
 ```
 
+### Removed `serializer_context` configuration
+
+It was identical with the one that can be defined in the Symfony framework configuration.
+
+Remove it from the CQRS configuration and move your context into the `framework.yaml`.
+
+```yaml
+framework:
+  serializer:
+    default_context:
+      # Your context, for example:
+      skip_null_values: true
+      preserve_empty_objects: true
+```
+
 ## From 0.6.* to 0.7.0
 
 ### Upgrade to at least PHP 8.1

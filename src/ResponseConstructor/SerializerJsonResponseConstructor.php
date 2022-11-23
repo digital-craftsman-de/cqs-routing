@@ -15,13 +15,12 @@ final class SerializerJsonResponseConstructor implements ResponseConstructorInte
     /** @codeCoverageIgnore */
     public function __construct(
         private readonly SerializerInterface $serializer,
-        private readonly array $serializerContext,
     ) {
     }
 
     public function constructResponse($data, Request $request): JsonResponse
     {
-        $content = $this->serializer->serialize($data, JsonEncoder::FORMAT, $this->serializerContext);
+        $content = $this->serializer->serialize($data, JsonEncoder::FORMAT);
 
         return new JsonResponse($content, Response::HTTP_OK, [], true);
     }

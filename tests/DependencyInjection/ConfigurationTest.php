@@ -58,10 +58,6 @@ final class ConfigurationTest extends TestCase
                     ],
                     'default_response_constructor_class' => SerializerJsonResponseConstructor::class,
                 ],
-                'serializer_context' => [
-                    'skip_null_values' => true,
-                    'preserve_empty_objects' => true,
-                ],
             ],
         ];
 
@@ -104,9 +100,5 @@ final class ConfigurationTest extends TestCase
             SerializerJsonResponseConstructor::class,
             $config['query_controller']['default_response_constructor_class'],
         );
-
-        // Serializer context
-        self::assertTrue($config['serializer_context']['skip_null_values']);
-        self::assertTrue($config['serializer_context']['preserve_empty_objects']);
     }
 }
