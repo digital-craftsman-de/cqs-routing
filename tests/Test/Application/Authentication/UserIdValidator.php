@@ -16,13 +16,15 @@ use Symfony\Component\HttpFoundation\Response;
 final class UserIdValidator implements DTOValidatorInterface
 {
     public function __construct(
-        private SecuritySimulator $securitySimulator,
+        private readonly SecuritySimulator $securitySimulator,
     ) {
     }
 
+    /** @param null $parameters */
     public function validateDTO(
         Request $request,
         Command|Query $dto,
+        mixed $parameters,
     ): void {
         $reflection = new \ReflectionClass($dto);
         if (!$reflection->hasProperty('userId')) {

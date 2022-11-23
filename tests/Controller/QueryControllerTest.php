@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQRS\Controller;
 
-use DigitalCraftsman\CQRS\DTO\Configuration;
 use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
 use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
 use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
@@ -24,6 +23,7 @@ use DigitalCraftsman\CQRS\Test\Utility\SecuritySimulator;
 use DigitalCraftsman\CQRS\Test\Utility\VirusScannerSimulator;
 use DigitalCraftsman\CQRS\Test\ValueObject\TaskId;
 use DigitalCraftsman\CQRS\Test\ValueObject\UserId;
+use DigitalCraftsman\CQRS\ValueObject\RoutePayload;
 use DigitalCraftsman\Ids\Serializer\IdNormalizer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -117,17 +117,17 @@ final class QueryControllerTest extends TestCase
         ];
 
         $request = new Request(content: json_encode($content, JSON_THROW_ON_ERROR));
-        $routePayload = Configuration::routePayload(
+        $routePayload = RoutePayload::generate(
             dtoClass: GetTasksQuery::class,
             handlerClass: GetTasksQueryHandler::class,
             requestValidatorClasses: [
-                GuardAgainstFileWithVirusRequestValidator::class,
+                GuardAgainstFileWithVirusRequestValidator::class => null,
             ],
             requestDataTransformerClasses: [
-                AddActionIdRequestDataTransformer::class,
+                AddActionIdRequestDataTransformer::class => null,
             ],
             dtoValidatorClasses: [
-                UserIdValidator::class,
+                UserIdValidator::class => null,
             ],
             handlerWrapperClasses: [
                 GetTasksHandlerWrapper::class => null,
@@ -214,14 +214,14 @@ final class QueryControllerTest extends TestCase
         ];
 
         $request = new Request(content: json_encode($content, JSON_THROW_ON_ERROR));
-        $routePayload = Configuration::routePayload(
+        $routePayload = RoutePayload::generate(
             dtoClass: GetTasksQuery::class,
             handlerClass: FailingGetTasksQueryHandler::class,
             requestDataTransformerClasses: [
-                AddActionIdRequestDataTransformer::class,
+                AddActionIdRequestDataTransformer::class => null,
             ],
             dtoValidatorClasses: [
-                UserIdValidator::class,
+                UserIdValidator::class => null,
             ],
             handlerWrapperClasses: [
                 GetTasksHandlerWrapper::class => null,

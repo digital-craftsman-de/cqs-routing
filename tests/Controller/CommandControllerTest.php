@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQRS\Controller;
 
-use DigitalCraftsman\CQRS\DTO\Configuration;
 use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
 use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
 use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
@@ -25,6 +24,7 @@ use DigitalCraftsman\CQRS\Test\Utility\LockSimulator;
 use DigitalCraftsman\CQRS\Test\Utility\SecuritySimulator;
 use DigitalCraftsman\CQRS\Test\Utility\VirusScannerSimulator;
 use DigitalCraftsman\CQRS\Test\ValueObject\UserId;
+use DigitalCraftsman\CQRS\ValueObject\RoutePayload;
 use DigitalCraftsman\Ids\Serializer\IdNormalizer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -110,17 +110,17 @@ final class CommandControllerTest extends TestCase
         ];
 
         $request = new Request(content: json_encode($content, JSON_THROW_ON_ERROR));
-        $routePayload = Configuration::routePayload(
+        $routePayload = RoutePayload::generate(
             dtoClass: CreateNewsArticleCommand::class,
             handlerClass: CreateNewsArticleCommandHandler::class,
             requestValidatorClasses: [
-                GuardAgainstFileWithVirusRequestValidator::class,
+                GuardAgainstFileWithVirusRequestValidator::class => null,
             ],
             requestDataTransformerClasses: [
-                CreateNewsArticleRequestDataTransformer::class,
+                CreateNewsArticleRequestDataTransformer::class => null,
             ],
             dtoValidatorClasses: [
-                UserIdValidator::class,
+                UserIdValidator::class => null,
             ],
             handlerWrapperClasses: [
                 CreateNewsArticleHandlerWrapper::class => null,
@@ -194,7 +194,7 @@ final class CommandControllerTest extends TestCase
         ];
 
         $request = new Request(content: json_encode($content, JSON_THROW_ON_ERROR));
-        $routePayload = Configuration::routePayload(
+        $routePayload = RoutePayload::generate(
             dtoClass: CreateNewsArticleCommand::class,
             handlerClass: FailingCreateNewsArticleCommandHandler::class,
             handlerWrapperClasses: [
@@ -274,7 +274,7 @@ final class CommandControllerTest extends TestCase
         ];
 
         $request = new Request(content: json_encode($content, JSON_THROW_ON_ERROR));
-        $routePayload = Configuration::routePayload(
+        $routePayload = RoutePayload::generate(
             dtoClass: CreateNewsArticleCommand::class,
             handlerClass: FailingCreateNewsArticleCommandHandler::class,
             handlerWrapperClasses: [

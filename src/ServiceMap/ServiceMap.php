@@ -45,26 +45,14 @@ final class ServiceMap
     ) {
     }
 
-    /**
-     * @param array<array-key, class-string<RequestValidatorInterface>>|null $requestValidatorClasses
-     * @param array<array-key, class-string<RequestValidatorInterface>>|null $defaultRequestValidatorClasses
-     *
-     * @return array<array-key, RequestValidatorInterface>
-     */
-    public function getRequestValidators(?array $requestValidatorClasses, ?array $defaultRequestValidatorClasses): array
+    /** @param class-string<RequestValidatorInterface> $requestValidatorClass */
+    public function getRequestValidator(string $requestValidatorClass): RequestValidatorInterface
     {
-        if ($requestValidatorClasses === null && $defaultRequestValidatorClasses === null) {
-            return [];
+        try {
+            return $this->requestValidators->get($requestValidatorClass);
+        } catch (ContainerExceptionInterface) {
+            throw new ConfiguredRequestValidatorNotAvailable($requestValidatorClass);
         }
-
-        $selectedRequestValidatorClasses = $requestValidatorClasses ?? $defaultRequestValidatorClasses;
-
-        return array_map(
-            fn (string $requestValidatorClass) => $this->requestValidators->has($requestValidatorClass)
-                ? $this->requestValidators->get($requestValidatorClass)
-                : throw new ConfiguredRequestValidatorNotAvailable($requestValidatorClass),
-            $selectedRequestValidatorClasses,
-        );
     }
 
     /**
@@ -85,26 +73,14 @@ final class ServiceMap
         }
     }
 
-    /**
-     * @param array<array-key, class-string<RequestDataTransformerInterface>>|null $requestDataTransformerClasses
-     * @param array<array-key, class-string<RequestDataTransformerInterface>>|null $defaultRequestDataTransformerClasses
-     *
-     * @return array<array-key, RequestDataTransformerInterface>
-     */
-    public function getRequestDataTransformers(?array $requestDataTransformerClasses, ?array $defaultRequestDataTransformerClasses): array
+    /** @param class-string<RequestDataTransformerInterface> $requestDataTransformerClass */
+    public function getRequestDataTransformer(string $requestDataTransformerClass): RequestDataTransformerInterface
     {
-        if ($requestDataTransformerClasses === null && $defaultRequestDataTransformerClasses === null) {
-            return [];
+        try {
+            return $this->requestDataTransformers->get($requestDataTransformerClass);
+        } catch (ContainerExceptionInterface) {
+            throw new ConfiguredRequestDataTransformerNotAvailable($requestDataTransformerClass);
         }
-
-        $selectedRequestDataTransformerClasses = $requestDataTransformerClasses ?? $defaultRequestDataTransformerClasses;
-
-        return array_map(
-            fn (string $requestDataTransformerClass) => $this->requestDataTransformers->has($requestDataTransformerClass)
-                ? $this->requestDataTransformers->get($requestDataTransformerClass)
-                : throw new ConfiguredRequestDataTransformerNotAvailable($requestDataTransformerClass),
-            $selectedRequestDataTransformerClasses,
-        );
     }
 
     /**
@@ -125,47 +101,17 @@ final class ServiceMap
         }
     }
 
-    /**
-     * @param array<array-key, class-string<DTOValidatorInterface>>|null $dtoValidatorClasses
-     * @param array<array-key, class-string<DTOValidatorInterface>>|null $defaultDTOValidatorClasses
-     *
-     * @return array<array-key, DTOValidatorInterface>
-     */
-    public function getDTOValidators(?array $dtoValidatorClasses, ?array $defaultDTOValidatorClasses): array
+    /** @param class-string<DTOValidatorInterface> $dtoValidatorClass */
+    public function getDTOValidator(string $dtoValidatorClass): DTOValidatorInterface
     {
-        if ($dtoValidatorClasses === null && $defaultDTOValidatorClasses === null) {
-            return [];
+        try {
+            return $this->dtoValidators->get($dtoValidatorClass);
+        } catch (ContainerExceptionInterface) {
+            throw new ConfiguredDTOValidatorNotAvailable($dtoValidatorClass);
         }
-
-        $selectedDTOValidatorClasses = $dtoValidatorClasses ?? $defaultDTOValidatorClasses;
-
-        return array_map(
-            fn (string $dtoValidatorClass) => $this->dtoValidators->has($dtoValidatorClass)
-                ? $this->dtoValidators->get($dtoValidatorClass)
-                : throw new ConfiguredDTOValidatorNotAvailable($dtoValidatorClass),
-            $selectedDTOValidatorClasses,
-        );
     }
 
-    /**
-     * Handler wrapper classes are merged. The parameters of the default configuration are overwritten with those of the route
-     * configuration.
-     *
-     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null $routeHandlerWrapperClasses
-     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null $defaultHandlerWrapperClasses
-     *
-     * @return array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>
-     */
-    public function mergeHandlerWrapperClasses(
-        ?array $routeHandlerWrapperClasses,
-        ?array $defaultHandlerWrapperClasses,
-    ): array {
-        return array_merge(
-            $defaultHandlerWrapperClasses ?? [],
-            $routeHandlerWrapperClasses ?? [],
-        );
-    }
-
+    /** @param class-string<HandlerWrapperInterface> $handlerWrapperClass */
     public function getHandlerWrapper(string $handlerWrapperClass): HandlerWrapperInterface
     {
         try {

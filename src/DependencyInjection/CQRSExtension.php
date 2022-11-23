@@ -13,6 +13,7 @@ use DigitalCraftsman\CQRS\RequestDataTransformer\RequestDataTransformerInterface
 use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
 use DigitalCraftsman\CQRS\RequestValidator\RequestValidatorInterface;
 use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
+use DigitalCraftsman\CQRS\ValueObject\RoutePayload;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -66,27 +67,43 @@ final class CQRSExtension extends Extension
         /**
          * @var array{
          *   query_controller: array{
-         *     default_request_validator_classes: ?array<int, string>,
-         *     default_request_decoder_class: ?string,
-         *     default_request_data_tranformer_classes: ?array<int, string>,
-         *     default_dto_constructor_class: ?string,
-         *     default_dto_validator_classes: ?array<int, string>,
-         *     default_handler_wrapper_classes: null|array<class-string<HandlerWrapperInterface>, null|scalar|array<array-key, null|scalar>>,
-         *     default_response_constructor_class: ?string,
+         *     default_request_validator_classes: array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null,
+         *     default_request_decoder_class: string|null,
+         *     default_request_data_transformer_classes: array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null,
+         *     default_dto_constructor_class: string|null,
+         *     default_dto_validator_classes: array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null,
+         *     default_handler_wrapper_classes: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null,
+         *     default_response_constructor_class: string|null,
          *   },
          *   command_controller: array{
-         *     default_request_validator_classes: ?array<int, string>,
-         *     default_request_decoder_class: ?string,
-         *     default_request_data_tranformer_classes: ?array<int, string>,
-         *     default_dto_constructor_class: ?string,
-         *     default_dto_validator_classes: ?array<int, string>,
-         *     default_handler_wrapper_classes: null|array<class-string<HandlerWrapperInterface>, null|scalar|array<array-key, null|scalar>>,
-         *     default_response_constructor_class: ?string,
+         *     default_request_validator_classes: array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null,
+         *     default_request_decoder_class: string|null,
+         *     default_request_data_transformer_classes: array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null,
+         *     default_dto_constructor_class: string|null,
+         *     default_dto_validator_classes: array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null,
+         *     default_handler_wrapper_classes: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null,
+         *     default_response_constructor_class: string|null,
          *   },
          *   serializer_context: array,
          * } $config
          */
         $config = $this->processConfiguration($configuration, $configs);
+
+        RoutePayload::validateRequestValidatorClasses($config['query_controller']['default_request_validator_classes']);
+        RoutePayload::validateRequestDecoderClass($config['query_controller']['default_request_decoder_class']);
+        RoutePayload::validateRequestDataTransformerClasses($config['query_controller']['default_request_data_transformer_classes']);
+        RoutePayload::validateDTOConstructorClass($config['query_controller']['default_dto_constructor_class']);
+        RoutePayload::validateDTOValidateClasses($config['query_controller']['default_dto_validator_classes']);
+        RoutePayload::validateHandlerWrapperClasses($config['query_controller']['default_handler_wrapper_classes']);
+        RoutePayload::validateResponseConstructorClass($config['query_controller']['default_response_constructor_class']);
+
+        RoutePayload::validateRequestValidatorClasses($config['command_controller']['default_request_validator_classes']);
+        RoutePayload::validateRequestDecoderClass($config['command_controller']['default_request_decoder_class']);
+        RoutePayload::validateRequestDataTransformerClasses($config['command_controller']['default_request_data_transformer_classes']);
+        RoutePayload::validateDTOConstructorClass($config['command_controller']['default_dto_constructor_class']);
+        RoutePayload::validateDTOValidateClasses($config['command_controller']['default_dto_validator_classes']);
+        RoutePayload::validateHandlerWrapperClasses($config['command_controller']['default_handler_wrapper_classes']);
+        RoutePayload::validateResponseConstructorClass($config['command_controller']['default_response_constructor_class']);
 
         foreach ($config['query_controller'] as $key => $value) {
             $container->setParameter('cqrs.query_controller.'.$key, $value);

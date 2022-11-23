@@ -8,8 +8,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class GuardAgainstTokenInHeaderRequestValidator implements RequestValidatorInterface
 {
-    public function validateRequest(Request $request): void
-    {
+    /** @param null $parameters */
+    public function validateRequest(
+        Request $request,
+        mixed $parameters,
+    ): void {
         if ($request->headers->has('X-TOKEN')) {
             throw new \InvalidArgumentException('Token must not be supplied');
         }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DigitalCraftsman\CQRS\Controller;
 
 use DigitalCraftsman\CQRS\Command\Command;
-use DigitalCraftsman\CQRS\DTO\Configuration;
 use DigitalCraftsman\CQRS\DTOConstructor\DTOConstructorInterface;
 use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
 use DigitalCraftsman\CQRS\HandlerWrapper\DTO\HandlerWrapperStep;
@@ -15,6 +14,7 @@ use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
 use DigitalCraftsman\CQRS\RequestValidator\RequestValidatorInterface;
 use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
 use DigitalCraftsman\CQRS\ServiceMap\ServiceMap;
+use DigitalCraftsman\CQRS\ValueObject\RoutePayload;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,13 +22,13 @@ use Symfony\Component\HttpFoundation\Response;
 final class CommandController extends AbstractController
 {
     /**
-     * @param array<int, class-string<RequestValidatorInterface>>|null                                     $defaultRequestValidatorClasses
-     * @param class-string<RequestDecoderInterface>|null                                                   $defaultRequestDecoderClass
-     * @param array<int, class-string<RequestDataTransformerInterface>>|null                               $defaultRequestDataTransformerClasses
-     * @param class-string<DTOConstructorInterface>|null                                                   $defaultDTOConstructorClass
-     * @param array<int, class-string<DTOValidatorInterface>>|null                                         $defaultDTOValidatorClasses
-     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null $defaultHandlerWrapperClasses
-     * @param class-string<ResponseConstructorInterface>|null                                              $defaultResponseConstructorClass
+     * @param array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null       $defaultRequestValidatorClasses
+     * @param class-string<RequestDecoderInterface>|null                                                           $defaultRequestDecoderClass
+     * @param array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null $defaultRequestDataTransformerClasses
+     * @param class-string<DTOConstructorInterface>|null                                                           $defaultDTOConstructorClass
+     * @param array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null           $defaultDTOValidatorClasses
+     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null         $defaultHandlerWrapperClasses
+     * @param class-string<ResponseConstructorInterface>|null                                                      $defaultResponseConstructorClass
      *
      * @codeCoverageIgnore
      */
@@ -50,45 +50,57 @@ final class CommandController extends AbstractController
         array $routePayload,
     ): Response {
         /** @psalm-suppress MixedArgumentTypeCoercion */
-        $configuration = Configuration::fromRoutePayload($routePayload);
+        $configuration = RoutePayload::fromPayload($routePayload);
 
-        // Validate request
-        $requestValidators = $this->serviceMap->getRequestValidators(
+        // -- Validate request
+        $requestValidatorClasses = $this->mergeClasses(
             $configuration->requestValidatorClasses,
             $this->defaultRequestValidatorClasses,
         );
-        foreach ($requestValidators as $requestValidator) {
-            $requestValidator->validateRequest($request);
+        foreach ($requestValidatorClasses as $requestValidatorClass => $parameters) {
+            $requestValidator = $this->serviceMap->getRequestValidator($requestValidatorClass);
+            $requestValidator->validateRequest($request, $parameters);
         }
 
-        // Get request data from request
-        $requestDecoder = $this->serviceMap->getRequestDecoder($configuration->requestDecoderClass, $this->defaultRequestDecoderClass);
+        // -- Get request data from request
+        $requestDecoder = $this->serviceMap->getRequestDecoder(
+            $configuration->requestDecoderClass,
+            $this->defaultRequestDecoderClass,
+        );
         $requestData = $requestDecoder->decodeRequest($request);
 
-        // Transform request data
-        $requestDataTransformers = $this->serviceMap->getRequestDataTransformers(
+        // -- Transform request data
+        $requestDataTransformerClasses = $this->mergeClasses(
             $configuration->requestDataTransformerClasses,
             $this->defaultRequestDataTransformerClasses,
         );
-        foreach ($requestDataTransformers as $requestDataTransformer) {
-            $requestData = $requestDataTransformer->transformRequestData($configuration->dtoClass, $requestData);
+        foreach ($requestDataTransformerClasses as $requestDataTransformerClass => $parameters) {
+            $requestDataTransformer = $this->serviceMap->getRequestDataTransformer($requestDataTransformerClass);
+            $requestData = $requestDataTransformer->transformRequestData($configuration->dtoClass, $requestData, $parameters);
         }
 
-        // Construct command from request data
-        $dtoConstructor = $this->serviceMap->getDTOConstructor($configuration->dtoConstructorClass, $this->defaultDTOConstructorClass);
+        // -- Construct command from request data
+        $dtoConstructor = $this->serviceMap->getDTOConstructor(
+            $configuration->dtoConstructorClass,
+            $this->defaultDTOConstructorClass,
+        );
 
         /** @var Command $command */
         $command = $dtoConstructor->constructDTO($requestData, $configuration->dtoClass);
 
-        // Validate command
-        $dtoValidators = $this->serviceMap->getDTOValidators($configuration->dtoValidatorClasses, $this->defaultDTOValidatorClasses);
-        foreach ($dtoValidators as $dtoValidator) {
-            $dtoValidator->validateDTO($request, $command);
+        // -- Validate command
+        $dtoValidatorClasses = $this->mergeClasses(
+            $configuration->dtoValidatorClasses,
+            $this->defaultDTOValidatorClasses,
+        );
+        foreach ($dtoValidatorClasses as $dtoValidatorClass => $parameters) {
+            $dtoValidator = $this->serviceMap->getDTOValidator($dtoValidatorClass);
+            $dtoValidator->validateDTO($request, $command, $parameters);
         }
 
-        // Wrap handlers
+        // -- Wrap handlers
         /** The wrapper handlers are quite complex, so additional explanation can be found in @HandlerWrapperStep */
-        $handlerWrapperClasses = $this->serviceMap->mergeHandlerWrapperClasses(
+        $handlerWrapperClasses = $this->mergeClasses(
             $configuration->handlerWrapperClasses,
             $this->defaultHandlerWrapperClasses,
         );
@@ -104,7 +116,7 @@ final class CommandController extends AbstractController
         }
 
         try {
-            // Trigger command through command handler
+            // -- Trigger command through command handler
             /** @psalm-suppress PossiblyInvalidArgument */
             $commandHandler = $this->serviceMap->getCommandHandler($configuration->handlerClass);
             $commandHandler->handle($command);
@@ -139,12 +151,31 @@ final class CommandController extends AbstractController
             }
         }
 
-        // Construct and return response
+        // -- Construct and return response
         $responseConstructor = $this->serviceMap->getResponseConstructor(
             $configuration->responseConstructorClass,
             $this->defaultResponseConstructorClass,
         );
 
         return $responseConstructor->constructResponse(null, $request);
+    }
+
+    /**
+     * Classes with parameters are taken from request configuration if available. Otherwise, the ones from default are used.
+     *
+     * @template T of RequestValidatorInterface|RequestDataTransformerInterface|DTOValidatorInterface|HandlerWrapperInterface
+     *
+     * @param array<class-string<T>, scalar|array<array-key, scalar|null>|null>|null $classesFromRoute
+     * @param array<class-string<T>, scalar|array<array-key, scalar|null>|null>|null $classesFromDefault
+     *
+     * @return array<class-string<T>, scalar|array<array-key, scalar|null>|null>
+     */
+    public function mergeClasses(
+        ?array $classesFromRoute,
+        ?array $classesFromDefault,
+    ): array {
+        return $classesFromRoute
+            ?? $classesFromDefault
+            ?? [];
     }
 }

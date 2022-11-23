@@ -29,13 +29,11 @@ use DigitalCraftsman\CQRS\Test\Application\FileSizeValidator;
 use DigitalCraftsman\CQRS\Test\Application\SilentExceptionWrapper;
 use DigitalCraftsman\CQRS\Test\AppTestCase;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleRequestDataTransformer;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\Exception\TasksNotAccessible;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQueryHandler;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommandHandler;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskDTOConstructor;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskRequestDecoder;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\DefineTaskHourContingent\DefineTaskHourContingentRequestDataTransformer;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\MarkTaskAsAcceptedCommandHandler;
 use DigitalCraftsman\CQRS\Test\Helper\ServiceMapHelper;
 use DigitalCraftsman\CQRS\Test\Repository\TasksInMemoryRepository;
@@ -90,7 +88,7 @@ final class ServiceMapTest extends AppTestCase
                 CreateTaskDTOConstructor::class => new CreateTaskDTOConstructor(),
             ]),
             dtoValidators: new ServiceLocatorSimulator([
-                FileSizeValidator::class => new FileSizeValidator(10),
+                FileSizeValidator::class => new FileSizeValidator(),
                 UserIdValidator::class => new UserIdValidator($this->securitySimulator),
             ]),
             handlerWrappers: new ServiceLocatorSimulator([
@@ -116,60 +114,10 @@ final class ServiceMapTest extends AppTestCase
     /**
      * @test
      *
-     * @covers ::getRequestValidators
+     * @covers ::getRequestValidator
      * @covers ::__construct
      */
-    public function get_request_validators_works_with_request_validator_classes(): void
-    {
-        // -- Arrange
-        $allRequestValidators = [
-            new GuardAgainstTokenInHeaderRequestValidator(),
-            $guardAgainstFileWithVirusRequestValidator = new GuardAgainstFileWithVirusRequestValidator(new VirusScannerSimulator()),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(requestValidators: $allRequestValidators);
-
-        // -- Act
-        $requestValidators = $serviceMap->getRequestValidators(
-            [GuardAgainstFileWithVirusRequestValidator::class],
-            null,
-        );
-
-        // -- Assert
-        self::assertCount(1, $requestValidators);
-        self::assertContains($guardAgainstFileWithVirusRequestValidator, $requestValidators);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getRequestValidators
-     */
-    public function get_request_validator_works_with_default_request_validator_classes(): void
-    {
-        // -- Arrange
-        $allRequestValidators = [
-            new GuardAgainstTokenInHeaderRequestValidator(),
-            $defaultRequestDataTransformer = new GuardAgainstFileWithVirusRequestValidator(new VirusScannerSimulator()),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(requestValidators: $allRequestValidators);
-
-        // -- Act
-        $requestValidators = $serviceMap->getRequestValidators(
-            null,
-            [GuardAgainstFileWithVirusRequestValidator::class],
-        );
-
-        // -- Assert
-        self::assertCount(1, $requestValidators);
-        self::assertContains($defaultRequestDataTransformer, $requestValidators);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getRequestValidators
-     */
-    public function get_request_validators_works_with_no_dto_validator_classes_and_no_default_request_validator_classes(): void
+    public function get_request_validator_works_with_request_validator_classes(): void
     {
         // -- Arrange
         $allRequestValidators = [
@@ -179,21 +127,18 @@ final class ServiceMapTest extends AppTestCase
         $serviceMap = ServiceMapHelper::serviceMap(requestValidators: $allRequestValidators);
 
         // -- Act
-        $requestValidators = $serviceMap->getRequestValidators(
-            null,
-            null,
-        );
+        $requestValidator = $serviceMap->getRequestValidator(GuardAgainstFileWithVirusRequestValidator::class);
 
         // -- Assert
-        self::assertCount(0, $requestValidators);
+        self::assertSame(GuardAgainstFileWithVirusRequestValidator::class, $requestValidator::class);
     }
 
     /**
      * @test
      *
-     * @covers ::getRequestValidators
+     * @covers ::getRequestValidator
      */
-    public function get_request_validators_fails_when_request_validator_classes_are_not_available(): void
+    public function get_request_validator_fails_when_request_validator_class_is_not_available(): void
     {
         // -- Assert
         $this->expectException(ConfiguredRequestValidatorNotAvailable::class);
@@ -205,33 +150,7 @@ final class ServiceMapTest extends AppTestCase
         $serviceMap = ServiceMapHelper::serviceMap(requestValidators: $allRequestValidators);
 
         // -- Act
-        $serviceMap->getRequestValidators(
-            [GuardAgainstFileWithVirusRequestValidator::class],
-            null,
-        );
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getRequestValidators
-     */
-    public function get_request_validators_fails_when_default_request_validator_classes_are_not_available(): void
-    {
-        // -- Assert
-        $this->expectException(ConfiguredRequestValidatorNotAvailable::class);
-
-        // -- Arrange
-        $allRequestValidators = [
-            new GuardAgainstTokenInHeaderRequestValidator(),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(requestValidators: $allRequestValidators);
-
-        // -- Act
-        $serviceMap->getRequestValidators(
-            null,
-            [GuardAgainstFileWithVirusRequestValidator::class],
-        );
+        $serviceMap->getRequestValidator(GuardAgainstFileWithVirusRequestValidator::class);
     }
 
     // -- Request decoders
@@ -341,61 +260,10 @@ final class ServiceMapTest extends AppTestCase
     /**
      * @test
      *
-     * @covers ::getRequestDataTransformers
+     * @covers ::getRequestDataTransformer
      * @covers ::__construct
      */
-    public function get_request_data_transformers_works_with_request_data_transformer_classes(): void
-    {
-        // -- Arrange
-        $allRequestDataTransformers = [
-            new CreateNewsArticleRequestDataTransformer(),
-            $defineTaskHourContingentRequestDataTransformer = new DefineTaskHourContingentRequestDataTransformer(),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(requestDataTransformers: $allRequestDataTransformers);
-
-        // -- Act
-        $requestDataTransformers = $serviceMap->getRequestDataTransformers(
-            [DefineTaskHourContingentRequestDataTransformer::class],
-            null,
-        );
-
-        // -- Assert
-        self::assertCount(1, $requestDataTransformers);
-        self::assertContains($defineTaskHourContingentRequestDataTransformer, $requestDataTransformers);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getRequestDataTransformers
-     */
-    public function get_request_data_transformers_works_with_default_request_data_transformer_classes(): void
-    {
-        // -- Arrange
-        $allRequestDataTransformers = [
-            new CreateNewsArticleRequestDataTransformer(),
-            new DefineTaskHourContingentRequestDataTransformer(),
-            $defaultRequestDataTransformer = new AddActionIdRequestDataTransformer(),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(requestDataTransformers: $allRequestDataTransformers);
-
-        // -- Act
-        $requestDataTransformers = $serviceMap->getRequestDataTransformers(
-            null,
-            [AddActionIdRequestDataTransformer::class],
-        );
-
-        // -- Assert
-        self::assertCount(1, $requestDataTransformers);
-        self::assertContains($defaultRequestDataTransformer, $requestDataTransformers);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getRequestDataTransformers
-     */
-    public function get_request_data_transformers_works_with_no_dto_data_transformer_classes_and_no_default_request_data_transformer_classes(): void
+    public function get_request_data_transformer_works_with_request_data_transformer_classes(): void
     {
         // -- Arrange
         $allRequestDataTransformers = [
@@ -405,21 +273,18 @@ final class ServiceMapTest extends AppTestCase
         $serviceMap = ServiceMapHelper::serviceMap(requestDataTransformers: $allRequestDataTransformers);
 
         // -- Act
-        $requestDataTransformers = $serviceMap->getRequestDataTransformers(
-            null,
-            null,
-        );
+        $requestDataTransformer = $serviceMap->getRequestDataTransformer(DefineTaskHourContingentRequestDataTransformer::class);
 
         // -- Assert
-        self::assertCount(0, $requestDataTransformers);
+        self::assertSame(DefineTaskHourContingentRequestDataTransformer::class, $requestDataTransformer::class);
     }
 
     /**
      * @test
      *
-     * @covers ::getRequestDataTransformers
+     * @covers ::getRequestDataTransformer
      */
-    public function get_request_data_transformers_fails_when_request_data_transformer_classes_are_not_available(): void
+    public function get_request_data_transformer_fails_when_request_data_transformer_class_is_not_available(): void
     {
         // -- Assert
         $this->expectException(ConfiguredRequestDataTransformerNotAvailable::class);
@@ -432,34 +297,7 @@ final class ServiceMapTest extends AppTestCase
         $serviceMap = ServiceMapHelper::serviceMap(requestDataTransformers: $allRequestDataTransformers);
 
         // -- Act
-        $serviceMap->getRequestDataTransformers(
-            [DefineTaskHourContingentRequestDataTransformer::class],
-            null,
-        );
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getRequestDataTransformers
-     */
-    public function get_request_data_transformers_fails_when_default_request_data_transformer_classes_are_not_available(): void
-    {
-        // -- Assert
-        $this->expectException(ConfiguredRequestDataTransformerNotAvailable::class);
-
-        // -- Arrange
-        $allRequestDataTransformers = [
-            new CreateNewsArticleRequestDataTransformer(),
-            new DefineTaskHourContingentRequestDataTransformer(),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(requestDataTransformers: $allRequestDataTransformers);
-
-        // -- Act
-        $serviceMap->getRequestDataTransformers(
-            null,
-            [AddActionIdRequestDataTransformer::class],
-        );
+        $serviceMap->getRequestDataTransformer(DefineTaskHourContingentRequestDataTransformer::class);
     }
 
     // -- DTO constructors
@@ -575,84 +413,31 @@ final class ServiceMapTest extends AppTestCase
     /**
      * @test
      *
-     * @covers ::getDTOValidators
+     * @covers ::getDTOValidator
      * @covers ::__construct
      */
-    public function get_dto_validators_works_with_dto_validators_classes(): void
+    public function get_dto_validator_works_with_dto_validators_classes(): void
     {
         // -- Arrange
         $allDTOValidators = [
-            $fileSizeValidator = new FileSizeValidator(10),
+            new FileSizeValidator(),
             new UserIdValidator($this->securitySimulator),
         ];
         $serviceMap = ServiceMapHelper::serviceMap(dtoValidators: $allDTOValidators);
 
         // -- Act
-        $dtoValidators = $serviceMap->getDTOValidators(
-            [FileSizeValidator::class],
-            null,
-        );
+        $dtoValidator = $serviceMap->getDTOValidator(FileSizeValidator::class);
 
         // -- Assert
-        self::assertCount(1, $dtoValidators);
-        self::assertContains($fileSizeValidator, $dtoValidators);
+        self::assertSame(FileSizeValidator::class, $dtoValidator::class);
     }
 
     /**
      * @test
      *
-     * @covers ::getDTOValidators
+     * @covers ::getDTOValidator
      */
-    public function get_dto_validators_works_with_default_dto_validator_classes(): void
-    {
-        // -- Arrange
-        $allDTOValidators = [
-            new FileSizeValidator(10),
-            $defaultDataTransformer = new UserIdValidator($this->securitySimulator),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(dtoValidators: $allDTOValidators);
-
-        // -- Act
-        $dtoValidators = $serviceMap->getDTOValidators(
-            null,
-            [UserIdValidator::class],
-        );
-
-        // -- Assert
-        self::assertCount(1, $dtoValidators);
-        self::assertContains($defaultDataTransformer, $dtoValidators);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getDTOValidators
-     */
-    public function get_dto_validators_works_with_no_dto_validator_classes_and_no_default_dto_validator_classes(): void
-    {
-        // -- Arrange
-        $allDTOValidators = [
-            new FileSizeValidator(10),
-            new UserIdValidator($this->securitySimulator),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(dtoValidators: $allDTOValidators);
-
-        // -- Act
-        $dtoValidators = $serviceMap->getDTOValidators(
-            null,
-            null,
-        );
-
-        // -- Assert
-        self::assertCount(0, $dtoValidators);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getDTOValidators
-     */
-    public function get_dto_validators_fails_when_dto_validator_classes_are_not_available(): void
+    public function get_dto_validator_fails_when_dto_validator_class_is_not_available(): void
     {
         // -- Assert
         $this->expectException(ConfiguredDTOValidatorNotAvailable::class);
@@ -664,104 +449,10 @@ final class ServiceMapTest extends AppTestCase
         $serviceMap = ServiceMapHelper::serviceMap(dtoValidators: $allDTOValidators);
 
         // -- Act
-        $serviceMap->getDTOValidators(
-            [FileSizeValidator::class],
-            null,
-        );
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getDTOValidators
-     */
-    public function get_dto_validators_fails_when_default_dto_data_transformer_classes_are_not_available(): void
-    {
-        // -- Assert
-        $this->expectException(ConfiguredDTOValidatorNotAvailable::class);
-
-        // -- Arrange
-        $allDTOValidators = [
-            new FileSizeValidator(10),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(dtoValidators: $allDTOValidators);
-
-        // -- Act
-        $serviceMap->getDTOValidators(
-            null,
-            [UserIdValidator::class],
-        );
+        $serviceMap->getDTOValidator(FileSizeValidator::class);
     }
 
     // -- Handler wrappers
-
-    /**
-     * @test
-     *
-     * @covers ::mergeHandlerWrapperClasses
-     */
-    public function get_handler_wrapper_classes_works(): void
-    {
-        // -- Arrange
-        $serviceMap = ServiceMapHelper::serviceMap();
-
-        $handlerWrapperClassesFromConfiguration = [
-            ConnectionTransactionWrapper::class => null,
-            SilentExceptionWrapper::class => [
-                TaskAlreadyAccepted::class,
-            ],
-        ];
-
-        // -- Act
-        $handlerWrapperClasses = $serviceMap->mergeHandlerWrapperClasses(
-            $handlerWrapperClassesFromConfiguration,
-            null,
-        );
-
-        // -- Assert
-        self::assertCount(2, $handlerWrapperClasses);
-        self::assertArrayHasKey(ConnectionTransactionWrapper::class, $handlerWrapperClasses);
-        self::assertArrayHasKey(SilentExceptionWrapper::class, $handlerWrapperClasses);
-        self::assertSame([TaskAlreadyAccepted::class], $handlerWrapperClasses[SilentExceptionWrapper::class]);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::mergeHandlerWrapperClasses
-     */
-    public function get_handler_wrapper_classes_works_with_overwrite(): void
-    {
-        // -- Arrange
-        $serviceMap = ServiceMapHelper::serviceMap();
-
-        $defaultHandlerWrapperClasses = [
-            ConnectionTransactionWrapper::class => null,
-            SilentExceptionWrapper::class => [
-                TaskAlreadyAccepted::class,
-            ],
-        ];
-        $handlerWrapperClassesFromConfiguration = [
-            ConnectionTransactionWrapper::class => null,
-            SilentExceptionWrapper::class => [
-                TasksNotAccessible::class,
-            ],
-        ];
-
-        // -- Act
-        $handlerWrapperClasses = $serviceMap->mergeHandlerWrapperClasses(
-            $handlerWrapperClassesFromConfiguration,
-            $defaultHandlerWrapperClasses,
-        );
-
-        // -- Assert
-        self::assertCount(2, $handlerWrapperClasses);
-        self::assertArrayHasKey(ConnectionTransactionWrapper::class, $handlerWrapperClasses);
-        self::assertArrayHasKey(SilentExceptionWrapper::class, $handlerWrapperClasses);
-
-        // Default parameters have been overwritten bei route configuration
-        self::assertSame([TasksNotAccessible::class], $handlerWrapperClasses[SilentExceptionWrapper::class]);
-    }
 
     /**
      * @test
@@ -802,7 +493,7 @@ final class ServiceMapTest extends AppTestCase
         $serviceMap = ServiceMapHelper::serviceMap(handlerWrappers: $handlerWrappers);
 
         // -- Act
-        $handlerWrapper = $serviceMap->getHandlerWrapper(ConnectionTransactionWrapper::class);
+        $serviceMap->getHandlerWrapper(ConnectionTransactionWrapper::class);
     }
 
     // -- Command handler

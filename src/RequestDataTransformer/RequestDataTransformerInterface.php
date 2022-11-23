@@ -18,6 +18,13 @@ namespace DigitalCraftsman\CQRS\RequestDataTransformer;
  */
 interface RequestDataTransformerInterface
 {
-    /** @param class-string $dtoClass */
-    public function transformRequestData(string $dtoClass, array $requestData): array;
+    /**
+     * @param class-string                              $dtoClass
+     * @param scalar|array<array-key, scalar|null>|null $parameters
+     */
+    public function transformRequestData(
+        string $dtoClass,
+        array $requestData,
+        mixed $parameters,
+    ): array;
 }
