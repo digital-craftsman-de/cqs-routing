@@ -22,5 +22,12 @@ use Symfony\Component\HttpFoundation\Request;
  */
 interface RequestValidatorInterface
 {
-    public function validateRequest(Request $request): void;
+    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    public function validateRequest(
+        Request $request,
+        mixed $parameters,
+    ): void;
+
+    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    public static function areParametersValid(mixed $parameters): bool;
 }

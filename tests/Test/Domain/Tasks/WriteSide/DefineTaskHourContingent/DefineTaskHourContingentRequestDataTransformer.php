@@ -13,11 +13,18 @@ final class DefineTaskHourContingentRequestDataTransformer implements RequestDat
      * @param array{
      *   hourContingent: int|float,
      * } $requestData
+     * @param null $parameters
      */
-    public function transformRequestData(string $dtoClass, array $requestData): array
+    public function transformRequestData(string $dtoClass, array $requestData, mixed $parameters): array
     {
         $requestData['hourContingent'] = (float) $requestData['hourContingent'];
 
         return $requestData;
+    }
+
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
     }
 }

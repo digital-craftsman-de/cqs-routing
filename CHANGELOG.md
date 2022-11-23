@@ -2,12 +2,15 @@
 
 ## 0.8.0
 
+- **[Breaking change](./UPGRADE.md#renamed-configuration-to-routepayload-and-converted-to-a-value-object)**: Renamed `Configuration` to `RoutePayload` and converted to a value object
+- **[Breaking change](./UPGRADE.md#new-method-for-requestvalidatorinterface-requestdatatransformerinterface-dtovalidatorinterface-and-handlerwrapperinterface)**: Added `areParametersValid` method to `RequestValidatorInterface`, `RequestDataTransformerInterface`, `DTOValidatorInterface` and `HandlerWrapperInterface`
 - **[Breaking change](./UPGRADE.md#update-handler-wrapper-configuration)**: Replaced `HandlerWrapperConfiguration` with simple map configuration.
-- Enabled usage of parameters for default handler wrappers.
+- Enabled usage of parameters in route configuration for request validators, request data transformers and DTO validators.
+- Enabled usage of parameters in default configuration for request validators, request data transformers, DTO validators and handler wrappers.
 
 ## 0.7.0
 
-- Drop support for PHP 8.0.
+- **[Breaking change](./UPGRADE.md#upgrade-to-at-least-php-81)**: Drop support for PHP 8.0.
 - Add support for PHP 8.2.
 
 ## 0.6.0

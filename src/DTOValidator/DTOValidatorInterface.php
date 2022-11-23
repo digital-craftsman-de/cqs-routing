@@ -23,5 +23,13 @@ use Symfony\Component\HttpFoundation\Request;
  */
 interface DTOValidatorInterface
 {
-    public function validateDTO(Request $request, Command|Query $dto): void;
+    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    public function validateDTO(
+        Request $request,
+        Command|Query $dto,
+        mixed $parameters,
+    ): void;
+
+    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    public static function areParametersValid(mixed $parameters): bool;
 }

@@ -16,24 +16,23 @@ composer require digital-craftsman/cqrs
 
 > ⚠️ This bundle can be used (and is being used) in production, but hasn't reached version 1.0 yet. Therefore, there will be breaking changes between minor versions. I'd recommend that you require the bundle only with the current minor version like `composer require digital-craftsman/cqrs:0.8.*`. Breaking changes are described in the releases and [the changelog](./CHANGELOG.md). Updates are described in the [upgrade guide](./UPGRADE.md).
 
-Then add the following `cqrs.yaml` file to your `config/packages` and replace it with your instances of the interfaces:
+Then add the following `cqrs.php` file to your `config/packages` and replace it with your instances of the interfaces:
 
-```yaml
-cqrs:
+```php
+return static function (CqrsConfig $cqrsConfig) {
+    $cqrsConfig->queryController()
+        ->defaultRequestDecoderClass(JsonRequestDecoder::class)
+        ->defaultDtoConstructorClass(SerializerDTOConstructor::class)
+        ->defaultResponseConstructorClass(SerializerJsonResponseConstructor::class);
 
-  query_controller:
-    default_request_decoder_class: 'DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder'
-    default_dto_constructor_class: 'DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor'
-    default_response_constructor_class: 'DigitalCraftsman\CQRS\ResponseConstructor\SerializerJsonResponseConstructor'
-
-  command_controller:
-    default_request_decoder_class: 'DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder'
-    default_dto_constructor_class: 'DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor'
-    default_response_constructor_class: 'DigitalCraftsman\CQRS\ResponseConstructor\EmptyResponseConstructor'
-
+    $cqrsConfig->commandController()
+        ->defaultRequestDecoderClass(JsonRequestDecoder::class)
+        ->defaultDtoConstructorClass(SerializerDTOConstructor::class)
+        ->defaultResponseConstructorClass(EmptyResponseConstructor::class);
+};
 ```
 
-You can find the [full configuration here](./docs/configuration.md). 
+You can find the [full configuration here](./docs/configuration.md) (including an example configured with yaml). 
 
 The package contains instances for request decoder, DTO constructor and response constructor. With this you can already use it. You only need to create your own DTO validators, request data transformers and handler wrappers when you want to use those. 
 

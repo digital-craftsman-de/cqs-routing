@@ -13,11 +13,18 @@ final class CreateNewsArticleRequestDataTransformer implements RequestDataTransf
      * @param array{
      *   content: string,
      * } $requestData
+     * @param null $parameters
      */
-    public function transformRequestData(string $dtoClass, array $requestData): array
+    public function transformRequestData(string $dtoClass, array $requestData, mixed $parameters): array
     {
         $requestData['content'] = strip_tags($requestData['content'], '<p><br><strong>');
 
         return $requestData;
+    }
+
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
     }
 }

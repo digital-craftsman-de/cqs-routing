@@ -70,4 +70,7 @@ interface HandlerWrapperInterface
     public static function thenPriority(): int;
 
     public static function catchPriority(): int;
+
+    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    public static function areParametersValid(mixed $parameters): bool;
 }

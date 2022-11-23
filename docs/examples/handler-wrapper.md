@@ -45,6 +45,9 @@ interface HandlerWrapperInterface
     public static function thenPriority(): int;
 
     public static function catchPriority(): int;
+
+    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    public static function areParametersValid(mixed $parameters): bool;
 }
 ```
 
@@ -122,6 +125,12 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
     {
         return 50;
     }
+    
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
+    }
 }
 ```
 
@@ -130,6 +139,8 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
 When the `catch` method of a handler wrapper is executed, the exception is returned at the end. If it's the last handler wrapper that should handle it, it must return `null` instead.
 
 This logic is what is used with our silent exception wrapper. With it, exceptions are checked against a specific exception list (defined through a parameter as part of the route). When an exception matches, the exception is not returned and therefore doesn't bubble up the chain.
+
+The `areParametersValid` method is written in a way that it's not possible to supply classes that are not exceptions. This is validated on cache warmup.
 
 ```php
 <?php
@@ -145,7 +156,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class SilentExceptionWrapper implements HandlerWrapperInterface
 {
-    /** @param array<int, string> $parameters */
+    /** @param array<array-key, class-string<\Throwable>> $parameters */
     public function prepare(
         Command | Query $dto,
         Request $request,
@@ -154,7 +165,7 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
         // Nothing to do
     }
 
-    /** @param array<int, string> $parameters Exception class strings to be swallowed */
+    /** @param array<array-key, class-string<\Throwable>> $parameters */
     public function catch(
         Command | Query $dto,
         Request $request,
@@ -169,7 +180,7 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
         return $exception;
     }
 
-    /** @param array<int, string> $parameters */
+    /** @param array<array-key, class-string<\Throwable>> $parameters */
     public function then(
         Command | Query $dto,
         Request $request,
@@ -194,6 +205,27 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
     {
         return 0;
     }
+    
+    /** @param array<array-key, class-string<\Throwable>> $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        if (!is_array($parameters)) {
+            return false;
+        }
+
+        foreach ($parameters as $exceptionClass) {
+            if (!class_exists($exceptionClass)) {
+                return false;
+            }
+
+            $reflectionClass = new \ReflectionClass($exceptionClass);
+            if (!$reflectionClass->implementsInterface(\Throwable::class)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
 ```
 
@@ -204,7 +236,7 @@ The priority of the `catch` method is set to a low value like `-100` to make sur
 Handler wrappers are configured with the parameter that is given to the instance on execution. The key of the array must be the handler wrapper class and the parameter is supplied through the value. If there is no relevant parameter use `null` as value.
 
 ```php
-'routePayload' => Configuration::routePayload(
+'routePayload' => RoutePayload::generate(
     handlerWrapperClasses: [
         ConnectionTransactionWrapper::class => null,
         SilentExceptionWrapper::class => [
@@ -245,7 +277,10 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
     ) {
     }
 
-    /** @param CreateNewsArticleCommand $dto */
+    /** 
+     * @param CreateNewsArticleCommand $dto 
+     * @param null                     $parameters
+     */
     public function prepare(
         Command | Query $dto,
         Request $request,
@@ -291,6 +326,12 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
     public static function thenPriority(): int
     {
         return -200;
+    }
+    
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
     }
 }
 ```

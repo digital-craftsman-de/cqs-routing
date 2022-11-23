@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
 {
     public function __construct(
-        private LockSimulator $lockSimulator,
+        private readonly LockSimulator $lockSimulator,
     ) {
     }
 
@@ -60,5 +60,11 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
     public static function thenPriority(): int
     {
         return -250;
+    }
+
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
     }
 }

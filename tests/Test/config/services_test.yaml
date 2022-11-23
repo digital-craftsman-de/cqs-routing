@@ -15,7 +15,3 @@ services:
       - '../**/ValueObject/**'
       - '../Utility/ServiceLocatorSimulator.php'
     public: true
-
-  DigitalCraftsman\CQRS\Test\Application\FileSizeValidator:
-    arguments:
-      $maxUploadSizeInMB: 10

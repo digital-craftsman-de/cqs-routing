@@ -63,4 +63,10 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
     {
         return 50;
     }
+
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
+    }
 }

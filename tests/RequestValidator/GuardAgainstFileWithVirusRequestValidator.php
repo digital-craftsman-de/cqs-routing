@@ -10,14 +10,23 @@ use Symfony\Component\HttpFoundation\Request;
 final class GuardAgainstFileWithVirusRequestValidator implements RequestValidatorInterface
 {
     public function __construct(
-        private VirusScannerSimulator $virusScanner,
+        private readonly VirusScannerSimulator $virusScanner,
     ) {
     }
 
-    public function validateRequest(Request $request): void
-    {
+    /** @param null $parameters */
+    public function validateRequest(
+        Request $request,
+        mixed $parameters,
+    ): void {
         foreach ($request->files as $file) {
             $this->virusScanner->scanForVirus($file);
         }
+    }
+
+    /** @param null $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return $parameters === null;
     }
 }

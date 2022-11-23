@@ -2,7 +2,7 @@
 
 For better typing and refactoring, the routing must be configured with PHP files instead of the usual YAML files.
 
-When the routes are generated (on cache warmup), they are cached as PHP files. Therefore, the configuration can't contain any object instances. For increased type safety and better DX, we use a DTO with named parameters to configure our routes:
+When the routes are generated (on cache warmup), they are cached as PHP files. Therefore, the configuration can't contain any object instances. For increased type safety and better DX, we use a value object with named parameters to configure our routes. All parameters are validated on cache warmup and the specific route again on execution.
 
 ```php
 $routes->add(
@@ -12,12 +12,12 @@ $routes->add(
     ->controller([CommandController::class, 'handle'])
     ->methods([Request::METHOD_POST])
     ->defaults([
-        'routePayload' => Configuration::routePayload(
+        'routePayload' => RoutePayload::generate(
             dtoClass: CreateProductNewsArticleCommand::class,
             handlerClass: CreateProductNewsArticleCommandHandler::class,
             requestDecoderClass: CommandWithFilesRequestDecoder::class,
             dtoValidatorClasses: [
-                UserIdValidator::class,
+                UserIdValidator::class => null,
             ],
         ),
     ]);
@@ -31,19 +31,20 @@ The DTO validators and handler wrappers are defined as an array. It's imporant t
 
 Meaning when your default DTO validators are defined with one validator like this:
 
-```yaml
-cqrs:
-  command_controller:
-    default_dto_validator_classes:
-      - 'App\CQRS\DTOValidator\UserIdValidator'
+```php
+return static function (CqrsConfig $cqrsConfig) {
+    $cqrsConfig->commandController()
+        ->defaultDtoValidatorClasses([
+            UserIdValidator::class => null,
+        ]);
 ```
 
 And you then adapt it like this:
 
 ```php
-'routePayload' => Configuration::routePayload(
+'routePayload' => RoutePayload::generate(
     dtoValidatorClasses: [
-        FilesizeValidator::class,
+        FilesizeValidator::class => null,
     ],
 ),
 ```
@@ -53,7 +54,7 @@ The end result is that only the `FilesizeValidator` is left. You need to include
 This way you're also able to remove all default DTO validators from a route like this:
 
 ```php
-'routePayload' => Configuration::routePayload(
+'routePayload' => RoutePayload::generate(
     dtoValidatorClasses: [],
 ),
 ```

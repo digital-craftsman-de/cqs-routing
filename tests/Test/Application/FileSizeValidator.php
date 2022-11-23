@@ -13,14 +13,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class FileSizeValidator implements DTOValidatorInterface
 {
-    public function __construct(
-        private int $maxUploadSizeInMB,
-    ) {
-    }
-
+    /** @param int $parameters Max upload size in MB */
     public function validateDTO(
         Request $request,
         Command|Query $dto,
+        mixed $parameters,
     ): void {
         $reflection = new \ReflectionClass($dto);
         foreach ($reflection->getProperties() as $prop) {
@@ -28,9 +25,9 @@ final class FileSizeValidator implements DTOValidatorInterface
             /** @psalm-suppress MixedAssignment */
             $dtoProp = $dto->$name;
             if ($dtoProp instanceof UploadedFile
-                && $dtoProp->getSize() > self::megabyteToByte($this->maxUploadSizeInMB)
+                && $dtoProp->getSize() > self::megabyteToByte($parameters)
             ) {
-                throw new FileSizeTooLarge(self::byteToMegabyte($dtoProp->getSize()), $this->maxUploadSizeInMB);
+                throw new FileSizeTooLarge(self::byteToMegabyte($dtoProp->getSize()), $parameters);
             }
         }
     }
@@ -43,5 +40,12 @@ final class FileSizeValidator implements DTOValidatorInterface
     public static function byteToMegabyte(int $bytes): int
     {
         return (int) round($bytes / 1024 / 1024);
+    }
+
+    /** @param int $parameters */
+    public static function areParametersValid(mixed $parameters): bool
+    {
+        return is_int($parameters)
+            && $parameters > 0;
     }
 }
