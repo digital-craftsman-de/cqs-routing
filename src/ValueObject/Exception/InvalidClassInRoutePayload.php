@@ -15,7 +15,7 @@ final class InvalidClassInRoutePayload extends \InvalidArgumentException
         mixed $class,
         array $properties,
     ) {
-        $propertyNotice = implode('or', $properties);
+        $propertyNotice = implode(' or ', $properties);
 
         parent::__construct(sprintf(
             'Invalid class %s in route payload for property %s',
