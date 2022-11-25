@@ -11,8 +11,16 @@ namespace DigitalCraftsman\CQRS\ValueObject\Exception;
  */
 final class InvalidClassInRoutePayload extends \InvalidArgumentException
 {
-    public function __construct(mixed $class)
-    {
-        parent::__construct(sprintf('Invalid class %s in route payload', $class));
+    public function __construct(
+        mixed $class,
+        array $properties,
+    ) {
+        $propertyNotice = implode('or', $properties);
+
+        parent::__construct(sprintf(
+            'Invalid class %s in route payload for property %s',
+            $class,
+            $propertyNotice,
+        ));
     }
 }

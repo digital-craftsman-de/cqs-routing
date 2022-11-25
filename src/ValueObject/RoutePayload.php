@@ -236,7 +236,7 @@ final class RoutePayload
     public static function validateDTOClass(string $dtoClass): void
     {
         if (!class_exists($dtoClass)) {
-            throw new InvalidClassInRoutePayload($dtoClass);
+            throw new InvalidClassInRoutePayload($dtoClass, ['dtoClass']);
         }
 
         $reflectionClass = new \ReflectionClass($dtoClass);
@@ -255,7 +255,7 @@ final class RoutePayload
     public static function validateHandlerClass(string $handlerClass): void
     {
         if (!class_exists($handlerClass)) {
-            throw new InvalidClassInRoutePayload($handlerClass);
+            throw new InvalidClassInRoutePayload($handlerClass, ['handlerClass']);
         }
 
         $reflectionClass = new \ReflectionClass($handlerClass);
@@ -288,11 +288,17 @@ final class RoutePayload
 
         foreach ($classesToValidate as $class => $parameters) {
             if (!is_string($class)) {
-                throw new InvalidClassInRoutePayload($class);
+                throw new InvalidClassInRoutePayload($class, [
+                    'requestValidatorClasses',
+                    'requestValidatorClassesToMergeWithDefault',
+                ]);
             }
 
             if (!class_exists($class)) {
-                throw new InvalidClassInRoutePayload($class);
+                throw new InvalidClassInRoutePayload($class, [
+                    'requestValidatorClasses',
+                    'requestValidatorClassesToMergeWithDefault',
+                ]);
             }
 
             $reflectionClass = new \ReflectionClass($class);
@@ -315,7 +321,7 @@ final class RoutePayload
     {
         if ($requestDecoderClass !== null) {
             if (!class_exists($requestDecoderClass)) {
-                throw new InvalidClassInRoutePayload($requestDecoderClass);
+                throw new InvalidClassInRoutePayload($requestDecoderClass, ['requestDecoderClass']);
             }
 
             $reflectionClass = new \ReflectionClass($requestDecoderClass);
@@ -347,11 +353,17 @@ final class RoutePayload
 
         foreach ($classesToValidate as $class => $parameters) {
             if (!is_string($class)) {
-                throw new InvalidClassInRoutePayload($class);
+                throw new InvalidClassInRoutePayload($class, [
+                    'requestDataTransformerClasses',
+                    'requestDataTransformerClassesToMergeWithDefault',
+                ]);
             }
 
             if (!class_exists($class)) {
-                throw new InvalidClassInRoutePayload($class);
+                throw new InvalidClassInRoutePayload($class, [
+                    'requestDataTransformerClasses',
+                    'requestDataTransformerClassesToMergeWithDefault',
+                ]);
             }
 
             $reflectionClass = new \ReflectionClass($class);
@@ -374,7 +386,7 @@ final class RoutePayload
     {
         if ($dtoConstructorClass !== null) {
             if (!class_exists($dtoConstructorClass)) {
-                throw new InvalidClassInRoutePayload($dtoConstructorClass);
+                throw new InvalidClassInRoutePayload($dtoConstructorClass, ['dtoConstructorClass']);
             }
 
             $reflectionClass = new \ReflectionClass($dtoConstructorClass);
@@ -406,11 +418,17 @@ final class RoutePayload
 
         foreach ($classesToValidate as $class => $parameters) {
             if (!is_string($class)) {
-                throw new InvalidClassInRoutePayload($class);
+                throw new InvalidClassInRoutePayload($class, [
+                    'dtoValidatorClasses',
+                    'dtoValidatorClassesToMergeWithDefault',
+                ]);
             }
 
             if (!class_exists($class)) {
-                throw new InvalidClassInRoutePayload($class);
+                throw new InvalidClassInRoutePayload($class, [
+                    'dtoValidatorClasses',
+                    'dtoValidatorClassesToMergeWithDefault',
+                ]);
             }
 
             $reflectionClass = new \ReflectionClass($class);
@@ -446,11 +464,17 @@ final class RoutePayload
 
         foreach ($classesToValidate as $class => $parameters) {
             if (!is_string($class)) {
-                throw new InvalidClassInRoutePayload($class);
+                throw new InvalidClassInRoutePayload($class, [
+                    'handlerWrapperClasses',
+                    'handlerWrapperClassesToMergeWithDefault',
+                ]);
             }
 
             if (!class_exists($class)) {
-                throw new InvalidClassInRoutePayload($class);
+                throw new InvalidClassInRoutePayload($class, [
+                    'handlerWrapperClasses',
+                    'handlerWrapperClassesToMergeWithDefault',
+                ]);
             }
 
             $reflectionClass = new \ReflectionClass($class);
@@ -473,7 +497,7 @@ final class RoutePayload
     {
         if ($responseConstructorClass !== null) {
             if (!class_exists($responseConstructorClass)) {
-                throw new InvalidClassInRoutePayload($responseConstructorClass);
+                throw new InvalidClassInRoutePayload($responseConstructorClass, ['responseConstructorClass']);
             }
 
             $reflectionClass = new \ReflectionClass($responseConstructorClass);
