@@ -25,6 +25,9 @@ return (new PhpCsFixer\Config())
             'case' => 'snake_case',
         ],
 
+        // Disable one line throw
+        'single_line_throw' => false,
+
         // Yoda style is more difficult to read and the issues it would prevent are already prevented by Psalm
         'yoda_style' => [
             'equal' => false,
@@ -33,5 +36,4 @@ return (new PhpCsFixer\Config())
             'always_move_variable' => true,
         ],
     ])
-    ->setFinder($finder)
-    ;
+    ->setFinder($finder);
