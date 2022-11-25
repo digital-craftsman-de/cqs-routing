@@ -127,7 +127,7 @@ php-code-validation:
 ## php-8.1-tests-ci		Run the tests for PHP 8.1 for CI.
 .PHONY: php-8.1-tests-ci
 php-8.1-tests-ci:
-	docker-compose run --rm php-8.1 ./vendor/bin/phpunit
+	docker-compose run --rm php-8.1 ./vendor/bin/phpunit --coverage-clover ./coverage.xml
 
 ## php-8.2-tests-ci		Run the tests for PHP 8.2 for CI.
 .PHONY: php-8.2-tests-ci
