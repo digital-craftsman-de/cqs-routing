@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\ValueObject;
+namespace DigitalCraftsman\CQRS\Routing;
 
 use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
 use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstTokenInHeaderRequestValidator;
@@ -19,7 +19,6 @@ use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoResponseConstructor;
 use DigitalCraftsman\CQRS\Routing\Exception\InvalidClassInRoutePayload;
 use DigitalCraftsman\CQRS\Routing\Exception\InvalidParametersInRoutePayload;
 use DigitalCraftsman\CQRS\Routing\Exception\OnlyOverwriteOrMergeCanBeUsedInRoutePayload;
-use DigitalCraftsman\CQRS\Routing\RoutePayload;
 use DigitalCraftsman\CQRS\Test\Application\AddActionIdRequestDataTransformer;
 use DigitalCraftsman\CQRS\Test\Application\Authentication\UserIdValidator;
 use DigitalCraftsman\CQRS\Test\Application\ConnectionTransactionWrapper;
