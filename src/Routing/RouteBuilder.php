@@ -9,6 +9,10 @@ use DigitalCraftsman\CQRS\Controller\QueryController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
+/**
+ * @codeCoverageIgnore
+ * There seems to be no way to get a RoutingConfigurator instance. Therefore, it's not really possible to test this builder.
+ */
 final class RouteBuilder
 {
     private const DEFAULT_METHOD = Request::METHOD_POST;
