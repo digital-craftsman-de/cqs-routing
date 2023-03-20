@@ -7,6 +7,19 @@ namespace DigitalCraftsman\CQRS\ValueObject;
 use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
 use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstTokenInHeaderRequestValidator;
 use DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNetherCommandHandlerNorQueryHandler;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNetherCommandNorQuery;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoDTOConstructor;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoDTOValidator;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoHandlerWrapper;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoRequestDataTransformer;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoRequestDecoder;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoRequestValidator;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoResponseConstructor;
+use DigitalCraftsman\CQRS\Routing\Exception\InvalidClassInRoutePayload;
+use DigitalCraftsman\CQRS\Routing\Exception\InvalidParametersInRoutePayload;
+use DigitalCraftsman\CQRS\Routing\Exception\OnlyOverwriteOrMergeCanBeUsedInRoutePayload;
+use DigitalCraftsman\CQRS\Routing\RoutePayload;
 use DigitalCraftsman\CQRS\Test\Application\AddActionIdRequestDataTransformer;
 use DigitalCraftsman\CQRS\Test\Application\Authentication\UserIdValidator;
 use DigitalCraftsman\CQRS\Test\Application\ConnectionTransactionWrapper;
@@ -18,21 +31,9 @@ use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskComma
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskDTOConstructor;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskRequestDecoder;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNetherCommandHandlerNorQueryHandler;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNetherCommandNorQuery;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoDTOConstructor;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoDTOValidator;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoHandlerWrapper;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestDataTransformer;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestDecoder;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestValidator;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoResponseConstructor;
-use DigitalCraftsman\CQRS\ValueObject\Exception\InvalidClassInRoutePayload;
-use DigitalCraftsman\CQRS\ValueObject\Exception\InvalidParametersInRoutePayload;
-use DigitalCraftsman\CQRS\ValueObject\Exception\OnlyOverwriteOrMergeCanBeUsedInRoutePayload;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \DigitalCraftsman\CQRS\ValueObject\RoutePayload */
+/** @coversDefaultClass \DigitalCraftsman\CQRS\Routing\RoutePayload */
 final class RoutePayloadTest extends TestCase
 {
     // -- Construction

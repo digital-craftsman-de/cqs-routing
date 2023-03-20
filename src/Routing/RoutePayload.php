@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\ValueObject;
+namespace DigitalCraftsman\CQRS\Routing;
 
 use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
@@ -15,18 +15,18 @@ use DigitalCraftsman\CQRS\RequestDataTransformer\RequestDataTransformerInterface
 use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
 use DigitalCraftsman\CQRS\RequestValidator\RequestValidatorInterface;
 use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNetherCommandHandlerNorQueryHandler;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNetherCommandNorQuery;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoDTOConstructor;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoDTOValidator;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoHandlerWrapper;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestDataTransformer;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestDecoder;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestValidator;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoResponseConstructor;
-use DigitalCraftsman\CQRS\ValueObject\Exception\InvalidClassInRoutePayload;
-use DigitalCraftsman\CQRS\ValueObject\Exception\InvalidParametersInRoutePayload;
-use DigitalCraftsman\CQRS\ValueObject\Exception\OnlyOverwriteOrMergeCanBeUsedInRoutePayload;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNetherCommandHandlerNorQueryHandler;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNetherCommandNorQuery;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoDTOConstructor;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoDTOValidator;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoHandlerWrapper;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoRequestDataTransformer;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoRequestDecoder;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoRequestValidator;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoResponseConstructor;
+use DigitalCraftsman\CQRS\Routing\Exception\InvalidClassInRoutePayload;
+use DigitalCraftsman\CQRS\Routing\Exception\InvalidParametersInRoutePayload;
+use DigitalCraftsman\CQRS\Routing\Exception\OnlyOverwriteOrMergeCanBeUsedInRoutePayload;
 
 /**
  * The symfony routing does not support the usage of objects as it has to dump them into a php file for caching. Therefore, we create an
@@ -150,6 +150,42 @@ final class RoutePayload
         );
 
         return $routePayload->toPayload();
+    }
+
+    /**
+     * @return array{
+     *   dtoClass: class-string<Command>|class-string<Query>,
+     *   handlerClass: class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>,
+     *   requestValidatorClasses: array<class-string<RequestValidatorInterface>, scalar|array<array-key, null|scalar>|null>,
+     *   requestValidatorClassesToMergeWithDefault: array<class-string<RequestValidatorInterface>, scalar|array<array-key, null|scalar>|null>,
+     *   requestDecoderClass: class-string<RequestDecoderInterface>|null,
+     *   requestDataTransformerClasses: array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, null|scalar>|null>,
+     *   requestDataTransformerClassesToMergeWithDefault: array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, null|scalar>|null>,
+     *   dtoConstructorClass: class-string<DTOConstructorInterface>|null,
+     *   dtoValidatorClasses: array<class-string<DTOValidatorInterface>, scalar|array<array-key, null|scalar>|null>,
+     *   dtoValidatorClassesToMergeWithDefault: array<class-string<DTOValidatorInterface>, scalar|array<array-key, null|scalar>|null>,
+     *   handlerWrapperClasses: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, null|scalar>|null>,
+     *   handlerWrapperClassesToMergeWithDefault: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, null|scalar>|null>,
+     *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
+     * }
+     */
+    public static function fromRouteParameters(RouteParameters $parameters): array
+    {
+        return self::generate(
+            dtoClass: $parameters->dtoClass,
+            handlerClass: $parameters->handlerClass,
+            requestValidatorClasses: $parameters->requestValidatorClasses,
+            requestValidatorClassesToMergeWithDefault: $parameters->requestValidatorClassesToMergeWithDefault,
+            requestDecoderClass: $parameters->requestDecoderClass,
+            requestDataTransformerClasses: $parameters->requestDataTransformerClasses,
+            requestDataTransformerClassesToMergeWithDefault: $parameters->requestDataTransformerClassesToMergeWithDefault,
+            dtoConstructorClass: $parameters->dtoConstructorClass,
+            dtoValidatorClasses: $parameters->dtoValidatorClasses,
+            dtoValidatorClassesToMergeWithDefault: $parameters->dtoValidatorClassesToMergeWithDefault,
+            handlerWrapperClasses: $parameters->handlerWrapperClasses,
+            handlerWrapperClassesToMergeWithDefault: $parameters->handlerWrapperClassesToMergeWithDefault,
+            responseConstructorClass: $parameters->responseConstructorClass,
+        );
     }
 
     /**

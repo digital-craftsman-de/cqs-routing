@@ -21,7 +21,7 @@ use DigitalCraftsman\CQRS\DTO\Configuration;
 After:
 
 ```php
-use DigitalCraftsman\CQRS\ValueObject\RoutePayload;
+use DigitalCraftsman\CQRS\Routing\RoutePayload;
 
 'routePayload' => RoutePayload::generate(
     ...

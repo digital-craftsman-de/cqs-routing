@@ -13,7 +13,7 @@ use DigitalCraftsman\CQRS\RequestDataTransformer\RequestDataTransformerInterface
 use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
 use DigitalCraftsman\CQRS\RequestValidator\RequestValidatorInterface;
 use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
-use DigitalCraftsman\CQRS\ValueObject\RoutePayload;
+use DigitalCraftsman\CQRS\Routing\RoutePayload;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
