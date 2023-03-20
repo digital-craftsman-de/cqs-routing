@@ -1,4 +1,4 @@
-FROM php:8.2.0RC6-fpm-alpine3.16
+FROM php:8.2.0-fpm-alpine3.16
 
 RUN apk add --update \
     autoconf \
