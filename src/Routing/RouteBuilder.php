@@ -7,14 +7,14 @@ namespace DigitalCraftsman\CQRS\Routing;
 use DigitalCraftsman\CQRS\Controller\CommandController;
 use DigitalCraftsman\CQRS\Controller\QueryController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Loader\Configurator\RouteConfigurator;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 final class RouteBuilder
 {
     private const DEFAULT_METHOD = Request::METHOD_POST;
 
     public static function addQueryRoute(
-        RouteConfigurator $routes,
+        RoutingConfigurator $routes,
         RouteParameters $parameters,
     ): void {
         $name = $parameters->name ?? str_replace(
@@ -36,7 +36,7 @@ final class RouteBuilder
     }
 
     public static function addCommandRoute(
-        RouteConfigurator $routes,
+        RoutingConfigurator $routes,
         RouteParameters $parameters,
     ): void {
         $name = $parameters->name ?? str_replace(
