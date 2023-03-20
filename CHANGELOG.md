@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.1
+
+- Improve debugging of route configuration.
+- Added missing return type annotation for `RoutePayload::generate`.
+
 ## 0.8.0
 
 - **[Breaking change](./UPGRADE.md#renamed-configuration-to-routepayload-and-converted-to-a-value-object)**: Renamed `Configuration` to `RoutePayload` and converted to a value object
