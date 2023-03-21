@@ -1,5 +1,11 @@
 # Upgrade guide
 
+## From 0.8.* to 0.9.0
+
+### Moved files in `DigitalCraftsman\CQRS\ValueObject` to `DigitalCraftsman\CQRS\Routing`
+
+The class `RoutePayload` and the exceptions have been moved to `DigitalCraftsman\CQRS\Routing`. Adapt your imports accordingly. You might replace the usages of `RoutePayload` entirely through using the new `RouteBuilder`.
+
 ## From 0.7.* to 0.8.0
 
 ### Renamed `Configuration` to `RoutePayload` and converted to a value object
