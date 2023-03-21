@@ -6,6 +6,7 @@ When the routes are generated (on cache warmup), they are cached as PHP files. T
 
 ```php
 return static function (RoutingConfigurator $routes) {
+
     $routes->add(
         'api_news_create_news_article_command',
         '/api/news/create-news-article-command',
@@ -23,15 +24,17 @@ return static function (RoutingConfigurator $routes) {
             ),
         ]);
     ...
+    
 };
 ```
 
 All parameters except `dtoClass` and `handlerClass` are optional. You might only need to define those when you only need the default components for the other parameters ([configured in the `cqrs.yaml`](./configuration.md)).
 
-To reduce the noise in the routes even further, you can use the `RouteBuilder` which chooses the controller depending on the function used, uses `POST` as default method and handles the defaults for you:
+To reduce the noise in the routes even further, you can use the `RouteBuilder` which chooses the controller depending on the function used, uses `POST` as default method and handles the defaults generation for you:
 
 ```php
 return static function (RoutingConfigurator $routes) {
+
     RouteBuilder::addCommandRoute($routes, new RouteParameters(
         path: '/api/news/create-news-article-command',
         dtoClass: CreateProductNewsArticleCommand::class,
@@ -42,6 +45,7 @@ return static function (RoutingConfigurator $routes) {
         ],
     ));
     ...
+    
 };
 ```
 
