@@ -4,7 +4,7 @@
 
 ### Moved files in `DigitalCraftsman\CQRS\ValueObject` to `DigitalCraftsman\CQRS\Routing`
 
-The class `RoutePayload` and the exceptions have been moved to `DigitalCraftsman\CQRS\Routing`. Adapt your imports accordingly. You might replace the usages of `RoutePayload` entirely through using the new `RouteBuilder`.
+The class `RoutePayload` and the exceptions have been moved to `DigitalCraftsman\CQRS\Routing`. Adapt your imports accordingly. You might replace the usages of `RoutePayload` entirely through using the new `RouteBuilder` ([See routing](./docs/routing.md)).
 
 ## From 0.7.* to 0.8.0
 
