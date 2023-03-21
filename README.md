@@ -83,21 +83,17 @@ Through the Symfony routing, we define which instances of the components (if rel
 A route might look like this:
 
 ```php
-$routes->add(
-    'api_news_create_news_article_command',
-    '/api/news/create-news-article-command',
-)
-    ->controller([CommandController::class, 'handle'])
-    ->methods([Request::METHOD_POST])
-    ->defaults([
-        'routePayload' => Configuration::routePayload(
-            dtoClass: CreateNewsArticleCommand::class,
-            handlerClass: CreateNewsArticleCommandHandler::class,
-            dtoValidatorClasses: [
-                UserIdValidator::class,
-            ],
-        ),
-    ]);
+return static function (RoutingConfigurator $routes) {
+    RouteBuilder::addCommandRoute($routes, new RouteParameters(
+        path: '/api/news/create-news-article-command',
+        dtoClass: CreateNewsArticleCommand::class,
+        handlerClass: CreateNewsArticleCommandHandler::class,
+        dtoValidatorClasses: [
+            UserIdValidator::class => null,
+        ],
+    ));
+    ...
+};
 ```
 
 You only need to define the components that differ from the defaults configured in the `cqrs.yaml` configuration. Read more about [routing here](./docs/routing.md).
