@@ -2,7 +2,7 @@
 
 ## 0.9.0
 
-- **[Breaking change](./UPGRADE.md#moved-files-in-digitalcraftsmancqrsvalueobject-to-digitalcraftsmancqrsrouting)** Moved files in `DigitalCraftsman\CQRS\ValueObject` to `DigitalCraftsman\CQRS\Routing`.
+- **[Breaking change](./UPGRADE.md#moved-files-in-digitalcraftsmancqrsvalueobject-to-digitalcraftsmancqrsrouting)**: Moved files in `DigitalCraftsman\CQRS\ValueObject` to `DigitalCraftsman\CQRS\Routing`.
 - Added `RouteBuilder` to reduce noise in routing configuration.
 
 ## 0.8.1
