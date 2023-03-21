@@ -13,8 +13,8 @@ use DigitalCraftsman\CQRS\RequestDataTransformer\RequestDataTransformerInterface
 use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
 use DigitalCraftsman\CQRS\RequestValidator\RequestValidatorInterface;
 use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
+use DigitalCraftsman\CQRS\Routing\RoutePayload;
 use DigitalCraftsman\CQRS\ServiceMap\ServiceMap;
-use DigitalCraftsman\CQRS\ValueObject\RoutePayload;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

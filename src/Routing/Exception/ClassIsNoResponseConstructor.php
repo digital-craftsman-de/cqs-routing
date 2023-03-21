@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\ValueObject\Exception;
+namespace DigitalCraftsman\CQRS\Routing\Exception;
 
 /**
  * @psalm-immutable

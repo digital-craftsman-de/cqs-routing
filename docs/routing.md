@@ -5,25 +5,49 @@ For better typing and refactoring, the routing must be configured with PHP files
 When the routes are generated (on cache warmup), they are cached as PHP files. Therefore, the configuration can't contain any object instances. For increased type safety and better DX, we use a value object with named parameters to configure our routes. All parameters are validated on cache warmup and the specific route again on execution.
 
 ```php
-$routes->add(
-    'api_news_create_news_article_command',
-    '/api/news/create-news-article-command',
-)
-    ->controller([CommandController::class, 'handle'])
-    ->methods([Request::METHOD_POST])
-    ->defaults([
-        'routePayload' => RoutePayload::generate(
-            dtoClass: CreateProductNewsArticleCommand::class,
-            handlerClass: CreateProductNewsArticleCommandHandler::class,
-            requestDecoderClass: CommandWithFilesRequestDecoder::class,
-            dtoValidatorClasses: [
-                UserIdValidator::class => null,
-            ],
-        ),
-    ]);
+return static function (RoutingConfigurator $routes) {
+
+    $routes->add(
+        'api_news_create_news_article_command',
+        '/api/news/create-news-article-command',
+    )
+        ->controller([CommandController::class, 'handle'])
+        ->methods([Request::METHOD_POST])
+        ->defaults([
+            'routePayload' => RoutePayload::generate(
+                dtoClass: CreateProductNewsArticleCommand::class,
+                handlerClass: CreateProductNewsArticleCommandHandler::class,
+                requestDecoderClass: CommandWithFilesRequestDecoder::class,
+                dtoValidatorClasses: [
+                    UserIdValidator::class => null,
+                ],
+            ),
+        ]);
+    ...
+    
+};
 ```
 
 All parameters except `dtoClass` and `handlerClass` are optional. You might only need to define those when you only need the default components for the other parameters ([configured in the `cqrs.yaml`](./configuration.md)).
+
+To reduce the noise in the routes even further, you can use the `RouteBuilder` which chooses the controller depending on the function used, uses `POST` as default method and handles the defaults generation for you:
+
+```php
+return static function (RoutingConfigurator $routes) {
+
+    RouteBuilder::addCommandRoute($routes, new RouteParameters(
+        path: '/api/news/create-news-article-command',
+        dtoClass: CreateProductNewsArticleCommand::class,
+        handlerClass: CreateProductNewsArticleCommandHandler::class,
+        requestDecoderClass: CommandWithFilesRequestDecoder::class,
+        dtoValidatorClasses: [
+            UserIdValidator::class => null,
+        ],
+    ));
+    ...
+    
+};
+```
 
 ## Overwrite request validators, request data transformers, DTO validators and handler wrappers
 

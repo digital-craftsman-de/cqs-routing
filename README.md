@@ -14,7 +14,7 @@ Install package through composer:
 composer require digital-craftsman/cqrs
 ```
 
-> ⚠️ This bundle can be used (and is being used) in production, but hasn't reached version 1.0 yet. Therefore, there will be breaking changes between minor versions. I'd recommend that you require the bundle only with the current minor version like `composer require digital-craftsman/cqrs:0.8.*`. Breaking changes are described in the releases and [the changelog](./CHANGELOG.md). Updates are described in the [upgrade guide](./UPGRADE.md).
+> ⚠️ This bundle can be used (and is being used) in production, but hasn't reached version 1.0 yet. Therefore, there will be breaking changes between minor versions. I'd recommend that you require the bundle only with the current minor version like `composer require digital-craftsman/cqrs:0.9.*`. Breaking changes are described in the releases and [the changelog](./CHANGELOG.md). Updates are described in the [upgrade guide](./UPGRADE.md).
 
 Then add the following `cqrs.php` file to your `config/packages` and replace it with your instances of the interfaces:
 
@@ -83,21 +83,18 @@ Through the Symfony routing, we define which instances of the components (if rel
 A route might look like this:
 
 ```php
-$routes->add(
-    'api_news_create_news_article_command',
-    '/api/news/create-news-article-command',
-)
-    ->controller([CommandController::class, 'handle'])
-    ->methods([Request::METHOD_POST])
-    ->defaults([
-        'routePayload' => Configuration::routePayload(
-            dtoClass: CreateNewsArticleCommand::class,
-            handlerClass: CreateNewsArticleCommandHandler::class,
-            dtoValidatorClasses: [
-                UserIdValidator::class,
-            ],
-        ),
-    ]);
+return static function (RoutingConfigurator $routes) {
+
+    RouteBuilder::addCommandRoute($routes, new RouteParameters(
+        path: '/api/news/create-news-article-command',
+        dtoClass: CreateNewsArticleCommand::class,
+        handlerClass: CreateNewsArticleCommandHandler::class,
+        dtoValidatorClasses: [
+            UserIdValidator::class => null,
+        ],
+    ));
+    
+};
 ```
 
 You only need to define the components that differ from the defaults configured in the `cqrs.yaml` configuration. Read more about [routing here](./docs/routing.md).

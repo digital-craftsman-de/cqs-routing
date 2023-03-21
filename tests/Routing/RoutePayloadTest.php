@@ -2,11 +2,23 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\ValueObject;
+namespace DigitalCraftsman\CQRS\Routing;
 
 use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
 use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstTokenInHeaderRequestValidator;
 use DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNetherCommandHandlerNorQueryHandler;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNetherCommandNorQuery;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoDTOConstructor;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoDTOValidator;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoHandlerWrapper;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoRequestDataTransformer;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoRequestDecoder;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoRequestValidator;
+use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoResponseConstructor;
+use DigitalCraftsman\CQRS\Routing\Exception\InvalidClassInRoutePayload;
+use DigitalCraftsman\CQRS\Routing\Exception\InvalidParametersInRoutePayload;
+use DigitalCraftsman\CQRS\Routing\Exception\OnlyOverwriteOrMergeCanBeUsedInRoutePayload;
 use DigitalCraftsman\CQRS\Test\Application\AddActionIdRequestDataTransformer;
 use DigitalCraftsman\CQRS\Test\Application\Authentication\UserIdValidator;
 use DigitalCraftsman\CQRS\Test\Application\ConnectionTransactionWrapper;
@@ -18,21 +30,9 @@ use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskComma
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskDTOConstructor;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskRequestDecoder;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNetherCommandHandlerNorQueryHandler;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNetherCommandNorQuery;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoDTOConstructor;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoDTOValidator;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoHandlerWrapper;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestDataTransformer;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestDecoder;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoRequestValidator;
-use DigitalCraftsman\CQRS\ValueObject\Exception\ClassIsNoResponseConstructor;
-use DigitalCraftsman\CQRS\ValueObject\Exception\InvalidClassInRoutePayload;
-use DigitalCraftsman\CQRS\ValueObject\Exception\InvalidParametersInRoutePayload;
-use DigitalCraftsman\CQRS\ValueObject\Exception\OnlyOverwriteOrMergeCanBeUsedInRoutePayload;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \DigitalCraftsman\CQRS\ValueObject\RoutePayload */
+/** @coversDefaultClass \DigitalCraftsman\CQRS\Routing\RoutePayload */
 final class RoutePayloadTest extends TestCase
 {
     // -- Construction
@@ -81,6 +81,70 @@ final class RoutePayloadTest extends TestCase
             handlerWrapperClassesToMergeWithDefault: null,
             responseConstructorClass: EmptyJsonResponseConstructor::class,
         );
+
+        // -- Assert
+        self::assertEquals([
+            'dtoClass' => CreateTaskCommand::class,
+            'handlerClass' => CreateTaskCommandHandler::class,
+            'requestValidatorClasses' => [
+                GuardAgainstTokenInHeaderRequestValidator::class => null,
+            ],
+            'requestValidatorClassesToMergeWithDefault' => null,
+            'requestDecoderClass' => CreateTaskRequestDecoder::class,
+            'requestDataTransformerClasses' => [
+                AddActionIdRequestDataTransformer::class => null,
+            ],
+            'requestDataTransformerClassesToMergeWithDefault' => null,
+            'dtoConstructorClass' => CreateTaskDTOConstructor::class,
+            'dtoValidatorClasses' => [
+                UserIdValidator::class => null,
+            ],
+            'dtoValidatorClassesToMergeWithDefault' => null,
+            'handlerWrapperClasses' => [
+                SilentExceptionWrapper::class => [
+                    TaskAlreadyAccepted::class,
+                ],
+            ],
+            'handlerWrapperClassesToMergeWithDefault' => null,
+            'responseConstructorClass' => EmptyJsonResponseConstructor::class,
+        ], $payload);
+    }
+
+    /**
+     * @test
+     *
+     * @covers ::fromRouteParameters
+     * @covers \DigitalCraftsman\CQRS\Routing\RouteParameters::__construct
+     */
+    public function from_route_parameters_works(): void
+    {
+        // -- Arrange & Act
+        $payload = RoutePayload::fromRouteParameters(new RouteParameters(
+            path: '/api/tasks/create-task-command',
+            dtoClass: CreateTaskCommand::class,
+            handlerClass: CreateTaskCommandHandler::class,
+            requestValidatorClasses: [
+                GuardAgainstTokenInHeaderRequestValidator::class => null,
+            ],
+            requestValidatorClassesToMergeWithDefault: null,
+            requestDecoderClass: CreateTaskRequestDecoder::class,
+            requestDataTransformerClasses: [
+                AddActionIdRequestDataTransformer::class => null,
+            ],
+            requestDataTransformerClassesToMergeWithDefault: null,
+            dtoConstructorClass: CreateTaskDTOConstructor::class,
+            dtoValidatorClasses: [
+                UserIdValidator::class => null,
+            ],
+            dtoValidatorClassesToMergeWithDefault: null,
+            handlerWrapperClasses: [
+                SilentExceptionWrapper::class => [
+                    TaskAlreadyAccepted::class,
+                ],
+            ],
+            handlerWrapperClassesToMergeWithDefault: null,
+            responseConstructorClass: EmptyJsonResponseConstructor::class,
+        ));
 
         // -- Assert
         self::assertEquals([
