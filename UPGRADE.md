@@ -1,5 +1,41 @@
 # Upgrade guide
 
+## From 0.9.* to 0.10.0
+
+### Moved validation from `RoutePaylaod` to `RouteParameters` and removed `RoutePayload::generate`
+
+Using the `RouteBuilder` is now **highly recommended**. When not using it, you have to replace your usages of `RoutePayload::generate` (which has been removed) with `RoutePayload::generatePayloadFromRouteParameters`.
+
+Before:
+
+```php
+$routes->add(
+    'api_news_create_news_article_command',
+    '/api/news/create-news-article-command',
+)
+    ->controller([CommandController::class, 'handle'])
+    ->methods([Request::METHOD_POST])
+    ->defaults([
+        'routePayload' => RoutePayload::generate(
+            ...
+        ),
+```
+
+After:
+
+```php
+$routes->add(
+    'api_news_create_news_article_command',
+    '/api/news/create-news-article-command',
+)
+    ->controller([CommandController::class, 'handle'])
+    ->methods([Request::METHOD_POST])
+    ->defaults([
+        'routePayload' => RoutePayload::generateFromRouteParameters(new RouteParameters(
+            ...
+        )),
+```
+
 ## From 0.8.* to 0.9.0
 
 ### Moved files in `DigitalCraftsman\CQRS\ValueObject` to `DigitalCraftsman\CQRS\Routing`

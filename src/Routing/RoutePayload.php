@@ -55,6 +55,42 @@ final class RoutePayload
     }
 
     /**
+     * @return array{
+     *   dtoClass: class-string<Command>|class-string<Query>,
+     *   handlerClass: class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>,
+     *   requestValidatorClasses: array<class-string<RequestValidatorInterface>, scalar|array<array-key, null|scalar>|null>,
+     *   requestValidatorClassesToMergeWithDefault: array<class-string<RequestValidatorInterface>, scalar|array<array-key, null|scalar>|null>,
+     *   requestDecoderClass: class-string<RequestDecoderInterface>|null,
+     *   requestDataTransformerClasses: array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, null|scalar>|null>,
+     *   requestDataTransformerClassesToMergeWithDefault: array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, null|scalar>|null>,
+     *   dtoConstructorClass: class-string<DTOConstructorInterface>|null,
+     *   dtoValidatorClasses: array<class-string<DTOValidatorInterface>, scalar|array<array-key, null|scalar>|null>,
+     *   dtoValidatorClassesToMergeWithDefault: array<class-string<DTOValidatorInterface>, scalar|array<array-key, null|scalar>|null>,
+     *   handlerWrapperClasses: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, null|scalar>|null>,
+     *   handlerWrapperClassesToMergeWithDefault: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, null|scalar>|null>,
+     *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
+     * }
+     */
+    public static function generatePayloadFromRouteParameters(RouteParameters $parameters): array
+    {
+        return self::generatePayload(
+            dtoClass: $parameters->dtoClass,
+            handlerClass: $parameters->handlerClass,
+            requestValidatorClasses: $parameters->requestValidatorClasses,
+            requestValidatorClassesToMergeWithDefault: $parameters->requestValidatorClassesToMergeWithDefault,
+            requestDecoderClass: $parameters->requestDecoderClass,
+            requestDataTransformerClasses: $parameters->requestDataTransformerClasses,
+            requestDataTransformerClassesToMergeWithDefault: $parameters->requestDataTransformerClassesToMergeWithDefault,
+            dtoConstructorClass: $parameters->dtoConstructorClass,
+            dtoValidatorClasses: $parameters->dtoValidatorClasses,
+            dtoValidatorClassesToMergeWithDefault: $parameters->dtoValidatorClassesToMergeWithDefault,
+            handlerWrapperClasses: $parameters->handlerWrapperClasses,
+            handlerWrapperClassesToMergeWithDefault: $parameters->handlerWrapperClassesToMergeWithDefault,
+            responseConstructorClass: $parameters->responseConstructorClass,
+        );
+    }
+
+    /**
      * @param class-string<Command>|class-string<Query>                                                            $dtoClass
      * @param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>                            $handlerClass
      * @param array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null       $requestValidatorClasses
@@ -68,6 +104,8 @@ final class RoutePayload
      * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|bool|null>|null>|null    $handlerWrapperClasses
      * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|bool|null>|null>|null    $handlerWrapperClassesToMergeWithDefault
      * @param class-string<ResponseConstructorInterface>|null                                                      $responseConstructorClass
+     *
+     * @internal
      *
      * @return array{
      *   dtoClass: class-string<Command>|class-string<Query>,
@@ -117,42 +155,6 @@ final class RoutePayload
         );
 
         return $routePayload->toPayload();
-    }
-
-    /**
-     * @return array{
-     *   dtoClass: class-string<Command>|class-string<Query>,
-     *   handlerClass: class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>,
-     *   requestValidatorClasses: array<class-string<RequestValidatorInterface>, scalar|array<array-key, null|scalar>|null>,
-     *   requestValidatorClassesToMergeWithDefault: array<class-string<RequestValidatorInterface>, scalar|array<array-key, null|scalar>|null>,
-     *   requestDecoderClass: class-string<RequestDecoderInterface>|null,
-     *   requestDataTransformerClasses: array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, null|scalar>|null>,
-     *   requestDataTransformerClassesToMergeWithDefault: array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, null|scalar>|null>,
-     *   dtoConstructorClass: class-string<DTOConstructorInterface>|null,
-     *   dtoValidatorClasses: array<class-string<DTOValidatorInterface>, scalar|array<array-key, null|scalar>|null>,
-     *   dtoValidatorClassesToMergeWithDefault: array<class-string<DTOValidatorInterface>, scalar|array<array-key, null|scalar>|null>,
-     *   handlerWrapperClasses: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, null|scalar>|null>,
-     *   handlerWrapperClassesToMergeWithDefault: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, null|scalar>|null>,
-     *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
-     * }
-     */
-    public static function generatePayloadFromRouteParameters(RouteParameters $parameters): array
-    {
-        return self::generatePayload(
-            dtoClass: $parameters->dtoClass,
-            handlerClass: $parameters->handlerClass,
-            requestValidatorClasses: $parameters->requestValidatorClasses,
-            requestValidatorClassesToMergeWithDefault: $parameters->requestValidatorClassesToMergeWithDefault,
-            requestDecoderClass: $parameters->requestDecoderClass,
-            requestDataTransformerClasses: $parameters->requestDataTransformerClasses,
-            requestDataTransformerClassesToMergeWithDefault: $parameters->requestDataTransformerClassesToMergeWithDefault,
-            dtoConstructorClass: $parameters->dtoConstructorClass,
-            dtoValidatorClasses: $parameters->dtoValidatorClasses,
-            dtoValidatorClassesToMergeWithDefault: $parameters->dtoValidatorClassesToMergeWithDefault,
-            handlerWrapperClasses: $parameters->handlerWrapperClasses,
-            handlerWrapperClassesToMergeWithDefault: $parameters->handlerWrapperClassesToMergeWithDefault,
-            responseConstructorClass: $parameters->responseConstructorClass,
-        );
     }
 
     /**

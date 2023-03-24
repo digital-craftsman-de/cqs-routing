@@ -27,6 +27,7 @@ final class RoutePayloadTest extends TestCase
      * @test
      *
      * @covers ::generatePayload
+     * @covers ::generatePayloadFromRouteParameters
      * @covers ::__construct
      * @covers ::toPayload
      */

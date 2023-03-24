@@ -2,6 +2,10 @@
 
 ## 0.9.0
 
+- **[Breaking change](./UPGRADE.md#moved-validation-from-routepaylaod-to-routeparameters-and-removed-routepayloadgenerate)**: Moved validation from `RoutePaylaod` to `RouteParameters` and removed `RoutePayload::generate`.
+
+## 0.9.0
+
 - **[Breaking change](./UPGRADE.md#moved-files-in-digitalcraftsmancqrsvalueobject-to-digitalcraftsmancqrsrouting)**: Moved files in `DigitalCraftsman\CQRS\ValueObject` to `DigitalCraftsman\CQRS\Routing`.
 - Added `RouteBuilder` to reduce noise in routing configuration.
 
