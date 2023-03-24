@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.0
+## 0.10.0
 
 - **[Breaking change](./UPGRADE.md#moved-validation-from-routepaylaod-to-routeparameters-and-removed-routepayloadgenerate)**: Moved validation from `RoutePaylaod` to `RouteParameters` and removed `RoutePayload::generate`.
 
