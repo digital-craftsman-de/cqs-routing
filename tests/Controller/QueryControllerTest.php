@@ -117,7 +117,7 @@ final class QueryControllerTest extends TestCase
         ];
 
         $request = new Request(content: json_encode($content, JSON_THROW_ON_ERROR));
-        $routePayload = RoutePayload::generate(
+        $routePayload = RoutePayload::generatePayload(
             dtoClass: GetTasksQuery::class,
             handlerClass: GetTasksQueryHandler::class,
             requestValidatorClasses: [
@@ -214,7 +214,7 @@ final class QueryControllerTest extends TestCase
         ];
 
         $request = new Request(content: json_encode($content, JSON_THROW_ON_ERROR));
-        $routePayload = RoutePayload::generate(
+        $routePayload = RoutePayload::generatePayload(
             dtoClass: GetTasksQuery::class,
             handlerClass: FailingGetTasksQueryHandler::class,
             requestDataTransformerClasses: [

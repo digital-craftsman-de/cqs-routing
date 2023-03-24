@@ -26,23 +26,14 @@ final class RoutePayloadTest extends TestCase
     /**
      * @test
      *
-     * @covers ::generate
+     * @covers ::generatePayload
      * @covers ::__construct
-     * @covers ::validateDTOClass
-     * @covers ::validateHandlerClass
-     * @covers ::validateRequestValidatorClasses
-     * @covers ::validateRequestDecoderClass
-     * @covers ::validateRequestDataTransformerClasses
-     * @covers ::validateDTOConstructorClass
-     * @covers ::validateDTOValidatorClasses
-     * @covers ::validateHandlerWrapperClasses
-     * @covers ::validateResponseConstructorClass
      * @covers ::toPayload
      */
-    public function generate_works(): void
+    public function generate_payload_works(): void
     {
         // -- Arrange & Act
-        $payload = RoutePayload::generate(
+        $payload = RoutePayload::generatePayload(
             dtoClass: CreateTaskCommand::class,
             handlerClass: CreateTaskCommandHandler::class,
             requestValidatorClasses: [
@@ -99,13 +90,13 @@ final class RoutePayloadTest extends TestCase
     /**
      * @test
      *
-     * @covers ::fromRouteParameters
+     * @covers ::generatePayloadFromRouteParameters
      * @covers \DigitalCraftsman\CQRS\Routing\RouteParameters::__construct
      */
     public function from_route_parameters_works(): void
     {
         // -- Arrange & Act
-        $payload = RoutePayload::fromRouteParameters(new RouteParameters(
+        $payload = RoutePayload::generatePayloadFromRouteParameters(new RouteParameters(
             path: '/api/tasks/create-task-command',
             dtoClass: CreateTaskCommand::class,
             handlerClass: CreateTaskCommandHandler::class,

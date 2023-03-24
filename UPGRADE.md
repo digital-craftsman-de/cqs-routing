@@ -29,7 +29,7 @@ After:
 ```php
 use DigitalCraftsman\CQRS\Routing\RoutePayload;
 
-'routePayload' => RoutePayload::generate(
+'routePayload' => RoutePayload::generatePayload(
     ...
 ),
 ```

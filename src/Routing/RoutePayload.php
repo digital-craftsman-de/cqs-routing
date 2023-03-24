@@ -18,7 +18,7 @@ use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
 
 /**
  * The symfony routing does not support the usage of objects as it has to dump them into a php file for caching. Therefore, we create an
- * object and convert into and from an array. This also enables us to validate the routing on build time (cache warmup).
+ * object and convert into and from an array. The validation is done through the RouteParameters on build time (cache warmup).
  */
 final class RoutePayload
 {
@@ -85,7 +85,7 @@ final class RoutePayload
      *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
      * }
      */
-    public static function generate(
+    public static function generatePayload(
         string $dtoClass,
         string $handlerClass,
         ?array $requestValidatorClasses = null,
@@ -136,9 +136,9 @@ final class RoutePayload
      *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
      * }
      */
-    public static function fromRouteParameters(RouteParameters $parameters): array
+    public static function generatePayloadFromRouteParameters(RouteParameters $parameters): array
     {
-        return self::generate(
+        return self::generatePayload(
             dtoClass: $parameters->dtoClass,
             handlerClass: $parameters->handlerClass,
             requestValidatorClasses: $parameters->requestValidatorClasses,

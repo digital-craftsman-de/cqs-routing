@@ -35,7 +35,7 @@ final class RouteBuilder
             ->controller([QueryController::class, 'handle'])
             ->methods($methods)
             ->defaults([
-                'routePayload' => RoutePayload::fromRouteParameters($parameters),
+                'routePayload' => RoutePayload::generatePayloadFromRouteParameters($parameters),
             ]);
     }
 
@@ -57,7 +57,7 @@ final class RouteBuilder
             ->controller([CommandController::class, 'handle'])
             ->methods($methods)
             ->defaults([
-                'routePayload' => RoutePayload::fromRouteParameters($parameters),
+                'routePayload' => RoutePayload::generatePayloadFromRouteParameters($parameters),
             ]);
     }
 }
