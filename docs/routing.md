@@ -2,7 +2,7 @@
 
 For better typing and refactoring, the routing must be configured with PHP files instead of the usual YAML files.
 
-When the routes are generated (on cache warmup), they are cached as PHP files. Therefore, the configuration can't contain any object instances. For increased type safety and better DX, we use a value object with named parameters to configure our routes. All parameters are validated on cache warmup and the specific route again on execution.
+When the routes are generated (on cache warmup), they are cached as PHP files. Therefore, the configuration can't contain any object instances. For increased type safety and better DX, we use a value object with named parameters to configure our routes. All parameters are validated on cache warmup.
 
 ```php
 return static function (RoutingConfigurator $routes) {
@@ -14,14 +14,14 @@ return static function (RoutingConfigurator $routes) {
         ->controller([CommandController::class, 'handle'])
         ->methods([Request::METHOD_POST])
         ->defaults([
-            'routePayload' => RoutePayload::generate(
+            'routePayload' => RoutePayload::generateFromRouteParameters(new RouteParameters(
                 dtoClass: CreateProductNewsArticleCommand::class,
                 handlerClass: CreateProductNewsArticleCommandHandler::class,
                 requestDecoderClass: CommandWithFilesRequestDecoder::class,
                 dtoValidatorClasses: [
                     UserIdValidator::class => null,
                 ],
-            ),
+            )),
         ]);
     ...
     
@@ -30,7 +30,7 @@ return static function (RoutingConfigurator $routes) {
 
 All parameters except `dtoClass` and `handlerClass` are optional. You might only need to define those when you only need the default components for the other parameters ([configured in the `cqrs.yaml`](./configuration.md)).
 
-To reduce the noise in the routes even further, you can use the `RouteBuilder` which chooses the controller depending on the function used, uses `POST` as default method and handles the defaults generation for you:
+To reduce the noise in the routes even further, it's **highly recommended** to use the `RouteBuilder`. It chooses the controller depending on the function used, uses `POST` as default method, generates the name from the path and handles the route payload generation for you. The above example can be rewritten like this:
 
 ```php
 return static function (RoutingConfigurator $routes) {
@@ -66,11 +66,12 @@ return static function (CqrsConfig $cqrsConfig) {
 And you then adapt it like this:
 
 ```php
-'routePayload' => RoutePayload::generate(
+RouteBuilder::addCommandRoute($routes, new RouteParameters(
+    ...
     dtoValidatorClasses: [
         FilesizeValidator::class => null,
     ],
-),
+));
 ```
 
 The end result is that only the `FilesizeValidator` is left. You need to include the defaults if you still want them to be there. 
@@ -78,9 +79,10 @@ The end result is that only the `FilesizeValidator` is left. You need to include
 This way you're also able to remove all default DTO validators from a route like this:
 
 ```php
-'routePayload' => RoutePayload::generate(
+RouteBuilder::addCommandRoute($routes, new RouteParameters(
+    ...
     dtoValidatorClasses: [],
-),
+));
 ```
 
 ## Merge configuration from request validators, request data transformers, DTO validators and handler wrappers with default
@@ -100,11 +102,12 @@ return static function (CqrsConfig $cqrsConfig) {
 And you then use the following route configuration:
 
 ```php
-'routePayload' => RoutePayload::generate(
+RouteBuilder::addCommandRoute($routes, new RouteParameters(
+    ...
     dtoValidatorClassesToMergeWithDefault: [
         CourseIdValidator::class => null,
     ],
-),
+));
 ```
 
 The end result is the combination, meaning `UserIdValidator` and `CourseIdValidator`.
@@ -127,11 +130,12 @@ return static function (CqrsConfig $cqrsConfig) {
 And the following route configuration:
 
 ```php
-'routePayload' => RoutePayload::generate(
+RouteBuilder::addCommandRoute($routes, new RouteParameters(
+    ...
     dtoValidatorClassesToMergeWithDefault: [
         FilesizeValidator::class => 10,
     ],
-),
+));
 ```
 
 The end result will be `UserIdValidator` with parameter `null` and `FilesizeValidator` with a parameter of `10`.
