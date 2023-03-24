@@ -38,6 +38,31 @@ $routes->add(
         )),
 ```
 
+## The route name generation changed
+
+The route name generation changed. When the name must be something specific (because it's used as a reference), it must be set as a parameter for `RouteParameters`. The name generation might change in future versions. If the name isn't used anywhere, you nether need to nor should set it.
+
+Before:
+
+```php
+RouteBuilder::addCommandRoute($routes, new RouteParameters(
+    path: '/api/news/create-news-article-command',
+    dtoClass: CreateProductNewsArticleCommand::class,
+    handlerClass: CreateProductNewsArticleCommandHandler::class,
+));
+```
+
+After:
+
+```php
+RouteBuilder::addCommandRoute($routes, new RouteParameters(
+    path: '/api/news/create-news-article-command',
+    dtoClass: CreateProductNewsArticleCommand::class,
+    handlerClass: CreateProductNewsArticleCommandHandler::class,
+    name: 'api_news_create_news_article_command',
+));
+```
+
 ## From 0.8.* to 0.9.0
 
 ### Moved files in `DigitalCraftsman\CQRS\ValueObject` to `DigitalCraftsman\CQRS\Routing`
