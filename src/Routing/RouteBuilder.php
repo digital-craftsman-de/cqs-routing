@@ -76,7 +76,7 @@ final class RouteBuilder
         ?array $handlerWrapperClasses = null,
         ?array $handlerWrapperClassesToMergeWithDefault = null,
         ?string $responseConstructorClass = null,
-        array $additionalDefaults = [],
+        array $additionalRouteDefaults = [],
     ): void {
         self::validateDTOClass($dtoClass);
         self::validateHandlerClass($handlerClass);
@@ -120,7 +120,7 @@ final class RouteBuilder
                     $responseConstructorClass,
                 ),
             ],
-            $additionalDefaults,
+            $additionalRouteDefaults,
         );
 
         $routes->add(
@@ -172,7 +172,7 @@ final class RouteBuilder
         ?array $handlerWrapperClasses = null,
         ?array $handlerWrapperClassesToMergeWithDefault = null,
         ?string $responseConstructorClass = null,
-        array $additionalDefaults = [],
+        array $additionalRouteDefaults = [],
     ): void {
         self::validateDTOClass($dtoClass);
         self::validateHandlerClass($handlerClass);
@@ -216,7 +216,7 @@ final class RouteBuilder
                     $responseConstructorClass,
                 ),
             ],
-            $additionalDefaults,
+            $additionalRouteDefaults,
         );
 
         $routes->add(
