@@ -42,7 +42,7 @@ $routes->add(
 
 The route name generation changed. When the name must be something specific (because it's used as a reference), it must be set as a parameter for `RouteParameters`. The name generation might change in future versions. If the name isn't used anywhere, you nether need to nor should set it.
 
-If a name of a route is used as a reference add it as a parameter to `RouteParameters`.
+**Only if a name of a route is used as a reference**, add it as a parameter to `RouteParameters`.
 
 Before:
 
