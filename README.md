@@ -85,14 +85,15 @@ A route might look like this:
 ```php
 return static function (RoutingConfigurator $routes) {
 
-    RouteBuilder::addCommandRoute($routes, new RouteParameters(
+    RouteBuilder::addCommandRoute(
+        $routes,
         path: '/api/news/create-news-article-command',
         dtoClass: CreateNewsArticleCommand::class,
         handlerClass: CreateNewsArticleCommandHandler::class,
         dtoValidatorClasses: [
             UserIdValidator::class => null,
         ],
-    ));
+    );
     
 };
 ```

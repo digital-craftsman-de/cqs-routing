@@ -18,7 +18,7 @@ use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
 
 /**
  * The symfony routing does not support the usage of objects as it has to dump them into a php file for caching. Therefore, we create an
- * object and convert into and from an array. The validation is done through the RouteParameters on build time (cache warmup).
+ * object and convert into and from an array. The validation is done through the RouteBuilder at build time (cache warmup).
  */
 final class RoutePayload
 {
@@ -52,42 +52,6 @@ final class RoutePayload
         public readonly ?array $handlerWrapperClassesToMergeWithDefault = null,
         public readonly ?string $responseConstructorClass = null,
     ) {
-    }
-
-    /**
-     * @return array{
-     *   dtoClass: class-string<Command>|class-string<Query>,
-     *   handlerClass: class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>,
-     *   requestValidatorClasses: array<class-string<RequestValidatorInterface>, scalar|array<array-key, null|scalar>|null>,
-     *   requestValidatorClassesToMergeWithDefault: array<class-string<RequestValidatorInterface>, scalar|array<array-key, null|scalar>|null>,
-     *   requestDecoderClass: class-string<RequestDecoderInterface>|null,
-     *   requestDataTransformerClasses: array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, null|scalar>|null>,
-     *   requestDataTransformerClassesToMergeWithDefault: array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, null|scalar>|null>,
-     *   dtoConstructorClass: class-string<DTOConstructorInterface>|null,
-     *   dtoValidatorClasses: array<class-string<DTOValidatorInterface>, scalar|array<array-key, null|scalar>|null>,
-     *   dtoValidatorClassesToMergeWithDefault: array<class-string<DTOValidatorInterface>, scalar|array<array-key, null|scalar>|null>,
-     *   handlerWrapperClasses: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, null|scalar>|null>,
-     *   handlerWrapperClassesToMergeWithDefault: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, null|scalar>|null>,
-     *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
-     * }
-     */
-    public static function generatePayloadFromRouteParameters(RouteParameters $parameters): array
-    {
-        return self::generatePayload(
-            dtoClass: $parameters->dtoClass,
-            handlerClass: $parameters->handlerClass,
-            requestValidatorClasses: $parameters->requestValidatorClasses,
-            requestValidatorClassesToMergeWithDefault: $parameters->requestValidatorClassesToMergeWithDefault,
-            requestDecoderClass: $parameters->requestDecoderClass,
-            requestDataTransformerClasses: $parameters->requestDataTransformerClasses,
-            requestDataTransformerClassesToMergeWithDefault: $parameters->requestDataTransformerClassesToMergeWithDefault,
-            dtoConstructorClass: $parameters->dtoConstructorClass,
-            dtoValidatorClasses: $parameters->dtoValidatorClasses,
-            dtoValidatorClassesToMergeWithDefault: $parameters->dtoValidatorClassesToMergeWithDefault,
-            handlerWrapperClasses: $parameters->handlerWrapperClasses,
-            handlerWrapperClassesToMergeWithDefault: $parameters->handlerWrapperClassesToMergeWithDefault,
-            responseConstructorClass: $parameters->responseConstructorClass,
-        );
     }
 
     /**

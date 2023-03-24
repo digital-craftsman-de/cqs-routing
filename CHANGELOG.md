@@ -2,9 +2,9 @@
 
 ## 0.10.0
 
-- **[Breaking change](./UPGRADE.md#moved-validation-from-routepaylaod-to-routeparameters-and-removed-routepayloadgenerate)**: Moved validation from `RoutePaylaod` to `RouteParameters` and removed `RoutePayload::generate`.
+- **[Breaking change](./UPGRADE.md#moved-route-parameter-validation-to-routebuilder-and-made-it-mandatory)**: Moved route parameter validation to `RouteBuilder` and made it mandatory. The `RouteParameters` class was removed in favor of parameters for the `addCommandRoute` and `addQueryRoute` functions.
   - Validation therefore happens only on cache warmup and not on execution of the route anymore. This improves the performance slightly.
-- **[Breaking change](./UPGRADE.md#the-route-name-generation-changed)**: The route name generation changed. When the name must be something specific (because it's used as a reference), it must be set as a parameter for `RouteParameters`. The name generation might change in future versions. 
+- **[Breaking change](./UPGRADE.md#the-route-name-generation-changed)**: The route name generation changed. When the name must be something specific (because it's used as a reference), it must be set as a parameter for `addCommandRoute` and `addQueryRoute`. The name generation might change in future versions. 
 
 ## 0.9.0
 

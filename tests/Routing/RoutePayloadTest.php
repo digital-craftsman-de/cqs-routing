@@ -27,7 +27,6 @@ final class RoutePayloadTest extends TestCase
      * @test
      *
      * @covers ::generatePayload
-     * @covers ::generatePayloadFromRouteParameters
      * @covers ::__construct
      * @covers ::toPayload
      */
@@ -59,70 +58,6 @@ final class RoutePayloadTest extends TestCase
             handlerWrapperClassesToMergeWithDefault: null,
             responseConstructorClass: EmptyJsonResponseConstructor::class,
         );
-
-        // -- Assert
-        self::assertEquals([
-            'dtoClass' => CreateTaskCommand::class,
-            'handlerClass' => CreateTaskCommandHandler::class,
-            'requestValidatorClasses' => [
-                GuardAgainstTokenInHeaderRequestValidator::class => null,
-            ],
-            'requestValidatorClassesToMergeWithDefault' => null,
-            'requestDecoderClass' => CreateTaskRequestDecoder::class,
-            'requestDataTransformerClasses' => [
-                AddActionIdRequestDataTransformer::class => null,
-            ],
-            'requestDataTransformerClassesToMergeWithDefault' => null,
-            'dtoConstructorClass' => CreateTaskDTOConstructor::class,
-            'dtoValidatorClasses' => [
-                UserIdValidator::class => null,
-            ],
-            'dtoValidatorClassesToMergeWithDefault' => null,
-            'handlerWrapperClasses' => [
-                SilentExceptionWrapper::class => [
-                    TaskAlreadyAccepted::class,
-                ],
-            ],
-            'handlerWrapperClassesToMergeWithDefault' => null,
-            'responseConstructorClass' => EmptyJsonResponseConstructor::class,
-        ], $payload);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::generatePayloadFromRouteParameters
-     * @covers \DigitalCraftsman\CQRS\Routing\RouteParameters::__construct
-     */
-    public function from_route_parameters_works(): void
-    {
-        // -- Arrange & Act
-        $payload = RoutePayload::generatePayloadFromRouteParameters(new RouteParameters(
-            path: '/api/tasks/create-task-command',
-            dtoClass: CreateTaskCommand::class,
-            handlerClass: CreateTaskCommandHandler::class,
-            requestValidatorClasses: [
-                GuardAgainstTokenInHeaderRequestValidator::class => null,
-            ],
-            requestValidatorClassesToMergeWithDefault: null,
-            requestDecoderClass: CreateTaskRequestDecoder::class,
-            requestDataTransformerClasses: [
-                AddActionIdRequestDataTransformer::class => null,
-            ],
-            requestDataTransformerClassesToMergeWithDefault: null,
-            dtoConstructorClass: CreateTaskDTOConstructor::class,
-            dtoValidatorClasses: [
-                UserIdValidator::class => null,
-            ],
-            dtoValidatorClassesToMergeWithDefault: null,
-            handlerWrapperClasses: [
-                SilentExceptionWrapper::class => [
-                    TaskAlreadyAccepted::class,
-                ],
-            ],
-            handlerWrapperClassesToMergeWithDefault: null,
-            responseConstructorClass: EmptyJsonResponseConstructor::class,
-        ));
 
         // -- Assert
         self::assertEquals([

@@ -13,7 +13,7 @@ use DigitalCraftsman\CQRS\RequestDataTransformer\RequestDataTransformerInterface
 use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
 use DigitalCraftsman\CQRS\RequestValidator\RequestValidatorInterface;
 use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
-use DigitalCraftsman\CQRS\Routing\RouteParameters;
+use DigitalCraftsman\CQRS\Routing\RouteBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -88,45 +88,45 @@ final class CQRSExtension extends Extension
          */
         $config = $this->processConfiguration($configuration, $configs);
 
-        RouteParameters::validateRequestValidatorClasses(
+        RouteBuilder::validateRequestValidatorClasses(
             $config['query_controller']['default_request_validator_classes'],
             null,
         );
-        RouteParameters::validateRequestDecoderClass($config['query_controller']['default_request_decoder_class']);
-        RouteParameters::validateRequestDataTransformerClasses(
+        RouteBuilder::validateRequestDecoderClass($config['query_controller']['default_request_decoder_class']);
+        RouteBuilder::validateRequestDataTransformerClasses(
             $config['query_controller']['default_request_data_transformer_classes'],
             null,
         );
-        RouteParameters::validateDTOConstructorClass($config['query_controller']['default_dto_constructor_class']);
-        RouteParameters::validateDTOValidatorClasses(
+        RouteBuilder::validateDTOConstructorClass($config['query_controller']['default_dto_constructor_class']);
+        RouteBuilder::validateDTOValidatorClasses(
             $config['query_controller']['default_dto_validator_classes'],
             null,
         );
-        RouteParameters::validateHandlerWrapperClasses(
+        RouteBuilder::validateHandlerWrapperClasses(
             $config['query_controller']['default_handler_wrapper_classes'],
             null,
         );
-        RouteParameters::validateResponseConstructorClass($config['query_controller']['default_response_constructor_class']);
+        RouteBuilder::validateResponseConstructorClass($config['query_controller']['default_response_constructor_class']);
 
-        RouteParameters::validateRequestValidatorClasses(
+        RouteBuilder::validateRequestValidatorClasses(
             $config['command_controller']['default_request_validator_classes'],
             null,
         );
-        RouteParameters::validateRequestDecoderClass($config['command_controller']['default_request_decoder_class']);
-        RouteParameters::validateRequestDataTransformerClasses(
+        RouteBuilder::validateRequestDecoderClass($config['command_controller']['default_request_decoder_class']);
+        RouteBuilder::validateRequestDataTransformerClasses(
             $config['command_controller']['default_request_data_transformer_classes'],
             null,
         );
-        RouteParameters::validateDTOConstructorClass($config['command_controller']['default_dto_constructor_class']);
-        RouteParameters::validateDTOValidatorClasses(
+        RouteBuilder::validateDTOConstructorClass($config['command_controller']['default_dto_constructor_class']);
+        RouteBuilder::validateDTOValidatorClasses(
             $config['command_controller']['default_dto_validator_classes'],
             null,
         );
-        RouteParameters::validateHandlerWrapperClasses(
+        RouteBuilder::validateHandlerWrapperClasses(
             $config['command_controller']['default_handler_wrapper_classes'],
             null,
         );
-        RouteParameters::validateResponseConstructorClass($config['command_controller']['default_response_constructor_class']);
+        RouteBuilder::validateResponseConstructorClass($config['command_controller']['default_response_constructor_class']);
 
         foreach ($config['query_controller'] as $key => $value) {
             $container->setParameter('cqrs.query_controller.'.$key, $value);
