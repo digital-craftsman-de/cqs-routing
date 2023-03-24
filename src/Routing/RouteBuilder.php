@@ -234,9 +234,13 @@ final class RouteBuilder
             ? substr($path, 1)
             : $path;
 
+        // Convert camelCase to snake_case (for example for parameters)
+        $path = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $path));
+
+        // Replace / and - with _ and remove {} and duplicate __
         return str_replace(
-            ['/', '-', '{', '}'],
-            ['_', '_', '', ''],
+            ['/', '-', '{', '}', '__'],
+            ['_', '_', '', '', '_'],
             mb_strtolower($path),
         );
     }

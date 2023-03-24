@@ -60,9 +60,17 @@ class RouteBuilderTest extends TestCase
                 'api_tasks_create_task_command',
                 'api/tasks/create-task-command',
             ],
-            'route with parameters' => [
+            'route with parameter' => [
                 'api_tasks_get_task_image_query_id',
                 '/api/tasks/get-task-image-query/{id}',
+            ],
+            'route with camlCase parameter' => [
+                'api_tasks_get_task_image_query_user_id',
+                '/api/tasks/get-task-image-query/{userId}',
+            ],
+            'route with uppercase parameter' => [
+                'api_tasks_get_task_image_query_user_id',
+                '/api/tasks/get-task-image-query/{UserId}',
             ],
         ];
     }
