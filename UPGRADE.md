@@ -4,7 +4,9 @@
 
 ### Moved validation from `RoutePaylaod` to `RouteParameters` and removed `RoutePayload::generate`
 
-Using the `RouteBuilder` is now **highly recommended**. When not using it, you have to replace your usages of `RoutePayload::generate` (which has been removed) with `RoutePayload::generatePayloadFromRouteParameters`.
+Using the `RouteBuilder` is now **highly recommended**. There is no breaking change if you're already using it. 
+
+When not using it, you have to replace your usages of `RoutePayload::generate` (which has been removed) with `RoutePayload::generatePayloadFromRouteParameters`.
 
 Before:
 
