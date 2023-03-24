@@ -3,7 +3,7 @@
 ## 0.10.0
 
 - **[Breaking change](./UPGRADE.md#moved-validation-from-routepaylaod-to-routeparameters-and-removed-routepayloadgenerate)**: Moved validation from `RoutePaylaod` to `RouteParameters` and removed `RoutePayload::generate`.
-- Validation therefore happens only on cache warmup and not on execution of the route any more which improves the performance slightly.
+  - Validation therefore happens only on cache warmup and not on execution of the route any more which improves the performance slightly.
 
 ## 0.9.0
 
