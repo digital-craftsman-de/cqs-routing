@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.10.0
+
+- **[Breaking change](./UPGRADE.md#moved-route-parameter-validation-to-routebuilder-and-made-it-mandatory)**: Moved route parameter validation to `RouteBuilder` and made it mandatory. The `RouteParameters` class was removed in favor of parameters for the `addCommandRoute` and `addQueryRoute` functions.
+  - Validation therefore happens only on cache warmup and not on execution of the route anymore. This improves the performance slightly.
+- **[Breaking change](./UPGRADE.md#the-route-name-generation-changed)**: The route name generation changed. When the name must be something specific (because it's used as a reference), it must be set as a parameter for `addCommandRoute` and `addQueryRoute`. The name generation might change in future versions. 
+
 ## 0.9.0
 
 - **[Breaking change](./UPGRADE.md#moved-files-in-digitalcraftsmancqrsvalueobject-to-digitalcraftsmancqrsrouting)**: Moved files in `DigitalCraftsman\CQRS\ValueObject` to `DigitalCraftsman\CQRS\Routing`.

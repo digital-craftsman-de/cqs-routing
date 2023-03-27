@@ -110,7 +110,7 @@ final class CommandControllerTest extends TestCase
         ];
 
         $request = new Request(content: json_encode($content, JSON_THROW_ON_ERROR));
-        $routePayload = RoutePayload::generate(
+        $routePayload = RoutePayload::generatePayload(
             dtoClass: CreateNewsArticleCommand::class,
             handlerClass: CreateNewsArticleCommandHandler::class,
             requestValidatorClasses: [
@@ -194,7 +194,7 @@ final class CommandControllerTest extends TestCase
         ];
 
         $request = new Request(content: json_encode($content, JSON_THROW_ON_ERROR));
-        $routePayload = RoutePayload::generate(
+        $routePayload = RoutePayload::generatePayload(
             dtoClass: CreateNewsArticleCommand::class,
             handlerClass: FailingCreateNewsArticleCommandHandler::class,
             handlerWrapperClasses: [
@@ -274,7 +274,7 @@ final class CommandControllerTest extends TestCase
         ];
 
         $request = new Request(content: json_encode($content, JSON_THROW_ON_ERROR));
-        $routePayload = RoutePayload::generate(
+        $routePayload = RoutePayload::generatePayload(
             dtoClass: CreateNewsArticleCommand::class,
             handlerClass: FailingCreateNewsArticleCommandHandler::class,
             handlerWrapperClasses: [

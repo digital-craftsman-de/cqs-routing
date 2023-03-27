@@ -1,5 +1,70 @@
 # Upgrade guide
 
+## From 0.9.* to 0.10.0
+
+### Moved route parameter validation to `RouteBuilder` and made it mandatory
+
+Using the `RouteBuilder` is now **mandatory**. The validation has been moved to `addCommandRoute` and `addQueryRoute`. The `RouteParameters` have been removed in favor of parameters directly for the functions. 
+
+When not using it yet, you have to replace your usages of `RoutePayload::generate` (which has been removed) with the `RouteBuilder` functions.
+
+Before:
+
+```php
+$routes->add(
+    'api_news_create_news_article_command',
+    '/api/news/create-news-article-command',
+)
+    ->controller([CommandController::class, 'handle'])
+    ->methods([Request::METHOD_POST])
+    ->defaults([
+        'routePayload' => RoutePayload::generate(
+            dtoClass: CreateProductNewsArticleCommand::class,
+            handlerClass: CreateProductNewsArticleCommandHandler::class,
+        ),
+    ]);
+```
+
+After:
+
+```php
+RouteBuilder::addCommandRoute(
+    $routes,
+    path: '/api/news/create-news-article-command',
+    dtoClass: CreateProductNewsArticleCommand::class,
+    handlerClass: CreateProductNewsArticleCommandHandler::class,
+);
+```
+
+## The route name generation changed
+
+The route name generation changed. When the name must be something specific (because it's used as a reference), it must be set as a parameter for `addCommandRoute` and `addQueryRoute`. The name generation might change in future versions. If the name isn't used anywhere, you nether need to nor should set it.
+
+**Only if a name of a route is used as a reference**, add it as a parameter to `addCommandRoute` and `addQueryRoute`.
+
+Before:
+
+```php
+RouteBuilder::addCommandRoute(
+    $routes,
+    path: '/api/news/create-news-article-command',
+    dtoClass: CreateProductNewsArticleCommand::class,
+    handlerClass: CreateProductNewsArticleCommandHandler::class,
+);
+```
+
+After:
+
+```php
+RouteBuilder::addCommandRoute(
+    $routes,
+    path: '/api/news/create-news-article-command',
+    dtoClass: CreateProductNewsArticleCommand::class,
+    handlerClass: CreateProductNewsArticleCommandHandler::class,
+    name: 'api_news_create_news_article_command',
+);
+```
+
 ## From 0.8.* to 0.9.0
 
 ### Moved files in `DigitalCraftsman\CQRS\ValueObject` to `DigitalCraftsman\CQRS\Routing`
@@ -29,7 +94,7 @@ After:
 ```php
 use DigitalCraftsman\CQRS\Routing\RoutePayload;
 
-'routePayload' => RoutePayload::generate(
+'routePayload' => RoutePayload::generatePayload(
     ...
 ),
 ```
