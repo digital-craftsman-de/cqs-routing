@@ -30,18 +30,18 @@ use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
 /** @internal */
-final class ServiceMap
+final readonly class ServiceMap
 {
     public function __construct(
-        private readonly ServiceProviderInterface $requestValidators,
-        private readonly ServiceProviderInterface $requestDecoders,
-        private readonly ServiceProviderInterface $requestDataTransformers,
-        private readonly ServiceProviderInterface $dtoConstructors,
-        private readonly ServiceProviderInterface $dtoValidators,
-        private readonly ServiceProviderInterface $handlerWrappers,
-        private readonly ServiceProviderInterface $commandHandlers,
-        private readonly ServiceProviderInterface $queryHandlers,
-        private readonly ServiceProviderInterface $responseConstructors,
+        private ServiceProviderInterface $requestValidators,
+        private ServiceProviderInterface $requestDecoders,
+        private ServiceProviderInterface $requestDataTransformers,
+        private ServiceProviderInterface $dtoConstructors,
+        private ServiceProviderInterface $dtoValidators,
+        private ServiceProviderInterface $handlerWrappers,
+        private ServiceProviderInterface $commandHandlers,
+        private ServiceProviderInterface $queryHandlers,
+        private ServiceProviderInterface $responseConstructors,
     ) {
     }
 

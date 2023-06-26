@@ -6,8 +6,7 @@ namespace DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask;
 
 use DigitalCraftsman\CQRS\Command\Command;
 
-/** @psalm-immutable */
-final class CreateTaskCommand implements Command
+final readonly class CreateTaskCommand implements Command
 {
     public function __construct(
         public string $title,

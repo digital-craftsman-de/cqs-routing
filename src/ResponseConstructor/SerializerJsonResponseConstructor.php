@@ -10,11 +10,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 
-final class SerializerJsonResponseConstructor implements ResponseConstructorInterface
+final readonly class SerializerJsonResponseConstructor implements ResponseConstructorInterface
 {
     /** @codeCoverageIgnore */
     public function __construct(
-        private readonly SerializerInterface $serializer,
+        private SerializerInterface $serializer,
     ) {
     }
 

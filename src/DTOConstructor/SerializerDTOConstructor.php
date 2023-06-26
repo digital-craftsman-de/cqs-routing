@@ -8,11 +8,11 @@ use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\Query\Query;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-final class SerializerDTOConstructor implements DTOConstructorInterface
+final readonly class SerializerDTOConstructor implements DTOConstructorInterface
 {
     /** @codeCoverageIgnore */
     public function __construct(
-        private readonly DenormalizerInterface $serializer,
+        private DenormalizerInterface $serializer,
     ) {
     }
 

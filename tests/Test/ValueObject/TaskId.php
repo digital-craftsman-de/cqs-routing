@@ -6,7 +6,6 @@ namespace DigitalCraftsman\CQRS\Test\ValueObject;
 
 use DigitalCraftsman\Ids\ValueObject\Id;
 
-/** @psalm-immutable */
-final class TaskId extends Id
+final readonly class TaskId extends Id
 {
 }
