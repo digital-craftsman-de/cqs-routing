@@ -20,7 +20,7 @@ use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
  * The symfony routing does not support the usage of objects as it has to dump them into a php file for caching. Therefore, we create an
  * object and convert into and from an array. The validation is done through the RouteBuilder at build time (cache warmup).
  */
-final class RoutePayload
+final readonly class RoutePayload
 {
     /**
      * @param class-string<Command>|class-string<Query>                                                            $dtoClass
@@ -38,19 +38,19 @@ final class RoutePayload
      * @param class-string<ResponseConstructorInterface>|null                                                      $responseConstructorClass
      */
     private function __construct(
-        public readonly string $dtoClass,
-        public readonly string $handlerClass,
-        public readonly ?array $requestValidatorClasses = null,
-        public readonly ?array $requestValidatorClassesToMergeWithDefault = null,
-        public readonly ?string $requestDecoderClass = null,
-        public readonly ?array $requestDataTransformerClasses = null,
-        public readonly ?array $requestDataTransformerClassesToMergeWithDefault = null,
-        public readonly ?string $dtoConstructorClass = null,
-        public readonly ?array $dtoValidatorClasses = null,
-        public readonly ?array $dtoValidatorClassesToMergeWithDefault = null,
-        public readonly ?array $handlerWrapperClasses = null,
-        public readonly ?array $handlerWrapperClassesToMergeWithDefault = null,
-        public readonly ?string $responseConstructorClass = null,
+        public string $dtoClass,
+        public string $handlerClass,
+        public ?array $requestValidatorClasses = null,
+        public ?array $requestValidatorClassesToMergeWithDefault = null,
+        public ?string $requestDecoderClass = null,
+        public ?array $requestDataTransformerClasses = null,
+        public ?array $requestDataTransformerClassesToMergeWithDefault = null,
+        public ?string $dtoConstructorClass = null,
+        public ?array $dtoValidatorClasses = null,
+        public ?array $dtoValidatorClassesToMergeWithDefault = null,
+        public ?array $handlerWrapperClasses = null,
+        public ?array $handlerWrapperClassesToMergeWithDefault = null,
+        public ?string $responseConstructorClass = null,
     ) {
     }
 

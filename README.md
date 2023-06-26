@@ -14,7 +14,7 @@ Install package through composer:
 composer require digital-craftsman/cqrs
 ```
 
-> ⚠️ This bundle can be used (and is being used) in production, but hasn't reached version 1.0 yet. Therefore, there will be breaking changes between minor versions. I'd recommend that you require the bundle only with the current minor version like `composer require digital-craftsman/cqrs:0.10.*`. Breaking changes are described in the releases and [the changelog](./CHANGELOG.md). Updates are described in the [upgrade guide](./UPGRADE.md).
+> ⚠️ This bundle can be used (and is being used) in production, but hasn't reached version 1.0 yet. Therefore, there will be breaking changes between minor versions. I'd recommend that you require the bundle only with the current minor version like `composer require digital-craftsman/cqrs:0.11.*`. Breaking changes are described in the releases and [the changelog](./CHANGELOG.md). Updates are described in the [upgrade guide](./UPGRADE.md).
 
 Then add the following `cqrs.php` file to your `config/packages` and replace it with your instances of the interfaces:
 
@@ -116,13 +116,13 @@ use App\ValueObject\UserId;
 use Assert\Assertion;
 use DigitalCraftsman\CQRS\Command\Command;
 
-final class CreateNewsArticleCommand implements Command
+final readonly class CreateNewsArticleCommand implements Command
 {
     public function __construct(
-        public readonly UserId $userId,
-        public readonly string $title,
-        public readonly string $content,
-        public readonly bool $isPublished,
+        public UserId $userId,
+        public string $title,
+        public string $content,
+        public bool $isPublished,
     ) {
         Assertion::betweenLength($title, 1, 255);
         Assertion::minLength($content, 1);
@@ -149,12 +149,12 @@ use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-final class CreateNewsArticleCommandHandler implements CommandHandlerInterface
+final readonly class CreateNewsArticleCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private readonly ClockInterface $clock,
-        private readonly UserCollection $userCollection,
-        private readonly EntityManagerInterface $entityManager,
+        private ClockInterface $clock,
+        private UserCollection $userCollection,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 

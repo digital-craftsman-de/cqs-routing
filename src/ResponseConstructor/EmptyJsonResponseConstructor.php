@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-final class EmptyJsonResponseConstructor implements ResponseConstructorInterface
+final readonly class EmptyJsonResponseConstructor implements ResponseConstructorInterface
 {
     public function constructResponse($data, Request $request): JsonResponse
     {

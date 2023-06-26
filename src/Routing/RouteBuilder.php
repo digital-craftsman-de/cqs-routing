@@ -32,7 +32,7 @@ use DigitalCraftsman\CQRS\Routing\Exception\OnlyOverwriteOrMergeCanBeUsedInRoute
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
-final class RouteBuilder
+final readonly class RouteBuilder
 {
     private const DEFAULT_METHOD = Request::METHOD_POST;
 

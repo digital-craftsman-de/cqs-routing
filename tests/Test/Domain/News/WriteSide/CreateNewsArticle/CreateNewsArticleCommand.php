@@ -7,8 +7,7 @@ namespace DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle;
 use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\Test\ValueObject\UserId;
 
-/** @psalm-immutable */
-final class CreateNewsArticleCommand implements Command
+final readonly class CreateNewsArticleCommand implements Command
 {
     public function __construct(
         public UserId $userId,

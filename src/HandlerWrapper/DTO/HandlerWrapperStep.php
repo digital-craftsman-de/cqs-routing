@@ -18,14 +18,14 @@ use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
  *
  * @internal
  */
-final class HandlerWrapperStep
+final readonly class HandlerWrapperStep
 {
     public const STEP_PREPARE = 'PREPARE';
     public const STEP_THEN = 'THEN';
     public const STEP_CATCH = 'CATCH';
 
     /** @var array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null> */
-    public readonly array $orderedHandlerWrapperClasses;
+    public array $orderedHandlerWrapperClasses;
 
     /**
      * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null> $handlerWrapperClasses

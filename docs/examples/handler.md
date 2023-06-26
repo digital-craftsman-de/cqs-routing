@@ -56,10 +56,10 @@ final class CreateUserAccountCommandHandler implements CommandHandlerInterface
 The query handler always returns a value (if there is no exception). This return value can be anything from an `object`, `array` or even a `callable`. When it returns data, it must not return entities, but always custom read models instead. This is an example where the query handler would return a user read model.
 
 ```php
-final class GetUserQueryHandler implements QueryHandlerInterface
+final readonly class GetUserQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
-        private readonly UserRepository $userRepository,
+        private UserRepository $userRepository,
     ) {
     }
 

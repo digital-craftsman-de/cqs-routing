@@ -23,10 +23,10 @@ See [position in process](../process.md#dto-constructor)
 A possible implementation of a constructor is one that uses the Symfony serializer like this that is already built-in:
 
 ```php
-final class SerializerDTOConstructor implements DTOConstructorInterface
+final readonly class SerializerDTOConstructor implements DTOConstructorInterface
 {
     public function __construct(
-        private readonly DenormalizerInterface $serializer,
+        private DenormalizerInterface $serializer,
     ) {
     }
 
@@ -60,13 +60,13 @@ It transforms an array like the following:
 Into a DTO like this:
 
 ```php
-final class CreateUserAccountCommand implements Command
+final readonly class CreateUserAccountCommand implements Command
 {
     public function __construct(
-        public readonly UserId $userId,
-        public readonly EmailAddress $emailAddress,
-        public readonly Name $name,
-        public readonly PlainTextPassword $password,
+        public UserId $userId,
+        public EmailAddress $emailAddress,
+        public Name $name,
+        public PlainTextPassword $password,
     ) {
     }
 }

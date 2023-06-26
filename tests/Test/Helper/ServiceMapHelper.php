@@ -16,7 +16,7 @@ use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
 use DigitalCraftsman\CQRS\ServiceMap\ServiceMap;
 use DigitalCraftsman\CQRS\Test\Utility\ServiceLocatorSimulator;
 
-final class ServiceMapHelper
+final readonly class ServiceMapHelper
 {
     /**
      * @param array<int, RequestValidatorInterface>|null       $requestValidators

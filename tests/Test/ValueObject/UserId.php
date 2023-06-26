@@ -6,7 +6,6 @@ namespace DigitalCraftsman\CQRS\Test\ValueObject;
 
 use DigitalCraftsman\Ids\ValueObject\Id;
 
-/** @psalm-immutable */
-final class UserId extends Id
+final readonly class UserId extends Id
 {
 }

@@ -3,12 +3,12 @@
   "description": "Reduced cost of change through CQRS in Symfony",
   "type": "symfony-bundle",
   "require": {
-    "php": "8.1.*|8.2.*",
+    "php": "8.2.*|8.3.*",
     "symfony/framework-bundle": "^5.4|^6.0",
     "symfony/serializer": "^5.4|^6.0"
   },
   "require-dev": {
-    "digital-craftsman/ids": "0.7.*",
+    "digital-craftsman/ids": "0.9.*",
     "friendsofphp/php-cs-fixer": "^3.15",
     "phpunit/phpunit": "^9.5",
     "symfony/property-access": "^6.2",

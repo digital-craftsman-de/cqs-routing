@@ -6,8 +6,7 @@ namespace DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\DefineTaskHourContin
 
 use DigitalCraftsman\CQRS\Command\Command;
 
-/** @psalm-immutable */
-final class DefineTaskHourContingentCommand implements Command
+final readonly class DefineTaskHourContingentCommand implements Command
 {
     public function __construct(
         public float $hourContingent,

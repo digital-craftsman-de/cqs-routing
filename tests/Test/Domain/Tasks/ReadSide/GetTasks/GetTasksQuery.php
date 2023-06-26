@@ -8,8 +8,7 @@ use DigitalCraftsman\CQRS\Query\Query;
 use DigitalCraftsman\CQRS\Test\ValueObject\ActionId;
 use DigitalCraftsman\CQRS\Test\ValueObject\UserId;
 
-/** @psalm-immutable */
-final class GetTasksQuery implements Query
+final readonly class GetTasksQuery implements Query
 {
     public function __construct(
         public UserId $userId,

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQRS\Test\ReadModel;
 
-/** @psalm-immutable */
-final class User
+final readonly class User
 {
     public function __construct(
         public string $userId,
