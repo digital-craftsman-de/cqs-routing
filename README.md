@@ -119,10 +119,10 @@ use DigitalCraftsman\CQRS\Command\Command;
 final readonly class CreateNewsArticleCommand implements Command
 {
     public function __construct(
-        public readonly UserId $userId,
-        public readonly string $title,
-        public readonly string $content,
-        public readonly bool $isPublished,
+        public UserId $userId,
+        public string $title,
+        public string $content,
+        public bool $isPublished,
     ) {
         Assertion::betweenLength($title, 1, 255);
         Assertion::minLength($content, 1);
