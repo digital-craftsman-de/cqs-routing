@@ -16,7 +16,7 @@ See [position in process](../process.md#request-decoder)
 The simple implementation of a request decoder is the `JsonRequestDecoder`:
 
 ```php
-final class JsonRequestDecoder implements RequestDecoderInterface
+final readonly class JsonRequestDecoder implements RequestDecoderInterface
 {
     public function decodeRequest(Request $request): array
     {
@@ -61,10 +61,10 @@ The request decoder will return the following array:
 Another use case would be accessing data outside the body. This is needed when we want to get an image through a query that is triggered by the browser when used in an img tag. We obviously can't add any custom body to that request. With the request decoder we can pull information about the user from the security context and add additional information from the GET parameters.
 
 ```php
-final class UserImageRequestDecoder implements RequestDecoderInterface
+final readonly class UserImageRequestDecoder implements RequestDecoderInterface
 {
     public function __construct(
-        private readonly Security $security,
+        private Security $security,
     ) {
     }
 

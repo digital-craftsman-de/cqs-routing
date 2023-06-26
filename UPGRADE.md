@@ -1,5 +1,11 @@
 # Upgrade guide
 
+## From 0.10.* to 0.11.0
+
+### Upgrade to at least PHP 8.2
+
+Support for PHP 8.1 was dropped, so you have to upgrade to at least PHP 8.2.
+
 ## From 0.9.* to 0.10.0
 
 ### Moved route parameter validation to `RouteBuilder` and made it mandatory

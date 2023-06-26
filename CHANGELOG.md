@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.0
+
+- **[Breaking change](./UPGRADE.md#upgrade-to-at-least-php-82)**: Dropped support for PHP 8.1.
+- Added support for PHP 8.3.
+- Removed `@psalm-immutable` keyword from `Command` and `Query`. With PHP 8.2 now being the minimum version, the `readonly` keyword can now be used for your classes.
+
 ## 0.10.0
 
 - **[Breaking change](./UPGRADE.md#moved-route-parameter-validation-to-routebuilder-and-made-it-mandatory)**: Moved route parameter validation to `RouteBuilder` and made it mandatory. The `RouteParameters` class was removed in favor of parameters for the `addCommandRoute` and `addQueryRoute` functions.

@@ -70,10 +70,10 @@ use DigitalCraftsman\CQRS\Query\Query;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Request;
 
-final class ConnectionTransactionWrapper implements HandlerWrapperInterface
+final readonly class ConnectionTransactionWrapper implements HandlerWrapperInterface
 {
     public function __construct(
-        private readonly Connection $connection,
+        private Connection $connection,
     ) {
     }
 
@@ -154,7 +154,7 @@ use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 use DigitalCraftsman\CQRS\Query\Query;
 use Symfony\Component\HttpFoundation\Request;
 
-final class SilentExceptionWrapper implements HandlerWrapperInterface
+final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
 {
     /** @param array<array-key, class-string<\Throwable>> $parameters */
     public function prepare(
@@ -236,14 +236,15 @@ The priority of the `catch` method is set to a low value like `-100` to make sur
 Handler wrappers are configured with the parameter that is given to the instance on execution. The key of the array must be the handler wrapper class and the parameter is supplied through the value. If there is no relevant parameter use `null` as value.
 
 ```php
-'routePayload' => RoutePayload::generate(
+RouteBuilder::addCommandRoute(
+    ...
     handlerWrapperClasses: [
         ConnectionTransactionWrapper::class => null,
         SilentExceptionWrapper::class => [
             EmailAddressDidNotChange::class,
         ],
     ],
-),
+));
 ```
 
 ## Request locking
