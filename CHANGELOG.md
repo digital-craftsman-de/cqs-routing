@@ -2,7 +2,7 @@
 
 ## 0.12.0
 
-- **[Breaking change](./UPGRADE.md#switched-handler-methods)**: Switched from `handle` to `__invoke` method for `CommandHandlerInterface` and `QueryHandlerInterface`.
+- **[Breaking change](./UPGRADE.md#switched-handler-methods)**: Switched from `handle` to `__invoke` method for `CommandHandlerInterface` and `QueryHandlerInterface`. This way the specific command or query can be type hinted in the method signature.
 
 ## 0.11.0
 
