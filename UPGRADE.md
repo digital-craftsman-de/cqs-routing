@@ -1,5 +1,48 @@
 # Upgrade guide
 
+## From 0.11.* to 0.12.0
+
+### Switched handler methods
+
+Switched from `handle` to `__invoke` method for `CommandHandler` and `QueryHandler`.
+
+You need to update the methods in your command and query handlers like the following:
+
+Before:
+
+```php
+final readonly class CreateNewsArticleCommandHandler implements CommandHandlerInterface
+{
+    /** @param CreateNewsArticleCommand $command */
+    public function handle(Command $command): void
+    {
+        $newsArticle = new NewsArticle(
+            NewsArticleId::generateRandom(),
+            $command->userId,
+            $command->title,
+            $command->content,
+            $command->isPublished,
+        );
+        ...
+```
+
+After:
+
+```php
+final readonly class CreateNewsArticleCommandHandler implements CommandHandlerInterface
+{
+    public function __invoke(CreateNewsArticleCommand $command): void
+    {
+        $newsArticle = new NewsArticle(
+            NewsArticleId::generateRandom(),
+            $command->userId,
+            $command->title,
+            $command->content,
+            $command->isPublished,
+        );
+        ...
+```
+
 ## From 0.10.* to 0.11.0
 
 ### Upgrade to at least PHP 8.2

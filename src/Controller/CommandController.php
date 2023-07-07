@@ -123,7 +123,8 @@ final class CommandController extends AbstractController
             // -- Trigger command through command handler
             /** @psalm-suppress PossiblyInvalidArgument */
             $commandHandler = $this->serviceMap->getCommandHandler($configuration->handlerClass);
-            $commandHandler->handle($command);
+            /** @psalm-suppress InvalidFunctionCall */
+            $commandHandler($command);
 
             $handlerWrapperClassesForThenStep = HandlerWrapperStep::then($handlerWrapperClasses);
             foreach ($handlerWrapperClassesForThenStep->orderedHandlerWrapperClasses as $handlerWrapperClass => $parameters) {

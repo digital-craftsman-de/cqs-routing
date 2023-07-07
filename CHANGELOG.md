@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.12.0
+
+- **[Breaking change](./UPGRADE.md#switched-handler-methods)**: Switched from `handle` to `__invoke` method for `CommandHandlerInterface` and `QueryHandlerInterface`.
+
 ## 0.11.0
 
 - **[Breaking change](./UPGRADE.md#upgrade-to-at-least-php-82)**: Dropped support for PHP 8.1.
