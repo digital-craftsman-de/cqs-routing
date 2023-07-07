@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle;
 
-use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
 use DigitalCraftsman\CQRS\Test\Entity\NewsArticle;
 use DigitalCraftsman\CQRS\Test\Repository\NewsArticleInMemoryRepository;
 use DigitalCraftsman\CQRS\Test\ValueObject\NewsArticleId;
 
-final class CreateNewsArticleCommandHandler implements CommandHandlerInterface
+final readonly class CreateNewsArticleCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private NewsArticleInMemoryRepository $newsArticleInMemoryRepository,
     ) {
     }
 
-    /** @param CreateNewsArticleCommand $command */
-    public function handle(Command $command): void
+    public function __invoke(CreateNewsArticleCommand $command): void
     {
         $newsArticle = new NewsArticle(
             NewsArticleId::generateRandom(),

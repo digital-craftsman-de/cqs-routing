@@ -2,17 +2,19 @@
 
 **Interfaces**
 
+The interfaces are simple marker interfaces.
+
 ```php
+/** @method void __invoke(Command $command) */
 interface CommandHandlerInterface
 {
-    public function handle(Command $command): void;
 }
 ```
 
 ```php
+/** @method void __invoke(Query $query) */
 interface QueryHandlerInterface
 {
-    public function handle(Query $query): mixed;
 }
 ```
 
@@ -32,8 +34,7 @@ final class CreateUserAccountCommandHandler implements CommandHandlerInterface
     ) {
     }
 
-    /** @param CreateUserAccountCommand $command */
-    public function handle(Command $command): void
+    public function __invoke(CreateUserAccountCommand $command): void
     {
       $this->requestingUserMustBeAdmin($command);
 
@@ -63,8 +64,7 @@ final readonly class GetUserQueryHandler implements QueryHandlerInterface
     ) {
     }
 
-    /** @param GetUserQuery $query */
-    public function handle(Query $query): UserReadModel
+    public function __invoke(GetUserQuery $query): ReadModel\User
     {
         $this->requestingUserMustBeAdmin($query);
 
@@ -73,14 +73,14 @@ final readonly class GetUserQueryHandler implements QueryHandlerInterface
 
     ...
 
-    private function getTargetUser(GetUserQuery $query): UserReadModel
+    private function getTargetUser(GetUserQuery $query): ReadModel\User
     {
         $targetUser = $this->userRepository->findOneById($query->targetUserId);
         if ($targetUser === null) {
             throw new TargetUserNotFound();
         }
 
-        return new UserReadModel(
+        return new ReadModel\User(
             $targetUser->userId,
             $targetUser->name,
             $targetUser->emailAddress,

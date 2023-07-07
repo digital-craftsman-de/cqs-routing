@@ -126,7 +126,8 @@ final class QueryController extends AbstractController
         $result = null;
 
         try {
-            $result = $queryHandler->handle($query);
+            /** @psalm-suppress InvalidFunctionCall */
+            $result = $queryHandler($query);
 
             $handlerWrapperClassesForThenStep = HandlerWrapperStep::then($handlerWrapperClasses);
             foreach ($handlerWrapperClassesForThenStep->orderedHandlerWrapperClasses as $handlerWrapperClass => $parameters) {
