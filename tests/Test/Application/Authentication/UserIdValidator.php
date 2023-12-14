@@ -23,7 +23,7 @@ final class UserIdValidator implements DTOValidatorInterface
     /** @param null $parameters */
     public function validateDTO(
         Request $request,
-        Command|Query $dto,
+        Command | Query $dto,
         mixed $parameters,
     ): void {
         $reflection = new \ReflectionClass($dto);

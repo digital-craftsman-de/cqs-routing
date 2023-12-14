@@ -19,7 +19,7 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
 
     /** @param null $parameters */
     public function prepare(
-        Command|Query $dto,
+        Command | Query $dto,
         Request $request,
         mixed $parameters,
     ): void {
@@ -28,7 +28,7 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
 
     /** @param null $parameters */
     public function catch(
-        Command|Query $dto,
+        Command | Query $dto,
         Request $request,
         mixed $parameters,
         \Exception $exception,
@@ -40,7 +40,7 @@ final class ConnectionTransactionWrapper implements HandlerWrapperInterface
 
     /** @param null $parameters */
     public function then(
-        Command|Query $dto,
+        Command | Query $dto,
         Request $request,
         mixed $parameters,
     ): void {

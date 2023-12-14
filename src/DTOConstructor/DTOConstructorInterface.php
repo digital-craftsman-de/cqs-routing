@@ -23,5 +23,5 @@ interface DTOConstructorInterface
      *
      * @psalm-return T
      */
-    public function constructDTO(array $requestData, string $dtoClass): Command|Query;
+    public function constructDTO(array $requestData, string $dtoClass): Command | Query;
 }

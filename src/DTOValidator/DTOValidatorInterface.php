@@ -26,7 +26,7 @@ interface DTOValidatorInterface
     /** @param scalar|array<array-key, scalar|null>|null $parameters */
     public function validateDTO(
         Request $request,
-        Command|Query $dto,
+        Command | Query $dto,
         mixed $parameters,
     ): void;
 

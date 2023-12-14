@@ -16,7 +16,7 @@ final class FileSizeValidator implements DTOValidatorInterface
     /** @param int $parameters Max upload size in MB */
     public function validateDTO(
         Request $request,
-        Command|Query $dto,
+        Command | Query $dto,
         mixed $parameters,
     ): void {
         $reflection = new \ReflectionClass($dto);

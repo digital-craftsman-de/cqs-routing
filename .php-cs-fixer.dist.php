@@ -35,5 +35,13 @@ return (new PhpCsFixer\Config())
             'less_and_greater' => false,
             'always_move_variable' => true,
         ],
+
+        // Add spaces around union and intersection types
+        'types_spaces' => [
+            'space' => 'single',
+        ],
+
+        // Nullable types should be explicit even with default values
+        'nullable_type_declaration_for_default_null_value' => false,
     ])
     ->setFinder($finder);

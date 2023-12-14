@@ -10,7 +10,7 @@ use DigitalCraftsman\CQRS\Query\Query;
 /** @psalm-immutable  */
 final class NotRelevantForDTO extends \InvalidArgumentException
 {
-    public function __construct(Command|Query $dto)
+    public function __construct(Command | Query $dto)
     {
         parent::__construct(sprintf(
             'The supplied action of type %s does not have the relevant property',

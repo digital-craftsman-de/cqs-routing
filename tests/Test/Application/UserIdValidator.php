@@ -24,7 +24,7 @@ final class UserIdValidator implements DTOValidatorInterface
      */
     public function validateDTO(
         Request $request,
-        Command|Query $dto,
+        Command | Query $dto,
         mixed $parameters,
     ): void {
         if ($this->securitySimulator->getAuthenticatedUserId()->isNotEqualTo($dto->userId)) {

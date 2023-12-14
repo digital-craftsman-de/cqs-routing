@@ -265,7 +265,7 @@ final readonly class RouteBuilder
     }
 
     /**
-     * @param class-string<CommandHandlerInterface|QueryHandlerInterface> $dtoClass
+     * @param class-string<CommandHandlerInterface|QueryHandlerInterface> $handlerClass
      *
      * @internal
      */
@@ -330,7 +330,7 @@ final readonly class RouteBuilder
     }
 
     /**
-     * @param class-string<RequestDecoderInterface> $dtoClass
+     * @param class-string<RequestDecoderInterface>|null $requestDecoderClass
      *
      * @internal
      */
@@ -395,7 +395,7 @@ final readonly class RouteBuilder
     }
 
     /**
-     * @param class-string<DTOConstructorInterface> $dtoClass
+     * @param class-string<DTOConstructorInterface>|null $dtoConstructorClass
      *
      * @internal
      */
@@ -506,7 +506,7 @@ final readonly class RouteBuilder
     }
 
     /**
-     * @param class-string<ResponseConstructorInterface> $dtoClass
+     * @param class-string<ResponseConstructorInterface>|null $responseConstructorClass
      *
      * @internal
      */
