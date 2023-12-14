@@ -1,4 +1,4 @@
-FROM php:8.3.0alpha1-fpm-alpine3.18
+FROM php:8.3-fpm-alpine3.18
 
 RUN apk add --update \
     autoconf \
@@ -9,18 +9,7 @@ RUN apk add --update \
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-# XDebug is not yet compatible with PHP 8.3, therefore we need to build it from source. This will be replaced with the following line once XDebug is compatible with PHP 8.3:
-# RUN pecl install xdebug-3.3.0 && docker-php-ext-enable xdebug
-RUN apk add git
-RUN apk add -U php8-dev --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing
-RUN git clone https://github.com/xdebug/xdebug.git \
-    && cd xdebug \
-    && phpize \
-    && ./configure \
-    && make \
-    && make install \
-    && cd .. \
-    && docker-php-ext-enable xdebug
+RUN pecl install xdebug-3.3.0 && docker-php-ext-enable xdebug
 
 RUN chmod +x /usr/local/bin/install-php-extensions && \
     install-php-extensions uuid
