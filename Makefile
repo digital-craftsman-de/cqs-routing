@@ -54,7 +54,7 @@ reset: .reset
 
 ## install			Install PHP dependencies with the default PHP version (8.2).
 .PHONY: .install
-install: install-8.2
+install: install-8.3
 
 ## install-8.2			Install PHP dependencies with PHP 8.2.
 .PHONY: install-8.2
@@ -68,7 +68,7 @@ install-8.3:
 
 ## php-cli			Enter a shell for the default PHP version (8.2).
 .PHONY: php-cli
-php-cli: php-8.2-cli
+php-cli: php-8.3-cli
 
 ## php-8.2-cli			Enter a shell for PHP 8.2.
 .PHONY: php-8.2-cli
@@ -116,8 +116,8 @@ php-8.3-tests-html-coverage:
 ## php-code-validation		Run code fixers and linters with default PHP version (8.2).
 .PHONY: php-code-validation
 php-code-validation:
-	docker-compose run --rm php-8.2 ./vendor/bin/php-cs-fixer fix
-	docker-compose run --rm php-8.2 ./vendor/bin/psalm --show-info=false --no-diff
+	docker-compose run --rm php-8.3 ./vendor/bin/php-cs-fixer fix
+	docker-compose run --rm php-8.3 ./vendor/bin/psalm --show-info=false --no-diff
 
 ##
 ## CI
