@@ -68,21 +68,21 @@ final class CQRSExtension extends Extension
          * @var array{
          *   query_controller: array{
          *     default_request_validator_classes: array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null,
-         *     default_request_decoder_class: string|null,
+         *     default_request_decoder_class: class-string<RequestDecoderInterface>|null,
          *     default_request_data_transformer_classes: array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null,
-         *     default_dto_constructor_class: string|null,
+         *     default_dto_constructor_class: class-string<DTOConstructorInterface>|null,
          *     default_dto_validator_classes: array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null,
          *     default_handler_wrapper_classes: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null,
-         *     default_response_constructor_class: string|null,
+         *     default_response_constructor_class: class-string<ResponseConstructorInterface>|null,
          *   },
          *   command_controller: array{
          *     default_request_validator_classes: array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null,
-         *     default_request_decoder_class: string|null,
+         *     default_request_decoder_class: class-string<RequestDecoderInterface>|null,
          *     default_request_data_transformer_classes: array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null,
-         *     default_dto_constructor_class: string|null,
+         *     default_dto_constructor_class: class-string<DTOConstructorInterface>|null,
          *     default_dto_validator_classes: array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null,
          *     default_handler_wrapper_classes: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null,
-         *     default_response_constructor_class: string|null,
+         *     default_response_constructor_class: class-string<ResponseConstructorInterface>|null,
          *   },
          * } $config
          */

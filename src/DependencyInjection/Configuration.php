@@ -10,9 +10,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 final class Configuration implements ConfigurationInterface
 {
     /**
-     * @noinspection NullPointerExceptionInspection
-     *
      * @psalm-suppress MixedMethodCall
+     * @psalm-suppress UndefinedMethod
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
