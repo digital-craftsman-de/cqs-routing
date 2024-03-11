@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.13.0
+
+- **[Breaking change](./UPGRADE.md#upgrade-to-at-least-symfony-64)**: Dropped support for Symfony 5.
+- Added support for Symfony 7.
+
 ## 0.12.0
 
 - **[Breaking change](./UPGRADE.md#switched-handler-methods)**: Switched from `handle` to `__invoke` method for `CommandHandlerInterface` and `QueryHandlerInterface`. This way the specific command or query can be type hinted in the method signature.
