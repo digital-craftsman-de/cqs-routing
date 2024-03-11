@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Application;
+namespace DigitalCraftsman\CQRS\HandlerWrapper;
 
 use DigitalCraftsman\CQRS\Command\Command;
-use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
 use DigitalCraftsman\CQRS\Query\Query;
 use Symfony\Component\HttpFoundation\Request;
 
-final class SilentExceptionWrapper implements HandlerWrapperInterface
+final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
 {
-    /** @param array<array-key, class-string<\Throwable>> $parameters */
+    /** @param array<int, string> $parameters */
+    #[\Override]
     public function prepare(
         Command | Query $dto,
         Request $request,
@@ -20,7 +20,8 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
         // Nothing to do
     }
 
-    /** @param array<array-key, class-string<\Throwable>> $parameters */
+    /** @param array<int, string> $parameters Exception class strings to be swallowed */
+    #[\Override]
     public function catch(
         Command | Query $dto,
         Request $request,
@@ -35,7 +36,8 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
         return $exception;
     }
 
-    /** @param array<array-key, class-string<\Throwable>> $parameters */
+    /** @param array<int, string> $parameters */
+    #[\Override]
     public function then(
         Command | Query $dto,
         Request $request,
@@ -46,22 +48,26 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
 
     // Priorities
 
+    #[\Override]
     public static function preparePriority(): int
     {
         return 0;
     }
 
+    #[\Override]
     public static function catchPriority(): int
     {
         return -100;
     }
 
+    #[\Override]
     public static function thenPriority(): int
     {
         return 0;
     }
 
     /** @param array<array-key, class-string<\Throwable>> $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         if (!is_array($parameters)) {
@@ -74,7 +80,7 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
             }
 
             $reflectionClass = new \ReflectionClass($exceptionClass);
-            /** @psalm-suppress TypeDoesNotContainType It's possible that due to configuration issues, something else is supplied. */
+            /** @psalm-suppress TypeDoesNotContainType It's possible that someone puts in something other than an exception. */
             if (!$reflectionClass->implementsInterface(\Throwable::class)) {
                 return false;
             }
