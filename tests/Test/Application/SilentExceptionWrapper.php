@@ -74,6 +74,7 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
             }
 
             $reflectionClass = new \ReflectionClass($exceptionClass);
+            /** @psalm-suppress TypeDoesNotContainType */
             if (!$reflectionClass->implementsInterface(\Throwable::class)) {
                 return false;
             }
