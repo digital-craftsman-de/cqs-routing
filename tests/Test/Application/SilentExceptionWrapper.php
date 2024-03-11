@@ -13,7 +13,7 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
 {
     /** @param array<array-key, class-string<\Throwable>> $parameters */
     public function prepare(
-        Command|Query $dto,
+        Command | Query $dto,
         Request $request,
         mixed $parameters,
     ): void {
@@ -22,7 +22,7 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
 
     /** @param array<array-key, class-string<\Throwable>> $parameters */
     public function catch(
-        Command|Query $dto,
+        Command | Query $dto,
         Request $request,
         mixed $parameters,
         \Exception $exception,
@@ -37,7 +37,7 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
 
     /** @param array<array-key, class-string<\Throwable>> $parameters */
     public function then(
-        Command|Query $dto,
+        Command | Query $dto,
         Request $request,
         mixed $parameters,
     ): void {
@@ -74,6 +74,7 @@ final class SilentExceptionWrapper implements HandlerWrapperInterface
             }
 
             $reflectionClass = new \ReflectionClass($exceptionClass);
+            /** @psalm-suppress TypeDoesNotContainType It's possible that due to configuration issues, something else is supplied. */
             if (!$reflectionClass->implementsInterface(\Throwable::class)) {
                 return false;
             }

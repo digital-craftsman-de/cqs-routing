@@ -1,5 +1,11 @@
 # Upgrade guide
 
+## From 0.12.* to 0.13.0
+
+### Upgrade to at least Symfony 6.4
+
+Support for Symfony 5 was dropped, so you have to upgrade to at least Symfony 6.4. You might also directly upgrade to Symfony 7.
+
 ## From 0.11.* to 0.12.0
 
 ### Switched handler methods

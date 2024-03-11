@@ -88,7 +88,6 @@ final readonly class HandlerWrapperStep
             self::STEP_PREPARE => $handlerWrapperClass::preparePriority(),
             self::STEP_THEN => $handlerWrapperClass::thenPriority(),
             self::STEP_CATCH => $handlerWrapperClass::catchPriority(),
-            default => throw new \InvalidArgumentException(sprintf('Step %s is not valid', $step)),
         };
     }
 }

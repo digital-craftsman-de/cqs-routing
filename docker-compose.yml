@@ -3,8 +3,7 @@ version: '3.7'
 services:
 
   php-8.2:
-    build: ./.docker/php-8.2
-    image: cqrs_php_8.2
+    image: ghcr.io/digital-craftsman-de/cqrs-php-8.2
     env_file:
       - .env
     volumes:
@@ -13,8 +12,7 @@ services:
       - "host.docker.internal:host-gateway"
 
   php-8.3:
-    build: ./.docker/php-8.3
-    image: cqrs_php_8.3
+    image: ghcr.io/digital-craftsman-de/cqrs-php-8.3
     env_file:
       - .env
     volumes:

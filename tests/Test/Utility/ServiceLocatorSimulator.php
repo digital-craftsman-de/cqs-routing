@@ -7,16 +7,21 @@ namespace DigitalCraftsman\CQRS\Test\Utility;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
-final class ServiceLocatorSimulator implements ServiceProviderInterface
+/**
+ * @template-covariant T of mixed
+ *
+ * @implements ServiceProviderInterface<T>
+ */
+final readonly class ServiceLocatorSimulator implements ServiceProviderInterface
 {
     /** @param array<string, object> $providedServices */
     public function __construct(
-        /** @var array<string, object> */
+        /** @var array<string, object> $providedServices */
         private array $providedServices,
     ) {
     }
 
-    public function get(string $id): mixed
+    public function get(string $id): object
     {
         return $this->providedServices[$id] ?? throw new ServiceNotFoundException($id);
     }
@@ -26,8 +31,14 @@ final class ServiceLocatorSimulator implements ServiceProviderInterface
         return array_key_exists($id, $this->providedServices);
     }
 
+    /** @return array<string, string> */
     public function getProvidedServices(): array
     {
-        return array_keys($this->providedServices);
+        $services = [];
+        foreach ($this->providedServices as $identifier => $service) {
+            $services[$identifier] = $service::class;
+        }
+
+        return $services;
     }
 }

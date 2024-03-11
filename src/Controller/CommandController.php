@@ -53,7 +53,7 @@ final class CommandController extends AbstractController
         $configuration = RoutePayload::fromPayload($routePayload);
 
         // -- Validate request
-        $requestValidatorClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
+        $requestValidatorClasses = RoutePayload::mergeRequestValidatorClassesFromRouteWithDefaults(
             $configuration->requestValidatorClasses,
             $configuration->requestValidatorClassesToMergeWithDefault,
             $this->defaultRequestValidatorClasses,
@@ -71,7 +71,7 @@ final class CommandController extends AbstractController
         $requestData = $requestDecoder->decodeRequest($request);
 
         // -- Transform request data
-        $requestDataTransformerClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
+        $requestDataTransformerClasses = RoutePayload::mergeRequestDataTransformerClassesFromRouteWithDefaults(
             $configuration->requestDataTransformerClasses,
             $configuration->requestDataTransformerClassesToMergeWithDefault,
             $this->defaultRequestDataTransformerClasses,
@@ -91,7 +91,7 @@ final class CommandController extends AbstractController
         $command = $dtoConstructor->constructDTO($requestData, $configuration->dtoClass);
 
         // -- Validate command
-        $dtoValidatorClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
+        $dtoValidatorClasses = RoutePayload::mergeDTOValidatorClassesFromRouteWithDefaults(
             $configuration->dtoValidatorClasses,
             $configuration->dtoValidatorClassesToMergeWithDefault,
             $this->defaultDTOValidatorClasses,
@@ -103,7 +103,7 @@ final class CommandController extends AbstractController
 
         // -- Wrap handlers
         /** The wrapper handlers are quite complex, so additional explanation can be found in @HandlerWrapperStep */
-        $handlerWrapperClasses = RoutePayload::mergeClassesFromRouteWithDefaults(
+        $handlerWrapperClasses = RoutePayload::mergeHandlerWrapperClassesFromRouteWithDefaults(
             $configuration->handlerWrapperClasses,
             $configuration->handlerWrapperClassesToMergeWithDefault,
             $this->defaultHandlerWrapperClasses,

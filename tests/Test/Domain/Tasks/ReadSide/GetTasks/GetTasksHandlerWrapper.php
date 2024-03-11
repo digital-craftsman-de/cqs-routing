@@ -19,7 +19,7 @@ final class GetTasksHandlerWrapper implements HandlerWrapperInterface
 
     /** @param GetTasksQuery $dto */
     public function prepare(
-        Command|Query $dto,
+        Command | Query $dto,
         Request $request,
         mixed $parameters,
     ): void {
@@ -28,7 +28,7 @@ final class GetTasksHandlerWrapper implements HandlerWrapperInterface
 
     /** @param GetTasksQuery $dto */
     public function then(
-        Command|Query $dto,
+        Command | Query $dto,
         Request $request,
         mixed $parameters,
     ): void {
@@ -37,7 +37,7 @@ final class GetTasksHandlerWrapper implements HandlerWrapperInterface
 
     /** @param GetTasksQuery $dto */
     public function catch(
-        Command|Query $dto,
+        Command | Query $dto,
         Request $request,
         mixed $parameters,
         \Exception $exception,
