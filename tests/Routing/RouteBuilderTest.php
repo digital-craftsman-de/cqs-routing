@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQRS\Routing;
 
+use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
 use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstTokenInHeaderRequestValidator;
 use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNetherCommandHandlerNorQueryHandler;
@@ -87,8 +88,12 @@ class RouteBuilderTest extends TestCase
         // -- Assert
         $this->expectException(InvalidClassInRoutePayload::class);
 
+        // -- Arrange
+        /** @var class-string<Command> $classString */
+        $classString = 'App\DoesNotExist';
+
         // -- Act
-        RouteBuilder::validateDTOClass('App\DoesNotExist');
+        RouteBuilder::validateDTOClass($classString);
     }
 
     /**
@@ -102,6 +107,7 @@ class RouteBuilderTest extends TestCase
         $this->expectException(ClassIsNetherCommandNorQuery::class);
 
         // -- Act
+        /** @psalm-suppress InvalidArgument Invalid argument supplied on purpose */
         RouteBuilder::validateDTOClass(UserIdValidator::class);
     }
 
@@ -118,6 +124,7 @@ class RouteBuilderTest extends TestCase
         $this->expectException(InvalidClassInRoutePayload::class);
 
         // -- Act
+        /** @psalm-suppress ArgumentTypeCoercion Invalid argument supplied on purpose */
         RouteBuilder::validateHandlerClass('App\DoesNotExist');
     }
 
@@ -132,6 +139,7 @@ class RouteBuilderTest extends TestCase
         $this->expectException(ClassIsNetherCommandHandlerNorQueryHandler::class);
 
         // -- Act
+        /** @psalm-suppress InvalidArgument Invalid argument supplied on purpose */
         RouteBuilder::validateHandlerClass(UserIdValidator::class);
     }
 
@@ -148,7 +156,10 @@ class RouteBuilderTest extends TestCase
         $this->expectException(InvalidClassInRoutePayload::class);
 
         // -- Act
-        /** @psalm-suppress InvalidScalarArgument */
+        /**
+         * @psalm-suppress InvalidScalarArgument
+         * @psalm-suppress InvalidArgument
+         */
         RouteBuilder::validateRequestValidatorClasses([
             'App\DoesNotExist',
         ], null);
@@ -235,6 +246,7 @@ class RouteBuilderTest extends TestCase
         $this->expectException(InvalidClassInRoutePayload::class);
 
         // -- Act
+        /** @psalm-suppress ArgumentTypeCoercion Invalid argument supplied on purpose */
         RouteBuilder::validateRequestDecoderClass('App\DoesNotExist');
     }
 
@@ -249,6 +261,7 @@ class RouteBuilderTest extends TestCase
         $this->expectException(ClassIsNoRequestDecoder::class);
 
         // -- Act
+        /** @psalm-suppress InvalidArgument Invalid argument supplied on purpose */
         RouteBuilder::validateRequestDecoderClass(UserIdValidator::class);
     }
 
@@ -265,7 +278,7 @@ class RouteBuilderTest extends TestCase
         $this->expectException(InvalidClassInRoutePayload::class);
 
         // -- Act
-        /** @psalm-suppress InvalidScalarArgument */
+        /** @psalm-suppress InvalidArgument */
         RouteBuilder::validateRequestDataTransformerClasses([
             'App\DoesNotExist',
         ], null);
@@ -352,6 +365,7 @@ class RouteBuilderTest extends TestCase
         $this->expectException(InvalidClassInRoutePayload::class);
 
         // -- Act
+        /** @psalm-suppress ArgumentTypeCoercion Invalid argument supplied on purpose */
         RouteBuilder::validateDTOConstructorClass('App\DoesNotExist');
     }
 
@@ -366,6 +380,7 @@ class RouteBuilderTest extends TestCase
         $this->expectException(ClassIsNoDTOConstructor::class);
 
         // -- Act
+        /** @psalm-suppress InvalidArgument Invalid argument supplied on purpose */
         RouteBuilder::validateDTOConstructorClass(UserIdValidator::class);
     }
 
@@ -382,7 +397,7 @@ class RouteBuilderTest extends TestCase
         $this->expectException(InvalidClassInRoutePayload::class);
 
         // -- Act
-        /** @psalm-suppress InvalidScalarArgument */
+        /** @psalm-suppress InvalidArgument */
         RouteBuilder::validateDTOValidatorClasses([
             'App\DoesNotExist',
         ], null);
@@ -469,7 +484,7 @@ class RouteBuilderTest extends TestCase
         $this->expectException(InvalidClassInRoutePayload::class);
 
         // -- Act
-        /** @psalm-suppress InvalidScalarArgument */
+        /** @psalm-suppress InvalidArgument */
         RouteBuilder::validateHandlerWrapperClasses([
             'App\DoesNotExist',
         ], null);
@@ -560,6 +575,7 @@ class RouteBuilderTest extends TestCase
         $this->expectException(InvalidClassInRoutePayload::class);
 
         // -- Act
+        /** @psalm-suppress ArgumentTypeCoercion Invalid argument supplied on purpose */
         RouteBuilder::validateResponseConstructorClass('App\DoesNotExist');
     }
 
@@ -574,6 +590,7 @@ class RouteBuilderTest extends TestCase
         $this->expectException(ClassIsNoResponseConstructor::class);
 
         // -- Act
+        /** @psalm-suppress InvalidArgument Invalid argument supplied on purpose */
         RouteBuilder::validateResponseConstructorClass(UserIdValidator::class);
     }
 }

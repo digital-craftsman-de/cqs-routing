@@ -209,6 +209,7 @@ final readonly class RoutePayload
      * @return array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>
      *
      * @internal
+     *
      * @codeCoverageIgnore We don't test this method because it's identical to the handler wrapper merge and that's tested thoroughly.
      */
     public static function mergeRequestValidatorClassesFromRouteWithDefaults(
@@ -234,6 +235,7 @@ final readonly class RoutePayload
      * @return array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>
      *
      * @internal
+     *
      * @codeCoverageIgnore We don't test this method because it's identical to the handler wrapper merge and that's tested thoroughly.
      */
     public static function mergeRequestDataTransformerClassesFromRouteWithDefaults(
@@ -259,6 +261,7 @@ final readonly class RoutePayload
      * @return array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>
      *
      * @internal
+     *
      * @codeCoverageIgnore We don't test this method because it's identical to the handler wrapper merge and that's tested thoroughly.
      */
     public static function mergeDTOValidatorClassesFromRouteWithDefaults(
