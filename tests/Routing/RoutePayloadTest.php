@@ -155,7 +155,7 @@ final class RoutePayloadTest extends TestCase
     /**
      * @test
      *
-     * @covers ::self::mergeHandlerWrapperClassesFromRouteWithDefaults()
+     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
      */
     public function merge_classes_from_route_with_defaults_works_with_overwrite(): void
     {
@@ -184,7 +184,7 @@ final class RoutePayloadTest extends TestCase
     /**
      * @test
      *
-     * @covers ::self::mergeHandlerWrapperClassesFromRouteWithDefaults()
+     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
      */
     public function merge_classes_from_route_with_defaults_works_with_merge_into_defaults(): void
     {
@@ -218,7 +218,7 @@ final class RoutePayloadTest extends TestCase
     /**
      * @test
      *
-     * @covers ::self::mergeHandlerWrapperClassesFromRouteWithDefaults()
+     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
      */
     public function merge_classes_from_route_with_defaults_works_with_merge_into_defaults_and_parameters_are_used_from_route(): void
     {
@@ -255,7 +255,7 @@ final class RoutePayloadTest extends TestCase
     /**
      * @test
      *
-     * @covers ::self::mergeHandlerWrapperClassesFromRouteWithDefaults()
+     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
      */
     public function merge_classes_from_route_with_defaults_works_without_classes_from_route(): void
     {
@@ -282,7 +282,7 @@ final class RoutePayloadTest extends TestCase
     /**
      * @test
      *
-     * @covers ::self::mergeHandlerWrapperClassesFromRouteWithDefaults()
+     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
      */
     public function merge_classes_from_route_with_defaults_works_with_empty_list_from_route(): void
     {
@@ -309,7 +309,7 @@ final class RoutePayloadTest extends TestCase
     /**
      * @test
      *
-     * @covers ::self::mergeHandlerWrapperClassesFromRouteWithDefaults()
+     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
      */
     public function merge_classes_from_route_with_defaults_works_without_values(): void
     {

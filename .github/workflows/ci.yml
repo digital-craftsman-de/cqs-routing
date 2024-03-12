@@ -82,7 +82,7 @@ jobs:
           token: ${{ secrets.CODE_COV_TOKEN }}
           files: ./coverage.xml
           verbose: true
-          
+
   code-validation:
     name: "Code validation"
     runs-on: ubuntu-latest
