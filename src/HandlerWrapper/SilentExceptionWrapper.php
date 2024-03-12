@@ -49,28 +49,35 @@ final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
     // Priorities
 
     #[\Override]
+    /** @codeCoverageIgnore */
     public static function preparePriority(): int
     {
         return 0;
     }
 
     #[\Override]
+    /** @codeCoverageIgnore */
     public static function catchPriority(): int
     {
         return -100;
     }
 
     #[\Override]
+    /** @codeCoverageIgnore */
     public static function thenPriority(): int
     {
         return 0;
     }
 
-    /** @param array<array-key, class-string<\Throwable>> $parameters */
+    /** @param array<array-key, class-string<\Throwable>> $parameters Needs to be at least one exception class */
     #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         if (!is_array($parameters)) {
+            return false;
+        }
+
+        if (count($parameters) === 0) {
             return false;
         }
 

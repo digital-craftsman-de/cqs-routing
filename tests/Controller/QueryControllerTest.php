@@ -6,7 +6,6 @@ namespace DigitalCraftsman\CQRS\Controller;
 
 use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
 use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
-use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
 use DigitalCraftsman\CQRS\ResponseConstructor\SerializerJsonResponseConstructor;
 use DigitalCraftsman\CQRS\Routing\RoutePayload;
 use DigitalCraftsman\CQRS\Test\Application\AddActionIdRequestDataTransformer;
@@ -19,6 +18,7 @@ use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQueryHandl
 use DigitalCraftsman\CQRS\Test\Entity\Task;
 use DigitalCraftsman\CQRS\Test\Helper\ServiceMapHelper;
 use DigitalCraftsman\CQRS\Test\Repository\TasksInMemoryRepository;
+use DigitalCraftsman\CQRS\Test\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
 use DigitalCraftsman\CQRS\Test\Utility\LockSimulator;
 use DigitalCraftsman\CQRS\Test\Utility\SecuritySimulator;
 use DigitalCraftsman\CQRS\Test\Utility\VirusScannerSimulator;
