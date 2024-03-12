@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.13.1
+
+- Remove replacement (in composer.json) for polyfills to enable usage of replacement in projects.
+
 ## 0.13.0
 
 - **[Breaking change](./UPGRADE.md#upgrade-to-at-least-symfony-64)**: Dropped support for Symfony 5.
