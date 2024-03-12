@@ -143,7 +143,7 @@ final readonly class ConnectionTransactionWrapper implements HandlerWrapperInter
 
 ## Silence exceptions
 
-> ⭐ This handler wrapper is supplied with this bundle.
+> ⭐ This handler wrapper is supplied with the bundle.
 
 When the `catch` method of a handler wrapper is executed, the exception is returned at the end. If it's the last handler wrapper that should handle it, it must return `null` instead.
 

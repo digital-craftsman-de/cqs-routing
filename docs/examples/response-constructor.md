@@ -12,7 +12,9 @@ interface ResponseConstructorInterface
 
 See [position in process](../process.md#response-constructor)
 
-## JSON response constructor
+## Serializer JSON response constructor
+
+> ⭐ This response constructor is supplied with the bundle.
 
 Most of the time the result will be an object or array and be converted into JSON throught the JSONResponseConstructor. Obviously it needs the custom normalizers for the values objects to be able to do so.
 
@@ -55,6 +57,8 @@ final readonly class FileResponseConstructor implements ResponseConstructorInter
 ```
 
 ## Streamed response
+
+> ⭐ This response constructor is supplied with the bundle.
 
 There are cases where it's not feasible to return the full response at once. For example when loading a lot of files from an external storage provider and wrapping it into a zip file before sending it to the client. In such a case, the query handler would return a callable like this:
 
