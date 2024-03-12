@@ -143,6 +143,8 @@ final readonly class ConnectionTransactionWrapper implements HandlerWrapperInter
 
 ## Silence exceptions
 
+> ⭐ This handler wrapper is supplied with this package.
+
 When the `catch` method of a handler wrapper is executed, the exception is returned at the end. If it's the last handler wrapper that should handle it, it must return `null` instead.
 
 This logic is what is used with our silent exception wrapper. With it, exceptions are checked against a specific exception list (defined through a parameter as part of the route). When an exception matches, the exception is not returned and therefore doesn't bubble up the chain.
@@ -265,8 +267,6 @@ RouteBuilder::addCommandRoute(
     ],
 ));
 ```
-
-This handler wrapper is supplied with this package.
 
 ## Request locking
 
