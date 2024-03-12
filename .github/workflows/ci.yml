@@ -39,13 +39,6 @@ jobs:
       - name: Run PHP tests
         run: make php-8.2-tests-ci
 
-      - name: Upload to Codecov
-        uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODE_COV_TOKEN }}
-          files: ./coverage.xml
-          verbose: true
-
   test-8-3:
     name: "Tests on PHP 8.3"
     runs-on: ubuntu-latest
@@ -83,6 +76,13 @@ jobs:
       - name: Run PHP tests
         run: make php-8.3-tests-ci
 
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODE_COV_TOKEN }}
+          files: ./coverage.xml
+          verbose: true
+          
   code-validation:
     name: "Code validation"
     runs-on: ubuntu-latest
