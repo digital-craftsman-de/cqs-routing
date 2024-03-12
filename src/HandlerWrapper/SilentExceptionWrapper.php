@@ -8,6 +8,13 @@ use DigitalCraftsman\CQRS\Command\Command;
 use DigitalCraftsman\CQRS\Query\Query;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * This handler wrapper can be used to swallow exceptions of a certain type as part of the route configuration.
+ * As an example imagine a command that marks a task as accepted and has side effects like sending an email notification to the user. When
+ * this task is already accepted, the process should be ended (through a thrown exception). But it might not make sense to display an error
+ * to the user. With this handler wrapper, you can define the `TaskAlreadyAccepted` exception as one to catch. This would then result in a
+ * normal response through the response constructor as if the task was just accepted.
+ */
 final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
 {
     /**
