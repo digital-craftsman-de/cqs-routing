@@ -13,6 +13,8 @@ See [position in process](../process.md#request-decoder)
 
 ## JSON request decoder
 
+> ⭐ This request decoder is supplied with the bundle.
+
 The simple implementation of a request decoder is the `JsonRequestDecoder`:
 
 ```php

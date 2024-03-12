@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQRS\Routing;
 
-use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstTokenInHeaderRequestValidator;
+use DigitalCraftsman\CQRS\HandlerWrapper\SilentExceptionWrapper;
 use DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor;
 use DigitalCraftsman\CQRS\Test\Application\AddActionIdRequestDataTransformer;
 use DigitalCraftsman\CQRS\Test\Application\Authentication\UserIdValidator;
 use DigitalCraftsman\CQRS\Test\Application\ConnectionTransactionWrapper;
-use DigitalCraftsman\CQRS\Test\Application\SilentExceptionWrapper;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\Exception\TasksNotAccessible;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommand;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommandHandler;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskDTOConstructor;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskRequestDecoder;
 use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
+use DigitalCraftsman\CQRS\Test\RequestValidator\GuardAgainstTokenInHeaderRequestValidator;
 use PHPUnit\Framework\TestCase;
 
 /** @coversDefaultClass \DigitalCraftsman\CQRS\Routing\RoutePayload */
@@ -155,7 +155,7 @@ final class RoutePayloadTest extends TestCase
     /**
      * @test
      *
-     * @covers ::self::mergeHandlerWrapperClassesFromRouteWithDefaults()
+     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
      */
     public function merge_classes_from_route_with_defaults_works_with_overwrite(): void
     {
@@ -184,7 +184,7 @@ final class RoutePayloadTest extends TestCase
     /**
      * @test
      *
-     * @covers ::self::mergeHandlerWrapperClassesFromRouteWithDefaults()
+     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
      */
     public function merge_classes_from_route_with_defaults_works_with_merge_into_defaults(): void
     {
@@ -218,7 +218,7 @@ final class RoutePayloadTest extends TestCase
     /**
      * @test
      *
-     * @covers ::self::mergeHandlerWrapperClassesFromRouteWithDefaults()
+     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
      */
     public function merge_classes_from_route_with_defaults_works_with_merge_into_defaults_and_parameters_are_used_from_route(): void
     {
@@ -255,7 +255,7 @@ final class RoutePayloadTest extends TestCase
     /**
      * @test
      *
-     * @covers ::self::mergeHandlerWrapperClassesFromRouteWithDefaults()
+     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
      */
     public function merge_classes_from_route_with_defaults_works_without_classes_from_route(): void
     {
@@ -282,7 +282,7 @@ final class RoutePayloadTest extends TestCase
     /**
      * @test
      *
-     * @covers ::self::mergeHandlerWrapperClassesFromRouteWithDefaults()
+     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
      */
     public function merge_classes_from_route_with_defaults_works_with_empty_list_from_route(): void
     {
@@ -309,7 +309,7 @@ final class RoutePayloadTest extends TestCase
     /**
      * @test
      *
-     * @covers ::self::mergeHandlerWrapperClassesFromRouteWithDefaults()
+     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
      */
     public function merge_classes_from_route_with_defaults_works_without_values(): void
     {

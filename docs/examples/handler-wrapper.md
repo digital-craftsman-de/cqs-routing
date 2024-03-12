@@ -78,6 +78,7 @@ final readonly class ConnectionTransactionWrapper implements HandlerWrapperInter
     }
 
     /** @param null $parameters */
+    #[\Override]
     public function prepare(
         Command | Query $dto,
         Request $request,
@@ -87,6 +88,7 @@ final readonly class ConnectionTransactionWrapper implements HandlerWrapperInter
     }
 
     /** @param null $parameters */
+    #[\Override]
     public function catch(
         Command | Query $dto,
         Request $request,
@@ -101,6 +103,7 @@ final readonly class ConnectionTransactionWrapper implements HandlerWrapperInter
     }
 
     /** @param null $parameters */
+    #[\Override]
     public function then(
         Command | Query $dto,
         Request $request,
@@ -111,22 +114,26 @@ final readonly class ConnectionTransactionWrapper implements HandlerWrapperInter
 
     // Priorities
 
+    #[\Override]
     public static function preparePriority(): int
     {
         return 50;
     }
 
+    #[\Override]
     public static function catchPriority(): int
     {
         return 50;
     }
-
+    
+    #[\Override]
     public static function thenPriority(): int
     {
         return 50;
     }
     
     /** @param null $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         return $parameters === null;
@@ -135,6 +142,8 @@ final readonly class ConnectionTransactionWrapper implements HandlerWrapperInter
 ```
 
 ## Silence exceptions
+
+> ⭐ This handler wrapper is supplied with the bundle.
 
 When the `catch` method of a handler wrapper is executed, the exception is returned at the end. If it's the last handler wrapper that should handle it, it must return `null` instead.
 
@@ -156,7 +165,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
 {
-    /** @param array<array-key, class-string<\Throwable>> $parameters */
+    /** @param array<int, string> $parameters */
+    #[\Override]
     public function prepare(
         Command | Query $dto,
         Request $request,
@@ -165,7 +175,8 @@ final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
         // Nothing to do
     }
 
-    /** @param array<array-key, class-string<\Throwable>> $parameters */
+    /** @param array<int, string> $parameters Exception class strings to be swallowed */
+    #[\Override]
     public function catch(
         Command | Query $dto,
         Request $request,
@@ -173,14 +184,15 @@ final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
         \Exception $exception,
     ): ?\Exception {
         // Catch exception which should be handled silently
-        if (in_array(get_class($exception), $parameters, true)) {
+        if (in_array($exception::class, $parameters, true)) {
             return null;
         }
 
         return $exception;
     }
 
-    /** @param array<array-key, class-string<\Throwable>> $parameters */
+    /** @param array<int, string> $parameters */
+    #[\Override]
     public function then(
         Command | Query $dto,
         Request $request,
@@ -191,25 +203,33 @@ final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
 
     // Priorities
 
+    #[\Override]
     public static function preparePriority(): int
     {
         return 0;
     }
 
+    #[\Override]
     public static function catchPriority(): int
     {
         return -100;
     }
 
+    #[\Override]
     public static function thenPriority(): int
     {
         return 0;
     }
-    
-    /** @param array<array-key, class-string<\Throwable>> $parameters */
+
+    /** @param array<array-key, class-string<\Throwable>> $parameters Needs to be at least one exception class */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         if (!is_array($parameters)) {
+            return false;
+        }
+
+        if (count($parameters) === 0) {
             return false;
         }
 
@@ -219,6 +239,7 @@ final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
             }
 
             $reflectionClass = new \ReflectionClass($exceptionClass);
+            /** @psalm-suppress TypeDoesNotContainType It's possible that someone puts in something other than an exception. */
             if (!$reflectionClass->implementsInterface(\Throwable::class)) {
                 return false;
             }
@@ -282,6 +303,7 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
      * @param CreateNewsArticleCommand $dto 
      * @param null                     $parameters
      */
+    #[\Override]
     public function prepare(
         Command | Query $dto,
         Request $request,
@@ -292,6 +314,7 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
     }
 
     /** @param null $parameters */
+    #[\Override]
     public function catch(
         Command | Query $dto,
         Request $request,
@@ -304,6 +327,7 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
     }
 
     /** @param null $parameters */
+    #[\Override]
     public function then(
         Command | Query $dto,
         Request $request,
@@ -314,22 +338,26 @@ final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
 
     // Priorities
 
+    #[\Override]
     public static function preparePriority(): int
     {
         return 200;
     }
 
+    #[\Override]
     public static function catchPriority(): int
     {
         return 0;
     }
 
+    #[\Override]
     public static function thenPriority(): int
     {
         return -200;
     }
     
     /** @param null $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         return $parameters === null;

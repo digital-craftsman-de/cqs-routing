@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace DigitalCraftsman\CQRS\Controller;
 
 use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
+use DigitalCraftsman\CQRS\HandlerWrapper\SilentExceptionWrapper;
 use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
-use DigitalCraftsman\CQRS\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
 use DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor;
 use DigitalCraftsman\CQRS\Routing\RoutePayload;
 use DigitalCraftsman\CQRS\Test\Application\ConnectionTransactionWrapper;
-use DigitalCraftsman\CQRS\Test\Application\SilentExceptionWrapper;
 use DigitalCraftsman\CQRS\Test\Application\UserIdValidator;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommand;
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommandHandler;
@@ -20,6 +19,7 @@ use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\Exception
 use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\FailingCreateNewsArticleCommandHandler;
 use DigitalCraftsman\CQRS\Test\Helper\ServiceMapHelper;
 use DigitalCraftsman\CQRS\Test\Repository\NewsArticleInMemoryRepository;
+use DigitalCraftsman\CQRS\Test\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
 use DigitalCraftsman\CQRS\Test\Utility\ConnectionSimulator;
 use DigitalCraftsman\CQRS\Test\Utility\LockSimulator;
 use DigitalCraftsman\CQRS\Test\Utility\SecuritySimulator;

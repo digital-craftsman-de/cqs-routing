@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\RequestValidator;
+namespace DigitalCraftsman\CQRS\Test\RequestValidator;
 
+use DigitalCraftsman\CQRS\RequestValidator\RequestValidatorInterface;
 use DigitalCraftsman\CQRS\Test\Utility\VirusScannerSimulator;
 use Symfony\Component\HttpFoundation\Request;
 
-final class GuardAgainstFileWithVirusRequestValidator implements RequestValidatorInterface
+final readonly class GuardAgainstFileWithVirusRequestValidator implements RequestValidatorInterface
 {
     public function __construct(
-        private readonly VirusScannerSimulator $virusScanner,
+        private VirusScannerSimulator $virusScanner,
     ) {
     }
 

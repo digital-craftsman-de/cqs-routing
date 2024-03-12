@@ -20,6 +20,8 @@ See [position in process](../process.md#dto-constructor)
 
 ## Construction through serializer
 
+> ⭐ This DTO constructor is supplied with the bundle.
+
 A possible implementation of a constructor is one that uses the Symfony serializer like this that is already built-in:
 
 ```php

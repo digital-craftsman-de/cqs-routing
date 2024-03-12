@@ -4,6 +4,7 @@
 
 - **[Breaking change](./UPGRADE.md#upgrade-to-at-least-symfony-64)**: Dropped support for Symfony 5.
 - Added support for Symfony 7.
+- Promoted `SilentExceptionHandler` to a supported handler wrapper.
 
 ## 0.12.0
 
