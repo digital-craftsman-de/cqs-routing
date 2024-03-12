@@ -70,7 +70,7 @@ The construct consists of two starting points, the `CommandController` and the `
 
 - **Request validator** ([Examples](./docs/examples/request-validator.md))  
 *Validates request on an application level.*
-- **Request decoder [Examples](./docs/examples/request-decoder.md)**  
+- **Request decoder** ([Examples](./docs/examples/request-decoder.md)  
 *Decodes the request and transforms it into request data as an array structure.*
 - **Request data transformer** ([Examples](./docs/examples/request-data-transformer.md))  
 *Transforms the previously generated request data.*
