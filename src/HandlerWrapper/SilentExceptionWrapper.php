@@ -10,7 +10,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
 {
-    /** @param array<int, string> $parameters */
+    /**
+     * @param array<int, string> $parameters
+     *
+     * @codeCoverageIgnore
+     */
     #[\Override]
     public function prepare(
         Command | Query $dto,
@@ -29,14 +33,18 @@ final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
         \Exception $exception,
     ): ?\Exception {
         // Catch exception which should be handled silently
-        if (in_array(get_class($exception), $parameters, true)) {
+        if (in_array($exception::class, $parameters, true)) {
             return null;
         }
 
         return $exception;
     }
 
-    /** @param array<int, string> $parameters */
+    /**
+     * @param array<int, string> $parameters
+     *
+     * @codeCoverageIgnore
+     */
     #[\Override]
     public function then(
         Command | Query $dto,
@@ -48,22 +56,28 @@ final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
 
     // Priorities
 
+    /**
+     * @codeCoverageIgnore
+     */
     #[\Override]
-    /** @codeCoverageIgnore */
     public static function preparePriority(): int
     {
         return 0;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     #[\Override]
-    /** @codeCoverageIgnore */
     public static function catchPriority(): int
     {
         return -100;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     #[\Override]
-    /** @codeCoverageIgnore */
     public static function thenPriority(): int
     {
         return 0;

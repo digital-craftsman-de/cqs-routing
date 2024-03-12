@@ -10,7 +10,7 @@
   "require-dev": {
     "digital-craftsman/ids": "0.13.*",
     "friendsofphp/php-cs-fixer": "^3.15",
-    "phpunit/phpunit": "^9.5",
+    "phpunit/phpunit": "^10.5",
     "symfony/property-access": "^7.0",
     "symfony/property-info": "^7.0",
     "symfony/yaml": "^7.0",

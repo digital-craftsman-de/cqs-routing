@@ -12,18 +12,18 @@
     <env name="APP_ENV" value="test" force="true"/>
     <server name="APP_ENV" value="test" force="true" />
     <server name="SHELL_VERBOSITY" value="-1"/>
-    <server name="SYMFONY_PHPUNIT_VERSION" value="9.5"/>
   </php>
-
-  <coverage processUncoveredFiles="true">
-    <include>
-      <directory suffix=".php">src</directory>
-    </include>
-  </coverage>
 
   <testsuites>
     <testsuite name="Test Suite">
       <directory>tests</directory>
     </testsuite>
   </testsuites>
+
+  <source>
+    <include>
+      <directory>src</directory>
+    </include>
+  </source>
+
 </phpunit>

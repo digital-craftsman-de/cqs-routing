@@ -50,7 +50,7 @@ class RouteBuilderTest extends TestCase
      *   1: string,
      * }>
      */
-    public function dataProvider(): array
+    public static function dataProvider(): array
     {
         return [
             'route with slash at the beginning' => [
