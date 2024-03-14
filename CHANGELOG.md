@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.13.2
+
+- Added missing auto registration of `SilentExceptionWrapper` to registered handler wrappers.
+
 ## 0.13.1
 
 - Remove replacement (in composer.json) for polyfills to enable usage of replacement in projects.
