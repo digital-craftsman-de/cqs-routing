@@ -12,6 +12,12 @@ services:
     autoconfigure: true
     tags: [ 'cqrs.dto_constructor' ]
 
+  # Handler wrappers
+  DigitalCraftsman\CQRS\HandlerWrapper\SilentExceptionWrapper:
+    autowire: true
+    autoconfigure: true
+    tags: [ 'cqrs.handler_wrapper' ]
+
   # Response constructors
   DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor:
     autowire: true
