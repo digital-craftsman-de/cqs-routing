@@ -77,9 +77,10 @@ jobs:
         run: make php-8.3-tests-ci
 
       - name: Upload to Codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v4
         with:
-          token: ${{ secrets.CODE_COV_TOKEN }}
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
           verbose: true
 
