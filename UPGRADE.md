@@ -4,7 +4,7 @@
 
 ### Renamed package
 
-Update compose to require `digitalcraftsman/cqs-routing` instead of `digitalcraftsman/cqrs`.
+Replace `digitalcraftsman/cqrs` with `digitalcraftsman/cqs-routing` in `composer.json`.
 
 Then rename the `cqrs.php` to `cqs-routing.php` and rename `CQRSConfig $cqrsConfig` to `CQSRoutingConfig $cqsRoutingConfig` in the configuration.
 
@@ -31,6 +31,8 @@ return static function (CqsRoutingConfig $cqsRoutingConfig) {
 ### Renamed namespace
 
 Rename all imports from `DigitalCraftsman\CQRS` to `DigitalCraftsman\CQSRouting`.
+
+It should be possible to use a simple search / replace for that. It's best to do this, before exchanging the packages in the `composer.json`.
 
 ## From 0.12.* to 0.13.0
 
