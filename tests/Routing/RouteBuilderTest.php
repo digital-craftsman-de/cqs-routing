@@ -2,31 +2,31 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Routing;
+namespace DigitalCraftsman\CQSRouting\Routing;
 
-use DigitalCraftsman\CQRS\Command\Command;
-use DigitalCraftsman\CQRS\HandlerWrapper\SilentExceptionWrapper;
-use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNetherCommandHandlerNorQueryHandler;
-use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNetherCommandNorQuery;
-use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoDTOConstructor;
-use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoDTOValidator;
-use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoHandlerWrapper;
-use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoRequestDataTransformer;
-use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoRequestDecoder;
-use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoRequestValidator;
-use DigitalCraftsman\CQRS\Routing\Exception\ClassIsNoResponseConstructor;
-use DigitalCraftsman\CQRS\Routing\Exception\InvalidClassInRoutePayload;
-use DigitalCraftsman\CQRS\Routing\Exception\InvalidParametersInRoutePayload;
-use DigitalCraftsman\CQRS\Routing\Exception\OnlyOverwriteOrMergeCanBeUsedInRoutePayload;
-use DigitalCraftsman\CQRS\Test\Application\AddActionIdRequestDataTransformer;
-use DigitalCraftsman\CQRS\Test\Application\Authentication\UserIdValidator;
-use DigitalCraftsman\CQRS\Test\Application\ConnectionTransactionWrapper;
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleRequestDataTransformer;
-use DigitalCraftsman\CQRS\Test\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
-use DigitalCraftsman\CQRS\Test\RequestValidator\GuardAgainstTokenInHeaderRequestValidator;
+use DigitalCraftsman\CQSRouting\Command\Command;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\SilentExceptionWrapper;
+use DigitalCraftsman\CQSRouting\Routing\Exception\ClassIsNetherCommandHandlerNorQueryHandler;
+use DigitalCraftsman\CQSRouting\Routing\Exception\ClassIsNetherCommandNorQuery;
+use DigitalCraftsman\CQSRouting\Routing\Exception\ClassIsNoDTOConstructor;
+use DigitalCraftsman\CQSRouting\Routing\Exception\ClassIsNoDTOValidator;
+use DigitalCraftsman\CQSRouting\Routing\Exception\ClassIsNoHandlerWrapper;
+use DigitalCraftsman\CQSRouting\Routing\Exception\ClassIsNoRequestDataTransformer;
+use DigitalCraftsman\CQSRouting\Routing\Exception\ClassIsNoRequestDecoder;
+use DigitalCraftsman\CQSRouting\Routing\Exception\ClassIsNoRequestValidator;
+use DigitalCraftsman\CQSRouting\Routing\Exception\ClassIsNoResponseConstructor;
+use DigitalCraftsman\CQSRouting\Routing\Exception\InvalidClassInRoutePayload;
+use DigitalCraftsman\CQSRouting\Routing\Exception\InvalidParametersInRoutePayload;
+use DigitalCraftsman\CQSRouting\Routing\Exception\OnlyOverwriteOrMergeCanBeUsedInRoutePayload;
+use DigitalCraftsman\CQSRouting\Test\Application\AddActionIdRequestDataTransformer;
+use DigitalCraftsman\CQSRouting\Test\Application\Authentication\UserIdValidator;
+use DigitalCraftsman\CQSRouting\Test\Application\ConnectionTransactionWrapper;
+use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleRequestDataTransformer;
+use DigitalCraftsman\CQSRouting\Test\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
+use DigitalCraftsman\CQSRouting\Test\RequestValidator\GuardAgainstTokenInHeaderRequestValidator;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \DigitalCraftsman\CQRS\Routing\RouteBuilder */
+/** @coversDefaultClass \DigitalCraftsman\CQSRouting\Routing\RouteBuilder */
 class RouteBuilderTest extends TestCase
 {
     /**

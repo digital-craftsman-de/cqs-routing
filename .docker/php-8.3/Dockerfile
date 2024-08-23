@@ -1,5 +1,5 @@
 # Build with
-# docker buildx build --platform linux/arm64,linux/amd64 -t ghcr.io/digital-craftsman-de/cqrs-php-8.3:latest ./.docker/php-8.3 --push
+# docker buildx build --platform linux/arm64,linux/amd64 -t ghcr.io/digital-craftsman-de/cqs-routing-php-8.3:latest ./.docker/php-8.3 --push
 
 FROM php:8.3-fpm-alpine
 

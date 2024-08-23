@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask;
+namespace DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\CreateTask;
 
-use DigitalCraftsman\CQRS\DTOConstructor\DTOConstructorInterface;
+use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructorInterface;
 
 final class CreateTaskDTOConstructor implements DTOConstructorInterface
 {

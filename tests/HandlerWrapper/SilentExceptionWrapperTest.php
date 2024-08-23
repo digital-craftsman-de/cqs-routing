@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\HandlerWrapper;
+namespace DigitalCraftsman\CQSRouting\HandlerWrapper;
 
-use DigitalCraftsman\CQRS\Test\AppTestCase;
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommand;
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\Exception\NewsArticleAlreadyExists;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\MarkTaskAsAcceptedCommand;
-use DigitalCraftsman\CQRS\Test\ValueObject\TaskId;
+use DigitalCraftsman\CQSRouting\Test\AppTestCase;
+use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommand;
+use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\Exception\NewsArticleAlreadyExists;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\MarkTaskAsAcceptedCommand;
+use DigitalCraftsman\CQSRouting\Test\ValueObject\TaskId;
 use Symfony\Component\HttpFoundation\Request;
 
-/** @coversDefaultClass \DigitalCraftsman\CQRS\HandlerWrapper\SilentExceptionWrapper */
+/** @coversDefaultClass \DigitalCraftsman\CQSRouting\HandlerWrapper\SilentExceptionWrapper */
 final class SilentExceptionWrapperTest extends AppTestCase
 {
     /**

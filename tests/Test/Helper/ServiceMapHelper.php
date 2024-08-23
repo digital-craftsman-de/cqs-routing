@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Helper;
+namespace DigitalCraftsman\CQSRouting\Test\Helper;
 
-use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
-use DigitalCraftsman\CQRS\DTOConstructor\DTOConstructorInterface;
-use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
-use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
-use DigitalCraftsman\CQRS\Query\QueryHandlerInterface;
-use DigitalCraftsman\CQRS\RequestDataTransformer\RequestDataTransformerInterface;
-use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
-use DigitalCraftsman\CQRS\RequestValidator\RequestValidatorInterface;
-use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
-use DigitalCraftsman\CQRS\ServiceMap\ServiceMap;
-use DigitalCraftsman\CQRS\Test\Utility\ServiceLocatorSimulator;
+use DigitalCraftsman\CQSRouting\Command\CommandHandlerInterface;
+use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructorInterface;
+use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidatorInterface;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQSRouting\Query\QueryHandlerInterface;
+use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformerInterface;
+use DigitalCraftsman\CQSRouting\RequestDecoder\RequestDecoderInterface;
+use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidatorInterface;
+use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructorInterface;
+use DigitalCraftsman\CQSRouting\ServiceMap\ServiceMap;
+use DigitalCraftsman\CQSRouting\Test\Utility\ServiceLocatorSimulator;
 
 final readonly class ServiceMapHelper
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Utility;
+namespace DigitalCraftsman\CQSRouting\Test\Utility;
 
-use DigitalCraftsman\CQRS\Test\ValueObject\UserId;
+use DigitalCraftsman\CQSRouting\Test\ValueObject\UserId;
 
 final class SecuritySimulator
 {

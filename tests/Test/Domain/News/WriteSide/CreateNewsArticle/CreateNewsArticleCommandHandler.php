@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle;
+namespace DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle;
 
-use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
-use DigitalCraftsman\CQRS\Test\Entity\NewsArticle;
-use DigitalCraftsman\CQRS\Test\Repository\NewsArticleInMemoryRepository;
-use DigitalCraftsman\CQRS\Test\ValueObject\NewsArticleId;
+use DigitalCraftsman\CQSRouting\Command\CommandHandlerInterface;
+use DigitalCraftsman\CQSRouting\Test\Entity\NewsArticle;
+use DigitalCraftsman\CQSRouting\Test\Repository\NewsArticleInMemoryRepository;
+use DigitalCraftsman\CQSRouting\Test\ValueObject\NewsArticleId;
 
 final readonly class CreateNewsArticleCommandHandler implements CommandHandlerInterface
 {

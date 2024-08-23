@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\DefineTaskHourContingent;
+namespace DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\DefineTaskHourContingent;
 
-use DigitalCraftsman\CQRS\RequestDataTransformer\RequestDataTransformerInterface;
+use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformerInterface;
 
 final class DefineTaskHourContingentRequestDataTransformer implements RequestDataTransformerInterface
 {

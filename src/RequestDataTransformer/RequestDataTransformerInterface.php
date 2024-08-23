@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\RequestDataTransformer;
+namespace DigitalCraftsman\CQSRouting\RequestDataTransformer;
 
-use DigitalCraftsman\CQRS\Command\Command;
-use DigitalCraftsman\CQRS\Query\Query;
+use DigitalCraftsman\CQSRouting\Command\Command;
+use DigitalCraftsman\CQSRouting\Query\Query;
 
 /**
  * The data transformer can have three kinds of tasks and multiple data transformers can be used with one request.

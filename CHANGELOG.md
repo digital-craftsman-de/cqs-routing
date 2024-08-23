@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.0
+
+- **[Breaking change](./UPGRADE.md#renamed-package)**: Renamed package from `cqrs` to `cqs-routing`.
+- **[Breaking change](./UPGRADE.md#renamed-namespace)**: Renamed namespace from `DigitalCraftsman\CQRS` to `DigitalCraftsman\CQSRouting`.
+
 ## 0.13.2
 
 - Added missing auto registration of `SilentExceptionWrapper` to registered handler wrappers.

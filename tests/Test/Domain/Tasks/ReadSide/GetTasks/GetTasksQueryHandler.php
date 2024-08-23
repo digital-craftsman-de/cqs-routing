@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks;
+namespace DigitalCraftsman\CQSRouting\Test\Domain\Tasks\ReadSide\GetTasks;
 
-use DigitalCraftsman\CQRS\Query\QueryHandlerInterface;
-use DigitalCraftsman\CQRS\Test\Repository\TasksInMemoryRepository;
+use DigitalCraftsman\CQSRouting\Query\QueryHandlerInterface;
+use DigitalCraftsman\CQSRouting\Test\Repository\TasksInMemoryRepository;
 
 final readonly class GetTasksQueryHandler implements QueryHandlerInterface
 {

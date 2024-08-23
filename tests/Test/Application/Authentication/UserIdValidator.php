@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Application\Authentication;
+namespace DigitalCraftsman\CQSRouting\Test\Application\Authentication;
 
-use DigitalCraftsman\CQRS\Command\Command;
-use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
-use DigitalCraftsman\CQRS\Query\Query;
-use DigitalCraftsman\CQRS\Test\Application\Authentication\Exception\NotRelevantForDTO;
-use DigitalCraftsman\CQRS\Test\Utility\SecuritySimulator;
-use DigitalCraftsman\CQRS\Test\ValueObject\UserId;
+use DigitalCraftsman\CQSRouting\Command\Command;
+use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidatorInterface;
+use DigitalCraftsman\CQSRouting\Query\Query;
+use DigitalCraftsman\CQSRouting\Test\Application\Authentication\Exception\NotRelevantForDTO;
+use DigitalCraftsman\CQSRouting\Test\Utility\SecuritySimulator;
+use DigitalCraftsman\CQSRouting\Test\ValueObject\UserId;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Application\Authentication\Exception;
+namespace DigitalCraftsman\CQSRouting\Test\Application\Authentication\Exception;
 
-use DigitalCraftsman\CQRS\Command\Command;
-use DigitalCraftsman\CQRS\Query\Query;
+use DigitalCraftsman\CQSRouting\Command\Command;
+use DigitalCraftsman\CQSRouting\Query\Query;
 
 /** @psalm-immutable  */
 final class NotRelevantForDTO extends \InvalidArgumentException

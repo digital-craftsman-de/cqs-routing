@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\DTOConstructor;
+namespace DigitalCraftsman\CQSRouting\DTOConstructor;
 
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommand;
-use DigitalCraftsman\CQRS\Test\ValueObject\UserId;
+use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommand;
+use DigitalCraftsman\CQSRouting\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Serializer\IdNormalizer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-/** @coversDefaultClass \DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor */
+/** @coversDefaultClass \DigitalCraftsman\CQSRouting\DTOConstructor\SerializerDTOConstructor */
 final class SerializerDTOConstructorTest extends TestCase
 {
     /**

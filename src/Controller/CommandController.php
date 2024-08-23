@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Controller;
+namespace DigitalCraftsman\CQSRouting\Controller;
 
-use DigitalCraftsman\CQRS\Command\Command;
-use DigitalCraftsman\CQRS\DTOConstructor\DTOConstructorInterface;
-use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
-use DigitalCraftsman\CQRS\HandlerWrapper\DTO\HandlerWrapperStep;
-use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
-use DigitalCraftsman\CQRS\RequestDataTransformer\RequestDataTransformerInterface;
-use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
-use DigitalCraftsman\CQRS\RequestValidator\RequestValidatorInterface;
-use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
-use DigitalCraftsman\CQRS\Routing\RoutePayload;
-use DigitalCraftsman\CQRS\ServiceMap\ServiceMap;
+use DigitalCraftsman\CQSRouting\Command\Command;
+use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructorInterface;
+use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidatorInterface;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\DTO\HandlerWrapperStep;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformerInterface;
+use DigitalCraftsman\CQSRouting\RequestDecoder\RequestDecoderInterface;
+use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidatorInterface;
+use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructorInterface;
+use DigitalCraftsman\CQSRouting\Routing\RoutePayload;
+use DigitalCraftsman\CQSRouting\ServiceMap\ServiceMap;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

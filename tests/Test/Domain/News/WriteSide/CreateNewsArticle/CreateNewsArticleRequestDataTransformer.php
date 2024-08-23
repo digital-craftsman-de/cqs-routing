@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle;
+namespace DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle;
 
-use DigitalCraftsman\CQRS\RequestDataTransformer\RequestDataTransformerInterface;
+use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformerInterface;
 
 final class CreateNewsArticleRequestDataTransformer implements RequestDataTransformerInterface
 {

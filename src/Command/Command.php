@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Command;
+namespace DigitalCraftsman\CQSRouting\Command;
 
 interface Command
 {

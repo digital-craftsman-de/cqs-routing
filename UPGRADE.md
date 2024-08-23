@@ -1,5 +1,37 @@
 # Upgrade guide
 
+## From 0.13.* to 1.0.0
+
+### Renamed package
+
+Update compose to require `digitalcraftsman/cqs-routing` instead of `digitalcraftsman/cqrs`.
+
+Then rename the `cqrs.php` to `cqs-routing.php` and rename `CQRSConfig $cqrsConfig` to `CQSRoutingConfig $cqsRoutingConfig` in the configuration.
+
+Before:
+
+```php
+return static function (CqrsConfig $cqrsConfig) {
+    $cqrsConfig->queryController()
+        ->defaultHandlerWrapperClasses([
+            ConnectionTransactionWrapper::class => null,
+        ]);
+```
+
+After:
+
+```php
+return static function (CqsRoutingConfig $cqsRoutingConfig) {
+    $cqsRoutingConfig->queryController()
+        ->defaultHandlerWrapperClasses([
+            ConnectionTransactionWrapper::class => null,
+        ]);
+```
+
+### Renamed namespace
+
+Rename all imports from `DigitalCraftsman\CQRS` to `DigitalCraftsman\CQSRouting`.
+
 ## From 0.12.* to 0.13.0
 
 ### Upgrade to at least Symfony 6.4
@@ -137,7 +169,7 @@ The method `generate` now validates the input (through the constructor) and does
 Before:
 
 ```php
-use DigitalCraftsman\CQRS\DTO\Configuration;
+use DigitalCraftsman\CQSRouting\DTO\Configuration;
 
 'routePayload' => Configuration::routePayload(
     ...
@@ -147,7 +179,7 @@ use DigitalCraftsman\CQRS\DTO\Configuration;
 After:
 
 ```php
-use DigitalCraftsman\CQRS\Routing\RoutePayload;
+use DigitalCraftsman\CQSRouting\Routing\RoutePayload;
 
 'routePayload' => RoutePayload::generatePayload(
     ...

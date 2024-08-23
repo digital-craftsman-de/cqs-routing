@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\DTOValidator;
+namespace DigitalCraftsman\CQSRouting\DTOValidator;
 
-use DigitalCraftsman\CQRS\Command\Command;
-use DigitalCraftsman\CQRS\Query\Query;
+use DigitalCraftsman\CQSRouting\Command\Command;
+use DigitalCraftsman\CQSRouting\Query\Query;
 use Symfony\Component\HttpFoundation\Request;
 
 /**

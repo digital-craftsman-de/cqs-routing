@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\ResponseConstructor;
+namespace DigitalCraftsman\CQSRouting\ResponseConstructor;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/** @coversDefaultClass \DigitalCraftsman\CQRS\ResponseConstructor\EmptyResponseConstructor */
+/** @coversDefaultClass \DigitalCraftsman\CQSRouting\ResponseConstructor\EmptyResponseConstructor */
 final class EmptyResponseConstructorTest extends TestCase
 {
     /**

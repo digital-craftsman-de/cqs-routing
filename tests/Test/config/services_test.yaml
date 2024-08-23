@@ -3,7 +3,7 @@ services:
     autowire: true
     autoconfigure: true
 
-  DigitalCraftsman\CQRS\Test\:
+  DigitalCraftsman\CQSRouting\Test\:
     resource: '..'
     exclude:
       - '../**/Exception'
