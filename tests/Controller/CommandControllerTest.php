@@ -2,29 +2,29 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Controller;
+namespace DigitalCraftsman\CQSRouting\Controller;
 
-use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
-use DigitalCraftsman\CQRS\HandlerWrapper\SilentExceptionWrapper;
-use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
-use DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor;
-use DigitalCraftsman\CQRS\Routing\RoutePayload;
-use DigitalCraftsman\CQRS\Test\Application\ConnectionTransactionWrapper;
-use DigitalCraftsman\CQRS\Test\Application\UserIdValidator;
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommand;
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommandHandler;
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleHandlerWrapper;
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleRequestDataTransformer;
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\Exception\NewsArticleAlreadyExists;
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\FailingCreateNewsArticleCommandHandler;
-use DigitalCraftsman\CQRS\Test\Helper\ServiceMapHelper;
-use DigitalCraftsman\CQRS\Test\Repository\NewsArticleInMemoryRepository;
-use DigitalCraftsman\CQRS\Test\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
-use DigitalCraftsman\CQRS\Test\Utility\ConnectionSimulator;
-use DigitalCraftsman\CQRS\Test\Utility\LockSimulator;
-use DigitalCraftsman\CQRS\Test\Utility\SecuritySimulator;
-use DigitalCraftsman\CQRS\Test\Utility\VirusScannerSimulator;
-use DigitalCraftsman\CQRS\Test\ValueObject\UserId;
+use DigitalCraftsman\CQSRouting\DTOConstructor\SerializerDTOConstructor;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\SilentExceptionWrapper;
+use DigitalCraftsman\CQSRouting\RequestDecoder\JsonRequestDecoder;
+use DigitalCraftsman\CQSRouting\ResponseConstructor\EmptyJsonResponseConstructor;
+use DigitalCraftsman\CQSRouting\Routing\RoutePayload;
+use DigitalCraftsman\CQSRouting\Test\Application\ConnectionTransactionWrapper;
+use DigitalCraftsman\CQSRouting\Test\Application\UserIdValidator;
+use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommand;
+use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommandHandler;
+use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleHandlerWrapper;
+use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleRequestDataTransformer;
+use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\Exception\NewsArticleAlreadyExists;
+use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\FailingCreateNewsArticleCommandHandler;
+use DigitalCraftsman\CQSRouting\Test\Helper\ServiceMapHelper;
+use DigitalCraftsman\CQSRouting\Test\Repository\NewsArticleInMemoryRepository;
+use DigitalCraftsman\CQSRouting\Test\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
+use DigitalCraftsman\CQSRouting\Test\Utility\ConnectionSimulator;
+use DigitalCraftsman\CQSRouting\Test\Utility\LockSimulator;
+use DigitalCraftsman\CQSRouting\Test\Utility\SecuritySimulator;
+use DigitalCraftsman\CQSRouting\Test\Utility\VirusScannerSimulator;
+use DigitalCraftsman\CQSRouting\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Serializer\IdNormalizer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +37,7 @@ use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-/** @coversDefaultClass \DigitalCraftsman\CQRS\Controller\CommandController */
+/** @coversDefaultClass \DigitalCraftsman\CQSRouting\Controller\CommandController */
 final class CommandControllerTest extends TestCase
 {
     /**

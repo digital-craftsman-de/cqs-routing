@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\ServiceMap\Exception;
+namespace DigitalCraftsman\CQSRouting\ServiceMap\Exception;
 
 /**
  * @psalm-immutable

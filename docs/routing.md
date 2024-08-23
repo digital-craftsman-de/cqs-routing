@@ -22,7 +22,7 @@ return static function (RoutingConfigurator $routes) {
 };
 ```
 
-All parameters except `path`, `dtoClass` and `handlerClass` are optional. You might only need to define those when you only need the default components for the other parameters ([configured in the `cqrs.yaml`](./configuration.md)).
+All parameters except `path`, `dtoClass` and `handlerClass` are optional. You might only need to define those when you only need the default components for the other parameters ([configured in the `cqs-routing.php`](./configuration.md)).
 
 The `RouteBuilder` chooses the controller depending on the function used (`addCommandRoute` or `addQueryRoute`), uses `POST` as default method, generates the name based on the path and validates all parameters. The routes are constructed on cache warmup, so that's the only time the validation costs performance.
 
@@ -33,8 +33,8 @@ The request validators, request data transformers, DTO validators and handler wr
 Meaning when your default DTO validators are defined with one validator like this:
 
 ```php
-return static function (CqrsConfig $cqrsConfig) {
-    $cqrsConfig->commandController()
+return static function (CqsRoutingConfig $cqsRoutingConfig) {
+    $cqsRoutingConfig->commandController()
         ->defaultDtoValidatorClasses([
             UserIdValidator::class => null,
         ]);
@@ -69,8 +69,8 @@ Another option is to merge the route parameters with the defaults. You can use t
 Meaning when your default DTO validators are defined with one validator like this:
 
 ```php
-return static function (CqrsConfig $cqrsConfig) {
-    $cqrsConfig->commandController()
+return static function (CqsRoutingConfig $cqsRoutingConfig) {
+    $cqsRoutingConfig->commandController()
         ->defaultDtoValidatorClasses([
             UserIdValidator::class => null,
         ]);
@@ -96,8 +96,8 @@ When the same class is used in the default configuration and in the route config
 With the following default configuration:
 
 ```php
-return static function (CqrsConfig $cqrsConfig) {
-    $cqrsConfig->commandController()
+return static function (CqsRoutingConfig $cqsRoutingConfig) {
+    $cqsRoutingConfig->commandController()
         ->defaultDtoValidatorClasses([
             UserIdValidator::class => null,
             FilesizeValidator::class => 5,

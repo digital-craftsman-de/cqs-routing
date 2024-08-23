@@ -2,48 +2,48 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\ServiceMap;
+namespace DigitalCraftsman\CQSRouting\ServiceMap;
 
-use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
-use DigitalCraftsman\CQRS\HandlerWrapper\SilentExceptionWrapper;
-use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
-use DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor;
-use DigitalCraftsman\CQRS\ResponseConstructor\EmptyResponseConstructor;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredCommandHandlerNotAvailable;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredDTOConstructorNotAvailable;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredDTOValidatorNotAvailable;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredHandlerWrapperNotAvailable;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredQueryHandlerNotAvailable;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredRequestDataTransformerNotAvailable;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredRequestDecoderNotAvailable;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredRequestValidatorNotAvailable;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\ConfiguredResponseConstructorNotAvailable;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\DTOConstructorOrDefaultDTOConstructorMustBeConfigured;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\RequestDecoderOrDefaultRequestDecoderMustBeConfigured;
-use DigitalCraftsman\CQRS\ServiceMap\Exception\ResponseConstructorOrDefaultResponseConstructorMustBeConfigured;
-use DigitalCraftsman\CQRS\Test\Application\AddActionIdRequestDataTransformer;
-use DigitalCraftsman\CQRS\Test\Application\Authentication\UserIdValidator;
-use DigitalCraftsman\CQRS\Test\Application\ConnectionTransactionWrapper;
-use DigitalCraftsman\CQRS\Test\Application\FileSizeValidator;
-use DigitalCraftsman\CQRS\Test\AppTestCase;
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleRequestDataTransformer;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQueryHandler;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommandHandler;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskDTOConstructor;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskRequestDecoder;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\DefineTaskHourContingent\DefineTaskHourContingentRequestDataTransformer;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\MarkTaskAsAcceptedCommandHandler;
-use DigitalCraftsman\CQRS\Test\Helper\ServiceMapHelper;
-use DigitalCraftsman\CQRS\Test\Repository\TasksInMemoryRepository;
-use DigitalCraftsman\CQRS\Test\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
-use DigitalCraftsman\CQRS\Test\RequestValidator\GuardAgainstTokenInHeaderRequestValidator;
-use DigitalCraftsman\CQRS\Test\Utility\ConnectionSimulator;
-use DigitalCraftsman\CQRS\Test\Utility\SecuritySimulator;
-use DigitalCraftsman\CQRS\Test\Utility\ServiceLocatorSimulator;
-use DigitalCraftsman\CQRS\Test\Utility\VirusScannerSimulator;
+use DigitalCraftsman\CQSRouting\DTOConstructor\SerializerDTOConstructor;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\SilentExceptionWrapper;
+use DigitalCraftsman\CQSRouting\RequestDecoder\JsonRequestDecoder;
+use DigitalCraftsman\CQSRouting\ResponseConstructor\EmptyJsonResponseConstructor;
+use DigitalCraftsman\CQSRouting\ResponseConstructor\EmptyResponseConstructor;
+use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredCommandHandlerNotAvailable;
+use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredDTOConstructorNotAvailable;
+use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredDTOValidatorNotAvailable;
+use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredHandlerWrapperNotAvailable;
+use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredQueryHandlerNotAvailable;
+use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredRequestDataTransformerNotAvailable;
+use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredRequestDecoderNotAvailable;
+use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredRequestValidatorNotAvailable;
+use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredResponseConstructorNotAvailable;
+use DigitalCraftsman\CQSRouting\ServiceMap\Exception\DTOConstructorOrDefaultDTOConstructorMustBeConfigured;
+use DigitalCraftsman\CQSRouting\ServiceMap\Exception\RequestDecoderOrDefaultRequestDecoderMustBeConfigured;
+use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ResponseConstructorOrDefaultResponseConstructorMustBeConfigured;
+use DigitalCraftsman\CQSRouting\Test\Application\AddActionIdRequestDataTransformer;
+use DigitalCraftsman\CQSRouting\Test\Application\Authentication\UserIdValidator;
+use DigitalCraftsman\CQSRouting\Test\Application\ConnectionTransactionWrapper;
+use DigitalCraftsman\CQSRouting\Test\Application\FileSizeValidator;
+use DigitalCraftsman\CQSRouting\Test\AppTestCase;
+use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleRequestDataTransformer;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQueryHandler;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommandHandler;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskDTOConstructor;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskRequestDecoder;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\DefineTaskHourContingent\DefineTaskHourContingentRequestDataTransformer;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\MarkTaskAsAcceptedCommandHandler;
+use DigitalCraftsman\CQSRouting\Test\Helper\ServiceMapHelper;
+use DigitalCraftsman\CQSRouting\Test\Repository\TasksInMemoryRepository;
+use DigitalCraftsman\CQSRouting\Test\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
+use DigitalCraftsman\CQSRouting\Test\RequestValidator\GuardAgainstTokenInHeaderRequestValidator;
+use DigitalCraftsman\CQSRouting\Test\Utility\ConnectionSimulator;
+use DigitalCraftsman\CQSRouting\Test\Utility\SecuritySimulator;
+use DigitalCraftsman\CQSRouting\Test\Utility\ServiceLocatorSimulator;
+use DigitalCraftsman\CQSRouting\Test\Utility\VirusScannerSimulator;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-/** @coversDefaultClass \DigitalCraftsman\CQRS\ServiceMap\ServiceMap */
+/** @coversDefaultClass \DigitalCraftsman\CQSRouting\ServiceMap\ServiceMap */
 final class ServiceMapTest extends AppTestCase
 {
     private DenormalizerInterface $serializer;

@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\DependencyInjection;
+namespace DigitalCraftsman\CQSRouting\DependencyInjection;
 
-use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
-use DigitalCraftsman\CQRS\HandlerWrapper\SilentExceptionWrapper;
-use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
-use DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor;
-use DigitalCraftsman\CQRS\ResponseConstructor\SerializerJsonResponseConstructor;
-use DigitalCraftsman\CQRS\Test\Application\Authentication\UserIdValidator;
-use DigitalCraftsman\CQRS\Test\Application\ConnectionTransactionWrapper;
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\Exception\NewsArticleAlreadyExists;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\Exception\TasksNotAccessible;
+use DigitalCraftsman\CQSRouting\DTOConstructor\SerializerDTOConstructor;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\SilentExceptionWrapper;
+use DigitalCraftsman\CQSRouting\RequestDecoder\JsonRequestDecoder;
+use DigitalCraftsman\CQSRouting\ResponseConstructor\EmptyJsonResponseConstructor;
+use DigitalCraftsman\CQSRouting\ResponseConstructor\SerializerJsonResponseConstructor;
+use DigitalCraftsman\CQSRouting\Test\Application\Authentication\UserIdValidator;
+use DigitalCraftsman\CQSRouting\Test\Application\ConnectionTransactionWrapper;
+use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\Exception\NewsArticleAlreadyExists;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\ReadSide\GetTasks\Exception\TasksNotAccessible;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
 
-/** @coversDefaultClass \DigitalCraftsman\CQRS\DependencyInjection\Configuration */
+/** @coversDefaultClass \DigitalCraftsman\CQSRouting\DependencyInjection\Configuration */
 final class ConfigurationTest extends TestCase
 {
     /**

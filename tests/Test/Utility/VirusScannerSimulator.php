@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Utility;
+namespace DigitalCraftsman\CQSRouting\Test\Utility;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

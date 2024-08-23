@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\ReadModel;
+namespace DigitalCraftsman\CQSRouting\Test\ReadModel;
 
 final readonly class User
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\RequestValidator;
+namespace DigitalCraftsman\CQSRouting\RequestValidator;
 
 use Symfony\Component\HttpFoundation\Request;
 

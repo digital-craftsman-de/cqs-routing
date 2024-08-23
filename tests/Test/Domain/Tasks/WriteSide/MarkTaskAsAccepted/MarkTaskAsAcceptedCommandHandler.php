@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted;
+namespace DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted;
 
-use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
+use DigitalCraftsman\CQSRouting\Command\CommandHandlerInterface;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
 
 final readonly class MarkTaskAsAcceptedCommandHandler implements CommandHandlerInterface
 {

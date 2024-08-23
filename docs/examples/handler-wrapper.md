@@ -62,11 +62,11 @@ The logic here is pretty simple: Before running a handler, we start a new transa
 
 declare(strict_types=1);
 
-namespace App\CQRS\HandlerWrapper;
+namespace App\CQSRouting\HandlerWrapper;
 
-use DigitalCraftsman\CQRS\Command\Command;
-use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
-use DigitalCraftsman\CQRS\Query\Query;
+use DigitalCraftsman\CQSRouting\Command\Command;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQSRouting\Query\Query;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -156,11 +156,11 @@ The `areParametersValid` method is written in a way that it's not possible to su
 
 declare(strict_types=1);
 
-namespace App\CQRS\HandlerWrapper;
+namespace DigitalCraftsman\CQSRouting\HandlerWrapper;
 
-use DigitalCraftsman\CQRS\Command\Command;
-use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
-use DigitalCraftsman\CQRS\Query\Query;
+use DigitalCraftsman\CQSRouting\Command\Command;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQSRouting\Query\Query;
 use Symfony\Component\HttpFoundation\Request;
 
 final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
@@ -284,9 +284,9 @@ declare(strict_types=1);
 namespace App\Domain\News\WriteSide\CreateNewsArticle;
 
 use App\Service\Lock\LockService;
-use DigitalCraftsman\CQRS\Command\Command;
-use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
-use DigitalCraftsman\CQRS\Query\Query;
+use DigitalCraftsman\CQSRouting\Command\Command;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQSRouting\Query\Query;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Lock\LockInterface;
 

@@ -16,7 +16,7 @@ See [position in process](../process.md#response-constructor)
 
 > ⭐ This response constructor is supplied with the bundle.
 
-Most of the time the result will be an object or array and be converted into JSON throught the JSONResponseConstructor. Obviously it needs the custom normalizers for the values objects to be able to do so.
+Most of the time the result will be an object or array and be converted into JSON through the `SerializerJsonResponseConstructor`. Obviously it needs the custom normalizers for the values objects to be able to do so.
 
 ```php
 final readonly class SerializerJsonResponseConstructor implements ResponseConstructorInterface

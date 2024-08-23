@@ -2,28 +2,28 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Controller;
+namespace DigitalCraftsman\CQSRouting\Controller;
 
-use DigitalCraftsman\CQRS\DTOConstructor\SerializerDTOConstructor;
-use DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder;
-use DigitalCraftsman\CQRS\ResponseConstructor\SerializerJsonResponseConstructor;
-use DigitalCraftsman\CQRS\Routing\RoutePayload;
-use DigitalCraftsman\CQRS\Test\Application\AddActionIdRequestDataTransformer;
-use DigitalCraftsman\CQRS\Test\Application\UserIdValidator;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\Exception\TasksNotAccessible;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\FailingGetTasksQueryHandler;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksHandlerWrapper;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQuery;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQueryHandler;
-use DigitalCraftsman\CQRS\Test\Entity\Task;
-use DigitalCraftsman\CQRS\Test\Helper\ServiceMapHelper;
-use DigitalCraftsman\CQRS\Test\Repository\TasksInMemoryRepository;
-use DigitalCraftsman\CQRS\Test\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
-use DigitalCraftsman\CQRS\Test\Utility\LockSimulator;
-use DigitalCraftsman\CQRS\Test\Utility\SecuritySimulator;
-use DigitalCraftsman\CQRS\Test\Utility\VirusScannerSimulator;
-use DigitalCraftsman\CQRS\Test\ValueObject\TaskId;
-use DigitalCraftsman\CQRS\Test\ValueObject\UserId;
+use DigitalCraftsman\CQSRouting\DTOConstructor\SerializerDTOConstructor;
+use DigitalCraftsman\CQSRouting\RequestDecoder\JsonRequestDecoder;
+use DigitalCraftsman\CQSRouting\ResponseConstructor\SerializerJsonResponseConstructor;
+use DigitalCraftsman\CQSRouting\Routing\RoutePayload;
+use DigitalCraftsman\CQSRouting\Test\Application\AddActionIdRequestDataTransformer;
+use DigitalCraftsman\CQSRouting\Test\Application\UserIdValidator;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\ReadSide\GetTasks\Exception\TasksNotAccessible;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\ReadSide\GetTasks\FailingGetTasksQueryHandler;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksHandlerWrapper;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQuery;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\ReadSide\GetTasks\GetTasksQueryHandler;
+use DigitalCraftsman\CQSRouting\Test\Entity\Task;
+use DigitalCraftsman\CQSRouting\Test\Helper\ServiceMapHelper;
+use DigitalCraftsman\CQSRouting\Test\Repository\TasksInMemoryRepository;
+use DigitalCraftsman\CQSRouting\Test\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
+use DigitalCraftsman\CQSRouting\Test\Utility\LockSimulator;
+use DigitalCraftsman\CQSRouting\Test\Utility\SecuritySimulator;
+use DigitalCraftsman\CQSRouting\Test\Utility\VirusScannerSimulator;
+use DigitalCraftsman\CQSRouting\Test\ValueObject\TaskId;
+use DigitalCraftsman\CQSRouting\Test\ValueObject\UserId;
 use DigitalCraftsman\Ids\Serializer\IdNormalizer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,7 +35,7 @@ use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-/** @coversDefaultClass \DigitalCraftsman\CQRS\Controller\QueryController */
+/** @coversDefaultClass \DigitalCraftsman\CQSRouting\Controller\QueryController */
 final class QueryControllerTest extends TestCase
 {
     /**

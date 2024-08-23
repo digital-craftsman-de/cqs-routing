@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\HandlerWrapper\DTO;
+namespace DigitalCraftsman\CQSRouting\HandlerWrapper\DTO;
 
-use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
 
 /**
  * Handler wrappers are used to wrap command handlers and query handlers. With them, it's possible to for example start a doctrine

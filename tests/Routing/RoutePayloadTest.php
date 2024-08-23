@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Routing;
+namespace DigitalCraftsman\CQSRouting\Routing;
 
-use DigitalCraftsman\CQRS\HandlerWrapper\SilentExceptionWrapper;
-use DigitalCraftsman\CQRS\ResponseConstructor\EmptyJsonResponseConstructor;
-use DigitalCraftsman\CQRS\Test\Application\AddActionIdRequestDataTransformer;
-use DigitalCraftsman\CQRS\Test\Application\Authentication\UserIdValidator;
-use DigitalCraftsman\CQRS\Test\Application\ConnectionTransactionWrapper;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks\Exception\TasksNotAccessible;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommand;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommandHandler;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskDTOConstructor;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskRequestDecoder;
-use DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
-use DigitalCraftsman\CQRS\Test\RequestValidator\GuardAgainstTokenInHeaderRequestValidator;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\SilentExceptionWrapper;
+use DigitalCraftsman\CQSRouting\ResponseConstructor\EmptyJsonResponseConstructor;
+use DigitalCraftsman\CQSRouting\Test\Application\AddActionIdRequestDataTransformer;
+use DigitalCraftsman\CQSRouting\Test\Application\Authentication\UserIdValidator;
+use DigitalCraftsman\CQSRouting\Test\Application\ConnectionTransactionWrapper;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\ReadSide\GetTasks\Exception\TasksNotAccessible;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommand;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskCommandHandler;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskDTOConstructor;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskRequestDecoder;
+use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
+use DigitalCraftsman\CQSRouting\Test\RequestValidator\GuardAgainstTokenInHeaderRequestValidator;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \DigitalCraftsman\CQRS\Routing\RoutePayload */
+/** @coversDefaultClass \DigitalCraftsman\CQSRouting\Routing\RoutePayload */
 final class RoutePayloadTest extends TestCase
 {
     // -- Construction

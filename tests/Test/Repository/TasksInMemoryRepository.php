@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Repository;
+namespace DigitalCraftsman\CQSRouting\Test\Repository;
 
-use DigitalCraftsman\CQRS\Test\Entity\Task;
+use DigitalCraftsman\CQSRouting\Test\Entity\Task;
 
 final class TasksInMemoryRepository
 {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\RequestDecoder;
+namespace DigitalCraftsman\CQSRouting\RequestDecoder;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-/** @coversDefaultClass \DigitalCraftsman\CQRS\RequestDecoder\JsonRequestDecoder */
+/** @coversDefaultClass \DigitalCraftsman\CQSRouting\RequestDecoder\JsonRequestDecoder */
 final class JsonRequestDecoderTest extends TestCase
 {
     /**

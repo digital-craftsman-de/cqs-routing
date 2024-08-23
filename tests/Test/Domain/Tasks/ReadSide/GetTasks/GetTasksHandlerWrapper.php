@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Domain\Tasks\ReadSide\GetTasks;
+namespace DigitalCraftsman\CQSRouting\Test\Domain\Tasks\ReadSide\GetTasks;
 
-use DigitalCraftsman\CQRS\Command\Command;
-use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
-use DigitalCraftsman\CQRS\Query\Query;
-use DigitalCraftsman\CQRS\Test\Utility\LockSimulator;
+use DigitalCraftsman\CQSRouting\Command\Command;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQSRouting\Query\Query;
+use DigitalCraftsman\CQSRouting\Test\Utility\LockSimulator;
 use Symfony\Component\HttpFoundation\Request;
 
 final class GetTasksHandlerWrapper implements HandlerWrapperInterface

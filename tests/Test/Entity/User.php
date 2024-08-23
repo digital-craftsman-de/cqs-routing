@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Entity;
+namespace DigitalCraftsman\CQSRouting\Test\Entity;
 
-use DigitalCraftsman\CQRS\Test\ValueObject\UserId;
+use DigitalCraftsman\CQSRouting\Test\ValueObject\UserId;
 
 final class User
 {

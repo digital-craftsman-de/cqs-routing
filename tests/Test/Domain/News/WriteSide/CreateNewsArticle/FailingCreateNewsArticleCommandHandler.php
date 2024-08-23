@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle;
+namespace DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle;
 
-use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\Exception\NewsArticleAlreadyExists;
+use DigitalCraftsman\CQSRouting\Command\CommandHandlerInterface;
+use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\Exception\NewsArticleAlreadyExists;
 
 final readonly class FailingCreateNewsArticleCommandHandler implements CommandHandlerInterface
 {

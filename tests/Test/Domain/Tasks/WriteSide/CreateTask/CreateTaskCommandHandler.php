@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\CreateTask;
+namespace DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\CreateTask;
 
-use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
+use DigitalCraftsman\CQSRouting\Command\CommandHandlerInterface;
 
 final class CreateTaskCommandHandler implements CommandHandlerInterface
 {

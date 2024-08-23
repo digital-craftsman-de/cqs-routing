@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle;
+namespace DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle;
 
-use DigitalCraftsman\CQRS\Command\Command;
-use DigitalCraftsman\CQRS\Test\ValueObject\UserId;
+use DigitalCraftsman\CQSRouting\Command\Command;
+use DigitalCraftsman\CQSRouting\Test\ValueObject\UserId;
 
 final readonly class CreateNewsArticleCommand implements Command
 {

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Domain\Tasks\WriteSide\DefineTaskHourContingent;
+namespace DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\DefineTaskHourContingent;
 
-use DigitalCraftsman\CQRS\Command\Command;
+use DigitalCraftsman\CQSRouting\Command\Command;
 
 final readonly class DefineTaskHourContingentCommand implements Command
 {

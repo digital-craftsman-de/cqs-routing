@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\Test\Application;
+namespace DigitalCraftsman\CQSRouting\Test\Application;
 
-use DigitalCraftsman\CQRS\Command\Command;
-use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
-use DigitalCraftsman\CQRS\Query\Query;
-use DigitalCraftsman\CQRS\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommand;
-use DigitalCraftsman\CQRS\Test\Utility\SecuritySimulator;
+use DigitalCraftsman\CQSRouting\Command\Command;
+use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidatorInterface;
+use DigitalCraftsman\CQSRouting\Query\Query;
+use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommand;
+use DigitalCraftsman\CQSRouting\Test\Utility\SecuritySimulator;
 use Symfony\Component\HttpFoundation\Request;
 
 final class UserIdValidator implements DTOValidatorInterface

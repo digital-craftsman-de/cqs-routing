@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQRS\DependencyInjection;
+namespace DigitalCraftsman\CQSRouting\DependencyInjection;
 
-use DigitalCraftsman\CQRS\Command\CommandHandlerInterface;
-use DigitalCraftsman\CQRS\DTOConstructor\DTOConstructorInterface;
-use DigitalCraftsman\CQRS\DTOValidator\DTOValidatorInterface;
-use DigitalCraftsman\CQRS\HandlerWrapper\HandlerWrapperInterface;
-use DigitalCraftsman\CQRS\Query\QueryHandlerInterface;
-use DigitalCraftsman\CQRS\RequestDataTransformer\RequestDataTransformerInterface;
-use DigitalCraftsman\CQRS\RequestDecoder\RequestDecoderInterface;
-use DigitalCraftsman\CQRS\RequestValidator\RequestValidatorInterface;
-use DigitalCraftsman\CQRS\ResponseConstructor\ResponseConstructorInterface;
-use DigitalCraftsman\CQRS\Routing\RouteBuilder;
+use DigitalCraftsman\CQSRouting\Command\CommandHandlerInterface;
+use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructorInterface;
+use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidatorInterface;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQSRouting\Query\QueryHandlerInterface;
+use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformerInterface;
+use DigitalCraftsman\CQSRouting\RequestDecoder\RequestDecoderInterface;
+use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidatorInterface;
+use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructorInterface;
+use DigitalCraftsman\CQSRouting\Routing\RouteBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
-final class CQRSExtension extends Extension
+final class CQSRoutingExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
@@ -28,39 +28,39 @@ final class CQRSExtension extends Extension
 
         $container
             ->registerForAutoconfiguration(RequestValidatorInterface::class)
-            ->addTag('cqrs.request_validator');
+            ->addTag('cqs_routing.request_validator');
 
         $container
             ->registerForAutoconfiguration(RequestDecoderInterface::class)
-            ->addTag('cqrs.request_decoder');
+            ->addTag('cqs_routing.request_decoder');
 
         $container
             ->registerForAutoconfiguration(RequestDataTransformerInterface::class)
-            ->addTag('cqrs.request_data_transformer');
+            ->addTag('cqs_routing.request_data_transformer');
 
         $container
             ->registerForAutoconfiguration(DTOConstructorInterface::class)
-            ->addTag('cqrs.dto_constructor');
+            ->addTag('cqs_routing.dto_constructor');
 
         $container
             ->registerForAutoconfiguration(DTOValidatorInterface::class)
-            ->addTag('cqrs.dto_validator');
+            ->addTag('cqs_routing.dto_validator');
 
         $container
             ->registerForAutoconfiguration(HandlerWrapperInterface::class)
-            ->addTag('cqrs.handler_wrapper');
+            ->addTag('cqs_routing.handler_wrapper');
 
         $container
             ->registerForAutoconfiguration(CommandHandlerInterface::class)
-            ->addTag('cqrs.command_handler');
+            ->addTag('cqs_routing.command_handler');
 
         $container
             ->registerForAutoconfiguration(QueryHandlerInterface::class)
-            ->addTag('cqrs.query_handler');
+            ->addTag('cqs_routing.query_handler');
 
         $container
             ->registerForAutoconfiguration(ResponseConstructorInterface::class)
-            ->addTag('cqrs.response_constructor');
+            ->addTag('cqs_routing.response_constructor');
 
         $configuration = new Configuration();
 
@@ -129,11 +129,11 @@ final class CQRSExtension extends Extension
         RouteBuilder::validateResponseConstructorClass($config['command_controller']['default_response_constructor_class']);
 
         foreach ($config['query_controller'] as $key => $value) {
-            $container->setParameter('cqrs.query_controller.'.$key, $value);
+            $container->setParameter('cqs_routing.query_controller.'.$key, $value);
         }
 
         foreach ($config['command_controller'] as $key => $value) {
-            $container->setParameter('cqrs.command_controller.'.$key, $value);
+            $container->setParameter('cqs_routing.command_controller.'.$key, $value);
         }
     }
 }
