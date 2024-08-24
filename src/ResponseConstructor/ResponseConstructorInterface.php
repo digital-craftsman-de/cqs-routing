@@ -14,8 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
  * The query handler on the other hand will return a value nearly every time and depending on the use case, the value might be serialized to
  * JSON, send as binary data or even be streamed as part of a streamed response.
  *
- * @see https://github.com/digital-craftsman-de/cqrs/blob/main/docs/process.md
- * @see https://github.com/digital-craftsman-de/cqrs/blob/main/docs/examples/response-constructor.md
+ * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/process.md
+ * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/examples/response-constructor.md
  */
 interface ResponseConstructorInterface
 {

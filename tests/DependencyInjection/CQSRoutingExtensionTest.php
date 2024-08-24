@@ -22,10 +22,10 @@ final class CQSRoutingExtensionTest extends TestCase
     {
         // -- Arrange
         $container = new ContainerBuilder();
-        $cqrsExtension = new CQSRoutingExtension();
+        $cqsRoutingExtension = new CQSRoutingExtension();
 
         // -- Act
-        $cqrsExtension->load([], $container);
+        $cqsRoutingExtension->load([], $container);
 
         // -- Assert
         self::assertCount(1, $container->findTaggedServiceIds('cqs_routing.request_decoder'));

@@ -25,8 +25,8 @@ use Symfony\Component\HttpFoundation\Request;
  * It must not be used to:
  * - Handle any kind of business logic.
  *
- * @see https://github.com/digital-craftsman-de/cqrs/blob/main/docs/process.md
- * @see https://github.com/digital-craftsman-de/cqrs/blob/main/docs/examples/handler-wrapper.md
+ * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/process.md
+ * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/examples/handler-wrapper.md
  */
 interface HandlerWrapperInterface
 {

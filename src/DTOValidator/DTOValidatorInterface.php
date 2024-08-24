@@ -18,8 +18,8 @@ use Symfony\Component\HttpFoundation\Request;
  * - Validate any of the value objects in it (that's the task of the constructors).
  * - Validate any kind of business logic including access validation.
  *
- * @see https://github.com/digital-craftsman-de/cqrs/blob/main/docs/process.md
- * @see https://github.com/digital-craftsman-de/cqrs/blob/main/docs/examples/dto-validator.md
+ * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/process.md
+ * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/examples/dto-validator.md
  */
 interface DTOValidatorInterface
 {

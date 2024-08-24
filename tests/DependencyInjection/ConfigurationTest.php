@@ -30,7 +30,7 @@ final class ConfigurationTest extends TestCase
         $processor = new Processor();
         $configuration = new Configuration();
         $configurationData = [
-            'cqrs' => [
+            'cqs_routing' => [
                 'command_controller' => [
                     'default_request_decoder_class' => JsonRequestDecoder::class,
                     'default_dto_constructor_class' => SerializerDTOConstructor::class,

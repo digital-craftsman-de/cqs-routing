@@ -17,8 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
  * - Validate request content according to business rules.
  * - Validate the existence of content that is needed for construction of command or query objects. That must be handled in the DTO constructor.
  *
- * @see https://github.com/digital-craftsman-de/cqrs/blob/main/docs/process.md
- * @see https://github.com/digital-craftsman-de/cqrs/blob/main/docs/examples/request-validator.md
+ * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/process.md
+ * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/examples/request-validator.md
  */
 interface RequestValidatorInterface
 {

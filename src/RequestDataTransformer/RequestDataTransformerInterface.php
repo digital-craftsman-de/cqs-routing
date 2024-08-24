@@ -15,8 +15,8 @@ use DigitalCraftsman\CQSRouting\Query\Query;
  *  It must not be used to:
  * - Validate the request data in any way. That must be handled in the DTO validator.
  *
- * @see https://github.com/digital-craftsman-de/cqrs/blob/main/docs/process.md
- * @see https://github.com/digital-craftsman-de/cqrs/blob/main/docs/examples/request-data-transformer.md
+ * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/process.md
+ * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/examples/request-data-transformer.md
  */
 interface RequestDataTransformerInterface
 {
