@@ -29,7 +29,9 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
-/** @internal */
+/**
+ * @internal
+ */
 final readonly class ServiceMap
 {
     public function __construct(
@@ -45,7 +47,9 @@ final readonly class ServiceMap
     ) {
     }
 
-    /** @param class-string<RequestValidatorInterface> $requestValidatorClass */
+    /**
+     * @param class-string<RequestValidatorInterface> $requestValidatorClass
+     */
     public function getRequestValidator(string $requestValidatorClass): RequestValidatorInterface
     {
         try {
@@ -73,7 +77,9 @@ final readonly class ServiceMap
         }
     }
 
-    /** @param class-string<RequestDataTransformerInterface> $requestDataTransformerClass */
+    /**
+     * @param class-string<RequestDataTransformerInterface> $requestDataTransformerClass
+     */
     public function getRequestDataTransformer(string $requestDataTransformerClass): RequestDataTransformerInterface
     {
         try {
@@ -101,7 +107,9 @@ final readonly class ServiceMap
         }
     }
 
-    /** @param class-string<DTOValidatorInterface> $dtoValidatorClass */
+    /**
+     * @param class-string<DTOValidatorInterface> $dtoValidatorClass
+     */
     public function getDTOValidator(string $dtoValidatorClass): DTOValidatorInterface
     {
         try {
@@ -111,7 +119,9 @@ final readonly class ServiceMap
         }
     }
 
-    /** @param class-string<HandlerWrapperInterface> $handlerWrapperClass */
+    /**
+     * @param class-string<HandlerWrapperInterface> $handlerWrapperClass
+     */
     public function getHandlerWrapper(string $handlerWrapperClass): HandlerWrapperInterface
     {
         try {
@@ -121,7 +131,9 @@ final readonly class ServiceMap
         }
     }
 
-    /** @param class-string<CommandHandlerInterface> $handlerClass */
+    /**
+     * @param class-string<CommandHandlerInterface> $handlerClass
+     */
     public function getCommandHandler(string $handlerClass): CommandHandlerInterface
     {
         try {
@@ -131,7 +143,9 @@ final readonly class ServiceMap
         }
     }
 
-    /** @param class-string<QueryHandlerInterface> $handlerClass */
+    /**
+     * @param class-string<QueryHandlerInterface> $handlerClass
+     */
     public function getQueryHandler(string $handlerClass): QueryHandlerInterface
     {
         try {
@@ -141,7 +155,9 @@ final readonly class ServiceMap
         }
     }
 
-    /** @param class-string<ResponseConstructorInterface> $responseConstructorClass */
+    /**
+     * @param class-string<ResponseConstructorInterface> $responseConstructorClass
+     */
     public function getResponseConstructor(
         ?string $responseConstructorClass,
         ?string $defaultResponseConstructorClass,

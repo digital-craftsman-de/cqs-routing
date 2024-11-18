@@ -19,6 +19,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 interface ResponseConstructorInterface
 {
-    /** @param ?mixed $data */
+    /**
+     * @param ?mixed $data
+     */
     public function constructResponse($data, Request $request): Response;
 }

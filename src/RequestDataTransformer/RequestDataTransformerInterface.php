@@ -6,6 +6,7 @@ namespace DigitalCraftsman\CQSRouting\RequestDataTransformer;
 
 use DigitalCraftsman\CQSRouting\Command\Command;
 use DigitalCraftsman\CQSRouting\Query\Query;
+use DigitalCraftsman\CQSRouting\Routing\RoutePayload;
 
 /**
  * The data transformer can have three kinds of tasks and multiple data transformers can be used with one request.
@@ -17,12 +18,14 @@ use DigitalCraftsman\CQSRouting\Query\Query;
  *
  * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/process.md
  * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/examples/request-data-transformer.md
+ *
+ * @psalm-import-type NormalizedConfigurationParameters from RoutePayload
  */
 interface RequestDataTransformerInterface
 {
     /**
-     * @param class-string<Command|Query>               $dtoClass
-     * @param scalar|array<array-key, scalar|null>|null $parameters
+     * @param class-string<Command|Query>       $dtoClass
+     * @param NormalizedConfigurationParameters $parameters
      */
     public function transformRequestData(
         string $dtoClass,
@@ -30,6 +33,8 @@ interface RequestDataTransformerInterface
         mixed $parameters,
     ): array;
 
-    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    /**
+     * @param NormalizedConfigurationParameters $parameters
+     */
     public static function areParametersValid(mixed $parameters): bool;
 }

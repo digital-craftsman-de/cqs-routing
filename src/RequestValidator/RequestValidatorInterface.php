@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQSRouting\RequestValidator;
 
+use DigitalCraftsman\CQSRouting\Routing\RoutePayload;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -19,15 +20,21 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/process.md
  * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/examples/request-validator.md
+ *
+ * @psalm-import-type NormalizedConfigurationParameters from RoutePayload
  */
 interface RequestValidatorInterface
 {
-    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    /**
+     * @param NormalizedConfigurationParameters $parameters
+     */
     public function validateRequest(
         Request $request,
         mixed $parameters,
     ): void;
 
-    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    /**
+     * @param NormalizedConfigurationParameters $parameters
+     */
     public static function areParametersValid(mixed $parameters): bool;
 }

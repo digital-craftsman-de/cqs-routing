@@ -31,7 +31,9 @@ final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
         // Nothing to do
     }
 
-    /** @param array<int, string> $parameters Exception class strings to be swallowed */
+    /**
+     * @param array<int, string> $parameters Exception class strings to be swallowed
+     */
     #[\Override]
     public function catch(
         Command | Query $dto,
@@ -90,7 +92,9 @@ final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
         return 0;
     }
 
-    /** @param array<array-key, class-string<\Throwable>> $parameters Needs to be at least one exception class */
+    /**
+     * @param array<array-key, class-string<\Throwable>> $parameters Needs to be at least one exception class
+     */
     #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
@@ -108,7 +112,9 @@ final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
             }
 
             $reflectionClass = new \ReflectionClass($exceptionClass);
-            /** @psalm-suppress TypeDoesNotContainType It's possible that someone puts in something other than an exception. */
+            /**
+             * @psalm-suppress TypeDoesNotContainType It's possible that someone puts in something other than an exception.
+             */
             if (!$reflectionClass->implementsInterface(\Throwable::class)) {
                 return false;
             }

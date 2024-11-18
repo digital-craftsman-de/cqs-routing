@@ -10,7 +10,9 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 final readonly class StreamedResponseConstructor implements ResponseConstructorInterface
 {
-    /** @param callable $data */
+    /**
+     * @param callable $data
+     */
     public function constructResponse($data, Request $request): Response
     {
         return new StreamedResponse($data);

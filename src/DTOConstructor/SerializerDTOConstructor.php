@@ -10,7 +10,9 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final readonly class SerializerDTOConstructor implements DTOConstructorInterface
 {
-    /** @codeCoverageIgnore */
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(
         private DenormalizerInterface $serializer,
     ) {
@@ -25,7 +27,9 @@ final readonly class SerializerDTOConstructor implements DTOConstructorInterface
      */
     public function constructDTO(array $requestData, string $dtoClass): Command | Query
     {
-        /** @psalm-var T */
+        /**
+         * @psalm-var T
+         */
         return $this->serializer->denormalize($requestData, $dtoClass);
     }
 }
