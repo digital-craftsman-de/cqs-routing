@@ -6,6 +6,7 @@ namespace DigitalCraftsman\CQSRouting\DTOValidator;
 
 use DigitalCraftsman\CQSRouting\Command\Command;
 use DigitalCraftsman\CQSRouting\Query\Query;
+use DigitalCraftsman\CQSRouting\Routing\RoutePayload;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -20,16 +21,22 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/process.md
  * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/examples/dto-validator.md
+ *
+ * @psalm-import-type NormalizedConfigurationParameters from RoutePayload
  */
 interface DTOValidatorInterface
 {
-    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    /**
+     * @param NormalizedConfigurationParameters $parameters
+     */
     public function validateDTO(
         Request $request,
         Command | Query $dto,
         mixed $parameters,
     ): void;
 
-    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    /**
+     * @param NormalizedConfigurationParameters $parameters
+     */
     public static function areParametersValid(mixed $parameters): bool;
 }

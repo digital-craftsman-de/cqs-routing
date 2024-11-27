@@ -14,11 +14,15 @@ use DigitalCraftsman\CQSRouting\RequestDecoder\RequestDecoderInterface;
 use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidatorInterface;
 use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructorInterface;
 use DigitalCraftsman\CQSRouting\Routing\RouteBuilder;
+use DigitalCraftsman\CQSRouting\Routing\RoutePayload;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
+/**
+ * @psalm-import-type NormalizedConfigurationParameters from RoutePayload
+ */
 final class CQSRoutingExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
@@ -67,21 +71,21 @@ final class CQSRoutingExtension extends Extension
         /**
          * @var array{
          *   query_controller: array{
-         *     default_request_validator_classes: array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null,
+         *     default_request_validator_classes: array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null,
          *     default_request_decoder_class: class-string<RequestDecoderInterface>|null,
-         *     default_request_data_transformer_classes: array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null,
+         *     default_request_data_transformer_classes: array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null,
          *     default_dto_constructor_class: class-string<DTOConstructorInterface>|null,
-         *     default_dto_validator_classes: array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null,
-         *     default_handler_wrapper_classes: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null,
+         *     default_dto_validator_classes: array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null,
+         *     default_handler_wrapper_classes: array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null,
          *     default_response_constructor_class: class-string<ResponseConstructorInterface>|null,
          *   },
          *   command_controller: array{
-         *     default_request_validator_classes: array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null,
+         *     default_request_validator_classes: array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null,
          *     default_request_decoder_class: class-string<RequestDecoderInterface>|null,
-         *     default_request_data_transformer_classes: array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null,
+         *     default_request_data_transformer_classes: array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null,
          *     default_dto_constructor_class: class-string<DTOConstructorInterface>|null,
-         *     default_dto_validator_classes: array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null,
-         *     default_handler_wrapper_classes: array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null,
+         *     default_dto_validator_classes: array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null,
+         *     default_handler_wrapper_classes: array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null,
          *     default_response_constructor_class: class-string<ResponseConstructorInterface>|null,
          *   },
          * } $config

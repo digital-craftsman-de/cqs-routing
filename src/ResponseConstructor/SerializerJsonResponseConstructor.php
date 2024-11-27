@@ -12,7 +12,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 final readonly class SerializerJsonResponseConstructor implements ResponseConstructorInterface
 {
-    /** @codeCoverageIgnore */
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(
         private SerializerInterface $serializer,
     ) {

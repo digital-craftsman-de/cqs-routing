@@ -19,16 +19,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @psalm-import-type NormalizedConfigurationParameters from RoutePayload
+ */
 final class QueryController extends AbstractController
 {
     /**
-     * @param array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null       $defaultRequestValidatorClasses
-     * @param class-string<RequestDecoderInterface>|null                                                           $defaultRequestDecoderClass
-     * @param array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null $defaultRequestDataTransformerClasses
-     * @param class-string<DTOConstructorInterface>|null                                                           $defaultDTOConstructorClass
-     * @param array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null           $defaultDTOValidatorClasses
-     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null>|null         $defaultHandlerWrapperClasses
-     * @param class-string<ResponseConstructorInterface>|null                                                      $defaultResponseConstructorClass
+     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null       $defaultRequestValidatorClasses
+     * @param class-string<RequestDecoderInterface>|null                                                   $defaultRequestDecoderClass
+     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $defaultRequestDataTransformerClasses
+     * @param class-string<DTOConstructorInterface>|null                                                   $defaultDTOConstructorClass
+     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null           $defaultDTOValidatorClasses
+     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null         $defaultHandlerWrapperClasses
+     * @param class-string<ResponseConstructorInterface>|null                                              $defaultResponseConstructorClass
      *
      * @codeCoverageIgnore
      */
@@ -44,12 +47,16 @@ final class QueryController extends AbstractController
     ) {
     }
 
-    /** We don't type the $routePayload because we never trigger it manually, it's only supplied through Symfony. */
+    /**
+     * We don't type the $routePayload because we never trigger it manually, it's only supplied through Symfony.
+     */
     public function handle(
         Request $request,
         array $routePayload,
     ): Response {
-        /** @psalm-suppress MixedArgumentTypeCoercion */
+        /**
+         * @psalm-suppress MixedArgumentTypeCoercion
+         */
         $configuration = RoutePayload::fromPayload($routePayload);
 
         // -- Validate request
@@ -87,7 +94,9 @@ final class QueryController extends AbstractController
             $this->defaultDTOConstructorClass,
         );
 
-        /** @var Query $query */
+        /**
+         * @var Query $query
+         */
         $query = $dtoConstructor->constructDTO($requestData, $configuration->dtoClass);
 
         // -- Validate query
@@ -102,7 +111,9 @@ final class QueryController extends AbstractController
         }
 
         // -- Wrap handlers
-        /** The wrapper handlers are quite complex, so additional explanation can be found in @HandlerWrapperStep */
+        /**
+         * The wrapper handlers are quite complex, so additional explanation can be found in @HandlerWrapperStep.
+         */
         $handlerWrapperClasses = RoutePayload::mergeHandlerWrapperClassesFromRouteWithDefaults(
             $configuration->handlerWrapperClasses,
             $configuration->handlerWrapperClassesToMergeWithDefault,
@@ -120,13 +131,17 @@ final class QueryController extends AbstractController
         }
 
         // -- Trigger query through query handler
-        /** @psalm-suppress PossiblyInvalidArgument */
+        /**
+         * @psalm-suppress PossiblyInvalidArgument
+         */
         $queryHandler = $this->serviceMap->getQueryHandler($configuration->handlerClass);
 
         $result = null;
 
         try {
-            /** @psalm-suppress InvalidFunctionCall */
+            /**
+             * @psalm-suppress InvalidFunctionCall
+             */
             $result = $queryHandler($query);
 
             $handlerWrapperClassesForThenStep = HandlerWrapperStep::then($handlerWrapperClasses);

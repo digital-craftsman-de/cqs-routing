@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.1
+
+- Fixed parameter doc block to allow configuration up to one array deep.
+- Streamlined parameters for components to `NormalizedConfigurationParameters`.
+
 ## 1.0.0
 
 - **[Breaking change](./UPGRADE.md#renamed-package)**: Renamed package from `cqrs` to `cqs-routing`.

@@ -32,6 +32,9 @@ use DigitalCraftsman\CQSRouting\Routing\Exception\OnlyOverwriteOrMergeCanBeUsedI
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
+/**
+ * @psalm-import-type NormalizedConfigurationParameters from RoutePayload
+ */
 final readonly class RouteBuilder
 {
     private const DEFAULT_METHOD = Request::METHOD_POST;
@@ -41,19 +44,19 @@ final readonly class RouteBuilder
      * Default name is generated from path. Set it specifically when you're using the name as a reference somewhere.
      * Default method is POST.
      *
-     * @param class-string<Command>|class-string<Query>                                                            $dtoClass
-     * @param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>                            $handlerClass
-     * @param array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null       $requestValidatorClasses
-     * @param array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null       $requestValidatorClassesToMergeWithDefault
-     * @param class-string<RequestDecoderInterface>|null                                                           $requestDecoderClass
-     * @param array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null $requestDataTransformerClasses
-     * @param array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null $requestDataTransformerClassesToMergeWithDefault
-     * @param class-string<DTOConstructorInterface>|null                                                           $dtoConstructorClass
-     * @param array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null           $dtoValidatorClasses
-     * @param array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null           $dtoValidatorClassesToMergeWithDefault
-     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|bool|null>|null>|null    $handlerWrapperClasses
-     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|bool|null>|null>|null    $handlerWrapperClassesToMergeWithDefault
-     * @param class-string<ResponseConstructorInterface>|null                                                      $responseConstructorClass
+     * @param class-string<Command>|class-string<Query>                                                    $dtoClass
+     * @param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>                    $handlerClass
+     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null       $requestValidatorClasses
+     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null       $requestValidatorClassesToMergeWithDefault
+     * @param class-string<RequestDecoderInterface>|null                                                   $requestDecoderClass
+     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $requestDataTransformerClasses
+     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $requestDataTransformerClassesToMergeWithDefault
+     * @param class-string<DTOConstructorInterface>|null                                                   $dtoConstructorClass
+     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null           $dtoValidatorClasses
+     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null           $dtoValidatorClassesToMergeWithDefault
+     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null         $handlerWrapperClasses
+     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null         $handlerWrapperClassesToMergeWithDefault
+     * @param class-string<ResponseConstructorInterface>|null                                              $responseConstructorClass
      *
      * @codeCoverageIgnore
      * There seems to be no way to get a RoutingConfigurator instance. Therefore, it's not really possible to test this builder.
@@ -137,19 +140,19 @@ final readonly class RouteBuilder
      * Default name is generated from path. Set it specifically when you're using the name as a reference somewhere.
      * Default method is POST.
      *
-     * @param class-string<Command>|class-string<Query>                                                            $dtoClass
-     * @param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>                            $handlerClass
-     * @param array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null       $requestValidatorClasses
-     * @param array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null       $requestValidatorClassesToMergeWithDefault
-     * @param class-string<RequestDecoderInterface>|null                                                           $requestDecoderClass
-     * @param array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null $requestDataTransformerClasses
-     * @param array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null $requestDataTransformerClassesToMergeWithDefault
-     * @param class-string<DTOConstructorInterface>|null                                                           $dtoConstructorClass
-     * @param array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null           $dtoValidatorClasses
-     * @param array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null           $dtoValidatorClassesToMergeWithDefault
-     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|bool|null>|null>|null    $handlerWrapperClasses
-     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|bool|null>|null>|null    $handlerWrapperClassesToMergeWithDefault
-     * @param class-string<ResponseConstructorInterface>|null                                                      $responseConstructorClass
+     * @param class-string<Command>|class-string<Query>                                                    $dtoClass
+     * @param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>                    $handlerClass
+     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null       $requestValidatorClasses
+     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null       $requestValidatorClassesToMergeWithDefault
+     * @param class-string<RequestDecoderInterface>|null                                                   $requestDecoderClass
+     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $requestDataTransformerClasses
+     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $requestDataTransformerClassesToMergeWithDefault
+     * @param class-string<DTOConstructorInterface>|null                                                   $dtoConstructorClass
+     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null           $dtoValidatorClasses
+     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null           $dtoValidatorClassesToMergeWithDefault
+     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null         $handlerWrapperClasses
+     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null         $handlerWrapperClassesToMergeWithDefault
+     * @param class-string<ResponseConstructorInterface>|null                                              $responseConstructorClass
      *
      * @codeCoverageIgnore
      * There seems to be no way to get a RoutingConfigurator instance. Therefore, it's not really possible to test this builder.
@@ -284,8 +287,8 @@ final readonly class RouteBuilder
     }
 
     /**
-     * @param array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null $requestValidatorClasses
-     * @param array<class-string<RequestValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null $requestValidatorClassesToMergeWithDefault
+     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null $requestValidatorClasses
+     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null $requestValidatorClassesToMergeWithDefault
      *
      * @internal
      */
@@ -351,8 +354,8 @@ final readonly class RouteBuilder
     }
 
     /**
-     * @param array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null $requestDataTransformerClasses
-     * @param array<class-string<RequestDataTransformerInterface>, scalar|array<array-key, scalar|null>|null>|null $requestDataTransformerClassesToMergeWithDefault
+     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $requestDataTransformerClasses
+     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $requestDataTransformerClassesToMergeWithDefault
      *
      * @internal
      */
@@ -418,8 +421,8 @@ final readonly class RouteBuilder
     }
 
     /**
-     * @param array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null $dtoValidatorClasses
-     * @param array<class-string<DTOValidatorInterface>, scalar|array<array-key, scalar|null>|null>|null $dtoValidatorClassesToMergeWithDefault
+     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null $dtoValidatorClasses
+     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null $dtoValidatorClassesToMergeWithDefault
      *
      * @internal
      */
@@ -465,8 +468,8 @@ final readonly class RouteBuilder
     }
 
     /**
-     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|bool|null>|null>|null $handlerWrapperClasses
-     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|bool|null>|null>|null $handlerWrapperClassesToMergeWithDefault
+     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null $handlerWrapperClasses
+     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null $handlerWrapperClassesToMergeWithDefault
      *
      * @internal
      */

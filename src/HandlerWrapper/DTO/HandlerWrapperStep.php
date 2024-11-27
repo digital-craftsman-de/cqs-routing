@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DigitalCraftsman\CQSRouting\HandlerWrapper\DTO;
 
 use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQSRouting\Routing\RoutePayload;
 
 /**
  * Handler wrappers are used to wrap command handlers and query handlers. With them, it's possible to for example start a doctrine
@@ -13,6 +14,8 @@ use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
  * Through priorities, it's possible to define in which order they are executed and this order can change depending on the step.
  * To wrap this logic we first combine the wrappers with the parameters and then sort them by the priority of the handlers for the separate
  * steps. After this the controller is able to simply select a step and get all relevant wrappers in the correct order.
+ *
+ * @psalm-import-type NormalizedConfigurationParameters from RoutePayload
  *
  * @codeCoverageIgnore
  *
@@ -24,12 +27,14 @@ final readonly class HandlerWrapperStep
     public const STEP_THEN = 'THEN';
     public const STEP_CATCH = 'CATCH';
 
-    /** @var array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null> */
+    /**
+     * @var array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>
+     */
     public array $orderedHandlerWrapperClasses;
 
     /**
-     * @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null> $handlerWrapperClasses
-     * @param self::STEP_*                                                                            $step
+     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters> $handlerWrapperClasses
+     * @param self::STEP_*                                                                    $step
      */
     private function __construct(
         array $handlerWrapperClasses,
@@ -51,7 +56,9 @@ final readonly class HandlerWrapperStep
         $this->orderedHandlerWrapperClasses = $handlerWrapperClasses;
     }
 
-    /** @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null> $handlerWrapperClasses */
+    /**
+     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters> $handlerWrapperClasses
+     */
     public static function prepare(array $handlerWrapperClasses): self
     {
         return new self(
@@ -60,7 +67,9 @@ final readonly class HandlerWrapperStep
         );
     }
 
-    /** @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null> $handlerWrapperClasses */
+    /**
+     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters> $handlerWrapperClasses
+     */
     public static function then(array $handlerWrapperClasses): self
     {
         return new self(
@@ -69,7 +78,9 @@ final readonly class HandlerWrapperStep
         );
     }
 
-    /** @param array<class-string<HandlerWrapperInterface>, scalar|array<array-key, scalar|null>|null> $handlerWrapperClasses */
+    /**
+     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters> $handlerWrapperClasses
+     */
     public static function catch(array $handlerWrapperClasses): self
     {
         return new self(

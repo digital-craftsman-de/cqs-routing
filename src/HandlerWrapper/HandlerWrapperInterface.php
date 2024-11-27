@@ -6,6 +6,7 @@ namespace DigitalCraftsman\CQSRouting\HandlerWrapper;
 
 use DigitalCraftsman\CQSRouting\Command\Command;
 use DigitalCraftsman\CQSRouting\Query\Query;
+use DigitalCraftsman\CQSRouting\Routing\RoutePayload;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -27,13 +28,15 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/process.md
  * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/examples/handler-wrapper.md
+ *
+ * @psalm-import-type NormalizedConfigurationParameters from RoutePayload
  */
 interface HandlerWrapperInterface
 {
     /**
      * Triggered right before the handler is triggered.
      *
-     * @param scalar|array<array-key, scalar|null>|null $parameters
+     * @param NormalizedConfigurationParameters $parameters
      */
     public function prepare(
         Command | Query $dto,
@@ -44,7 +47,7 @@ interface HandlerWrapperInterface
     /**
      * Triggered only if the handler was run without exception.
      *
-     * @param scalar|array<array-key, scalar|null>|null $parameters
+     * @param NormalizedConfigurationParameters $parameters
      */
     public function then(
         Command | Query $dto,
@@ -56,7 +59,7 @@ interface HandlerWrapperInterface
      * Triggered only when an exception occurred while executing the handler.
      * The exception must be returned if it's not explicitly the last exception that should be handled.
      *
-     * @param scalar|array<array-key, scalar|null>|null $parameters
+     * @param NormalizedConfigurationParameters $parameters
      */
     public function catch(
         Command | Query $dto,
@@ -71,6 +74,8 @@ interface HandlerWrapperInterface
 
     public static function catchPriority(): int;
 
-    /** @param scalar|array<array-key, scalar|null>|null $parameters */
+    /**
+     * @param NormalizedConfigurationParameters $parameters
+     */
     public static function areParametersValid(mixed $parameters): bool;
 }
