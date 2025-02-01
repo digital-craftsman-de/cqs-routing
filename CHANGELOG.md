@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.0
+
+- Added support for PHP 8.4.
+- Dropped support for PHP 8.2.
+
 ## 1.0.1
 
 - Fixed parameter doc block to allow configuration up to one array deep.
