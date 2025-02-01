@@ -3,7 +3,7 @@
 ## 1.1.0
 
 - Added support for PHP 8.4.
-- Dropped support for PHP 8.2.
+- [Dropped support for PHP 8.2.](./UPGRADE.md#dropped-support-for-php-82)
 
 ## 1.0.1
 

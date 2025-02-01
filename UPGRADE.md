@@ -1,5 +1,11 @@
 # Upgrade guide
 
+## From 1.0.* to 1.1.0
+
+### Dropped support for PHP 8.2
+
+Upgrade to at least PHP 8.3. PHP 8.4 is already supported, so you might directly upgrade to PHP 8.4.
+
 ## From 0.13.* to 1.0.0
 
 ### Renamed package
