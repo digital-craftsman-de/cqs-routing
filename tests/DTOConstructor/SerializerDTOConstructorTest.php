@@ -6,7 +6,8 @@ namespace DigitalCraftsman\CQSRouting\DTOConstructor;
 
 use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleCommand;
 use DigitalCraftsman\CQSRouting\Test\ValueObject\UserId;
-use DigitalCraftsman\Ids\Serializer\IdNormalizer;
+use DigitalCraftsman\SelfAwareNormalizers\Serializer\ArrayNormalizableNormalizer;
+use DigitalCraftsman\SelfAwareNormalizers\Serializer\StringNormalizableNormalizer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
@@ -25,7 +26,8 @@ final class SerializerDTOConstructorTest extends TestCase
         // -- Arrange
         $serializerDTOConstructor = new SerializerDTOConstructor(
             new Serializer([
-                new IdNormalizer(),
+                new StringNormalizableNormalizer(),
+                new ArrayNormalizableNormalizer(),
                 new PropertyNormalizer(),
             ], [
                 new JsonEncoder(),

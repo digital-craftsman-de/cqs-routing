@@ -25,7 +25,8 @@ use DigitalCraftsman\CQSRouting\Test\Utility\LockSimulator;
 use DigitalCraftsman\CQSRouting\Test\Utility\SecuritySimulator;
 use DigitalCraftsman\CQSRouting\Test\Utility\VirusScannerSimulator;
 use DigitalCraftsman\CQSRouting\Test\ValueObject\UserId;
-use DigitalCraftsman\Ids\Serializer\IdNormalizer;
+use DigitalCraftsman\SelfAwareNormalizers\Serializer\ArrayNormalizableNormalizer;
+use DigitalCraftsman\SelfAwareNormalizers\Serializer\StringNormalizableNormalizer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -52,7 +53,8 @@ final class CommandControllerTest extends TestCase
         $authenticatedUserId = UserId::generateRandom();
         $serializer = new Serializer([
             new ArrayDenormalizer(),
-            new IdNormalizer(),
+            new StringNormalizableNormalizer(),
+            new ArrayNormalizableNormalizer(),
             new PropertyNormalizer(
                 null,
                 null,
@@ -147,7 +149,8 @@ final class CommandControllerTest extends TestCase
 
         $serializer = new Serializer([
             new ArrayDenormalizer(),
-            new IdNormalizer(),
+            new StringNormalizableNormalizer(),
+            new ArrayNormalizableNormalizer(),
             new PropertyNormalizer(
                 null,
                 null,
@@ -228,7 +231,8 @@ final class CommandControllerTest extends TestCase
 
         $serializer = new Serializer([
             new ArrayDenormalizer(),
-            new IdNormalizer(),
+            new StringNormalizableNormalizer(),
+            new ArrayNormalizableNormalizer(),
             new PropertyNormalizer(
                 null,
                 null,

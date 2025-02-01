@@ -237,7 +237,11 @@ final readonly class RouteBuilder
             ? substr($path, 1)
             : $path;
 
-        // Convert camelCase to snake_case (for example for parameters)
+        /**
+         * Convert camelCase to snake_case (for example for parameters).
+         *
+         * @psalm-suppress PossiblyNullArgument We know that it's not going to be empty.
+         */
         $path = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $path));
 
         // Replace / and - with _ and remove {} and duplicate __
