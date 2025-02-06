@@ -1,7 +1,7 @@
 # Build with
-# docker buildx build --platform linux/arm64,linux/amd64 -t ghcr.io/digital-craftsman-de/cqs-routing-php-8.2:latest ./.docker/php-8.2 --push
+# docker buildx build --platform linux/arm64,linux/amd64 -t ghcr.io/digital-craftsman-de/cqs-routing-php-8.4:latest ./.docker/php-8.4 --push
 
-FROM php:8.2-fpm-alpine
+FROM php:8.4-fpm-alpine
 
 RUN apk add --update \
     autoconf \

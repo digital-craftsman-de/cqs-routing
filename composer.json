@@ -3,18 +3,18 @@
   "description": "Reduced cost of change through CQS in Symfony",
   "type": "symfony-bundle",
   "require": {
-    "php": "8.2.*|8.3.*",
+    "php": "8.3.*|8.4.*",
     "symfony/framework-bundle": "^6.4|^7.0",
     "symfony/serializer": "^6.4|^7.0"
   },
   "require-dev": {
-    "digital-craftsman/ids": "0.13.*",
-    "friendsofphp/php-cs-fixer": "^3.15",
+    "digital-craftsman/ids": "^2.0.1",
+    "friendsofphp/php-cs-fixer": "^3.68.5",
     "phpunit/phpunit": "^10.5",
     "symfony/property-access": "^7.0",
     "symfony/property-info": "^7.0",
     "symfony/yaml": "^7.0",
-    "vimeo/psalm": "^5.17"
+    "vimeo/psalm": "^6.0.0"
   },
   "autoload": {
     "psr-4": {
