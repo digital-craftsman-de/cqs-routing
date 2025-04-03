@@ -6,14 +6,14 @@ The interfaces are simple marker interfaces.
 
 ```php
 /** @method void __invoke(Command $command) */
-interface CommandHandlerInterface
+interface CommandHandler
 {
 }
 ```
 
 ```php
 /** @method void __invoke(Query $query) */
-interface QueryHandlerInterface
+interface QueryHandler
 {
 }
 ```
@@ -25,7 +25,7 @@ See [position in process](../process.md#handler)
 A command handler implementation to create a new user account might look like this:
 
 ```php
-final class CreateUserAccountCommandHandler implements CommandHandlerInterface
+final class CreateUserAccountCommandHandler implements CommandHandler
 {
     public function __construct(
         private readonly PasswordHasherFactoryInterface $passwordHasherFactory,
@@ -57,7 +57,7 @@ final class CreateUserAccountCommandHandler implements CommandHandlerInterface
 The query handler always returns a value (if there is no exception). This return value can be anything from an `object`, `array` or even a `callable`. When it returns data, it must not return entities, but always custom read models instead. This is an example where the query handler would return a user read model.
 
 ```php
-final readonly class GetUserQueryHandler implements QueryHandlerInterface
+final readonly class GetUserQueryHandler implements QueryHandler
 {
     public function __construct(
         private UserRepository $userRepository,

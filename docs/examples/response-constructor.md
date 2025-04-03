@@ -3,7 +3,7 @@
 **Interface**
 
 ```php
-interface ResponseConstructorInterface
+interface ResponseConstructor
 {
     /** @param mixed $result */
     public function constructResponse($result, Request $request): Response;
@@ -19,7 +19,7 @@ See [position in process](../process.md#response-constructor)
 Most of the time the result will be an object or array and be converted into JSON through the `SerializerJsonResponseConstructor`. Obviously it needs the custom normalizers for the values objects to be able to do so.
 
 ```php
-final readonly class SerializerJsonResponseConstructor implements ResponseConstructorInterface
+final readonly class SerializerJsonResponseConstructor implements ResponseConstructor
 {
     public function __construct(
         private SerializerInterface $serializer,
@@ -43,7 +43,7 @@ final readonly class SerializerJsonResponseConstructor implements ResponseConstr
 A file should be returned as a binary and not as JSON, so we would need a custom response constructor like the following:
 
 ```php
-final readonly class FileResponseConstructor implements ResponseConstructorInterface
+final readonly class FileResponseConstructor implements ResponseConstructor
 {
     /** @param File $data */
     public function constructResponse($data, Request $request): Response
@@ -108,7 +108,7 @@ final readonly class GetAllFilesInDirectoryAsDownloadQueryHandler implements Que
 Such a callable would be sent to a simple streamed response constructor:
 
 ```php
-final readonly class StreamedResponseConstructor implements ResponseConstructorInterface
+final readonly class StreamedResponseConstructor implements ResponseConstructor
 {
     /** @param callable $data */
     public function constructResponse($data, Request $request): Response

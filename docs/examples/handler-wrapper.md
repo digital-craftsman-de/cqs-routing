@@ -3,7 +3,7 @@
 **Interface**
 
 ```php
-interface HandlerWrapperInterface
+interface HandlerWrapper
 {
     /**
      * Triggered right before the handler is triggered.
