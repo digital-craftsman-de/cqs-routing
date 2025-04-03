@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 final readonly class JsonRequestDecoder implements RequestDecoder
 {
+    #[\Override]
     public function decodeRequest(Request $request): array
     {
         /**

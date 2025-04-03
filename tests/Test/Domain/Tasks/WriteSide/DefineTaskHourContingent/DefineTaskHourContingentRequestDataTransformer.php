@@ -15,6 +15,7 @@ final class DefineTaskHourContingentRequestDataTransformer implements RequestDat
      * } $requestData
      * @param null $parameters
      */
+    #[\Override]
     public function transformRequestData(string $dtoClass, array $requestData, mixed $parameters): array
     {
         $requestData['hourContingent'] = (float) $requestData['hourContingent'];
@@ -23,6 +24,7 @@ final class DefineTaskHourContingentRequestDataTransformer implements RequestDat
     }
 
     /** @param null $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         return $parameters === null;

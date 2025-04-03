@@ -20,6 +20,7 @@ final readonly class SerializerJsonResponseConstructor implements ResponseConstr
     ) {
     }
 
+    #[\Override]
     public function constructResponse($data, Request $request): JsonResponse
     {
         $content = $this->serializer->serialize($data, JsonEncoder::FORMAT);

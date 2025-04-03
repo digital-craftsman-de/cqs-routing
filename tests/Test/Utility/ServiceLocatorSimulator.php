@@ -21,17 +21,20 @@ final readonly class ServiceLocatorSimulator implements ServiceProviderInterface
     ) {
     }
 
+    #[\Override]
     public function get(string $id): object
     {
         return $this->providedServices[$id] ?? throw new ServiceNotFoundException($id);
     }
 
+    #[\Override]
     public function has(string $id): bool
     {
         return array_key_exists($id, $this->providedServices);
     }
 
     /** @return array<string, string> */
+    #[\Override]
     public function getProvidedServices(): array
     {
         $services = [];

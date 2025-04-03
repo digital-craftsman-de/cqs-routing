@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 final class FileSizeValidator implements DTOValidator
 {
     /** @param int $parameters Max upload size in MB */
+    #[\Override]
     public function validateDTO(
         Request $request,
         Command | Query $dto,
@@ -43,6 +44,7 @@ final class FileSizeValidator implements DTOValidator
     }
 
     /** @param int $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         return is_int($parameters)

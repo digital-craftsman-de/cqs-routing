@@ -15,6 +15,7 @@ final class AddActionIdRequestDataTransformer implements RequestDataTransformer
      * @param class-string<Command|Query> $dtoClass
      * @param null                        $parameters
      */
+    #[\Override]
     public function transformRequestData(
         string $dtoClass,
         array $requestData,
@@ -26,6 +27,7 @@ final class AddActionIdRequestDataTransformer implements RequestDataTransformer
     }
 
     /** @param null $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         return $parameters === null;

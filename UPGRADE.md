@@ -24,6 +24,14 @@ use DigitalCraftsman\CQRS\Routing\RequestDecoder;
 final readonly class JsonRequestDecoder implements RequestDecoder
 ```
 
+### Dropped support for PHP 8.3
+
+Upgrade to at least PHP 8.4.
+
+### Dropped support for Symfony 6.4
+
+Upgrade to at least Symfony 7.0.
+
 ## From 1.0.* to 1.1.0
 
 ### Dropped support for PHP 8.2

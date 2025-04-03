@@ -13,6 +13,7 @@ final readonly class StreamedResponseConstructor implements ResponseConstructor
     /**
      * @param callable $data
      */
+    #[\Override]
     public function constructResponse($data, Request $request): Response
     {
         return new StreamedResponse($data);

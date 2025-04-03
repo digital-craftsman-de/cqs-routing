@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final readonly class EmptyResponseConstructor implements ResponseConstructor
 {
+    #[\Override]
     public function constructResponse($data, Request $request): Response
     {
         return new Response(null, Response::HTTP_NO_CONTENT);

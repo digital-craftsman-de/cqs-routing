@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final readonly class EmptyJsonResponseConstructor implements ResponseConstructor
 {
+    #[\Override]
     public function constructResponse($data, Request $request): JsonResponse
     {
         return new JsonResponse('', Response::HTTP_NO_CONTENT, [], true);

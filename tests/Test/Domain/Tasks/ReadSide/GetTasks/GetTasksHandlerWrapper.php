@@ -10,14 +10,15 @@ use DigitalCraftsman\CQSRouting\Query\Query;
 use DigitalCraftsman\CQSRouting\Test\Utility\LockSimulator;
 use Symfony\Component\HttpFoundation\Request;
 
-final class GetTasksHandlerWrapper implements HandlerWrapper
+final readonly class GetTasksHandlerWrapper implements HandlerWrapper
 {
     public function __construct(
-        private readonly LockSimulator $lockSimulator,
+        private LockSimulator $lockSimulator,
     ) {
     }
 
     /** @param GetTasksQuery $dto */
+    #[\Override]
     public function prepare(
         Command | Query $dto,
         Request $request,
@@ -27,6 +28,7 @@ final class GetTasksHandlerWrapper implements HandlerWrapper
     }
 
     /** @param GetTasksQuery $dto */
+    #[\Override]
     public function then(
         Command | Query $dto,
         Request $request,
@@ -36,6 +38,7 @@ final class GetTasksHandlerWrapper implements HandlerWrapper
     }
 
     /** @param GetTasksQuery $dto */
+    #[\Override]
     public function catch(
         Command | Query $dto,
         Request $request,
@@ -47,22 +50,26 @@ final class GetTasksHandlerWrapper implements HandlerWrapper
         return $exception;
     }
 
+    #[\Override]
     public static function preparePriority(): int
     {
         return 250;
     }
 
+    #[\Override]
     public static function catchPriority(): int
     {
         return -250;
     }
 
+    #[\Override]
     public static function thenPriority(): int
     {
         return -250;
     }
 
     /** @param null $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         return $parameters === null;

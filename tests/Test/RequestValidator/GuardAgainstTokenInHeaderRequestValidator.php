@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 final readonly class GuardAgainstTokenInHeaderRequestValidator implements RequestValidator
 {
     /** @param null $parameters */
+    #[\Override]
     public function validateRequest(
         Request $request,
         mixed $parameters,
@@ -20,6 +21,7 @@ final readonly class GuardAgainstTokenInHeaderRequestValidator implements Reques
     }
 
     /** @param null $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         return $parameters === null;

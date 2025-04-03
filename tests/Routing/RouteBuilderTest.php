@@ -27,7 +27,7 @@ use DigitalCraftsman\CQSRouting\Test\RequestValidator\GuardAgainstTokenInHeaderR
 use PHPUnit\Framework\TestCase;
 
 /** @coversDefaultClass \DigitalCraftsman\CQSRouting\Routing\RouteBuilder */
-class RouteBuilderTest extends TestCase
+final class RouteBuilderTest extends TestCase
 {
     /**
      * @test

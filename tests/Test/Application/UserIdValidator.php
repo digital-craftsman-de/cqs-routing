@@ -11,10 +11,10 @@ use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\Cre
 use DigitalCraftsman\CQSRouting\Test\Utility\SecuritySimulator;
 use Symfony\Component\HttpFoundation\Request;
 
-final class UserIdValidator implements DTOValidator
+final readonly class UserIdValidator implements DTOValidator
 {
     public function __construct(
-        private readonly SecuritySimulator $securitySimulator,
+        private SecuritySimulator $securitySimulator,
     ) {
     }
 
@@ -22,6 +22,7 @@ final class UserIdValidator implements DTOValidator
      * @param CreateNewsArticleCommand $dto
      * @param null                     $parameters
      */
+    #[\Override]
     public function validateDTO(
         Request $request,
         Command | Query $dto,
@@ -33,6 +34,7 @@ final class UserIdValidator implements DTOValidator
     }
 
     /** @param null $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         return $parameters === null;

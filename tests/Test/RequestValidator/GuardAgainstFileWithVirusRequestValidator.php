@@ -16,6 +16,7 @@ final readonly class GuardAgainstFileWithVirusRequestValidator implements Reques
     }
 
     /** @param null $parameters */
+    #[\Override]
     public function validateRequest(
         Request $request,
         mixed $parameters,
@@ -26,6 +27,7 @@ final readonly class GuardAgainstFileWithVirusRequestValidator implements Reques
     }
 
     /** @param null $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         return $parameters === null;

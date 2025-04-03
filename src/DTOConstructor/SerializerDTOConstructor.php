@@ -25,6 +25,7 @@ final readonly class SerializerDTOConstructor implements DTOConstructor
      *
      * @psalm-return T
      */
+    #[\Override]
     public function constructDTO(array $requestData, string $dtoClass): Command | Query
     {
         /**

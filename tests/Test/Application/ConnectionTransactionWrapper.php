@@ -18,6 +18,7 @@ final class ConnectionTransactionWrapper implements HandlerWrapper
     }
 
     /** @param null $parameters */
+    #[\Override]
     public function prepare(
         Command | Query $dto,
         Request $request,
@@ -27,6 +28,7 @@ final class ConnectionTransactionWrapper implements HandlerWrapper
     }
 
     /** @param null $parameters */
+    #[\Override]
     public function catch(
         Command | Query $dto,
         Request $request,
@@ -39,6 +41,7 @@ final class ConnectionTransactionWrapper implements HandlerWrapper
     }
 
     /** @param null $parameters */
+    #[\Override]
     public function then(
         Command | Query $dto,
         Request $request,
@@ -49,22 +52,26 @@ final class ConnectionTransactionWrapper implements HandlerWrapper
 
     // Priorities
 
+    #[\Override]
     public static function preparePriority(): int
     {
         return 50;
     }
 
+    #[\Override]
     public static function catchPriority(): int
     {
         return 50;
     }
 
+    #[\Override]
     public static function thenPriority(): int
     {
         return 50;
     }
 
     /** @param null $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         return $parameters === null;

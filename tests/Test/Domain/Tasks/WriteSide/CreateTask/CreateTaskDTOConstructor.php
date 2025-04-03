@@ -17,6 +17,7 @@ final class CreateTaskDTOConstructor implements DTOConstructor
      *
      * @psalm-suppress ImplementedReturnTypeMismatch
      */
+    #[\Override]
     public function constructDTO(
         array $requestData,
         string $dtoClass,

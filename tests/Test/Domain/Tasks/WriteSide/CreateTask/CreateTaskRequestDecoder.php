@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class CreateTaskRequestDecoder implements RequestDecoder
 {
+    #[\Override]
     public function decodeRequest(Request $request): array
     {
         return [

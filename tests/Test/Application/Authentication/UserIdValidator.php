@@ -21,6 +21,7 @@ final class UserIdValidator implements DTOValidator
     }
 
     /** @param null $parameters */
+    #[\Override]
     public function validateDTO(
         Request $request,
         Command | Query $dto,
@@ -45,6 +46,7 @@ final class UserIdValidator implements DTOValidator
     }
 
     /** @param null $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         return $parameters === null;
