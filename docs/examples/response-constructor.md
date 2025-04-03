@@ -63,7 +63,7 @@ final readonly class FileResponseConstructor implements ResponseConstructor
 There are cases where it's not feasible to return the full response at once. For example when loading a lot of files from an external storage provider and wrapping it into a zip file before sending it to the client. In such a case, the query handler would return a callable like this:
 
 ```php
-final readonly class GetAllFilesInDirectoryAsDownloadQueryHandler implements QueryHandlerInterface
+final readonly class GetAllFilesInDirectoryAsDownloadQueryHandler implements QueryHandler
 {
     public function __construct(
         private FileManagement $fileManagement,
