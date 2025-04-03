@@ -9,18 +9,6 @@ use DigitalCraftsman\CQSRouting\HandlerWrapper\SilentExceptionWrapper;
 use DigitalCraftsman\CQSRouting\RequestDecoder\JsonRequestDecoder;
 use DigitalCraftsman\CQSRouting\ResponseConstructor\EmptyJsonResponseConstructor;
 use DigitalCraftsman\CQSRouting\ResponseConstructor\EmptyResponseConstructor;
-use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredCommandHandlerNotAvailable;
-use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredDTOConstructorNotAvailable;
-use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredDTOValidatorNotAvailable;
-use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredHandlerWrapperNotAvailable;
-use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredQueryHandlerNotAvailable;
-use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredRequestDataTransformerNotAvailable;
-use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredRequestDecoderNotAvailable;
-use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredRequestValidatorNotAvailable;
-use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredResponseConstructorNotAvailable;
-use DigitalCraftsman\CQSRouting\ServiceMap\Exception\DTOConstructorOrDefaultDTOConstructorMustBeConfigured;
-use DigitalCraftsman\CQSRouting\ServiceMap\Exception\RequestDecoderOrDefaultRequestDecoderMustBeConfigured;
-use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ResponseConstructorOrDefaultResponseConstructorMustBeConfigured;
 use DigitalCraftsman\CQSRouting\Test\Application\AddActionIdRequestDataTransformer;
 use DigitalCraftsman\CQSRouting\Test\Application\Authentication\UserIdValidator;
 use DigitalCraftsman\CQSRouting\Test\Application\ConnectionTransactionWrapper;
@@ -41,9 +29,21 @@ use DigitalCraftsman\CQSRouting\Test\Utility\ConnectionSimulator;
 use DigitalCraftsman\CQSRouting\Test\Utility\SecuritySimulator;
 use DigitalCraftsman\CQSRouting\Test\Utility\ServiceLocatorSimulator;
 use DigitalCraftsman\CQSRouting\Test\Utility\VirusScannerSimulator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-/** @coversDefaultClass \DigitalCraftsman\CQSRouting\ServiceMap\ServiceMap */
+#[CoversClass(ServiceMap::class)]
+#[CoversClass(Exception\ConfiguredRequestValidatorNotAvailable::class)]
+#[CoversClass(Exception\ConfiguredRequestDecoderNotAvailable::class)]
+#[CoversClass(Exception\ConfiguredRequestDataTransformerNotAvailable::class)]
+#[CoversClass(Exception\ConfiguredDTOConstructorNotAvailable::class)]
+#[CoversClass(Exception\ConfiguredDTOValidatorNotAvailable::class)]
+#[CoversClass(Exception\ConfiguredHandlerWrapperNotAvailable::class)]
+#[CoversClass(Exception\ConfiguredCommandHandlerNotAvailable::class)]
+#[CoversClass(Exception\ConfiguredQueryHandlerNotAvailable::class)]
+#[CoversClass(Exception\ConfiguredResponseConstructorNotAvailable::class)]
 final class ServiceMapTest extends AppTestCase
 {
     private DenormalizerInterface $serializer;
@@ -61,14 +61,10 @@ final class ServiceMapTest extends AppTestCase
     // -- Construction
 
     /**
-     * @test
-     *
-     * @covers ::__construct
-     *
-     * @doesNotPerformAssertions
-     *
      * @noinspection PhpExpressionResultUnusedInspection
      */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function construction_works(): void
     {
         // -- Arrange & Act & Assert
@@ -112,12 +108,7 @@ final class ServiceMapTest extends AppTestCase
 
     // -- Request validators
 
-    /**
-     * @test
-     *
-     * @covers ::getRequestValidator
-     * @covers ::__construct
-     */
+    #[Test]
     public function get_request_validator_works_with_request_validator_classes(): void
     {
         // -- Arrange
@@ -134,15 +125,11 @@ final class ServiceMapTest extends AppTestCase
         self::assertSame(GuardAgainstFileWithVirusRequestValidator::class, $requestValidator::class);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getRequestValidator
-     */
+    #[Test]
     public function get_request_validator_fails_when_request_validator_class_is_not_available(): void
     {
         // -- Assert
-        $this->expectException(ConfiguredRequestValidatorNotAvailable::class);
+        $this->expectException(Exception\ConfiguredRequestValidatorNotAvailable::class);
 
         // -- Arrange
         $allRequestValidators = [
@@ -156,12 +143,7 @@ final class ServiceMapTest extends AppTestCase
 
     // -- Request decoders
 
-    /**
-     * @test
-     *
-     * @covers ::getRequestDecoder
-     * @covers ::__construct
-     */
+    #[Test]
     public function get_request_decoder_works_with_request_decoder_class(): void
     {
         // -- Arrange
@@ -172,42 +154,17 @@ final class ServiceMapTest extends AppTestCase
         $serviceMap = ServiceMapHelper::serviceMap(requestDecoders: $requestDecoders);
 
         // -- Act
-        $requestDecoder = $serviceMap->getRequestDecoder(CreateTaskRequestDecoder::class, null);
+        $requestDecoder = $serviceMap->getRequestDecoder(CreateTaskRequestDecoder::class);
 
         // -- Assert
         self::assertSame($createTaskRequestDecoder, $requestDecoder);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getRequestDecoder
-     */
-    public function get_request_decoder_works_with_default_request_decoder_class(): void
-    {
-        // -- Arrange
-        $requestDecoders = [
-            new CreateTaskRequestDecoder(),
-            $defaultRequestDecoder = new JsonRequestDecoder(),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(requestDecoders: $requestDecoders);
-
-        // -- Act
-        $requestDecoder = $serviceMap->getRequestDecoder(null, JsonRequestDecoder::class);
-
-        // -- Assert
-        self::assertSame($defaultRequestDecoder, $requestDecoder);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getRequestDecoder
-     */
+    #[Test]
     public function get_request_decoder_fails_when_request_decoder_class_is_not_available(): void
     {
         // -- Assert
-        $this->expectException(ConfiguredRequestDecoderNotAvailable::class);
+        $this->expectException(Exception\ConfiguredRequestDecoderNotAvailable::class);
 
         // -- Arrange
         $requestDecoders = [
@@ -216,54 +173,12 @@ final class ServiceMapTest extends AppTestCase
         $serviceMap = ServiceMapHelper::serviceMap(requestDecoders: $requestDecoders);
 
         // -- Act
-        $serviceMap->getRequestDecoder(CreateTaskRequestDecoder::class, null);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getRequestDecoder
-     */
-    public function get_request_decoder_fails_when_default_request_decoder_class_is_not_available(): void
-    {
-        // -- Assert
-        $this->expectException(ConfiguredRequestDecoderNotAvailable::class);
-
-        // -- Arrange
-        $requestDecoders = [
-            new CreateTaskRequestDecoder(),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(requestDecoders: $requestDecoders);
-
-        // -- Act
-        $serviceMap->getRequestDecoder(null, JsonRequestDecoder::class);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getRequestDecoder
-     */
-    public function get_request_decoder_fails_when_no_request_decoder_class_and_default_request_decoder_class_is_defined(): void
-    {
-        // -- Assert
-        $this->expectException(RequestDecoderOrDefaultRequestDecoderMustBeConfigured::class);
-
-        // -- Arrange
-        $serviceMap = ServiceMapHelper::serviceMap(requestDecoders: []);
-
-        // -- Act
-        $serviceMap->getRequestDecoder(null, null);
+        $serviceMap->getRequestDecoder(CreateTaskRequestDecoder::class);
     }
 
     // -- Request data transformers
 
-    /**
-     * @test
-     *
-     * @covers ::getRequestDataTransformer
-     * @covers ::__construct
-     */
+    #[Test]
     public function get_request_data_transformer_works_with_request_data_transformer_classes(): void
     {
         // -- Arrange
@@ -280,15 +195,11 @@ final class ServiceMapTest extends AppTestCase
         self::assertSame(DefineTaskHourContingentRequestDataTransformer::class, $requestDataTransformer::class);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getRequestDataTransformer
-     */
+    #[Test]
     public function get_request_data_transformer_fails_when_request_data_transformer_class_is_not_available(): void
     {
         // -- Assert
-        $this->expectException(ConfiguredRequestDataTransformerNotAvailable::class);
+        $this->expectException(Exception\ConfiguredRequestDataTransformerNotAvailable::class);
 
         // -- Arrange
         $allRequestDataTransformers = [
@@ -303,12 +214,7 @@ final class ServiceMapTest extends AppTestCase
 
     // -- DTO constructors
 
-    /**
-     * @test
-     *
-     * @covers ::getDTOConstructor
-     * @covers ::__construct
-     */
+    #[Test]
     public function get_dto_constructor_works_with_dto_constructor_class(): void
     {
         // -- Arrange
@@ -319,48 +225,17 @@ final class ServiceMapTest extends AppTestCase
         $serviceMap = ServiceMapHelper::serviceMap(dtoConstructors: $dtoConstructors);
 
         // -- Act
-        $dtoConstructor = $serviceMap->getDTOConstructor(
-            CreateTaskDTOConstructor::class,
-            null,
-        );
+        $dtoConstructor = $serviceMap->getDTOConstructor(CreateTaskDTOConstructor::class);
 
         // -- Assert
         self::assertSame($createTaskDTOConstructor, $dtoConstructor);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getDTOConstructor
-     */
-    public function get_dto_constructor_works_with_default_dto_constructor_class(): void
-    {
-        // -- Arrange
-        $dtoConstructors = [
-            $defaultDTOConstructor = new SerializerDTOConstructor($this->serializer),
-            new CreateTaskDTOConstructor(),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(dtoConstructors: $dtoConstructors);
-
-        // -- Act
-        $dtoConstructor = $serviceMap->getDTOConstructor(
-            null,
-            SerializerDTOConstructor::class,
-        );
-
-        // -- Assert
-        self::assertSame($defaultDTOConstructor, $dtoConstructor);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getDTOConstructor
-     */
+    #[Test]
     public function get_dto_constructor_fails_when_dto_constructor_class_is_not_available(): void
     {
         // -- Assert
-        $this->expectException(ConfiguredDTOConstructorNotAvailable::class);
+        $this->expectException(Exception\ConfiguredDTOConstructorNotAvailable::class);
 
         // -- Arrange
         $dtoConstructors = [
@@ -369,54 +244,12 @@ final class ServiceMapTest extends AppTestCase
         $serviceMap = ServiceMapHelper::serviceMap(dtoConstructors: $dtoConstructors);
 
         // -- Act
-        $serviceMap->getDTOConstructor(CreateTaskDTOConstructor::class, null);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getDTOConstructor
-     */
-    public function get_dto_constructor_fails_when_default_dto_constructor_class_is_not_available(): void
-    {
-        // -- Assert
-        $this->expectException(ConfiguredDTOConstructorNotAvailable::class);
-
-        // -- Arrange
-        $dtoConstructors = [
-            new CreateTaskDTOConstructor(),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(dtoConstructors: $dtoConstructors);
-
-        // -- Act
-        $serviceMap->getDTOConstructor(null, SerializerDTOConstructor::class);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getDTOConstructor
-     */
-    public function get_dto_constructor_fails_when_no_dto_constructor_class_and_default_dto_constructor_class_is_defined(): void
-    {
-        // -- Assert
-        $this->expectException(DTOConstructorOrDefaultDTOConstructorMustBeConfigured::class);
-
-        // -- Arrange
-        $serviceMap = ServiceMapHelper::serviceMap(dtoConstructors: []);
-
-        // -- Act
-        $serviceMap->getDTOConstructor(null, null);
+        $serviceMap->getDTOConstructor(CreateTaskDTOConstructor::class);
     }
 
     // -- DTO validators
 
-    /**
-     * @test
-     *
-     * @covers ::getDTOValidator
-     * @covers ::__construct
-     */
+    #[Test]
     public function get_dto_validator_works_with_dto_validators_classes(): void
     {
         // -- Arrange
@@ -433,15 +266,11 @@ final class ServiceMapTest extends AppTestCase
         self::assertSame(FileSizeValidator::class, $dtoValidator::class);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getDTOValidator
-     */
+    #[Test]
     public function get_dto_validator_fails_when_dto_validator_class_is_not_available(): void
     {
         // -- Assert
-        $this->expectException(ConfiguredDTOValidatorNotAvailable::class);
+        $this->expectException(Exception\ConfiguredDTOValidatorNotAvailable::class);
 
         // -- Arrange
         $allDTOValidators = [
@@ -455,12 +284,7 @@ final class ServiceMapTest extends AppTestCase
 
     // -- Handler wrappers
 
-    /**
-     * @test
-     *
-     * @covers ::getHandlerWrapper
-     * @covers ::__construct
-     */
+    #[Test]
     public function get_handler_wrapper_works(): void
     {
         // -- Arrange
@@ -477,15 +301,11 @@ final class ServiceMapTest extends AppTestCase
         self::assertSame(ConnectionTransactionWrapper::class, $handlerWrapper::class);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getHandlerWrapper
-     */
+    #[Test]
     public function get_handler_wrapper_fails_when_handler_wrapper_is_missing(): void
     {
         // -- Assert
-        $this->expectException(ConfiguredHandlerWrapperNotAvailable::class);
+        $this->expectException(Exception\ConfiguredHandlerWrapperNotAvailable::class);
 
         // -- Arrange
         $handlerWrappers = [
@@ -499,12 +319,7 @@ final class ServiceMapTest extends AppTestCase
 
     // -- Command handler
 
-    /**
-     * @test
-     *
-     * @covers ::getCommandHandler
-     * @covers ::__construct
-     */
+    #[Test]
     public function get_command_handler_works(): void
     {
         // -- Arrange
@@ -520,15 +335,11 @@ final class ServiceMapTest extends AppTestCase
         self::assertSame($createTaskCommandHandler, $commandHandler);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getCommandHandler
-     */
+    #[Test]
     public function get_command_handler_fails_if_not_available(): void
     {
         // -- Assert
-        $this->expectException(ConfiguredCommandHandlerNotAvailable::class);
+        $this->expectException(Exception\ConfiguredCommandHandlerNotAvailable::class);
 
         // -- Arrange
         $serviceMap = ServiceMapHelper::serviceMap(commandHandlers: []);
@@ -539,12 +350,7 @@ final class ServiceMapTest extends AppTestCase
 
     // -- Query handler
 
-    /**
-     * @test
-     *
-     * @covers ::getQueryHandler
-     * @covers ::__construct
-     */
+    #[Test]
     public function get_query_handler_works(): void
     {
         // -- Arrange
@@ -560,15 +366,11 @@ final class ServiceMapTest extends AppTestCase
         self::assertSame($getTasksQueryHandler, $queryHandler);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getQueryHandler
-     */
+    #[Test]
     public function get_query_handler_fails_if_not_available(): void
     {
         // -- Assert
-        $this->expectException(ConfiguredQueryHandlerNotAvailable::class);
+        $this->expectException(Exception\ConfiguredQueryHandlerNotAvailable::class);
 
         // -- Arrange
         $serviceMap = ServiceMapHelper::serviceMap(queryHandlers: []);
@@ -579,12 +381,7 @@ final class ServiceMapTest extends AppTestCase
 
     // -- Response constructors
 
-    /**
-     * @test
-     *
-     * @covers ::getResponseConstructor
-     * @covers ::__construct
-     */
+    #[Test]
     public function get_response_constructor_works_with_response_constructor_class(): void
     {
         // -- Arrange
@@ -595,48 +392,17 @@ final class ServiceMapTest extends AppTestCase
         $serviceMap = ServiceMapHelper::serviceMap(responseConstructors: $responseConstructors);
 
         // -- Act
-        $responseConstructor = $serviceMap->getResponseConstructor(
-            EmptyJsonResponseConstructor::class,
-            null,
-        );
+        $responseConstructor = $serviceMap->getResponseConstructor(EmptyJsonResponseConstructor::class);
 
         // -- Assert
         self::assertSame($emptyJsonResponseConstructor, $responseConstructor);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::getResponseConstructor
-     */
-    public function get_response_constructor_works_with_default_response_constructor_class(): void
-    {
-        // -- Arrange
-        $responseConstructors = [
-            new EmptyResponseConstructor(),
-            $defaultResponseConstructor = new EmptyJsonResponseConstructor(),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(responseConstructors: $responseConstructors);
-
-        // -- Act
-        $responseConstructor = $serviceMap->getResponseConstructor(
-            null,
-            EmptyJsonResponseConstructor::class,
-        );
-
-        // -- Assert
-        self::assertSame($defaultResponseConstructor, $responseConstructor);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getResponseConstructor
-     */
+    #[Test]
     public function get_response_constructor_fails_when_response_constructor_class_is_not_available(): void
     {
         // -- Assert
-        $this->expectException(ConfiguredResponseConstructorNotAvailable::class);
+        $this->expectException(Exception\ConfiguredResponseConstructorNotAvailable::class);
 
         // -- Arrange
         $responseConstructors = [
@@ -645,43 +411,6 @@ final class ServiceMapTest extends AppTestCase
         $serviceMap = ServiceMapHelper::serviceMap(responseConstructors: $responseConstructors);
 
         // -- Act
-        $serviceMap->getResponseConstructor(EmptyResponseConstructor::class, null);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getResponseConstructor
-     */
-    public function get_response_constructor_fails_when_default_response_constructor_class_is_not_available(): void
-    {
-        // -- Assert
-        $this->expectException(ConfiguredResponseConstructorNotAvailable::class);
-
-        // -- Arrange
-        $responseConstructors = [
-            new EmptyResponseConstructor(),
-        ];
-        $serviceMap = ServiceMapHelper::serviceMap(responseConstructors: $responseConstructors);
-
-        // -- Act
-        $serviceMap->getResponseConstructor(null, EmptyJsonResponseConstructor::class);
-    }
-
-    /**
-     * @test
-     *
-     * @covers ::getResponseConstructor
-     */
-    public function get_response_constructor_fails_when_no_response_constructor_class_and_default_response_constructor_class_is_defined(): void
-    {
-        // -- Assert
-        $this->expectException(ResponseConstructorOrDefaultResponseConstructorMustBeConfigured::class);
-
-        // -- Arrange
-        $serviceMap = ServiceMapHelper::serviceMap(responseConstructors: []);
-
-        // -- Act
-        $serviceMap->getResponseConstructor(null, null);
+        $serviceMap->getResponseConstructor(EmptyResponseConstructor::class);
     }
 }

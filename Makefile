@@ -88,6 +88,10 @@ php-tests: php-8.4-tests
 php-8.4-tests:
 	docker compose run --rm php-8.4 ./vendor/bin/phpunit
 
+## php-tests-coverage			Run the tests for all relevant PHP versions.
+.PHONY: php-tests-coverage
+php-tests-coverage: php-8.4-tests-html-coverage
+
 ## php-8.4-tests-html-coverage	Run the tests with PHP 8.4 including coverage report as HTML.
 .PHONY: php-8.4-tests-html-coverage
 php-8.4-tests-html-coverage:
@@ -97,7 +101,7 @@ php-8.4-tests-html-coverage:
 .PHONY: php-code-validation
 php-code-validation:
 	docker compose run --rm php-8.4 ./vendor/bin/php-cs-fixer fix
-	docker compose run --rm php-8.4 ./vendor/bin/psalm --show-info=false --no-diff
+	docker compose run --rm php-8.4 ./vendor/bin/psalm --show-info=false --no-diff --no-cache
 
 ##
 ## CI
