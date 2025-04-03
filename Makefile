@@ -56,11 +56,6 @@ reset: .reset
 .PHONY: .install
 install: install-8.4
 
-## install-8.3			Install PHP dependencies with PHP 8.3.
-.PHONY: install-8.3
-install-8.3:
-	docker compose run --rm php-8.3 composer install
-
 ## install-8.4			Install PHP dependencies with PHP 8.4.
 .PHONY: install-8.4
 install-8.4:
@@ -69,11 +64,6 @@ install-8.4:
 ## php-cli			Enter a shell for the default PHP version (8.4).
 .PHONY: php-cli
 php-cli: php-8.4-cli
-
-## php-8.3-cli			Enter a shell for PHP 8.3.
-.PHONY: php-8.3-cli
-php-8.3-cli:
-	docker compose run --rm php-8.3 sh
 
 ## php-8.4-cli			Enter a shell for PHP 8.4.
 .PHONY: php-8.4-cli
@@ -91,22 +81,12 @@ verify: php-code-validation php-tests
 
 ## php-tests			Run the tests for all relevant PHP versions.
 .PHONY: php-tests
-php-tests: php-8.3-tests php-8.4-tests
-
-## php-8.3-tests			Run tests with PHP 8.3.
-.PHONY: php-8.3-tests
-php-8.3-tests:
-	docker compose run --rm php-8.3 ./vendor/bin/phpunit
+php-tests: php-8.4-tests
 
 ## php-8.4-tests			Run tests with PHP 8.4.
 .PHONY: php-8.4-tests
 php-8.4-tests:
 	docker compose run --rm php-8.4 ./vendor/bin/phpunit
-
-## php-8.3-tests-html-coverage	Run the tests with PHP 8.3 including coverage report as HTML.
-.PHONY: php-8.3-tests-html-coverage
-php-8.3-tests-html-coverage:
-	docker compose run --rm php-8.3 ./vendor/bin/phpunit --coverage-html ./coverage
 
 ## php-8.4-tests-html-coverage	Run the tests with PHP 8.4 including coverage report as HTML.
 .PHONY: php-8.4-tests-html-coverage
@@ -124,12 +104,7 @@ php-code-validation:
 ## --
 ##
 
-## php-8.3-tests-ci		Run the tests for PHP 8.3 for CI.
-.PHONY: php-8.3-tests-ci
-php-8.3-tests-ci:
-	docker compose run --rm php-8.3 ./vendor/bin/phpunit --coverage-clover ./coverage.xml
-
 ## php-8.4-tests-ci		Run the tests for PHP 8.4 for CI.
 .PHONY: php-8.4-tests-ci
 php-8.4-tests-ci:
-	docker compose run --rm php-8.4 ./vendor/bin/phpunit
+	docker compose run --rm php-8.4 ./vendor/bin/phpunit --coverage-clover ./coverage.xml

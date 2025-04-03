@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @psalm-import-type NormalizedConfigurationParameters from RoutePayload
  */
-interface RequestValidatorInterface
+interface RequestValidator
 {
     /**
      * @param NormalizedConfigurationParameters $parameters

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQSRouting\Test\RequestValidator;
 
-use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidatorInterface;
+use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidator;
 use DigitalCraftsman\CQSRouting\Test\Utility\VirusScannerSimulator;
 use Symfony\Component\HttpFoundation\Request;
 
-final readonly class GuardAgainstFileWithVirusRequestValidator implements RequestValidatorInterface
+final readonly class GuardAgainstFileWithVirusRequestValidator implements RequestValidator
 {
     public function __construct(
         private VirusScannerSimulator $virusScanner,
@@ -16,6 +16,7 @@ final readonly class GuardAgainstFileWithVirusRequestValidator implements Reques
     }
 
     /** @param null $parameters */
+    #[\Override]
     public function validateRequest(
         Request $request,
         mixed $parameters,
@@ -26,6 +27,7 @@ final readonly class GuardAgainstFileWithVirusRequestValidator implements Reques
     }
 
     /** @param null $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         return $parameters === null;

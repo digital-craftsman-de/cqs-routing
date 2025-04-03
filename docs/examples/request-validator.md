@@ -3,7 +3,7 @@
 **Interface**
 
 ```php
-interface RequestValidatorInterface
+interface RequestValidator
 {
     /** @param scalar|array<array-key, scalar|null>|null $parameters */
     public function validateRequest(
@@ -23,7 +23,7 @@ See [position in process](../process.md#request-validator)
 You might want to validate files that are uploaded against virus databases before they are given to the business logic. You might have a separate class `VirusFreeFile` that extends `UploadedFile` and is constructed as part of the DTO. So you need to do the virus scan process before you construct the command. Your validator might look like the following:
 
 ```php
-final readonly class VirusFreeFilesRequestValidator implements RequestValidatorInterface
+final readonly class VirusFreeFilesRequestValidator implements RequestValidator
 {
     public function __construct(
         private VirusScanner $virusScanner,

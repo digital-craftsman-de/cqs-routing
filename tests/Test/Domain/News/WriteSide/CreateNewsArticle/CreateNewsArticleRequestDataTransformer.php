@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle;
 
-use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformerInterface;
+use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformer;
 
-final class CreateNewsArticleRequestDataTransformer implements RequestDataTransformerInterface
+final readonly class CreateNewsArticleRequestDataTransformer implements RequestDataTransformer
 {
     /**
      * @param class-string $dtoClass
@@ -15,6 +15,7 @@ final class CreateNewsArticleRequestDataTransformer implements RequestDataTransf
      * } $requestData
      * @param null $parameters
      */
+    #[\Override]
     public function transformRequestData(string $dtoClass, array $requestData, mixed $parameters): array
     {
         $requestData['content'] = strip_tags($requestData['content'], '<p><br><strong>');
@@ -23,6 +24,7 @@ final class CreateNewsArticleRequestDataTransformer implements RequestDataTransf
     }
 
     /** @param null $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         return $parameters === null;

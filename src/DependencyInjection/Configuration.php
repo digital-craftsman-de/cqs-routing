@@ -13,6 +13,7 @@ final class Configuration implements ConfigurationInterface
      * @psalm-suppress MixedMethodCall
      * @psalm-suppress UndefinedMethod
      */
+    #[\Override]
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('cqs_routing');

@@ -1,5 +1,37 @@
 # Upgrade guide
 
+## From 1.1.* to 2.0.0
+
+### Dropped `*Interface` suffix from interfaces
+
+The `*Interface` suffix was dropped from all interfaces. The interfaces are now named `DTOConstructor`, `RequestDecoder`, `ResponseConstructor`, `DTOValidator`, `RequestValidator`, `RequestDataTransformer` and `HandlerWrapper`.
+
+You can use search and replace to rename the `use` and `implements` statements in your implementations.
+
+Before:
+
+```php
+use DigitalCraftsman\CQRS\Routing\RequestDecoderInterface;
+
+final readonly class JsonRequestDecoder implements RequestDecoderInterface
+```
+
+After:
+
+```php
+use DigitalCraftsman\CQRS\Routing\RequestDecoder;
+
+final readonly class JsonRequestDecoder implements RequestDecoder
+```
+
+### Dropped support for PHP 8.3
+
+Upgrade to at least PHP 8.4.
+
+### Dropped support for Symfony 6.4
+
+Upgrade to at least Symfony 7.0.
+
 ## From 1.0.* to 1.1.0
 
 ### Dropped support for PHP 8.2

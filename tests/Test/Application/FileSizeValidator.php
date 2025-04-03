@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace DigitalCraftsman\CQSRouting\Test\Application;
 
 use DigitalCraftsman\CQSRouting\Command\Command;
-use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidatorInterface;
+use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidator;
 use DigitalCraftsman\CQSRouting\Query\Query;
 use DigitalCraftsman\CQSRouting\Test\Application\Exception\FileSizeTooLarge;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
-final class FileSizeValidator implements DTOValidatorInterface
+final class FileSizeValidator implements DTOValidator
 {
     /** @param int $parameters Max upload size in MB */
+    #[\Override]
     public function validateDTO(
         Request $request,
         Command | Query $dto,
@@ -43,6 +44,7 @@ final class FileSizeValidator implements DTOValidatorInterface
     }
 
     /** @param int $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         return is_int($parameters)

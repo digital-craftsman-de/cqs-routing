@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace DigitalCraftsman\CQSRouting\Routing;
 
 use DigitalCraftsman\CQSRouting\Command\Command;
-use DigitalCraftsman\CQSRouting\Command\CommandHandlerInterface;
+use DigitalCraftsman\CQSRouting\Command\CommandHandler;
 use DigitalCraftsman\CQSRouting\Controller\CommandController;
 use DigitalCraftsman\CQSRouting\Controller\QueryController;
-use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructorInterface;
-use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidatorInterface;
-use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructor;
+use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidator;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapper;
 use DigitalCraftsman\CQSRouting\Query\Query;
-use DigitalCraftsman\CQSRouting\Query\QueryHandlerInterface;
-use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformerInterface;
-use DigitalCraftsman\CQSRouting\RequestDecoder\RequestDecoderInterface;
-use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidatorInterface;
-use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructorInterface;
+use DigitalCraftsman\CQSRouting\Query\QueryHandler;
+use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformer;
+use DigitalCraftsman\CQSRouting\RequestDecoder\RequestDecoder;
+use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidator;
+use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructor;
 use DigitalCraftsman\CQSRouting\Routing\Exception\ClassIsNetherCommandHandlerNorQueryHandler;
 use DigitalCraftsman\CQSRouting\Routing\Exception\ClassIsNetherCommandNorQuery;
 use DigitalCraftsman\CQSRouting\Routing\Exception\ClassIsNoDTOConstructor;
@@ -44,19 +44,19 @@ final readonly class RouteBuilder
      * Default name is generated from path. Set it specifically when you're using the name as a reference somewhere.
      * Default method is POST.
      *
-     * @param class-string<Command>|class-string<Query>                                                    $dtoClass
-     * @param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>                    $handlerClass
-     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null       $requestValidatorClasses
-     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null       $requestValidatorClassesToMergeWithDefault
-     * @param class-string<RequestDecoderInterface>|null                                                   $requestDecoderClass
-     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $requestDataTransformerClasses
-     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $requestDataTransformerClassesToMergeWithDefault
-     * @param class-string<DTOConstructorInterface>|null                                                   $dtoConstructorClass
-     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null           $dtoValidatorClasses
-     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null           $dtoValidatorClassesToMergeWithDefault
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null         $handlerWrapperClasses
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null         $handlerWrapperClassesToMergeWithDefault
-     * @param class-string<ResponseConstructorInterface>|null                                              $responseConstructorClass
+     * @param class-string<Command>|class-string<Query>                                           $dtoClass
+     * @param class-string<CommandHandler>|class-string<QueryHandler>                             $handlerClass
+     * @param array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null       $requestValidatorClasses
+     * @param array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null       $requestValidatorClassesToMergeWithDefault
+     * @param class-string<RequestDecoder>|null                                                   $requestDecoderClass
+     * @param array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null $requestDataTransformerClasses
+     * @param array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null $requestDataTransformerClassesToMergeWithDefault
+     * @param class-string<DTOConstructor>|null                                                   $dtoConstructorClass
+     * @param array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null           $dtoValidatorClasses
+     * @param array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null           $dtoValidatorClassesToMergeWithDefault
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null         $handlerWrapperClasses
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null         $handlerWrapperClassesToMergeWithDefault
+     * @param class-string<ResponseConstructor>|null                                              $responseConstructorClass
      *
      * @codeCoverageIgnore
      * There seems to be no way to get a RoutingConfigurator instance. Therefore, it's not really possible to test this builder.
@@ -140,19 +140,19 @@ final readonly class RouteBuilder
      * Default name is generated from path. Set it specifically when you're using the name as a reference somewhere.
      * Default method is POST.
      *
-     * @param class-string<Command>|class-string<Query>                                                    $dtoClass
-     * @param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>                    $handlerClass
-     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null       $requestValidatorClasses
-     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null       $requestValidatorClassesToMergeWithDefault
-     * @param class-string<RequestDecoderInterface>|null                                                   $requestDecoderClass
-     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $requestDataTransformerClasses
-     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $requestDataTransformerClassesToMergeWithDefault
-     * @param class-string<DTOConstructorInterface>|null                                                   $dtoConstructorClass
-     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null           $dtoValidatorClasses
-     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null           $dtoValidatorClassesToMergeWithDefault
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null         $handlerWrapperClasses
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null         $handlerWrapperClassesToMergeWithDefault
-     * @param class-string<ResponseConstructorInterface>|null                                              $responseConstructorClass
+     * @param class-string<Command>|class-string<Query>                                           $dtoClass
+     * @param class-string<CommandHandler>|class-string<QueryHandler>                             $handlerClass
+     * @param array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null       $requestValidatorClasses
+     * @param array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null       $requestValidatorClassesToMergeWithDefault
+     * @param class-string<RequestDecoder>|null                                                   $requestDecoderClass
+     * @param array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null $requestDataTransformerClasses
+     * @param array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null $requestDataTransformerClassesToMergeWithDefault
+     * @param class-string<DTOConstructor>|null                                                   $dtoConstructorClass
+     * @param array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null           $dtoValidatorClasses
+     * @param array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null           $dtoValidatorClassesToMergeWithDefault
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null         $handlerWrapperClasses
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null         $handlerWrapperClassesToMergeWithDefault
+     * @param class-string<ResponseConstructor>|null                                              $responseConstructorClass
      *
      * @codeCoverageIgnore
      * There seems to be no way to get a RoutingConfigurator instance. Therefore, it's not really possible to test this builder.
@@ -272,7 +272,7 @@ final readonly class RouteBuilder
     }
 
     /**
-     * @param class-string<CommandHandlerInterface|QueryHandlerInterface> $handlerClass
+     * @param class-string<CommandHandler|QueryHandler> $handlerClass
      *
      * @internal
      */
@@ -283,16 +283,16 @@ final readonly class RouteBuilder
         }
 
         $reflectionClass = new \ReflectionClass($handlerClass);
-        if (!$reflectionClass->implementsInterface(CommandHandlerInterface::class)
-            && !$reflectionClass->implementsInterface(QueryHandlerInterface::class)
+        if (!$reflectionClass->implementsInterface(CommandHandler::class)
+            && !$reflectionClass->implementsInterface(QueryHandler::class)
         ) {
             throw new ClassIsNetherCommandHandlerNorQueryHandler($handlerClass);
         }
     }
 
     /**
-     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null $requestValidatorClasses
-     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null $requestValidatorClassesToMergeWithDefault
+     * @param array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null $requestValidatorClasses
+     * @param array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null $requestValidatorClassesToMergeWithDefault
      *
      * @internal
      */
@@ -327,7 +327,7 @@ final readonly class RouteBuilder
 
             $reflectionClass = new \ReflectionClass($class);
             /** @psalm-suppress TypeDoesNotContainType It's possible that due to configuration issues, something else is supplied. */
-            if (!$reflectionClass->implementsInterface(RequestValidatorInterface::class)) {
+            if (!$reflectionClass->implementsInterface(RequestValidator::class)) {
                 throw new ClassIsNoRequestValidator($class);
             }
 
@@ -338,7 +338,7 @@ final readonly class RouteBuilder
     }
 
     /**
-     * @param class-string<RequestDecoderInterface>|null $requestDecoderClass
+     * @param class-string<RequestDecoder>|null $requestDecoderClass
      *
      * @internal
      */
@@ -351,15 +351,15 @@ final readonly class RouteBuilder
 
             $reflectionClass = new \ReflectionClass($requestDecoderClass);
             /** @psalm-suppress TypeDoesNotContainType It's possible that due to configuration issues, something else is supplied. */
-            if (!$reflectionClass->implementsInterface(RequestDecoderInterface::class)) {
+            if (!$reflectionClass->implementsInterface(RequestDecoder::class)) {
                 throw new ClassIsNoRequestDecoder($requestDecoderClass);
             }
         }
     }
 
     /**
-     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $requestDataTransformerClasses
-     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $requestDataTransformerClassesToMergeWithDefault
+     * @param array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null $requestDataTransformerClasses
+     * @param array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null $requestDataTransformerClassesToMergeWithDefault
      *
      * @internal
      */
@@ -394,7 +394,7 @@ final readonly class RouteBuilder
 
             $reflectionClass = new \ReflectionClass($class);
             /** @psalm-suppress TypeDoesNotContainType It's possible that due to configuration issues, something else is supplied. */
-            if (!$reflectionClass->implementsInterface(RequestDataTransformerInterface::class)) {
+            if (!$reflectionClass->implementsInterface(RequestDataTransformer::class)) {
                 throw new ClassIsNoRequestDataTransformer($class);
             }
 
@@ -405,7 +405,7 @@ final readonly class RouteBuilder
     }
 
     /**
-     * @param class-string<DTOConstructorInterface>|null $dtoConstructorClass
+     * @param class-string<DTOConstructor>|null $dtoConstructorClass
      *
      * @internal
      */
@@ -418,15 +418,15 @@ final readonly class RouteBuilder
 
             $reflectionClass = new \ReflectionClass($dtoConstructorClass);
             /** @psalm-suppress TypeDoesNotContainType It's possible that due to configuration issues, something else is supplied. */
-            if (!$reflectionClass->implementsInterface(DTOConstructorInterface::class)) {
+            if (!$reflectionClass->implementsInterface(DTOConstructor::class)) {
                 throw new ClassIsNoDTOConstructor($dtoConstructorClass);
             }
         }
     }
 
     /**
-     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null $dtoValidatorClasses
-     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null $dtoValidatorClassesToMergeWithDefault
+     * @param array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null $dtoValidatorClasses
+     * @param array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null $dtoValidatorClassesToMergeWithDefault
      *
      * @internal
      */
@@ -461,7 +461,7 @@ final readonly class RouteBuilder
 
             $reflectionClass = new \ReflectionClass($class);
             /** @psalm-suppress TypeDoesNotContainType It's possible that due to configuration issues, something else is supplied. */
-            if (!$reflectionClass->implementsInterface(DTOValidatorInterface::class)) {
+            if (!$reflectionClass->implementsInterface(DTOValidator::class)) {
                 throw new ClassIsNoDTOValidator($class);
             }
 
@@ -472,8 +472,8 @@ final readonly class RouteBuilder
     }
 
     /**
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null $handlerWrapperClasses
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null $handlerWrapperClassesToMergeWithDefault
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null $handlerWrapperClasses
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null $handlerWrapperClassesToMergeWithDefault
      *
      * @internal
      */
@@ -508,7 +508,7 @@ final readonly class RouteBuilder
 
             $reflectionClass = new \ReflectionClass($class);
             /** @psalm-suppress TypeDoesNotContainType It's possible that due to configuration issues, something else is supplied. */
-            if (!$reflectionClass->implementsInterface(HandlerWrapperInterface::class)) {
+            if (!$reflectionClass->implementsInterface(HandlerWrapper::class)) {
                 throw new ClassIsNoHandlerWrapper($class);
             }
 
@@ -519,7 +519,7 @@ final readonly class RouteBuilder
     }
 
     /**
-     * @param class-string<ResponseConstructorInterface>|null $responseConstructorClass
+     * @param class-string<ResponseConstructor>|null $responseConstructorClass
      *
      * @internal
      */
@@ -532,7 +532,7 @@ final readonly class RouteBuilder
 
             $reflectionClass = new \ReflectionClass($responseConstructorClass);
             /** @psalm-suppress TypeDoesNotContainType It's possible that due to configuration issues, something else is supplied. */
-            if (!$reflectionClass->implementsInterface(ResponseConstructorInterface::class)) {
+            if (!$reflectionClass->implementsInterface(ResponseConstructor::class)) {
                 throw new ClassIsNoResponseConstructor($responseConstructorClass);
             }
         }

@@ -49,6 +49,7 @@ final class ServiceMapTest extends AppTestCase
     private DenormalizerInterface $serializer;
     private SecuritySimulator $securitySimulator;
 
+    #[\Override]
     public function setUp(): void
     {
         parent::setUp();

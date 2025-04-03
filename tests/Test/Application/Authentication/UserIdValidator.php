@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DigitalCraftsman\CQSRouting\Test\Application\Authentication;
 
 use DigitalCraftsman\CQSRouting\Command\Command;
-use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidatorInterface;
+use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidator;
 use DigitalCraftsman\CQSRouting\Query\Query;
 use DigitalCraftsman\CQSRouting\Test\Application\Authentication\Exception\NotRelevantForDTO;
 use DigitalCraftsman\CQSRouting\Test\Utility\SecuritySimulator;
@@ -13,7 +13,7 @@ use DigitalCraftsman\CQSRouting\Test\ValueObject\UserId;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-final class UserIdValidator implements DTOValidatorInterface
+final class UserIdValidator implements DTOValidator
 {
     public function __construct(
         private readonly SecuritySimulator $securitySimulator,
@@ -21,6 +21,7 @@ final class UserIdValidator implements DTOValidatorInterface
     }
 
     /** @param null $parameters */
+    #[\Override]
     public function validateDTO(
         Request $request,
         Command | Query $dto,
@@ -45,6 +46,7 @@ final class UserIdValidator implements DTOValidatorInterface
     }
 
     /** @param null $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         return $parameters === null;

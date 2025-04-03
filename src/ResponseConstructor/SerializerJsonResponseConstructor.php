@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 
-final readonly class SerializerJsonResponseConstructor implements ResponseConstructorInterface
+final readonly class SerializerJsonResponseConstructor implements ResponseConstructor
 {
     /**
      * @codeCoverageIgnore
@@ -20,6 +20,7 @@ final readonly class SerializerJsonResponseConstructor implements ResponseConstr
     ) {
     }
 
+    #[\Override]
     public function constructResponse($data, Request $request): JsonResponse
     {
         $content = $this->serializer->serialize($data, JsonEncoder::FORMAT);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQSRouting\HandlerWrapper\DTO;
 
-use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapper;
 use DigitalCraftsman\CQSRouting\Routing\RoutePayload;
 
 /**
@@ -28,13 +28,13 @@ final readonly class HandlerWrapperStep
     public const STEP_CATCH = 'CATCH';
 
     /**
-     * @var array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>
+     * @var array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>
      */
     public array $orderedHandlerWrapperClasses;
 
     /**
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters> $handlerWrapperClasses
-     * @param self::STEP_*                                                                    $step
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters> $handlerWrapperClasses
+     * @param self::STEP_*                                                           $step
      */
     private function __construct(
         array $handlerWrapperClasses,
@@ -44,8 +44,8 @@ final readonly class HandlerWrapperStep
         uksort(
             $handlerWrapperClasses,
             /**
-             * @param class-string<HandlerWrapperInterface> $handlerWrapperClassA
-             * @param class-string<HandlerWrapperInterface> $handlerWrapperClassB
+             * @param class-string<HandlerWrapper> $handlerWrapperClassA
+             * @param class-string<HandlerWrapper> $handlerWrapperClassB
              */
             static fn (
                 string $handlerWrapperClassA,
@@ -57,7 +57,7 @@ final readonly class HandlerWrapperStep
     }
 
     /**
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters> $handlerWrapperClasses
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters> $handlerWrapperClasses
      */
     public static function prepare(array $handlerWrapperClasses): self
     {
@@ -68,7 +68,7 @@ final readonly class HandlerWrapperStep
     }
 
     /**
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters> $handlerWrapperClasses
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters> $handlerWrapperClasses
      */
     public static function then(array $handlerWrapperClasses): self
     {
@@ -79,7 +79,7 @@ final readonly class HandlerWrapperStep
     }
 
     /**
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters> $handlerWrapperClasses
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters> $handlerWrapperClasses
      */
     public static function catch(array $handlerWrapperClasses): self
     {
@@ -90,8 +90,8 @@ final readonly class HandlerWrapperStep
     }
 
     /**
-     * @param class-string<HandlerWrapperInterface> $handlerWrapperClass
-     * @param self::STEP_*                          $step
+     * @param class-string<HandlerWrapper> $handlerWrapperClass
+     * @param self::STEP_*                 $step
      */
     private static function getPriorityForStep(string $handlerWrapperClass, string $step): ?int
     {

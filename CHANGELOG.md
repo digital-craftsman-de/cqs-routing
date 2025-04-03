@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0
+
+- **[Breaking change](./UPGRADE.md#dropped-interface-suffix-from-interfaces)**: Dropped `*Interface` suffix from interfaces.
+- **[Breaking change](./UPGRADE.md#dropped-support-for-php-83)**: Dropped support for PHP 8.3.
+- **[Breaking change](./UPGRADE.md#dropped-support-for-symfony-64)**: Dropped support for Symfony 6.4.
+
 ## 1.1.0
 
 - Added support for PHP 8.4.

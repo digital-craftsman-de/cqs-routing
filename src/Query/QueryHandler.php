@@ -7,6 +7,6 @@ namespace DigitalCraftsman\CQSRouting\Query;
 /**
  * @method mixed __invoke(Query $query)
  */
-interface QueryHandlerInterface
+interface QueryHandler
 {
 }

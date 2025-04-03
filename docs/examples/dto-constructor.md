@@ -3,7 +3,7 @@
 **Interface**
 
 ```php
-interface DTOConstructorInterface
+interface DTOConstructor
 {
     /**
     * @return Command|Query
@@ -25,7 +25,7 @@ See [position in process](../process.md#dto-constructor)
 A possible implementation of a constructor is one that uses the Symfony serializer like this that is already built-in:
 
 ```php
-final readonly class SerializerDTOConstructor implements DTOConstructorInterface
+final readonly class SerializerDTOConstructor implements DTOConstructor
 {
     public function __construct(
         private DenormalizerInterface $serializer,

@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQSRouting\Test\RequestValidator;
 
-use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidatorInterface;
+use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidator;
 use Symfony\Component\HttpFoundation\Request;
 
-final readonly class GuardAgainstTokenInHeaderRequestValidator implements RequestValidatorInterface
+final readonly class GuardAgainstTokenInHeaderRequestValidator implements RequestValidator
 {
     /** @param null $parameters */
+    #[\Override]
     public function validateRequest(
         Request $request,
         mixed $parameters,
@@ -20,6 +21,7 @@ final readonly class GuardAgainstTokenInHeaderRequestValidator implements Reques
     }
 
     /** @param null $parameters */
+    #[\Override]
     public static function areParametersValid(mixed $parameters): bool
     {
         return $parameters === null;
