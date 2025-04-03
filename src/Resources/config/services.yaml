@@ -1,3 +1,6 @@
+imports:
+  - { resource: services_test.yaml, env: 'test' }
+
 services:
 
   # Request decoders
