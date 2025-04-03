@@ -71,7 +71,7 @@ final class CQSRoutingExtension extends Extension
 
         /**
          * @var array{
-         *   query_controller: array{
+         *   query: array{
          *     default_request_validator_classes: array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null,
          *     default_request_decoder_class: class-string<RequestDecoder>|null,
          *     default_request_data_transformer_classes: array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null,
@@ -80,7 +80,7 @@ final class CQSRoutingExtension extends Extension
          *     default_handler_wrapper_classes: array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null,
          *     default_response_constructor_class: class-string<ResponseConstructor>|null,
          *   },
-         *   command_controller: array{
+         *   command: array{
          *     default_request_validator_classes: array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null,
          *     default_request_decoder_class: class-string<RequestDecoder>|null,
          *     default_request_data_transformer_classes: array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null,
@@ -94,51 +94,51 @@ final class CQSRoutingExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         RouteBuilder::validateRequestValidatorClasses(
-            $config['query_controller']['default_request_validator_classes'],
+            $config['query']['default_request_validator_classes'],
             null,
         );
-        RouteBuilder::validateRequestDecoderClass($config['query_controller']['default_request_decoder_class']);
+        RouteBuilder::validateRequestDecoderClass($config['query']['default_request_decoder_class']);
         RouteBuilder::validateRequestDataTransformerClasses(
-            $config['query_controller']['default_request_data_transformer_classes'],
+            $config['query']['default_request_data_transformer_classes'],
             null,
         );
-        RouteBuilder::validateDTOConstructorClass($config['query_controller']['default_dto_constructor_class']);
+        RouteBuilder::validateDTOConstructorClass($config['query']['default_dto_constructor_class']);
         RouteBuilder::validateDTOValidatorClasses(
-            $config['query_controller']['default_dto_validator_classes'],
+            $config['query']['default_dto_validator_classes'],
             null,
         );
         RouteBuilder::validateHandlerWrapperClasses(
-            $config['query_controller']['default_handler_wrapper_classes'],
+            $config['query']['default_handler_wrapper_classes'],
             null,
         );
-        RouteBuilder::validateResponseConstructorClass($config['query_controller']['default_response_constructor_class']);
+        RouteBuilder::validateResponseConstructorClass($config['query']['default_response_constructor_class']);
 
         RouteBuilder::validateRequestValidatorClasses(
-            $config['command_controller']['default_request_validator_classes'],
+            $config['command']['default_request_validator_classes'],
             null,
         );
-        RouteBuilder::validateRequestDecoderClass($config['command_controller']['default_request_decoder_class']);
+        RouteBuilder::validateRequestDecoderClass($config['command']['default_request_decoder_class']);
         RouteBuilder::validateRequestDataTransformerClasses(
-            $config['command_controller']['default_request_data_transformer_classes'],
+            $config['command']['default_request_data_transformer_classes'],
             null,
         );
-        RouteBuilder::validateDTOConstructorClass($config['command_controller']['default_dto_constructor_class']);
+        RouteBuilder::validateDTOConstructorClass($config['command']['default_dto_constructor_class']);
         RouteBuilder::validateDTOValidatorClasses(
-            $config['command_controller']['default_dto_validator_classes'],
+            $config['command']['default_dto_validator_classes'],
             null,
         );
         RouteBuilder::validateHandlerWrapperClasses(
-            $config['command_controller']['default_handler_wrapper_classes'],
+            $config['command']['default_handler_wrapper_classes'],
             null,
         );
-        RouteBuilder::validateResponseConstructorClass($config['command_controller']['default_response_constructor_class']);
+        RouteBuilder::validateResponseConstructorClass($config['command']['default_response_constructor_class']);
 
-        foreach ($config['query_controller'] as $key => $value) {
-            $container->setParameter('cqs_routing.query_controller.'.$key, $value);
+        foreach ($config['query'] as $key => $value) {
+            $container->setParameter('cqs_routing.query.'.$key, $value);
         }
 
-        foreach ($config['command_controller'] as $key => $value) {
-            $container->setParameter('cqs_routing.command_controller.'.$key, $value);
+        foreach ($config['command'] as $key => $value) {
+            $container->setParameter('cqs_routing.command.'.$key, $value);
         }
     }
 }

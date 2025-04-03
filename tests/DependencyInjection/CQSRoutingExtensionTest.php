@@ -34,27 +34,27 @@ final class CQSRoutingExtensionTest extends TestCase
 
         // No data is supplied as config, therefore the parameters are set, but empty
         /** @psalm-suppress PossiblyInvalidArgument */
-        self::assertCount(0, $container->getParameter('cqs_routing.query_controller.default_request_validator_classes'));
-        self::assertNull($container->getParameter('cqs_routing.query_controller.default_request_decoder_class'));
+        self::assertCount(0, $container->getParameter('cqs_routing.query.default_request_validator_classes'));
+        self::assertNull($container->getParameter('cqs_routing.query.default_request_decoder_class'));
         /** @psalm-suppress PossiblyInvalidArgument */
-        self::assertCount(0, $container->getParameter('cqs_routing.query_controller.default_request_data_transformer_classes'));
-        self::assertNull($container->getParameter('cqs_routing.query_controller.default_dto_constructor_class'));
+        self::assertCount(0, $container->getParameter('cqs_routing.query.default_request_data_transformer_classes'));
+        self::assertNull($container->getParameter('cqs_routing.query.default_dto_constructor_class'));
         /** @psalm-suppress PossiblyInvalidArgument */
-        self::assertCount(0, $container->getParameter('cqs_routing.query_controller.default_dto_validator_classes'));
+        self::assertCount(0, $container->getParameter('cqs_routing.query.default_dto_validator_classes'));
         /** @psalm-suppress PossiblyInvalidArgument */
-        self::assertCount(0, $container->getParameter('cqs_routing.query_controller.default_handler_wrapper_classes'));
-        self::assertNull($container->getParameter('cqs_routing.query_controller.default_response_constructor_class'));
+        self::assertCount(0, $container->getParameter('cqs_routing.query.default_handler_wrapper_classes'));
+        self::assertNull($container->getParameter('cqs_routing.query.default_response_constructor_class'));
 
         /** @psalm-suppress PossiblyInvalidArgument */
-        self::assertCount(0, $container->getParameter('cqs_routing.command_controller.default_request_validator_classes'));
-        self::assertNull($container->getParameter('cqs_routing.command_controller.default_request_decoder_class'));
+        self::assertCount(0, $container->getParameter('cqs_routing.command.default_request_validator_classes'));
+        self::assertNull($container->getParameter('cqs_routing.command.default_request_decoder_class'));
         /** @psalm-suppress PossiblyInvalidArgument */
-        self::assertCount(0, $container->getParameter('cqs_routing.command_controller.default_request_data_transformer_classes'));
-        self::assertNull($container->getParameter('cqs_routing.command_controller.default_dto_constructor_class'));
+        self::assertCount(0, $container->getParameter('cqs_routing.command.default_request_data_transformer_classes'));
+        self::assertNull($container->getParameter('cqs_routing.command.default_dto_constructor_class'));
         /** @psalm-suppress PossiblyInvalidArgument */
-        self::assertCount(0, $container->getParameter('cqs_routing.command_controller.default_dto_validator_classes'));
+        self::assertCount(0, $container->getParameter('cqs_routing.command.default_dto_validator_classes'));
         /** @psalm-suppress PossiblyInvalidArgument */
-        self::assertCount(0, $container->getParameter('cqs_routing.command_controller.default_handler_wrapper_classes'));
-        self::assertNull($container->getParameter('cqs_routing.command_controller.default_response_constructor_class'));
+        self::assertCount(0, $container->getParameter('cqs_routing.command.default_handler_wrapper_classes'));
+        self::assertNull($container->getParameter('cqs_routing.command.default_response_constructor_class'));
     }
 }

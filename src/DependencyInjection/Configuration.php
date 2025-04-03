@@ -22,8 +22,8 @@ final class Configuration implements ConfigurationInterface
         /** @psalm-suppress PossiblyUndefinedMethod */
         $rootNode
             ->children()
-                ->arrayNode('command_controller')
-                    ->info('Add default instances for command controller')
+                ->arrayNode('command')
+                    ->info('Add default instances for command routes')
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('default_request_validator_classes')
@@ -51,8 +51,8 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('default_response_constructor_class')->defaultNull()->end()
                     ->end()
                 ->end()
-                ->arrayNode('query_controller')
-                    ->info('Add default instances for query controller')
+                ->arrayNode('query')
+                    ->info('Add default instances for query routes')
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('default_request_validator_classes')

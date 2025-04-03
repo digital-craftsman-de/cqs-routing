@@ -32,6 +32,26 @@ Upgrade to at least PHP 8.4.
 
 Upgrade to at least Symfony 7.0.
 
+### Renamed configuration for defaults
+
+The defaults were configured through `$cqsRoutingConfig->commandController()` and `$cqsRoutingConfig->queryController()` (or `cqs_routing.command_controller` and `cqs_routing.query_controller` when using YAML). The `Controller` part has been dropped, so it's now `$cqsRoutingConfig->command()` and `$cqsRoutingConfig->query()` (or `cqs_routing.command` and `cqs_routing.query` when using YAML).
+
+Before:
+
+```php
+return static function (CqsRoutingConfig $cqsRoutingConfig) {
+    $cqsRoutingConfig->queryController()
+        ->defaultRequestDecoderClass(JsonRequestDecoder::class)
+```
+
+After:
+
+```php
+return static function (CqsRoutingConfig $cqsRoutingConfig) {
+    $cqsRoutingConfig->query()
+        ->defaultRequestDecoderClass(JsonRequestDecoder::class)
+```
+
 ## From 1.0.* to 1.1.0
 
 ### Dropped support for PHP 8.2

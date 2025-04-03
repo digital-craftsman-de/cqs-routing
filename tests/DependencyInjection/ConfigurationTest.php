@@ -31,7 +31,7 @@ final class ConfigurationTest extends TestCase
         $configuration = new Configuration();
         $configurationData = [
             'cqs_routing' => [
-                'command_controller' => [
+                'command' => [
                     'default_request_decoder_class' => JsonRequestDecoder::class,
                     'default_dto_constructor_class' => SerializerDTOConstructor::class,
                     'default_dto_validator_classes' => [
@@ -45,7 +45,7 @@ final class ConfigurationTest extends TestCase
                     ],
                     'default_response_constructor_class' => EmptyJsonResponseConstructor::class,
                 ],
-                'query_controller' => [
+                'query' => [
                     'default_request_decoder_class' => JsonRequestDecoder::class,
                     'default_dto_constructor_class' => SerializerDTOConstructor::class,
                     'default_dto_validator_classes' => [
@@ -70,9 +70,9 @@ final class ConfigurationTest extends TestCase
         // -- Assert
 
         // Command controller
-        self::assertSame(JsonRequestDecoder::class, $config['command_controller']['default_request_decoder_class']);
-        self::assertSame(SerializerDTOConstructor::class, $config['command_controller']['default_dto_constructor_class']);
-        self::assertContains(UserIdValidator::class, $config['command_controller']['default_dto_validator_classes']);
+        self::assertSame(JsonRequestDecoder::class, $config['command']['default_request_decoder_class']);
+        self::assertSame(SerializerDTOConstructor::class, $config['command']['default_dto_constructor_class']);
+        self::assertContains(UserIdValidator::class, $config['command']['default_dto_validator_classes']);
         self::assertSame(
             [
                 ConnectionTransactionWrapper::class => null,
@@ -80,25 +80,25 @@ final class ConfigurationTest extends TestCase
                     NewsArticleAlreadyExists::class,
                 ],
             ],
-            $config['command_controller']['default_handler_wrapper_classes'],
+            $config['command']['default_handler_wrapper_classes'],
         );
-        self::assertSame(EmptyJsonResponseConstructor::class, $config['command_controller']['default_response_constructor_class']);
+        self::assertSame(EmptyJsonResponseConstructor::class, $config['command']['default_response_constructor_class']);
 
         // Query controller
-        self::assertSame(JsonRequestDecoder::class, $config['query_controller']['default_request_decoder_class']);
-        self::assertSame(SerializerDTOConstructor::class, $config['query_controller']['default_dto_constructor_class']);
-        self::assertContains(UserIdValidator::class, $config['query_controller']['default_dto_validator_classes']);
+        self::assertSame(JsonRequestDecoder::class, $config['query']['default_request_decoder_class']);
+        self::assertSame(SerializerDTOConstructor::class, $config['query']['default_dto_constructor_class']);
+        self::assertContains(UserIdValidator::class, $config['query']['default_dto_validator_classes']);
         self::assertSame(
             [
                 SilentExceptionWrapper::class => [
                     TasksNotAccessible::class,
                 ],
             ],
-            $config['query_controller']['default_handler_wrapper_classes'],
+            $config['query']['default_handler_wrapper_classes'],
         );
         self::assertSame(
             SerializerJsonResponseConstructor::class,
-            $config['query_controller']['default_response_constructor_class'],
+            $config['query']['default_response_constructor_class'],
         );
     }
 }
