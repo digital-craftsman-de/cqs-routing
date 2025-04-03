@@ -1,7 +1,7 @@
 services:
 
   # Test helper
-  DigitalCraftsman\CQSRouting\Test\RouteHelper:
+  DigitalCraftsman\CQSRouting\TestUtility\RouteHelper:
     autoconfigure: true
     autowire: true
     public: true

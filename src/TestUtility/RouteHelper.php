@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DigitalCraftsman\CQSRouting\Test;
+namespace DigitalCraftsman\CQSRouting\TestUtility;
 
 use DigitalCraftsman\CQSRouting\Controller\QueryController;
 use DigitalCraftsman\CQSRouting\Routing\RouteBuilder;

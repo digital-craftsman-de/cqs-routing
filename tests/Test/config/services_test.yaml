@@ -14,4 +14,5 @@ services:
       - '../**/ReadModel/**'
       - '../**/ValueObject/**'
       - '../Utility/ServiceLocatorSimulator.php'
+      - '../Router/RouterFake.php'
     public: true
