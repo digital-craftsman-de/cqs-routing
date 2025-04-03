@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQSRouting\Test;
 
+use DigitalCraftsman\CQSRouting\Controller\QueryController;
 use DigitalCraftsman\CQSRouting\Routing\RouteBuilder;
 use DigitalCraftsman\CQSRouting\Routing\RouteConfiguration;
 use DigitalCraftsman\CQSRouting\Routing\RouteConfigurationBuilder;
@@ -19,7 +20,7 @@ final readonly class RouteHelper
     ) {
     }
 
-    public function getRouteConfigurationForCommand(string $name): RouteConfiguration
+    public function getRouteConfiguration(string $name): RouteConfiguration
     {
         $route = $this->router->getRouteCollection()->get($name);
         if ($route === null) {
@@ -37,9 +38,15 @@ final readonly class RouteHelper
          */
         $routePayloadData = $route->getDefault(RouteBuilder::ROUTE_PAYLOAD_KEY);
 
-        return $this->routeConfigurationBuilder->buildConfigurationForCommand(
-            RoutePayload::fromPayload($routePayloadData),
-        );
+        $controller = $route->getDefault('_controller');
+
+        return $controller === QueryController::class
+            ? $this->routeConfigurationBuilder->buildConfigurationForQuery(
+                RoutePayload::fromPayload($routePayloadData),
+            )
+            : $this->routeConfigurationBuilder->buildConfigurationForCommand(
+                RoutePayload::fromPayload($routePayloadData),
+            );
     }
 
     public static function isCQSRoute(Route $route): bool
