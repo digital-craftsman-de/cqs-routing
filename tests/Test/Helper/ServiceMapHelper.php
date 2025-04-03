@@ -4,30 +4,30 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQSRouting\Test\Helper;
 
-use DigitalCraftsman\CQSRouting\Command\CommandHandlerInterface;
-use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructorInterface;
-use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidatorInterface;
-use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
-use DigitalCraftsman\CQSRouting\Query\QueryHandlerInterface;
-use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformerInterface;
-use DigitalCraftsman\CQSRouting\RequestDecoder\RequestDecoderInterface;
-use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidatorInterface;
-use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructorInterface;
+use DigitalCraftsman\CQSRouting\Command\CommandHandler;
+use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructor;
+use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidator;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapper;
+use DigitalCraftsman\CQSRouting\Query\QueryHandler;
+use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformer;
+use DigitalCraftsman\CQSRouting\RequestDecoder\RequestDecoder;
+use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidator;
+use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructor;
 use DigitalCraftsman\CQSRouting\ServiceMap\ServiceMap;
 use DigitalCraftsman\CQSRouting\Test\Utility\ServiceLocatorSimulator;
 
 final readonly class ServiceMapHelper
 {
     /**
-     * @param array<int, RequestValidatorInterface>|null       $requestValidators
-     * @param array<int, RequestDecoderInterface>|null         $requestDecoders
-     * @param array<int, RequestDataTransformerInterface>|null $requestDataTransformers
-     * @param array<int, DTOConstructorInterface>|null         $dtoConstructors
-     * @param array<int, DTOValidatorInterface>|null           $dtoValidators
-     * @param array<int, HandlerWrapperInterface>|null         $handlerWrappers
-     * @param array<int, CommandHandlerInterface>|null         $commandHandlers
-     * @param array<int, QueryHandlerInterface>|null           $queryHandlers
-     * @param array<int, ResponseConstructorInterface>|null    $responseConstructors
+     * @param array<int, RequestValidator>|null       $requestValidators
+     * @param array<int, RequestDecoder>|null         $requestDecoders
+     * @param array<int, RequestDataTransformer>|null $requestDataTransformers
+     * @param array<int, DTOConstructor>|null         $dtoConstructors
+     * @param array<int, DTOValidator>|null           $dtoValidators
+     * @param array<int, HandlerWrapper>|null         $handlerWrappers
+     * @param array<int, CommandHandler>|null         $commandHandlers
+     * @param array<int, QueryHandler>|null           $queryHandlers
+     * @param array<int, ResponseConstructor>|null    $responseConstructors
      */
     public static function serviceMap(
         ?array $requestValidators = null,

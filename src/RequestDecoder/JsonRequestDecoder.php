@@ -6,7 +6,7 @@ namespace DigitalCraftsman\CQSRouting\RequestDecoder;
 
 use Symfony\Component\HttpFoundation\Request;
 
-final readonly class JsonRequestDecoder implements RequestDecoderInterface
+final readonly class JsonRequestDecoder implements RequestDecoder
 {
     public function decodeRequest(Request $request): array
     {

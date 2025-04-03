@@ -7,7 +7,7 @@ namespace DigitalCraftsman\CQSRouting\ResponseConstructor;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-final readonly class EmptyResponseConstructor implements ResponseConstructorInterface
+final readonly class EmptyResponseConstructor implements ResponseConstructor
 {
     public function constructResponse($data, Request $request): Response
     {

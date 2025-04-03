@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQSRouting\Test\RequestValidator;
 
-use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidatorInterface;
+use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidator;
 use Symfony\Component\HttpFoundation\Request;
 
-final readonly class GuardAgainstTokenInHeaderRequestValidator implements RequestValidatorInterface
+final readonly class GuardAgainstTokenInHeaderRequestValidator implements RequestValidator
 {
     /** @param null $parameters */
     public function validateRequest(

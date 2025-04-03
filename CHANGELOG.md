@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0
+
+- **[Breaking change](./UPGRADE.md#dropped-interface-suffix-from-interfaces)**: Dropped `*Interface` suffix from interfaces.
+
 ## 1.1.0
 
 - Added support for PHP 8.4.

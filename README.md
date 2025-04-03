@@ -146,7 +146,7 @@ final readonly class CreateNewsArticleCommand implements Command
 
 ```
 
-The structural validation is therefore already done through the creation of the command and the command handler only has to handle the business logic validation. A command handler might look like this: 
+The structural validation is therefore already done through the creation of the command and the command handler only has to handle the business logic validation. A command handler might look like this:
 
 ```php
 <?php
@@ -160,10 +160,10 @@ use App\Entity\NewsArticle;
 use App\Time\Clock\ClockInterface;
 use App\ValueObject\NewsArticleId;
 use DigitalCraftsman\CQSRouting\Command\Command;
-use DigitalCraftsman\CQSRouting\Command\CommandHandlerInterface;
+use DigitalCraftsman\CQSRouting\Command\CommandHandler;
 use Doctrine\ORM\EntityManagerInterface;
 
-final readonly class CreateNewsArticleCommandHandler implements CommandHandlerInterface
+final readonly class CreateNewsArticleCommandHandler implements CommandHandler
 {
     public function __construct(
         private ClockInterface $clock,

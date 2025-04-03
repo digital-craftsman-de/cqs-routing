@@ -14,7 +14,7 @@ use DigitalCraftsman\CQSRouting\Query\Query;
  * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/process.md
  * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/examplesl/dto-constructor.md
  */
-interface DTOConstructorInterface
+interface DTOConstructor
 {
     /**
      * @psalm-template T of Command|Query

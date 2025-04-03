@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/process.md
  * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/examples/request-decoder.md
  */
-interface RequestDecoderInterface
+interface RequestDecoder
 {
     public function decodeRequest(Request $request): array;
 }

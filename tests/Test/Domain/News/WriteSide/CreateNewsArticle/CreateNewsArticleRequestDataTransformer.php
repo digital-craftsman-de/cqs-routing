@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle;
 
-use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformerInterface;
+use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformer;
 
-final class CreateNewsArticleRequestDataTransformer implements RequestDataTransformerInterface
+final class CreateNewsArticleRequestDataTransformer implements RequestDataTransformer
 {
     /**
      * @param class-string $dtoClass

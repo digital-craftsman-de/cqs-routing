@@ -21,7 +21,7 @@ use DigitalCraftsman\CQSRouting\Routing\RoutePayload;
  *
  * @psalm-import-type NormalizedConfigurationParameters from RoutePayload
  */
-interface RequestDataTransformerInterface
+interface RequestDataTransformer
 {
     /**
      * @param class-string<Command|Query>       $dtoClass

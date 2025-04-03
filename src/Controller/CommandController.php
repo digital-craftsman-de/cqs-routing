@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace DigitalCraftsman\CQSRouting\Controller;
 
 use DigitalCraftsman\CQSRouting\Command\Command;
-use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructorInterface;
-use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidatorInterface;
+use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructor;
+use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidator;
 use DigitalCraftsman\CQSRouting\HandlerWrapper\DTO\HandlerWrapperStep;
-use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
-use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformerInterface;
-use DigitalCraftsman\CQSRouting\RequestDecoder\RequestDecoderInterface;
-use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidatorInterface;
-use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructorInterface;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapper;
+use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformer;
+use DigitalCraftsman\CQSRouting\RequestDecoder\RequestDecoder;
+use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidator;
+use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructor;
 use DigitalCraftsman\CQSRouting\Routing\RoutePayload;
 use DigitalCraftsman\CQSRouting\ServiceMap\ServiceMap;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,13 +25,13 @@ use Symfony\Component\HttpFoundation\Response;
 final class CommandController extends AbstractController
 {
     /**
-     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null       $defaultRequestValidatorClasses
-     * @param class-string<RequestDecoderInterface>|null                                                   $defaultRequestDecoderClass
-     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $defaultRequestDataTransformerClasses
-     * @param class-string<DTOConstructorInterface>|null                                                   $defaultDTOConstructorClass
-     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null           $defaultDTOValidatorClasses
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null         $defaultHandlerWrapperClasses
-     * @param class-string<ResponseConstructorInterface>|null                                              $defaultResponseConstructorClass
+     * @param array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null       $defaultRequestValidatorClasses
+     * @param class-string<RequestDecoder>|null                                                   $defaultRequestDecoderClass
+     * @param array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null $defaultRequestDataTransformerClasses
+     * @param class-string<DTOConstructor>|null                                                   $defaultDTOConstructorClass
+     * @param array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null           $defaultDTOValidatorClasses
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null         $defaultHandlerWrapperClasses
+     * @param class-string<ResponseConstructor>|null                                              $defaultResponseConstructorClass
      *
      * @codeCoverageIgnore
      */

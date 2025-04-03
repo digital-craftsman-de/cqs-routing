@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQSRouting\ServiceMap;
 
-use DigitalCraftsman\CQSRouting\Command\CommandHandlerInterface;
-use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructorInterface;
-use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidatorInterface;
-use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
-use DigitalCraftsman\CQSRouting\Query\QueryHandlerInterface;
-use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformerInterface;
-use DigitalCraftsman\CQSRouting\RequestDecoder\RequestDecoderInterface;
-use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidatorInterface;
-use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructorInterface;
+use DigitalCraftsman\CQSRouting\Command\CommandHandler;
+use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructor;
+use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidator;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapper;
+use DigitalCraftsman\CQSRouting\Query\QueryHandler;
+use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformer;
+use DigitalCraftsman\CQSRouting\RequestDecoder\RequestDecoder;
+use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidator;
+use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructor;
 use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredCommandHandlerNotAvailable;
 use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredDTOConstructorNotAvailable;
 use DigitalCraftsman\CQSRouting\ServiceMap\Exception\ConfiguredDTOValidatorNotAvailable;
@@ -48,9 +48,9 @@ final readonly class ServiceMap
     }
 
     /**
-     * @param class-string<RequestValidatorInterface> $requestValidatorClass
+     * @param class-string<RequestValidator> $requestValidatorClass
      */
-    public function getRequestValidator(string $requestValidatorClass): RequestValidatorInterface
+    public function getRequestValidator(string $requestValidatorClass): RequestValidator
     {
         try {
             return $this->requestValidators->get($requestValidatorClass);
@@ -60,10 +60,10 @@ final readonly class ServiceMap
     }
 
     /**
-     * @param class-string<RequestDecoderInterface>|null $requestDecoderClass
-     * @param class-string<RequestDecoderInterface>|null $defaultRequestDecoderClass
+     * @param class-string<RequestDecoder>|null $requestDecoderClass
+     * @param class-string<RequestDecoder>|null $defaultRequestDecoderClass
      */
-    public function getRequestDecoder(?string $requestDecoderClass, ?string $defaultRequestDecoderClass): RequestDecoderInterface
+    public function getRequestDecoder(?string $requestDecoderClass, ?string $defaultRequestDecoderClass): RequestDecoder
     {
         $selectedRequestDecoderClass = $requestDecoderClass ?? $defaultRequestDecoderClass;
         if ($selectedRequestDecoderClass === null) {
@@ -78,9 +78,9 @@ final readonly class ServiceMap
     }
 
     /**
-     * @param class-string<RequestDataTransformerInterface> $requestDataTransformerClass
+     * @param class-string<RequestDataTransformer> $requestDataTransformerClass
      */
-    public function getRequestDataTransformer(string $requestDataTransformerClass): RequestDataTransformerInterface
+    public function getRequestDataTransformer(string $requestDataTransformerClass): RequestDataTransformer
     {
         try {
             return $this->requestDataTransformers->get($requestDataTransformerClass);
@@ -90,10 +90,10 @@ final readonly class ServiceMap
     }
 
     /**
-     * @param class-string<DTOConstructorInterface>|null $dtoConstructorClass
-     * @param class-string<DTOConstructorInterface>|null $defaultDTOConstructorClass
+     * @param class-string<DTOConstructor>|null $dtoConstructorClass
+     * @param class-string<DTOConstructor>|null $defaultDTOConstructorClass
      */
-    public function getDTOConstructor(?string $dtoConstructorClass, ?string $defaultDTOConstructorClass): DTOConstructorInterface
+    public function getDTOConstructor(?string $dtoConstructorClass, ?string $defaultDTOConstructorClass): DTOConstructor
     {
         $selectedDTOConstructorClass = $dtoConstructorClass ?? $defaultDTOConstructorClass;
         if ($selectedDTOConstructorClass === null) {
@@ -108,9 +108,9 @@ final readonly class ServiceMap
     }
 
     /**
-     * @param class-string<DTOValidatorInterface> $dtoValidatorClass
+     * @param class-string<DTOValidator> $dtoValidatorClass
      */
-    public function getDTOValidator(string $dtoValidatorClass): DTOValidatorInterface
+    public function getDTOValidator(string $dtoValidatorClass): DTOValidator
     {
         try {
             return $this->dtoValidators->get($dtoValidatorClass);
@@ -120,9 +120,9 @@ final readonly class ServiceMap
     }
 
     /**
-     * @param class-string<HandlerWrapperInterface> $handlerWrapperClass
+     * @param class-string<HandlerWrapper> $handlerWrapperClass
      */
-    public function getHandlerWrapper(string $handlerWrapperClass): HandlerWrapperInterface
+    public function getHandlerWrapper(string $handlerWrapperClass): HandlerWrapper
     {
         try {
             return $this->handlerWrappers->get($handlerWrapperClass);
@@ -132,9 +132,9 @@ final readonly class ServiceMap
     }
 
     /**
-     * @param class-string<CommandHandlerInterface> $handlerClass
+     * @param class-string<CommandHandler> $handlerClass
      */
-    public function getCommandHandler(string $handlerClass): CommandHandlerInterface
+    public function getCommandHandler(string $handlerClass): CommandHandler
     {
         try {
             return $this->commandHandlers->get($handlerClass);
@@ -144,9 +144,9 @@ final readonly class ServiceMap
     }
 
     /**
-     * @param class-string<QueryHandlerInterface> $handlerClass
+     * @param class-string<QueryHandler> $handlerClass
      */
-    public function getQueryHandler(string $handlerClass): QueryHandlerInterface
+    public function getQueryHandler(string $handlerClass): QueryHandler
     {
         try {
             return $this->queryHandlers->get($handlerClass);
@@ -156,12 +156,12 @@ final readonly class ServiceMap
     }
 
     /**
-     * @param class-string<ResponseConstructorInterface> $responseConstructorClass
+     * @param class-string<ResponseConstructor> $responseConstructorClass
      */
     public function getResponseConstructor(
         ?string $responseConstructorClass,
         ?string $defaultResponseConstructorClass,
-    ): ResponseConstructorInterface {
+    ): ResponseConstructor {
         $selectedResponseConstructorClass = $responseConstructorClass ?? $defaultResponseConstructorClass;
         if ($selectedResponseConstructorClass === null) {
             throw new ResponseConstructorOrDefaultResponseConstructorMustBeConfigured();

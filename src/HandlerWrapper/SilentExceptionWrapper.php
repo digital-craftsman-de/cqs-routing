@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
  * to the user. With this handler wrapper, you can define the `TaskAlreadyAccepted` exception as one to catch. This would then result in a
  * normal response through the response constructor as if the task was just accepted.
  */
-final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
+final readonly class SilentExceptionWrapper implements HandlerWrapper
 {
     /**
      * @param array<int, string> $parameters

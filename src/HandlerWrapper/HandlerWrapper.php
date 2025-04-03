@@ -31,7 +31,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @psalm-import-type NormalizedConfigurationParameters from RoutePayload
  */
-interface HandlerWrapperInterface
+interface HandlerWrapper
 {
     /**
      * Triggered right before the handler is triggered.

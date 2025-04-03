@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/process.md
  * @see https://github.com/digital-craftsman-de/cqs-routing/blob/main/docs/examples/response-constructor.md
  */
-interface ResponseConstructorInterface
+interface ResponseConstructor
 {
     /**
      * @param ?mixed $data

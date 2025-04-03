@@ -6,10 +6,10 @@ namespace DigitalCraftsman\CQSRouting\Test\Application;
 
 use DigitalCraftsman\CQSRouting\Command\Command;
 use DigitalCraftsman\CQSRouting\Query\Query;
-use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformerInterface;
+use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformer;
 use DigitalCraftsman\CQSRouting\Test\ValueObject\ActionId;
 
-final class AddActionIdRequestDataTransformer implements RequestDataTransformerInterface
+final class AddActionIdRequestDataTransformer implements RequestDataTransformer
 {
     /**
      * @param class-string<Command|Query> $dtoClass

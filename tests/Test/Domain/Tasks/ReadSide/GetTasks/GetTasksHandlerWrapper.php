@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace DigitalCraftsman\CQSRouting\Test\Domain\Tasks\ReadSide\GetTasks;
 
 use DigitalCraftsman\CQSRouting\Command\Command;
-use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapper;
 use DigitalCraftsman\CQSRouting\Query\Query;
 use DigitalCraftsman\CQSRouting\Test\Utility\LockSimulator;
 use Symfony\Component\HttpFoundation\Request;
 
-final class GetTasksHandlerWrapper implements HandlerWrapperInterface
+final class GetTasksHandlerWrapper implements HandlerWrapper
 {
     public function __construct(
         private readonly LockSimulator $lockSimulator,

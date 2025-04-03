@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace DigitalCraftsman\CQSRouting\Routing;
 
 use DigitalCraftsman\CQSRouting\Command\Command;
-use DigitalCraftsman\CQSRouting\Command\CommandHandlerInterface;
-use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructorInterface;
-use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidatorInterface;
-use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQSRouting\Command\CommandHandler;
+use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructor;
+use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidator;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapper;
 use DigitalCraftsman\CQSRouting\Query\Query;
-use DigitalCraftsman\CQSRouting\Query\QueryHandlerInterface;
-use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformerInterface;
-use DigitalCraftsman\CQSRouting\RequestDecoder\RequestDecoderInterface;
-use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidatorInterface;
-use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructorInterface;
+use DigitalCraftsman\CQSRouting\Query\QueryHandler;
+use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformer;
+use DigitalCraftsman\CQSRouting\RequestDecoder\RequestDecoder;
+use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidator;
+use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructor;
 
 /**
  * The symfony routing does not support the usage of objects as it has to dump them into a php file for caching. Therefore, we create an
@@ -25,19 +25,19 @@ use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructorInterface
 final readonly class RoutePayload
 {
     /**
-     * @param class-string<Command>|class-string<Query>                                                    $dtoClass
-     * @param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>                    $handlerClass
-     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null       $requestValidatorClasses
-     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null       $requestValidatorClassesToMergeWithDefault
-     * @param class-string<RequestDecoderInterface>|null                                                   $requestDecoderClass
-     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $requestDataTransformerClasses
-     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $requestDataTransformerClassesToMergeWithDefault
-     * @param class-string<DTOConstructorInterface>|null                                                   $dtoConstructorClass
-     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null           $dtoValidatorClasses
-     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null           $dtoValidatorClassesToMergeWithDefault
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null         $handlerWrapperClasses
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null         $handlerWrapperClassesToMergeWithDefault
-     * @param class-string<ResponseConstructorInterface>|null                                              $responseConstructorClass
+     * @param class-string<Command>|class-string<Query>                                           $dtoClass
+     * @param class-string<CommandHandler>|class-string<QueryHandler>                             $handlerClass
+     * @param array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null       $requestValidatorClasses
+     * @param array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null       $requestValidatorClassesToMergeWithDefault
+     * @param class-string<RequestDecoder>|null                                                   $requestDecoderClass
+     * @param array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null $requestDataTransformerClasses
+     * @param array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null $requestDataTransformerClassesToMergeWithDefault
+     * @param class-string<DTOConstructor>|null                                                   $dtoConstructorClass
+     * @param array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null           $dtoValidatorClasses
+     * @param array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null           $dtoValidatorClassesToMergeWithDefault
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null         $handlerWrapperClasses
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null         $handlerWrapperClassesToMergeWithDefault
+     * @param class-string<ResponseConstructor>|null                                              $responseConstructorClass
      */
     private function __construct(
         public string $dtoClass,
@@ -57,37 +57,37 @@ final readonly class RoutePayload
     }
 
     /**
-     * @param class-string<Command>|class-string<Query>                                                    $dtoClass
-     * @param class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>                    $handlerClass
-     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null       $requestValidatorClasses
-     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null       $requestValidatorClassesToMergeWithDefault
-     * @param class-string<RequestDecoderInterface>|null                                                   $requestDecoderClass
-     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $requestDataTransformerClasses
-     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $requestDataTransformerClassesToMergeWithDefault
-     * @param class-string<DTOConstructorInterface>|null                                                   $dtoConstructorClass
-     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null           $dtoValidatorClasses
-     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null           $dtoValidatorClassesToMergeWithDefault
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null         $handlerWrapperClasses
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null         $handlerWrapperClassesToMergeWithDefault
-     * @param class-string<ResponseConstructorInterface>|null                                              $responseConstructorClass
-     *
-     * @internal
+     * @param class-string<Command>|class-string<Query>                                           $dtoClass
+     * @param class-string<CommandHandler>|class-string<QueryHandler>                             $handlerClass
+     * @param array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null       $requestValidatorClasses
+     * @param array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null       $requestValidatorClassesToMergeWithDefault
+     * @param class-string<RequestDecoder>|null                                                   $requestDecoderClass
+     * @param array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null $requestDataTransformerClasses
+     * @param array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null $requestDataTransformerClassesToMergeWithDefault
+     * @param class-string<DTOConstructor>|null                                                   $dtoConstructorClass
+     * @param array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null           $dtoValidatorClasses
+     * @param array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null           $dtoValidatorClassesToMergeWithDefault
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null         $handlerWrapperClasses
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null         $handlerWrapperClassesToMergeWithDefault
+     * @param class-string<ResponseConstructor>|null                                              $responseConstructorClass
      *
      * @return array{
      *   dtoClass: class-string<Command>|class-string<Query>,
-     *   handlerClass: class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>,
-     *   requestValidatorClasses: array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>,
-     *   requestValidatorClassesToMergeWithDefault: array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>,
-     *   requestDecoderClass: class-string<RequestDecoderInterface>|null,
-     *   requestDataTransformerClasses: array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>,
-     *   requestDataTransformerClassesToMergeWithDefault: array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>,
-     *   dtoConstructorClass: class-string<DTOConstructorInterface>|null,
-     *   dtoValidatorClasses: array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>,
-     *   dtoValidatorClassesToMergeWithDefault: array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>,
-     *   handlerWrapperClasses: array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>,
-     *   handlerWrapperClassesToMergeWithDefault: array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>,
-     *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
+     *   handlerClass: class-string<CommandHandler>|class-string<QueryHandler>,
+     *   requestValidatorClasses: array<class-string<RequestValidator>, NormalizedConfigurationParameters>,
+     *   requestValidatorClassesToMergeWithDefault: array<class-string<RequestValidator>, NormalizedConfigurationParameters>,
+     *   requestDecoderClass: class-string<RequestDecoder>|null,
+     *   requestDataTransformerClasses: array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>,
+     *   requestDataTransformerClassesToMergeWithDefault: array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>,
+     *   dtoConstructorClass: class-string<DTOConstructor>|null,
+     *   dtoValidatorClasses: array<class-string<DTOValidator>, NormalizedConfigurationParameters>,
+     *   dtoValidatorClassesToMergeWithDefault: array<class-string<DTOValidator>, NormalizedConfigurationParameters>,
+     *   handlerWrapperClasses: array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>,
+     *   handlerWrapperClassesToMergeWithDefault: array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>,
+     *   responseConstructorClass: class-string<ResponseConstructor>|null,
      * }
+     *
+     *@internal
      */
     public static function generatePayload(
         string $dtoClass,
@@ -126,18 +126,18 @@ final readonly class RoutePayload
     /**
      * @param array{
      *   dtoClass: class-string<Command>|class-string<Query>,
-     *   handlerClass: class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>,
-     *   requestValidatorClasses: array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null,
-     *   requestValidatorClassesToMergeWithDefault: array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null,
-     *   requestDecoderClass: class-string<RequestDecoderInterface>|null,
-     *   requestDataTransformerClasses: array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null,
-     *   requestDataTransformerClassesToMergeWithDefault: array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null,
-     *   dtoConstructorClass: class-string<DTOConstructorInterface>|null,
-     *   dtoValidatorClasses: array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null,
-     *   dtoValidatorClassesToMergeWithDefault: array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null,
-     *   handlerWrapperClasses: array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null,
-     *   handlerWrapperClassesToMergeWithDefault: array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null,
-     *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
+     *   handlerClass: class-string<CommandHandler>|class-string<QueryHandler>,
+     *   requestValidatorClasses: array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null,
+     *   requestValidatorClassesToMergeWithDefault: array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null,
+     *   requestDecoderClass: class-string<RequestDecoder>|null,
+     *   requestDataTransformerClasses: array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null,
+     *   requestDataTransformerClassesToMergeWithDefault: array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null,
+     *   dtoConstructorClass: class-string<DTOConstructor>|null,
+     *   dtoValidatorClasses: array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null,
+     *   dtoValidatorClassesToMergeWithDefault: array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null,
+     *   handlerWrapperClasses: array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null,
+     *   handlerWrapperClassesToMergeWithDefault: array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null,
+     *   responseConstructorClass: class-string<ResponseConstructor>|null,
      * } $payload
      *
      * @internal
@@ -164,18 +164,18 @@ final readonly class RoutePayload
     /**
      * @return array{
      *   dtoClass: class-string<Command>|class-string<Query>,
-     *   handlerClass: class-string<CommandHandlerInterface>|class-string<QueryHandlerInterface>,
-     *   requestValidatorClasses: array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>,
-     *   requestValidatorClassesToMergeWithDefault: array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>,
-     *   requestDecoderClass: class-string<RequestDecoderInterface>|null,
-     *   requestDataTransformerClasses: array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>,
-     *   requestDataTransformerClassesToMergeWithDefault: array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>,
-     *   dtoConstructorClass: class-string<DTOConstructorInterface>|null,
-     *   dtoValidatorClasses: array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>,
-     *   dtoValidatorClassesToMergeWithDefault: array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>,
-     *   handlerWrapperClasses: array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>,
-     *   handlerWrapperClassesToMergeWithDefault: array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>,
-     *   responseConstructorClass: class-string<ResponseConstructorInterface>|null,
+     *   handlerClass: class-string<CommandHandler>|class-string<QueryHandler>,
+     *   requestValidatorClasses: array<class-string<RequestValidator>, NormalizedConfigurationParameters>,
+     *   requestValidatorClassesToMergeWithDefault: array<class-string<RequestValidator>, NormalizedConfigurationParameters>,
+     *   requestDecoderClass: class-string<RequestDecoder>|null,
+     *   requestDataTransformerClasses: array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>,
+     *   requestDataTransformerClassesToMergeWithDefault: array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>,
+     *   dtoConstructorClass: class-string<DTOConstructor>|null,
+     *   dtoValidatorClasses: array<class-string<DTOValidator>, NormalizedConfigurationParameters>,
+     *   dtoValidatorClassesToMergeWithDefault: array<class-string<DTOValidator>, NormalizedConfigurationParameters>,
+     *   handlerWrapperClasses: array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>,
+     *   handlerWrapperClassesToMergeWithDefault: array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>,
+     *   responseConstructorClass: class-string<ResponseConstructor>|null,
      * }
      *
      * @internal
@@ -204,11 +204,11 @@ final readonly class RoutePayload
      * Otherwise, the ones from the route that should be merged with default are merged with the default. The parameters of the list to
      * merge with default are used when the same class is used in the default and the ones to merge.
      *
-     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null $classesFromRoute
-     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null $classesFromRouteToMergeWithDefault
-     * @param array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>|null $classesFromDefault
+     * @param array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null $classesFromRoute
+     * @param array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null $classesFromRouteToMergeWithDefault
+     * @param array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null $classesFromDefault
      *
-     * @return array<class-string<RequestValidatorInterface>, NormalizedConfigurationParameters>
+     * @return array<class-string<RequestValidator>, NormalizedConfigurationParameters>
      *
      * @internal
      *
@@ -230,11 +230,11 @@ final readonly class RoutePayload
      * Otherwise, the ones from the route that should be merged with default are merged with the default. The parameters of the list to
      * merge with default are used when the same class is used in the default and the ones to merge.
      *
-     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $classesFromRoute
-     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $classesFromRouteToMergeWithDefault
-     * @param array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>|null $classesFromDefault
+     * @param array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null $classesFromRoute
+     * @param array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null $classesFromRouteToMergeWithDefault
+     * @param array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null $classesFromDefault
      *
-     * @return array<class-string<RequestDataTransformerInterface>, NormalizedConfigurationParameters>
+     * @return array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>
      *
      * @internal
      *
@@ -256,11 +256,11 @@ final readonly class RoutePayload
      * Otherwise, the ones from the route that should be merged with default are merged with the default. The parameters of the list to
      * merge with default are used when the same class is used in the default and the ones to merge.
      *
-     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null $classesFromRoute
-     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null $classesFromRouteToMergeWithDefault
-     * @param array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>|null $classesFromDefault
+     * @param array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null $classesFromRoute
+     * @param array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null $classesFromRouteToMergeWithDefault
+     * @param array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null $classesFromDefault
      *
-     * @return array<class-string<DTOValidatorInterface>, NormalizedConfigurationParameters>
+     * @return array<class-string<DTOValidator>, NormalizedConfigurationParameters>
      *
      * @internal
      *
@@ -282,11 +282,11 @@ final readonly class RoutePayload
      * Otherwise, the ones from the route that should be merged with default are merged with the default. The parameters of the list to
      * merge with default are used when the same class is used in the default and the ones to merge.
      *
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null $classesFromRoute
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null $classesFromRouteToMergeWithDefault
-     * @param array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>|null $classesFromDefault
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null $classesFromRoute
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null $classesFromRouteToMergeWithDefault
+     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null $classesFromDefault
      *
-     * @return array<class-string<HandlerWrapperInterface>, NormalizedConfigurationParameters>
+     * @return array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>
      *
      * @internal
      */

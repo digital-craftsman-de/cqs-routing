@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\CreateTask;
 
-use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructorInterface;
+use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructor;
 
-final class CreateTaskDTOConstructor implements DTOConstructorInterface
+final class CreateTaskDTOConstructor implements DTOConstructor
 {
     /**
      * @param array{

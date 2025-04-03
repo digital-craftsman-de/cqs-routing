@@ -8,7 +8,7 @@ use DigitalCraftsman\CQSRouting\Command\Command;
 use DigitalCraftsman\CQSRouting\Query\Query;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-final readonly class SerializerDTOConstructor implements DTOConstructorInterface
+final readonly class SerializerDTOConstructor implements DTOConstructor
 {
     /**
      * @codeCoverageIgnore

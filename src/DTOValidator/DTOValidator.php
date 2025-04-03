@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
  *
  * @psalm-import-type NormalizedConfigurationParameters from RoutePayload
  */
-interface DTOValidatorInterface
+interface DTOValidator
 {
     /**
      * @param NormalizedConfigurationParameters $parameters

@@ -65,12 +65,12 @@ declare(strict_types=1);
 namespace App\CQSRouting\HandlerWrapper;
 
 use DigitalCraftsman\CQSRouting\Command\Command;
-use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapper;
 use DigitalCraftsman\CQSRouting\Query\Query;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Request;
 
-final readonly class ConnectionTransactionWrapper implements HandlerWrapperInterface
+final readonly class ConnectionTransactionWrapper implements HandlerWrapper
 {
     public function __construct(
         private Connection $connection,
@@ -159,11 +159,11 @@ declare(strict_types=1);
 namespace DigitalCraftsman\CQSRouting\HandlerWrapper;
 
 use DigitalCraftsman\CQSRouting\Command\Command;
-use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapper;
 use DigitalCraftsman\CQSRouting\Query\Query;
 use Symfony\Component\HttpFoundation\Request;
 
-final readonly class SilentExceptionWrapper implements HandlerWrapperInterface
+final readonly class SilentExceptionWrapper implements HandlerWrapper
 {
     /** @param array<int, string> $parameters */
     #[\Override]
@@ -285,12 +285,12 @@ namespace App\Domain\News\WriteSide\CreateNewsArticle;
 
 use App\Service\Lock\LockService;
 use DigitalCraftsman\CQSRouting\Command\Command;
-use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapperInterface;
+use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapper;
 use DigitalCraftsman\CQSRouting\Query\Query;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Lock\LockInterface;
 
-final class CreateNewsArticleHandlerWrapper implements HandlerWrapperInterface
+final class CreateNewsArticleHandlerWrapper implements HandlerWrapper
 {
     private ?LockInterface $lock = null;
 

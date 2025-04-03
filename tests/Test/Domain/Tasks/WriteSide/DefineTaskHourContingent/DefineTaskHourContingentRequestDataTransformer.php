@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\DefineTaskHourContingent;
 
-use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformerInterface;
+use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformer;
 
-final class DefineTaskHourContingentRequestDataTransformer implements RequestDataTransformerInterface
+final class DefineTaskHourContingentRequestDataTransformer implements RequestDataTransformer
 {
     /**
      * @param class-string $dtoClass
