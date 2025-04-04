@@ -29,12 +29,12 @@ use DigitalCraftsman\CQSRouting\ResponseConstructor\SerializerJsonResponseConstr
 use Symfony\Config\CqsRoutingConfig;
 
 return static function (CqsRoutingConfig $cqsRoutingConfig) {
-    $cqsRoutingConfig->queryController()
+    $cqsRoutingConfig->query()
         ->defaultRequestDecoderClass(JsonRequestDecoder::class)
         ->defaultDtoConstructorClass(SerializerDTOConstructor::class)
         ->defaultResponseConstructorClass(SerializerJsonResponseConstructor::class);
 
-    $cqsRoutingConfig->commandController()
+    $cqsRoutingConfig->command()
         ->defaultRequestDecoderClass(JsonRequestDecoder::class)
         ->defaultDtoConstructorClass(SerializerDTOConstructor::class)
         ->defaultResponseConstructorClass(EmptyResponseConstructor::class);
