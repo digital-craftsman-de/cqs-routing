@@ -15,6 +15,7 @@ use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidator;
 use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructor;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
 /**
@@ -23,14 +24,23 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 final readonly class ServiceMap
 {
     public function __construct(
+        #[AutowireIterator('cqs_routing.request_validator')]
         private ServiceProviderInterface $requestValidators,
+        #[AutowireIterator('cqs_routing.request_decoder')]
         private ServiceProviderInterface $requestDecoders,
+        #[AutowireIterator('cqs_routing.request_data_transformer')]
         private ServiceProviderInterface $requestDataTransformers,
+        #[AutowireIterator('cqs_routing.dto_constructor')]
         private ServiceProviderInterface $dtoConstructors,
+        #[AutowireIterator('cqs_routing.dto_validator')]
         private ServiceProviderInterface $dtoValidators,
+        #[AutowireIterator('cqs_routing.handler_wrapper')]
         private ServiceProviderInterface $handlerWrappers,
+        #[AutowireIterator('cqs_routing.command_handler')]
         private ServiceProviderInterface $commandHandlers,
+        #[AutowireIterator('cqs_routing.query_handler')]
         private ServiceProviderInterface $queryHandlers,
+        #[AutowireIterator('cqs_routing.response_constructor')]
         private ServiceProviderInterface $responseConstructors,
     ) {
     }

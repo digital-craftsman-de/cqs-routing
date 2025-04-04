@@ -44,16 +44,8 @@ services:
 
   # Service map
   DigitalCraftsman\CQSRouting\ServiceMap\ServiceMap:
-    arguments:
-      $requestValidators: !tagged_locator cqs_routing.request_validator
-      $requestDecoders: !tagged_locator cqs_routing.request_decoder
-      $requestDataTransformers: !tagged_locator cqs_routing.request_data_transformer
-      $dtoConstructors: !tagged_locator cqs_routing.dto_constructor
-      $dtoValidators: !tagged_locator cqs_routing.dto_validator
-      $handlerWrappers: !tagged_locator cqs_routing.handler_wrapper
-      $commandHandlers: !tagged_locator cqs_routing.command_handler
-      $queryHandlers: !tagged_locator cqs_routing.query_handler
-      $responseConstructors: !tagged_locator cqs_routing.response_constructor
+    autowire: true
+    autoconfigure: true
 
   # Route configuration builder
   DigitalCraftsman\CQSRouting\Routing\RouteConfigurationBuilder:

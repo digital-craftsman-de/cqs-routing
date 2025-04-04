@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DigitalCraftsman\CQSRouting\TestUtility;
 
 use DigitalCraftsman\CQSRouting\Controller\CommandController;
-use DigitalCraftsman\CQSRouting\Controller\CommandControllerTest;
 use DigitalCraftsman\CQSRouting\Controller\QueryController;
 use DigitalCraftsman\CQSRouting\DTOConstructor\SerializerDTOConstructor;
 use DigitalCraftsman\CQSRouting\RequestDecoder\JsonRequestDecoder;
