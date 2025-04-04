@@ -37,7 +37,9 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
  */
 final readonly class RouteBuilder
 {
-    private const DEFAULT_METHOD = Request::METHOD_POST;
+    public const string ROUTE_PAYLOAD_KEY = 'routePayload';
+
+    private const string DEFAULT_METHOD = Request::METHOD_POST;
 
     /**
      * Helper method to reduce noise in routing.
@@ -107,7 +109,7 @@ final readonly class RouteBuilder
         $methods = [$method ?? self::DEFAULT_METHOD];
         $defaults = array_merge(
             [
-                'routePayload' => RoutePayload::generatePayload(
+                self::ROUTE_PAYLOAD_KEY => RoutePayload::generatePayload(
                     $dtoClass,
                     $handlerClass,
                     $requestValidatorClasses,
@@ -203,7 +205,7 @@ final readonly class RouteBuilder
         $methods = [$method ?? self::DEFAULT_METHOD];
         $defaults = array_merge(
             [
-                'routePayload' => RoutePayload::generatePayload(
+                self::ROUTE_PAYLOAD_KEY => RoutePayload::generatePayload(
                     $dtoClass,
                     $handlerClass,
                     $requestValidatorClasses,

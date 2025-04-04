@@ -7,8 +7,6 @@ namespace DigitalCraftsman\CQSRouting\ServiceMap\Exception;
 /**
  * @psalm-immutable
  *
- * @codeCoverageIgnore
- *
  * @internal
  */
 final class ConfiguredDTOConstructorNotAvailable extends \DomainException

@@ -4,15 +4,9 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQSRouting\Controller;
 
-use DigitalCraftsman\CQSRouting\DTOConstructor\DTOConstructor;
-use DigitalCraftsman\CQSRouting\DTOValidator\DTOValidator;
 use DigitalCraftsman\CQSRouting\HandlerWrapper\DTO\HandlerWrapperStep;
-use DigitalCraftsman\CQSRouting\HandlerWrapper\HandlerWrapper;
 use DigitalCraftsman\CQSRouting\Query\Query;
-use DigitalCraftsman\CQSRouting\RequestDataTransformer\RequestDataTransformer;
-use DigitalCraftsman\CQSRouting\RequestDecoder\RequestDecoder;
-use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidator;
-use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructor;
+use DigitalCraftsman\CQSRouting\Routing\RouteConfigurationBuilder;
 use DigitalCraftsman\CQSRouting\Routing\RoutePayload;
 use DigitalCraftsman\CQSRouting\ServiceMap\ServiceMap;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,25 +19,11 @@ use Symfony\Component\HttpFoundation\Response;
 final class QueryController extends AbstractController
 {
     /**
-     * @param array<class-string<RequestValidator>, NormalizedConfigurationParameters>|null       $defaultRequestValidatorClasses
-     * @param class-string<RequestDecoder>|null                                                   $defaultRequestDecoderClass
-     * @param array<class-string<RequestDataTransformer>, NormalizedConfigurationParameters>|null $defaultRequestDataTransformerClasses
-     * @param class-string<DTOConstructor>|null                                                   $defaultDTOConstructorClass
-     * @param array<class-string<DTOValidator>, NormalizedConfigurationParameters>|null           $defaultDTOValidatorClasses
-     * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null         $defaultHandlerWrapperClasses
-     * @param class-string<ResponseConstructor>|null                                              $defaultResponseConstructorClass
-     *
      * @codeCoverageIgnore
      */
     public function __construct(
         private readonly ServiceMap $serviceMap,
-        private readonly ?array $defaultRequestValidatorClasses,
-        private readonly ?string $defaultRequestDecoderClass,
-        private readonly ?array $defaultRequestDataTransformerClasses,
-        private readonly ?string $defaultDTOConstructorClass,
-        private readonly ?array $defaultDTOValidatorClasses,
-        private readonly ?array $defaultHandlerWrapperClasses,
-        private readonly ?string $defaultResponseConstructorClass,
+        private readonly RouteConfigurationBuilder $routeConfigurationBuilder,
     ) {
     }
 
@@ -57,55 +37,39 @@ final class QueryController extends AbstractController
         /**
          * @psalm-suppress MixedArgumentTypeCoercion
          */
-        $configuration = RoutePayload::fromPayload($routePayload);
+        $configuration = $this->routeConfigurationBuilder->buildConfigurationForQuery(
+            RoutePayload::fromPayload($routePayload),
+        );
 
         // -- Validate request
-        $requestValidatorClasses = RoutePayload::mergeRequestValidatorClassesFromRouteWithDefaults(
-            $configuration->requestValidatorClasses,
-            $configuration->requestValidatorClassesToMergeWithDefault,
-            $this->defaultRequestValidatorClasses,
-        );
-        foreach ($requestValidatorClasses as $requestValidatorClass => $parameters) {
+        foreach ($configuration->requestValidatorClasses as $requestValidatorClass => $parameters) {
             $requestValidator = $this->serviceMap->getRequestValidator($requestValidatorClass);
             $requestValidator->validateRequest($request, $parameters);
         }
 
         // -- Get request data from request
-        $requestDecoder = $this->serviceMap->getRequestDecoder(
-            $configuration->requestDecoderClass,
-            $this->defaultRequestDecoderClass,
-        );
+        $requestDecoder = $this->serviceMap->getRequestDecoder($configuration->requestDecoderClass);
         $requestData = $requestDecoder->decodeRequest($request);
 
         // -- Transform request data
-        $requestDataTransformerClasses = RoutePayload::mergeRequestDataTransformerClassesFromRouteWithDefaults(
-            $configuration->requestDataTransformerClasses,
-            $configuration->requestDataTransformerClassesToMergeWithDefault,
-            $this->defaultRequestDataTransformerClasses,
-        );
-        foreach ($requestDataTransformerClasses as $requestDataTransformerClass => $parameters) {
+        foreach ($configuration->requestDataTransformerClasses as $requestDataTransformerClass => $parameters) {
             $requestDataTransformer = $this->serviceMap->getRequestDataTransformer($requestDataTransformerClass);
             $requestData = $requestDataTransformer->transformRequestData($configuration->dtoClass, $requestData, $parameters);
         }
 
         // -- Construct query from request data
-        $dtoConstructor = $this->serviceMap->getDTOConstructor(
-            $configuration->dtoConstructorClass,
-            $this->defaultDTOConstructorClass,
-        );
+        $dtoConstructor = $this->serviceMap->getDTOConstructor($configuration->dtoConstructorClass);
 
         /**
          * @var Query $query
          */
-        $query = $dtoConstructor->constructDTO($requestData, $configuration->dtoClass);
+        $query = $dtoConstructor->constructDTO(
+            $requestData,
+            $configuration->dtoClass,
+        );
 
         // -- Validate query
-        $dtoValidatorClasses = RoutePayload::mergeDTOValidatorClassesFromRouteWithDefaults(
-            $configuration->dtoValidatorClasses,
-            $configuration->dtoValidatorClassesToMergeWithDefault,
-            $this->defaultDTOValidatorClasses,
-        );
-        foreach ($dtoValidatorClasses as $dtoValidatorClass => $parameters) {
+        foreach ($configuration->dtoValidatorClasses as $dtoValidatorClass => $parameters) {
             $dtoValidator = $this->serviceMap->getDTOValidator($dtoValidatorClass);
             $dtoValidator->validateDTO($request, $query, $parameters);
         }
@@ -114,13 +78,7 @@ final class QueryController extends AbstractController
         /**
          * The wrapper handlers are quite complex, so additional explanation can be found in @HandlerWrapperStep.
          */
-        $handlerWrapperClasses = RoutePayload::mergeHandlerWrapperClassesFromRouteWithDefaults(
-            $configuration->handlerWrapperClasses,
-            $configuration->handlerWrapperClassesToMergeWithDefault,
-            $this->defaultHandlerWrapperClasses,
-        );
-
-        $handlerWrapperClassesForPrepareStep = HandlerWrapperStep::prepare($handlerWrapperClasses);
+        $handlerWrapperClassesForPrepareStep = HandlerWrapperStep::prepare($configuration->handlerWrapperClasses);
         foreach ($handlerWrapperClassesForPrepareStep->orderedHandlerWrapperClasses as $handlerWrapperClass => $parameters) {
             $handlerWrapper = $this->serviceMap->getHandlerWrapper($handlerWrapperClass);
             $handlerWrapper->prepare(
@@ -144,7 +102,7 @@ final class QueryController extends AbstractController
              */
             $result = $queryHandler($query);
 
-            $handlerWrapperClassesForThenStep = HandlerWrapperStep::then($handlerWrapperClasses);
+            $handlerWrapperClassesForThenStep = HandlerWrapperStep::then($configuration->handlerWrapperClasses);
             foreach ($handlerWrapperClassesForThenStep->orderedHandlerWrapperClasses as $handlerWrapperClass => $parameters) {
                 $handlerWrapper = $this->serviceMap->getHandlerWrapper($handlerWrapperClass);
                 $handlerWrapper->then(
@@ -156,7 +114,7 @@ final class QueryController extends AbstractController
         } catch (\Exception $exception) {
             // Exception is handled by every handler wrapper until one does not return the exception anymore.
             $exceptionToHandle = $exception;
-            $handlerWrapperCatchStep = HandlerWrapperStep::catch($handlerWrapperClasses);
+            $handlerWrapperCatchStep = HandlerWrapperStep::catch($configuration->handlerWrapperClasses);
             foreach ($handlerWrapperCatchStep->orderedHandlerWrapperClasses as $handlerWrapperClass => $parameters) {
                 if ($exceptionToHandle !== null) {
                     $handlerWrapper = $this->serviceMap->getHandlerWrapper($handlerWrapperClass);
@@ -175,10 +133,7 @@ final class QueryController extends AbstractController
         }
 
         // -- Construct and return response
-        $responseConstructor = $this->serviceMap->getResponseConstructor(
-            $configuration->responseConstructorClass,
-            $this->defaultResponseConstructorClass,
-        );
+        $responseConstructor = $this->serviceMap->getResponseConstructor($configuration->responseConstructorClass);
 
         return $responseConstructor->constructResponse($result, $request);
     }

@@ -6,7 +6,9 @@ namespace DigitalCraftsman\CQSRouting\Controller;
 
 use DigitalCraftsman\CQSRouting\DTOConstructor\SerializerDTOConstructor;
 use DigitalCraftsman\CQSRouting\RequestDecoder\JsonRequestDecoder;
+use DigitalCraftsman\CQSRouting\ResponseConstructor\EmptyJsonResponseConstructor;
 use DigitalCraftsman\CQSRouting\ResponseConstructor\SerializerJsonResponseConstructor;
+use DigitalCraftsman\CQSRouting\Routing\RouteConfigurationBuilder;
 use DigitalCraftsman\CQSRouting\Routing\RoutePayload;
 use DigitalCraftsman\CQSRouting\Test\Application\AddActionIdRequestDataTransformer;
 use DigitalCraftsman\CQSRouting\Test\Application\UserIdValidator;
@@ -39,6 +41,31 @@ use Symfony\Component\Serializer\Serializer;
 /** @coversDefaultClass \DigitalCraftsman\CQSRouting\Controller\QueryController */
 final class QueryControllerTest extends TestCase
 {
+    private RouteConfigurationBuilder $defaultRouteConfigurationBuilder;
+
+    #[\Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->defaultRouteConfigurationBuilder = new RouteConfigurationBuilder(
+            defaultRequestValidatorClassesForCommand: [],
+            defaultRequestDecoderClassForCommand: JsonRequestDecoder::class,
+            defaultRequestDataTransformerClassesForCommand: [],
+            defaultDTOConstructorClassForCommand: SerializerDTOConstructor::class,
+            defaultDTOValidatorClassesForCommand: [],
+            defaultHandlerWrapperClassesForCommand: [],
+            defaultResponseConstructorClassForCommand: EmptyJsonResponseConstructor::class,
+            defaultRequestValidatorClassesForQuery: [],
+            defaultRequestDecoderClassForQuery: JsonRequestDecoder::class,
+            defaultRequestDataTransformerClassesForQuery: [],
+            defaultDTOConstructorClassForQuery: SerializerDTOConstructor::class,
+            defaultDTOValidatorClassesForQuery: [],
+            defaultHandlerWrapperClassesForQuery: [],
+            defaultResponseConstructorClassForQuery: SerializerJsonResponseConstructor::class,
+        );
+    }
+
     /**
      * @test
      *
@@ -105,17 +132,11 @@ final class QueryControllerTest extends TestCase
                     new SerializerJsonResponseConstructor($serializer),
                 ],
             ),
-            [],
-            JsonRequestDecoder::class,
-            [],
-            SerializerDTOConstructor::class,
-            [],
-            [],
-            SerializerJsonResponseConstructor::class,
+            $this->defaultRouteConfigurationBuilder,
         );
 
         $content = [
-            'userId' => (string) $authenticatedUserId,
+            'userId' => $authenticatedUserId->normalize(),
         ];
 
         $request = new Request(content: json_encode($content, JSON_THROW_ON_ERROR));
@@ -203,13 +224,7 @@ final class QueryControllerTest extends TestCase
                     new SerializerJsonResponseConstructor($serializer),
                 ],
             ),
-            [],
-            JsonRequestDecoder::class,
-            [],
-            SerializerDTOConstructor::class,
-            [],
-            [],
-            SerializerJsonResponseConstructor::class,
+            $this->defaultRouteConfigurationBuilder,
         );
 
         $content = [

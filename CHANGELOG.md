@@ -5,6 +5,7 @@
 - **[Breaking change](./UPGRADE.md#dropped-interface-suffix-from-interfaces)**: Dropped `*Interface` suffix from interfaces.
 - **[Breaking change](./UPGRADE.md#dropped-support-for-php-83)**: Dropped support for PHP 8.3.
 - **[Breaking change](./UPGRADE.md#dropped-support-for-symfony-64)**: Dropped support for Symfony 6.4.
+- **[Breaking change](./UPGRADE.md#renamed-configuration-for-defaults)**: Renamed configuration for defaults
 
 ## 1.1.0
 

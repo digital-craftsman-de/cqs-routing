@@ -38,8 +38,10 @@ final readonly class RoutePayload
      * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null         $handlerWrapperClasses
      * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>|null         $handlerWrapperClassesToMergeWithDefault
      * @param class-string<ResponseConstructor>|null                                              $responseConstructorClass
+     *
+     * @internal
      */
-    private function __construct(
+    public function __construct(
         public string $dtoClass,
         public string $handlerClass,
         public ?array $requestValidatorClasses = null,

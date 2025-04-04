@@ -17,9 +17,9 @@ use Symfony\Config\CqsRoutingConfig;
 
 return static function (CqsRoutingConfig $cqsRoutingConfig) {
     
-    // -- Query controller
+    // -- Query
 
-    $cqsRoutingConfig->queryController()
+    $cqsRoutingConfig->query()
         ->defaultRequestValidatorClasses([
             GuardAgainstTokenInHeaderRequestValidator::class => null,
         ])
@@ -37,9 +37,9 @@ return static function (CqsRoutingConfig $cqsRoutingConfig) {
         ])
         ->defaultResponseConstructorClass(SerializerJsonResponseConstructor::class);
 
-    // -- Command controller
+    // -- Command
 
-    $cqsRoutingConfig->commandController()
+    $cqsRoutingConfig->command()
         ->defaultRequestValidatorClasses([
             GuardAgainstTokenInHeaderRequestValidator::class => null,
         ])
@@ -64,7 +64,7 @@ Or if your configuration still uses yaml, it looks like this:
 ```yaml
 cqs_routing:
 
-  command_controller:
+  command:
 
     # Classes of the default request validator of command controller when there is none defined for the route
     default_request_validator_classes:
@@ -92,7 +92,7 @@ cqs_routing:
     # Class of the default response constructor of command controller when there is none defined for the route
     default_response_constructor_class: 'DigitalCraftsman\CQSRouting\ResponseConstructor\EmptyJsonResponseConstructor'
 
-  query_controller:
+  query:
 
     # Classes of the default request validator of query controller when there is none defined for the route
     default_request_validator_classes:

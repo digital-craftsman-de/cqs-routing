@@ -1,3 +1,6 @@
+imports:
+  - { resource: services_test.yaml, env: 'test' }
+
 services:
 
   # Request decoders
@@ -41,40 +44,34 @@ services:
 
   # Service map
   DigitalCraftsman\CQSRouting\ServiceMap\ServiceMap:
+    autowire: true
+    autoconfigure: true
+
+  # Route configuration builder
+  DigitalCraftsman\CQSRouting\Routing\RouteConfigurationBuilder:
     arguments:
-      $requestValidators: !tagged_locator cqs_routing.request_validator
-      $requestDecoders: !tagged_locator cqs_routing.request_decoder
-      $requestDataTransformers: !tagged_locator cqs_routing.request_data_transformer
-      $dtoConstructors: !tagged_locator cqs_routing.dto_constructor
-      $dtoValidators: !tagged_locator cqs_routing.dto_validator
-      $handlerWrappers: !tagged_locator cqs_routing.handler_wrapper
-      $commandHandlers: !tagged_locator cqs_routing.command_handler
-      $queryHandlers: !tagged_locator cqs_routing.query_handler
-      $responseConstructors: !tagged_locator cqs_routing.response_constructor
+      $defaultRequestValidatorClassesForCommand: '%cqs_routing.command.default_request_validator_classes%'
+      $defaultRequestDecoderClassForCommand: '%cqs_routing.command.default_request_decoder_class%'
+      $defaultRequestDataTransformerClassesForCommand: '%cqs_routing.command.default_request_data_transformer_classes%'
+      $defaultDTOConstructorClassForCommand: '%cqs_routing.command.default_dto_constructor_class%'
+      $defaultDTOValidatorClassesForCommand: '%cqs_routing.command.default_dto_validator_classes%'
+      $defaultHandlerWrapperClassesForCommand: '%cqs_routing.command.default_handler_wrapper_classes%'
+      $defaultResponseConstructorClassForCommand: '%cqs_routing.command.default_response_constructor_class%'
+      $defaultRequestValidatorClassesForQuery: '%cqs_routing.query.default_request_validator_classes%'
+      $defaultRequestDecoderClassForQuery: '%cqs_routing.query.default_request_decoder_class%'
+      $defaultRequestDataTransformerClassesForQuery: '%cqs_routing.query.default_request_data_transformer_classes%'
+      $defaultDTOConstructorClassForQuery: '%cqs_routing.query.default_dto_constructor_class%'
+      $defaultDTOValidatorClassesForQuery: '%cqs_routing.query.default_dto_validator_classes%'
+      $defaultHandlerWrapperClassesForQuery: '%cqs_routing.query.default_handler_wrapper_classes%'
+      $defaultResponseConstructorClassForQuery: '%cqs_routing.query.default_response_constructor_class%'
 
   # Controllers
   DigitalCraftsman\CQSRouting\Controller\CommandController:
     autoconfigure: true
     autowire: true
-    arguments:
-      $defaultRequestValidatorClasses: '%cqs_routing.command_controller.default_request_validator_classes%'
-      $defaultRequestDecoderClass: '%cqs_routing.command_controller.default_request_decoder_class%'
-      $defaultRequestDataTransformerClasses: '%cqs_routing.command_controller.default_request_data_transformer_classes%'
-      $defaultDTOConstructorClass: '%cqs_routing.command_controller.default_dto_constructor_class%'
-      $defaultDTOValidatorClasses: '%cqs_routing.command_controller.default_dto_validator_classes%'
-      $defaultHandlerWrapperClasses: '%cqs_routing.command_controller.default_handler_wrapper_classes%'
-      $defaultResponseConstructorClass: '%cqs_routing.command_controller.default_response_constructor_class%'
     tags: [ 'controller.service_arguments' ]
 
   DigitalCraftsman\CQSRouting\Controller\QueryController:
     autoconfigure: true
     autowire: true
-    arguments:
-      $defaultRequestValidatorClasses: '%cqs_routing.command_controller.default_request_validator_classes%'
-      $defaultRequestDecoderClass: '%cqs_routing.query_controller.default_request_decoder_class%'
-      $defaultRequestDataTransformerClasses: '%cqs_routing.query_controller.default_request_data_transformer_classes%'
-      $defaultDTOConstructorClass: '%cqs_routing.query_controller.default_dto_constructor_class%'
-      $defaultDTOValidatorClasses: '%cqs_routing.query_controller.default_dto_validator_classes%'
-      $defaultHandlerWrapperClasses: '%cqs_routing.query_controller.default_handler_wrapper_classes%'
-      $defaultResponseConstructorClass: '%cqs_routing.query_controller.default_response_constructor_class%'
     tags: [ 'controller.service_arguments' ]
