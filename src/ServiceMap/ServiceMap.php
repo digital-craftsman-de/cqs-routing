@@ -14,7 +14,6 @@ use DigitalCraftsman\CQSRouting\RequestDecoder\RequestDecoder;
 use DigitalCraftsman\CQSRouting\RequestValidator\RequestValidator;
 use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructor;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Contracts\Service\ServiceProviderInterface;
 
@@ -72,7 +71,7 @@ final readonly class ServiceMap
     {
         try {
             return $this->requestDecoders->get($requestDecoderClass);
-        } catch (NotFoundExceptionInterface) {
+        } catch (ContainerExceptionInterface) {
             throw new Exception\ConfiguredRequestDecoderNotAvailable($requestDecoderClass);
         }
     }
