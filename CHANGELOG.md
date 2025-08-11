@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+
+- Increased allowed array depth of `NormalizedConfigurationParameters` by one level. This only affects the Psalm type and is not validated at runtime.
+
 ## 2.0.0
 
 - **[Breaking change](./UPGRADE.md#dropped-interface-suffix-from-interfaces)**: Dropped `*Interface` suffix from interfaces.
