@@ -1,6 +1,6 @@
 # Reduced cost of change through CQS in Symfony
 
-[![Latest Stable Version](https://img.shields.io/badge/stable-2.0.0-blue)](https://packagist.org/packages/digital-craftsman/cqs-routing)
+[![Latest Stable Version](https://img.shields.io/badge/stable-2.0.1-blue)](https://packagist.org/packages/digital-craftsman/cqs-routing)
 [![PHP Version Require](https://img.shields.io/badge/php-8.4-5b5d95)](https://packagist.org/packages/digital-craftsman/cqs-routing)
 [![codecov](https://codecov.io/gh/digital-craftsman-de/cqs-routing/branch/main/graph/badge.svg?token=YUKRDW1L8G)](https://codecov.io/gh/digital-craftsman-de/cqs-routing)
 ![Packagist Downloads](https://img.shields.io/packagist/dt/digital-craftsman/cqs-routing)

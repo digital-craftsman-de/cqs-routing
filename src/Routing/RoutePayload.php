@@ -20,7 +20,7 @@ use DigitalCraftsman\CQSRouting\ResponseConstructor\ResponseConstructor;
  * The symfony routing does not support the usage of objects as it has to dump them into a php file for caching. Therefore, we create an
  * object and convert into and from an array. The validation is done through the RouteBuilder at build time (cache warmup).
  *
- * @psalm-type NormalizedConfigurationParameters = scalar|array<array-key, scalar|array<array-key, scalar|null>|null>|null
+ * @psalm-type NormalizedConfigurationParameters = scalar|array<array-key, scalar|array<array-key, scalar|array<array-key, scalar|null>|null>|null>|null
  */
 final readonly class RoutePayload
 {
