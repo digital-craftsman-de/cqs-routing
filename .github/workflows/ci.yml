@@ -2,8 +2,8 @@ name: CI
 on: push
 jobs:
 
-  test-8-4:
-    name: "Tests on PHP 8.4"
+  test-8-5:
+    name: "Tests on PHP 8.5"
     runs-on: ubuntu-latest
     steps:
 
@@ -19,25 +19,25 @@ jobs:
       - name: Setup env
         run: cp .github/workflows/.env .env
 
-      - name: Cache PHP 8.4 dependencies
-        id: cache-php-8-4-dependencies
+      - name: Cache PHP 8.5 dependencies
+        id: cache-php-8-5-dependencies
         uses: actions/cache@v3
         env:
-          cache-name: cache-php-8-4-dependencies
+          cache-name: cache-php-8-5-dependencies
         with:
           path: |
             ~/.cache
             vendor
-          key: ${{ runner.os }}-php-8-4-cache-${{ hashFiles('composer.lock') }}
+          key: ${{ runner.os }}-php-8-5-cache-${{ hashFiles('composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php-8-4-cache-${{ hashFiles('composer.lock') }}
+            ${{ runner.os }}-php-8-5-cache-${{ hashFiles('composer.lock') }}
 
       - name: Install
-        if: steps.cache-php-8-4-dependencies.outputs.cache-hit != 'true'
-        run: make install-8.4
+        if: steps.cache-php-8-5-dependencies.outputs.cache-hit != 'true'
+        run: make install-8.5
 
       - name: Run PHP tests
-        run: make php-8.4-tests-ci
+        run: make php-8.5-tests-ci
 
       - name: Upload to Codecov
         uses: codecov/codecov-action@v4
@@ -64,18 +64,18 @@ jobs:
       - name: Setup env
         run: cp .github/workflows/.env .env
 
-      - name: Restore cache for PHP 8.4 dependencies
-        id: cache-php-8-4-dependencies
+      - name: Restore cache for PHP 8.5 dependencies
+        id: cache-php-8-5-dependencies
         uses: actions/cache/restore@v3
         with:
           path: |
             ~/.cache
             vendor
-          key: ${{ runner.os }}-php-8-4-cache-${{ hashFiles('composer.lock') }}
+          key: ${{ runner.os }}-php-8-5-cache-${{ hashFiles('composer.lock') }}
 
       - name: Install
         if: steps.cache-php-8-3-dependencies.outputs.cache-hit != 'true'
-        run: make install-8.4
+        run: make install-8.5
 
       - name: Run code validation
         run: make php-code-validation

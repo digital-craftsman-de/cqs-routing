@@ -1,10 +1,11 @@
 <?php
 
-$finder = (new PhpCsFixer\Finder())
+$finder = new PhpCsFixer\Finder()
     ->in('src')
     ->in('tests');
 
-return (new PhpCsFixer\Config())
+return new PhpCsFixer\Config()
+    ->setUnsupportedPhpVersionAllowed(true)
     ->setRules([
         '@Symfony' => true,
 
