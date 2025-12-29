@@ -41,17 +41,6 @@ down: .down
 .down:
 	docker compose down
 
-## update				Rebuild Docker images and start stack.
-.PHONY: update
-update: build up
-
-## reset				Teardown stack, install and start.
-.PHONY: reset
-reset: .reset
-
-.PHONY: .reset
-.reset: .down .install .up
-
 ## install			Install PHP dependencies with the default PHP version (8.5).
 .PHONY: .install
 install: install-8.5
@@ -97,11 +86,11 @@ php-tests-coverage: php-8.5-tests-html-coverage
 php-8.5-tests-html-coverage:
 	docker compose run --rm php-8.5 ./vendor/bin/phpunit --coverage-html ./coverage
 
-## php-code-validation		Run code fixers and linters with default PHP version (8.5).
+## php-code-validation		Run code fixers and linters with PHP (8.4).
 .PHONY: php-code-validation
 php-code-validation:
-	docker compose run --rm php-8.5 ./vendor/bin/php-cs-fixer fix
-	docker compose run --rm php-8.5 ./vendor/bin/psalm --show-info=false --no-diff --no-cache
+	docker compose run --rm php-8.4 ./vendor/bin/php-cs-fixer fix
+	docker compose run --rm php-8.4 ./vendor/bin/psalm --show-info=false --no-diff --no-cache
 
 ##
 ## CI

@@ -16,3 +16,6 @@ coverage.xml
 # .env files
 /.env*
 !.env.example
+
+# New Symfony configuration not ready for bundles yet
+/tests/Test/config/reference.php

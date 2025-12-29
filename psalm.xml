@@ -12,6 +12,7 @@
     <directory name="tests" />
     <ignoreFiles>
       <directory name="vendor" />
+      <file name="tests/Test/config/reference.php" />
     </ignoreFiles>
   </projectFiles>
 
