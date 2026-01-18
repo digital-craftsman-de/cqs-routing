@@ -31,7 +31,6 @@ final class Configuration implements ConfigurationInterface
                             ->arrayPrototype()
                                 ->scalarPrototype()->end()
                                 ->defaultNull()
-                                ->canBeNull()
                             ->end()
                         ->end()
                         ->scalarNode('default_request_decoder_class')->defaultNull()->end()
