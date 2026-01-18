@@ -13,9 +13,9 @@ final class CreateTaskRequestDecoder implements RequestDecoder
     public function decodeRequest(Request $request): array
     {
         return [
-            'title' => $request->get('title'),
-            'content' => $request->get('content'),
-            'priority' => $request->get('priority'),
+            'title' => $request->request->get('title'),
+            'content' => $request->request->get('content'),
+            'priority' => $request->request->get('priority'),
         ];
     }
 }

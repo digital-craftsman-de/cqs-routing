@@ -1,19 +1,21 @@
 {
   "name": "digital-craftsman/cqs-routing",
+  "version": "2.1.0",
   "description": "Reduced cost of change through CQS in Symfony",
   "type": "symfony-bundle",
   "require": {
-    "php": "8.4.*",
-    "symfony/framework-bundle": "^7.0",
-    "symfony/serializer": "^7.0"
+    "php": "8.4.*|8.5.*",
+    "symfony/framework-bundle": "^7.4|^8.0",
+    "symfony/serializer": "^7.4|^8.0"
   },
   "require-dev": {
-    "digital-craftsman/ids": "^2.0.1",
     "friendsofphp/php-cs-fixer": "^3.68.5",
+    "digital-craftsman/ids": "^2.3.0",
+    "digital-craftsman/self-aware-normalizers": "^1.2.0",
     "phpunit/phpunit": "^10.5",
-    "symfony/property-access": "^7.0",
-    "symfony/property-info": "^7.0",
-    "symfony/yaml": "^7.0",
+    "symfony/property-access": "^7.4|^8.0",
+    "symfony/property-info": "^7.4|^8.0",
+    "symfony/yaml": "^7.4|^8.0",
     "vimeo/psalm": "^6.0.0"
   },
   "autoload": {
@@ -32,5 +34,8 @@
       "name": "Christian Kolb",
       "email": "info@digital-craftsman.de"
     }
-  ]
+  ],
+  "config": {
+    "sort-packages": true
+  }
 }

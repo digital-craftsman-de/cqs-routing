@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.0
+
+- Added support for PHP 8.5.
+- Added support for Symfony ^8.0.
+- Dropped support for Symfony 7.3 and below. Only the 7.4 LTS version is still supported.
+
 ## 2.0.1
 
 - Increased allowed array depth of `NormalizedConfigurationParameters` by one level. This only affects the Psalm type and is not validated at runtime.

@@ -12,6 +12,7 @@
     <directory name="tests" />
     <ignoreFiles>
       <directory name="vendor" />
+      <directory name="tests/Test/config" />
     </ignoreFiles>
   </projectFiles>
 

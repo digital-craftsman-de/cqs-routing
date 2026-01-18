@@ -1,5 +1,11 @@
 # Upgrade guide
 
+## From 2.0.* to 2.1.0
+
+### Dropped support for Symfony 7.3 and below
+
+Update to at least the LTS version 7.4.
+
 ## From 1.1.* to 2.0.0
 
 ### Dropped `*Interface` suffix from interfaces

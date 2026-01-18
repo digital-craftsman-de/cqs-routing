@@ -1,7 +1,7 @@
 services:
 
-  php-8.3:
-    image: ghcr.io/digital-craftsman-de/cqs-routing-php-8.3
+  php-8.4:
+    image: ghcr.io/digital-craftsman-de/cqs-routing-php-8.4
     env_file:
       - .env
     volumes:
@@ -9,8 +9,8 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-  php-8.4:
-    image: ghcr.io/digital-craftsman-de/cqs-routing-php-8.4
+  php-8.5:
+    image: ghcr.io/digital-craftsman-de/cqs-routing-php-8.5
     env_file:
       - .env
     volumes:
