@@ -45,6 +45,11 @@ down: .down
 .PHONY: .install
 install: install-8.5
 
+## install-8.4			Install PHP dependencies with PHP 8.4.
+.PHONY: install-8.4
+install-8.4:
+	docker compose run --rm php-8.4 composer install
+
 ## install-8.5			Install PHP dependencies with PHP 8.5.
 .PHONY: install-8.5
 install-8.5:
@@ -53,6 +58,11 @@ install-8.5:
 ## php-cli			Enter a shell for the default PHP version (8.5).
 .PHONY: php-cli
 php-cli: php-8.5-cli
+
+## php-8.4-cli			Enter a shell for PHP 8.4.
+.PHONY: php-8.4-cli
+php-8.4-cli:
+	docker compose run --rm php-8.4 sh
 
 ## php-8.5-cli			Enter a shell for PHP 8.5.
 .PHONY: php-8.5-cli
@@ -71,6 +81,11 @@ verify: php-code-validation php-tests
 ## php-tests			Run the tests for all relevant PHP versions.
 .PHONY: php-tests
 php-tests: php-8.5-tests
+
+## php-8.4-tests			Run tests with PHP 8.4.
+.PHONY: php-8.4-tests
+php-8.4-tests:
+	docker compose run --rm php-8.4 ./vendor/bin/phpunit
 
 ## php-8.5-tests			Run tests with PHP 8.5.
 .PHONY: php-8.5-tests
@@ -96,6 +111,11 @@ php-code-validation:
 ## CI
 ## --
 ##
+
+## php-8.4-tests-ci		Run the tests for PHP 8.4 for CI.
+.PHONY: php-8.4-tests-ci
+php-8.4-tests-ci:
+	docker compose run --rm php-8.4 ./vendor/bin/phpunit
 
 ## php-8.5-tests-ci		Run the tests for PHP 8.5 for CI.
 .PHONY: php-8.5-tests-ci
