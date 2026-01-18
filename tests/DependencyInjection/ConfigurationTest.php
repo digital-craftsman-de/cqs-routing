@@ -35,7 +35,7 @@ final class ConfigurationTest extends TestCase
                     'default_request_decoder_class' => JsonRequestDecoder::class,
                     'default_dto_constructor_class' => SerializerDTOConstructor::class,
                     'default_dto_validator_classes' => [
-                        UserIdValidator::class,
+                        UserIdValidator::class => null,
                     ],
                     'default_handler_wrapper_classes' => [
                         ConnectionTransactionWrapper::class => null,
@@ -49,7 +49,7 @@ final class ConfigurationTest extends TestCase
                     'default_request_decoder_class' => JsonRequestDecoder::class,
                     'default_dto_constructor_class' => SerializerDTOConstructor::class,
                     'default_dto_validator_classes' => [
-                        UserIdValidator::class,
+                        UserIdValidator::class => null,
                     ],
                     'default_handler_wrapper_classes' => [
                         SilentExceptionWrapper::class => [
@@ -72,7 +72,7 @@ final class ConfigurationTest extends TestCase
         // Command controller
         self::assertSame(JsonRequestDecoder::class, $config['command']['default_request_decoder_class']);
         self::assertSame(SerializerDTOConstructor::class, $config['command']['default_dto_constructor_class']);
-        self::assertContains(UserIdValidator::class, $config['command']['default_dto_validator_classes']);
+        self::assertArrayHasKey(UserIdValidator::class, $config['command']['default_dto_validator_classes']);
         self::assertSame(
             [
                 ConnectionTransactionWrapper::class => null,
@@ -87,7 +87,7 @@ final class ConfigurationTest extends TestCase
         // Query controller
         self::assertSame(JsonRequestDecoder::class, $config['query']['default_request_decoder_class']);
         self::assertSame(SerializerDTOConstructor::class, $config['query']['default_dto_constructor_class']);
-        self::assertContains(UserIdValidator::class, $config['query']['default_dto_validator_classes']);
+        self::assertArrayHasKey(UserIdValidator::class, $config['query']['default_dto_validator_classes']);
         self::assertSame(
             [
                 SilentExceptionWrapper::class => [
