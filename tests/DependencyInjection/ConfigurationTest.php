@@ -13,17 +13,15 @@ use DigitalCraftsman\CQSRouting\Test\Application\Authentication\UserIdValidator;
 use DigitalCraftsman\CQSRouting\Test\Application\ConnectionTransactionWrapper;
 use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\Exception\NewsArticleAlreadyExists;
 use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\ReadSide\GetTasks\Exception\TasksNotAccessible;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Processor;
 
-/** @coversDefaultClass \DigitalCraftsman\CQSRouting\DependencyInjection\Configuration */
+#[CoversClass(Configuration::class)]
 final class ConfigurationTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @covers ::getConfigTreeBuilder
-     */
+    #[Test]
     public function configuration_can_be_processed(): void
     {
         // -- Arrange

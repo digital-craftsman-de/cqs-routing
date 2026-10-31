@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQSRouting\RequestDecoder;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-/** @coversDefaultClass \DigitalCraftsman\CQSRouting\RequestDecoder\JsonRequestDecoder */
+#[CoversClass(JsonRequestDecoder::class)]
 final class JsonRequestDecoderTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @covers ::decodeRequest
-     */
+    #[Test]
     public function json_request_decoder_decodes_json(): void
     {
         // -- Arrange

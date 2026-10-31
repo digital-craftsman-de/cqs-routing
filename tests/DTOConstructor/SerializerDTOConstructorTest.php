@@ -8,19 +8,17 @@ use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\Cre
 use DigitalCraftsman\CQSRouting\Test\ValueObject\UserId;
 use DigitalCraftsman\SelfAwareNormalizers\Serializer\ArrayNormalizableNormalizer;
 use DigitalCraftsman\SelfAwareNormalizers\Serializer\StringNormalizableNormalizer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-/** @coversDefaultClass \DigitalCraftsman\CQSRouting\DTOConstructor\SerializerDTOConstructor */
+#[CoversClass(SerializerDTOConstructor::class)]
 final class SerializerDTOConstructorTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @covers ::constructDTO
-     */
+    #[Test]
     public function serializer_dto_constructor_constructs_dto(): void
     {
         // -- Arrange

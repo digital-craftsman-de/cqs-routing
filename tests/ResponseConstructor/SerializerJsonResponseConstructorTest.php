@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace DigitalCraftsman\CQSRouting\ResponseConstructor;
 
 use DigitalCraftsman\CQSRouting\Test\ReadModel\User as UserReadModel;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,14 +14,10 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-/** @coversDefaultClass \DigitalCraftsman\CQSRouting\ResponseConstructor\SerializerJsonResponseConstructor */
+#[CoversClass(SerializerJsonResponseConstructor::class)]
 final class SerializerJsonResponseConstructorTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @covers ::constructResponse
-     */
+    #[Test]
     public function serializer_json_response_constructor_constructs_response(): void
     {
         // -- Arrange

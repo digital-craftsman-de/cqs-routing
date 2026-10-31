@@ -89,8 +89,9 @@ final readonly class RoutePayload
      *   responseConstructorClass: class-string<ResponseConstructor>|null,
      * }
      *
-     *@internal
+     * @internal
      */
+    #[\NoDiscard]
     public static function generatePayload(
         string $dtoClass,
         string $handlerClass,

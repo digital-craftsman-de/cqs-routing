@@ -24,18 +24,16 @@ use DigitalCraftsman\CQSRouting\Test\Application\ConnectionTransactionWrapper;
 use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\CreateNewsArticleRequestDataTransformer;
 use DigitalCraftsman\CQSRouting\Test\RequestValidator\GuardAgainstFileWithVirusRequestValidator;
 use DigitalCraftsman\CQSRouting\Test\RequestValidator\GuardAgainstTokenInHeaderRequestValidator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \DigitalCraftsman\CQSRouting\Routing\RouteBuilder */
+#[CoversClass(RouteBuilder::class)]
 final class RouteBuilderTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @covers ::generateNameFromPath
-     *
-     * @dataProvider dataProvider
-     */
+    #[Test]
+    #[DataProvider('dataProvider')]
     public function generate_name_from_path_works(
         string $expectedResult,
         string $name,
@@ -78,11 +76,7 @@ final class RouteBuilderTest extends TestCase
 
     // -- Validate DTO class
 
-    /**
-     * @test
-     *
-     * @covers ::validateDTOClass
-     */
+    #[Test]
     public function validate_dto_class_fails_when_class_does_not_exist(): void
     {
         // -- Assert
@@ -96,11 +90,7 @@ final class RouteBuilderTest extends TestCase
         RouteBuilder::validateDTOClass($classString);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateDTOClass
-     */
+    #[Test]
     public function validate_dto_class_fails_when_class_is_not_a_command_or_a_query(): void
     {
         // -- Assert
@@ -113,11 +103,7 @@ final class RouteBuilderTest extends TestCase
 
     // -- Validate handler class
 
-    /**
-     * @test
-     *
-     * @covers ::validateHandlerClass
-     */
+    #[Test]
     public function validate_handler_class_fails_when_class_does_not_exist(): void
     {
         // -- Assert
@@ -128,11 +114,7 @@ final class RouteBuilderTest extends TestCase
         RouteBuilder::validateHandlerClass('App\DoesNotExist');
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateHandlerClass
-     */
+    #[Test]
     public function validate_handler_class_fails_when_class_is_not_a_command_handler_or_a_query_handler(): void
     {
         // -- Assert
@@ -145,11 +127,7 @@ final class RouteBuilderTest extends TestCase
 
     // -- Validate request validator classes
 
-    /**
-     * @test
-     *
-     * @covers ::validateRequestValidatorClasses
-     */
+    #[Test]
     public function validate_request_validator_classes_fails_when_class_is_not_provided(): void
     {
         // -- Assert
@@ -165,11 +143,7 @@ final class RouteBuilderTest extends TestCase
         ], null);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateRequestValidatorClasses
-     */
+    #[Test]
     public function validate_request_validator_classes_fails_when_class_does_not_exist(): void
     {
         // -- Assert
@@ -182,11 +156,7 @@ final class RouteBuilderTest extends TestCase
         ], null);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateRequestValidatorClasses
-     */
+    #[Test]
     public function validate_request_validator_classes_fails_when_parameters_are_not_valid(): void
     {
         // -- Assert
@@ -198,11 +168,7 @@ final class RouteBuilderTest extends TestCase
         ], null);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateRequestValidatorClasses
-     */
+    #[Test]
     public function validate_request_validator_classes_fails_when_overwrite_and_merge_are_defined(): void
     {
         // -- Assert
@@ -216,11 +182,7 @@ final class RouteBuilderTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateRequestValidatorClasses
-     */
+    #[Test]
     public function validate_request_validator_classes_fails_when_class_in_merge_list_is_no_request_validator(): void
     {
         // -- Assert
@@ -235,11 +197,7 @@ final class RouteBuilderTest extends TestCase
 
     // -- Validate request decoder class
 
-    /**
-     * @test
-     *
-     * @covers ::validateRequestDecoderClass
-     */
+    #[Test]
     public function validate_request_decoder_class_fails_when_class_does_not_exist(): void
     {
         // -- Assert
@@ -250,11 +208,7 @@ final class RouteBuilderTest extends TestCase
         RouteBuilder::validateRequestDecoderClass('App\DoesNotExist');
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateRequestDecoderClass
-     */
+    #[Test]
     public function validate_request_decoder_class_fails_when_class_is_no_request_decoder(): void
     {
         // -- Assert
@@ -267,11 +221,7 @@ final class RouteBuilderTest extends TestCase
 
     // -- Validate request data transformer classes
 
-    /**
-     * @test
-     *
-     * @covers ::validateRequestDataTransformerClasses
-     */
+    #[Test]
     public function validate_request_data_transformer_classes_fails_when_class_is_not_provided(): void
     {
         // -- Assert
@@ -284,11 +234,7 @@ final class RouteBuilderTest extends TestCase
         ], null);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateRequestDataTransformerClasses
-     */
+    #[Test]
     public function validate_request_data_transformer_classes_fails_when_class_does_not_exist(): void
     {
         // -- Assert
@@ -301,11 +247,7 @@ final class RouteBuilderTest extends TestCase
         ], null);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateRequestDataTransformerClasses
-     */
+    #[Test]
     public function validate_request_data_transformer_classes_fails_when_parameters_are_not_valid(): void
     {
         // -- Assert
@@ -317,11 +259,7 @@ final class RouteBuilderTest extends TestCase
         ], null);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateRequestDataTransformerClasses
-     */
+    #[Test]
     public function validate_request_data_transformer_classes_fails_when_overwrite_and_merge_list_are_used(): void
     {
         // -- Assert
@@ -335,11 +273,7 @@ final class RouteBuilderTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateRequestDataTransformerClasses
-     */
+    #[Test]
     public function validate_request_data_transformer_classes_fails_when_class_in_merge_list_is_no_request_data_transformer(): void
     {
         // -- Assert
@@ -354,11 +288,7 @@ final class RouteBuilderTest extends TestCase
 
     // -- Validate DTO constructor class
 
-    /**
-     * @test
-     *
-     * @covers ::validateDTOConstructorClass
-     */
+    #[Test]
     public function validate_dto_constructor_class_fails_when_class_does_not_exist(): void
     {
         // -- Assert
@@ -369,11 +299,7 @@ final class RouteBuilderTest extends TestCase
         RouteBuilder::validateDTOConstructorClass('App\DoesNotExist');
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateDTOConstructorClass
-     */
+    #[Test]
     public function validate_dto_constructor_class_fails_when_class_is_no_dto_constructor(): void
     {
         // -- Assert
@@ -386,11 +312,7 @@ final class RouteBuilderTest extends TestCase
 
     // -- Validate DTO validator classes
 
-    /**
-     * @test
-     *
-     * @covers ::validateDTOValidatorClasses
-     */
+    #[Test]
     public function validate_dto_validator_classes_fails_when_class_is_not_provided(): void
     {
         // -- Assert
@@ -403,11 +325,7 @@ final class RouteBuilderTest extends TestCase
         ], null);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateDTOValidatorClasses
-     */
+    #[Test]
     public function validate_dto_validator_classes_fails_when_class_does_not_exist(): void
     {
         // -- Assert
@@ -420,11 +338,7 @@ final class RouteBuilderTest extends TestCase
         ], null);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateDTOValidatorClasses
-     */
+    #[Test]
     public function validate_dto_validator_classes_fails_when_parameters_are_not_valid(): void
     {
         // -- Assert
@@ -436,11 +350,7 @@ final class RouteBuilderTest extends TestCase
         ], null);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateDTOValidatorClasses
-     */
+    #[Test]
     public function validate_dto_validator_classes_fails_when_overwrite_and_merge_list_are_used(): void
     {
         // -- Assert
@@ -454,11 +364,7 @@ final class RouteBuilderTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateDTOValidatorClasses
-     */
+    #[Test]
     public function validate_dto_validator_classes_fails_when_class_in_merge_list_is_no_dto_validator(): void
     {
         // -- Assert
@@ -473,11 +379,7 @@ final class RouteBuilderTest extends TestCase
 
     // -- Validate handler wrapper classes
 
-    /**
-     * @test
-     *
-     * @covers ::validateHandlerWrapperClasses
-     */
+    #[Test]
     public function validate_handler_wrapper_classes_fails_when_class_is_not_provided(): void
     {
         // -- Assert
@@ -490,11 +392,7 @@ final class RouteBuilderTest extends TestCase
         ], null);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateHandlerWrapperClasses
-     */
+    #[Test]
     public function validate_handler_wrapper_classes_fails_when_class_does_not_exist(): void
     {
         // -- Assert
@@ -507,11 +405,7 @@ final class RouteBuilderTest extends TestCase
         ], null);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateHandlerWrapperClasses
-     */
+    #[Test]
     public function validate_handler_wrapper_classes_fails_when_parameters_are_not_valid(): void
     {
         // -- Assert
@@ -525,11 +419,7 @@ final class RouteBuilderTest extends TestCase
         ], null);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateHandlerWrapperClasses
-     */
+    #[Test]
     public function validate_handler_wrapper_classes_fails_when_overwrite_and_merge_list_are_used(): void
     {
         // -- Assert
@@ -545,11 +435,7 @@ final class RouteBuilderTest extends TestCase
         ]);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateHandlerWrapperClasses
-     */
+    #[Test]
     public function validate_handler_wrapper_classes_fails_when_class_in_merge_list_is_no_handler_wrapper(): void
     {
         // -- Assert
@@ -564,11 +450,7 @@ final class RouteBuilderTest extends TestCase
 
     // -- Validate response constructor class
 
-    /**
-     * @test
-     *
-     * @covers ::validateResponseConstructorClass
-     */
+    #[Test]
     public function validate_response_constructor_class_fails_when_class_does_not_exist(): void
     {
         // -- Assert
@@ -579,11 +461,7 @@ final class RouteBuilderTest extends TestCase
         RouteBuilder::validateResponseConstructorClass('App\DoesNotExist');
     }
 
-    /**
-     * @test
-     *
-     * @covers ::validateResponseConstructorClass
-     */
+    #[Test]
     public function validate_response_constructor_class_fails_when_class_is_no_response_constructor(): void
     {
         // -- Assert

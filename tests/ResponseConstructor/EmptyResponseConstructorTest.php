@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQSRouting\ResponseConstructor;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-/** @coversDefaultClass \DigitalCraftsman\CQSRouting\ResponseConstructor\EmptyResponseConstructor */
+#[CoversClass(EmptyResponseConstructor::class)]
 final class EmptyResponseConstructorTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @covers ::constructResponse
-     */
+    #[Test]
     public function empty_response_constructor_constructs_response(): void
     {
         // -- Arrange

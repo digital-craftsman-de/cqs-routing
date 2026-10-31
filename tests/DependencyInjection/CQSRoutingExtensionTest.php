@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace DigitalCraftsman\CQSRouting\DependencyInjection;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-/** @coversDefaultClass \DigitalCraftsman\CQSRouting\DependencyInjection\CQSRoutingExtension */
+#[CoversClass(CQSRoutingExtension::class)]
 final class CQSRoutingExtensionTest extends TestCase
 {
     /**
-     * @test
-     *
-     * @covers ::load
-     *
      * The auto tagging works only for files in "src" and therefore the others below the "tests" directory can't be validated.
      * Still looking for an easy way to register the services to be able to test the tagging.
      */
+    #[Test]
     public function load_works(): void
     {
         // -- Arrange

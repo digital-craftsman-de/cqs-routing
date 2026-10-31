@@ -10,16 +10,14 @@ use DigitalCraftsman\CQSRouting\Test\Domain\News\WriteSide\CreateNewsArticle\Exc
 use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
 use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\MarkTaskAsAcceptedCommand;
 use DigitalCraftsman\CQSRouting\Test\ValueObject\TaskId;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Request;
 
-/** @coversDefaultClass \DigitalCraftsman\CQSRouting\HandlerWrapper\SilentExceptionWrapper */
+#[CoversClass(SilentExceptionWrapper::class)]
 final class SilentExceptionWrapperTest extends AppTestCase
 {
-    /**
-     * @test
-     *
-     * @covers ::areParametersValid
-     */
+    #[Test]
     public function are_parameters_valid_works(): void
     {
         // -- Arrange
@@ -46,11 +44,7 @@ final class SilentExceptionWrapperTest extends AppTestCase
         ]));
     }
 
-    /**
-     * @test
-     *
-     * @covers ::catch
-     */
+    #[Test]
     public function catch_works(): void
     {
         // -- Arrange

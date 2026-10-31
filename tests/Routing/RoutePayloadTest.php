@@ -16,20 +16,16 @@ use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\CreateTask\CreateTas
 use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\CreateTask\CreateTaskRequestDecoder;
 use DigitalCraftsman\CQSRouting\Test\Domain\Tasks\WriteSide\MarkTaskAsAccepted\Exception\TaskAlreadyAccepted;
 use DigitalCraftsman\CQSRouting\Test\RequestValidator\GuardAgainstTokenInHeaderRequestValidator;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
-/** @coversDefaultClass \DigitalCraftsman\CQSRouting\Routing\RoutePayload */
+#[CoversClass(RoutePayload::class)]
 final class RoutePayloadTest extends TestCase
 {
     // -- Construction
 
-    /**
-     * @test
-     *
-     * @covers ::generatePayload
-     * @covers ::__construct
-     * @covers ::toPayload
-     */
+    #[Test]
     public function generate_payload_works(): void
     {
         // -- Arrange & Act
@@ -87,11 +83,7 @@ final class RoutePayloadTest extends TestCase
         ], $payload);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::fromPayload
-     */
+    #[Test]
     public function from_payload_works(): void
     {
         // -- Arrange
@@ -152,11 +144,7 @@ final class RoutePayloadTest extends TestCase
 
     // -- Merge classes from route with defaults
 
-    /**
-     * @test
-     *
-     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
-     */
+    #[Test]
     public function merge_classes_from_route_with_defaults_works_with_overwrite(): void
     {
         // -- Arrange
@@ -181,11 +169,7 @@ final class RoutePayloadTest extends TestCase
         self::assertSame($classesFromRoute, $relevantClasses);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
-     */
+    #[Test]
     public function merge_classes_from_route_with_defaults_works_with_merge_into_defaults(): void
     {
         // -- Arrange
@@ -215,11 +199,7 @@ final class RoutePayloadTest extends TestCase
         ], $relevantClasses);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
-     */
+    #[Test]
     public function merge_classes_from_route_with_defaults_works_with_merge_into_defaults_and_parameters_are_used_from_route(): void
     {
         // -- Arrange
@@ -252,11 +232,7 @@ final class RoutePayloadTest extends TestCase
         ], $relevantClasses);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
-     */
+    #[Test]
     public function merge_classes_from_route_with_defaults_works_without_classes_from_route(): void
     {
         // -- Arrange
@@ -279,11 +255,7 @@ final class RoutePayloadTest extends TestCase
         self::assertSame($classesFromDefault, $relevantClasses);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
-     */
+    #[Test]
     public function merge_classes_from_route_with_defaults_works_with_empty_list_from_route(): void
     {
         // -- Arrange
@@ -306,11 +278,7 @@ final class RoutePayloadTest extends TestCase
         self::assertSame($classesFromRoute, $relevantClasses);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::mergeHandlerWrapperClassesFromRouteWithDefaults()
-     */
+    #[Test]
     public function merge_classes_from_route_with_defaults_works_without_values(): void
     {
         // -- Arrange && Act

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.0
+
+- Added support for PHP 8.6.
+- [Dropped support for PHP 8.4.](./UPGRADE.md#dropped-support-for-php-84)
+
 ## 2.1.0
 
 - Added support for PHP 8.5.

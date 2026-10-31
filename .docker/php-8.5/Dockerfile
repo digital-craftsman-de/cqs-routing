@@ -18,7 +18,7 @@ RUN apk add --update \
     libtool \
     unzip
 
-RUN curl -L --output /usr/bin/pie https://github.com/php/pie/releases/download/1.3.1/pie.phar \
+RUN curl -L --output /usr/bin/pie https://github.com/php/pie/releases/download/1.5.5/pie.phar \
   && chmod +x /usr/bin/pie
 
 # Debugging
