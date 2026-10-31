@@ -233,6 +233,7 @@ final readonly class RouteBuilder
             ->defaults($defaults);
     }
 
+    #[\NoDiscard]
     public static function generateNameFromPath(string $path): string
     {
         $path = str_starts_with($path, '/')

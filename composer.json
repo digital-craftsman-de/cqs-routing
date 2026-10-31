@@ -1,22 +1,21 @@
 {
   "name": "digital-craftsman/cqs-routing",
-  "version": "2.1.0",
-  "description": "Reduced cost of change through CQS in Symfony",
+  "description": "Build Symfony endpoints from typed commands, queries and handlers instead of fat controllers. Request decoding, DTO construction, validation, transactions and responses are handled by reusable components.",
   "type": "symfony-bundle",
   "require": {
-    "php": "8.4.*|8.5.*",
+    "php": "8.5.*|8.6.*",
     "symfony/framework-bundle": "^7.4|^8.0",
     "symfony/serializer": "^7.4|^8.0"
   },
   "require-dev": {
-    "friendsofphp/php-cs-fixer": "^3.68.5",
-    "digital-craftsman/ids": "^2.3.0",
-    "digital-craftsman/self-aware-normalizers": "^1.2.0",
-    "phpunit/phpunit": "^10.5",
+    "digital-craftsman/ids": "^2.5",
+    "digital-craftsman/self-aware-normalizers": "^1.4",
+    "friendsofphp/php-cs-fixer": "^3.95",
+    "phpunit/phpunit": "^13.4",
     "symfony/property-access": "^7.4|^8.0",
     "symfony/property-info": "^7.4|^8.0",
     "symfony/yaml": "^7.4|^8.0",
-    "vimeo/psalm": "^6.0.0"
+    "vimeo/psalm": "^6.20"
   },
   "autoload": {
     "psr-4": {

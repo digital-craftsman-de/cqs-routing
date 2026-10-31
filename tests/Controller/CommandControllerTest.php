@@ -29,6 +29,8 @@ use DigitalCraftsman\CQSRouting\Test\Utility\VirusScannerSimulator;
 use DigitalCraftsman\CQSRouting\Test\ValueObject\UserId;
 use DigitalCraftsman\SelfAwareNormalizers\Serializer\ArrayNormalizableNormalizer;
 use DigitalCraftsman\SelfAwareNormalizers\Serializer\StringNormalizableNormalizer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +42,7 @@ use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-/** @coversDefaultClass \DigitalCraftsman\CQSRouting\Controller\CommandController */
+#[CoversClass(CommandController::class)]
 final class CommandControllerTest extends TestCase
 {
     private RouteConfigurationBuilder $defaultRouteConfigurationBuilder;
@@ -68,11 +70,7 @@ final class CommandControllerTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @covers ::handle
-     */
+    #[Test]
     public function command_controller_works_with_all_components(): void
     {
         // -- Arrange
@@ -159,11 +157,7 @@ final class CommandControllerTest extends TestCase
         self::assertCount(1, $lockSimulator->unlockedActions);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::handle
-     */
+    #[Test]
     public function command_controller_works_with_handler_wrapper_in_catch_case_with_multiple_catches(): void
     {
         // -- Arrange
@@ -232,11 +226,7 @@ final class CommandControllerTest extends TestCase
         self::assertFalse($connectionSimulator->hasCommitted);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::handle
-     */
+    #[Test]
     public function command_controller_works_with_handler_wrapper_with_catch_and_throw(): void
     {
         // -- Assert

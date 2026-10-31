@@ -23,9 +23,9 @@ use DigitalCraftsman\CQSRouting\Routing\RoutePayload;
  */
 final readonly class HandlerWrapperStep
 {
-    public const STEP_PREPARE = 'PREPARE';
-    public const STEP_THEN = 'THEN';
-    public const STEP_CATCH = 'CATCH';
+    public const string STEP_PREPARE = 'PREPARE';
+    public const string STEP_THEN = 'THEN';
+    public const string STEP_CATCH = 'CATCH';
 
     /**
      * @var array<class-string<HandlerWrapper>, NormalizedConfigurationParameters>
@@ -59,6 +59,7 @@ final readonly class HandlerWrapperStep
     /**
      * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters> $handlerWrapperClasses
      */
+    #[\NoDiscard]
     public static function prepare(array $handlerWrapperClasses): self
     {
         return new self(
@@ -70,6 +71,7 @@ final readonly class HandlerWrapperStep
     /**
      * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters> $handlerWrapperClasses
      */
+    #[\NoDiscard]
     public static function then(array $handlerWrapperClasses): self
     {
         return new self(
@@ -81,6 +83,7 @@ final readonly class HandlerWrapperStep
     /**
      * @param array<class-string<HandlerWrapper>, NormalizedConfigurationParameters> $handlerWrapperClasses
      */
+    #[\NoDiscard]
     public static function catch(array $handlerWrapperClasses): self
     {
         return new self(

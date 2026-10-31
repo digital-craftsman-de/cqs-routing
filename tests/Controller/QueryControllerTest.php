@@ -28,6 +28,8 @@ use DigitalCraftsman\CQSRouting\Test\ValueObject\TaskId;
 use DigitalCraftsman\CQSRouting\Test\ValueObject\UserId;
 use DigitalCraftsman\SelfAwareNormalizers\Serializer\ArrayNormalizableNormalizer;
 use DigitalCraftsman\SelfAwareNormalizers\Serializer\StringNormalizableNormalizer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
@@ -38,7 +40,7 @@ use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-/** @coversDefaultClass \DigitalCraftsman\CQSRouting\Controller\QueryController */
+#[CoversClass(QueryController::class)]
 final class QueryControllerTest extends TestCase
 {
     private RouteConfigurationBuilder $defaultRouteConfigurationBuilder;
@@ -66,11 +68,7 @@ final class QueryControllerTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     *
-     * @covers ::handle
-     */
+    #[Test]
     public function query_controller_works_with_all_components(): void
     {
         // -- Arrange
@@ -170,11 +168,7 @@ final class QueryControllerTest extends TestCase
         self::assertCount(1, $lockSimulator->unlockedActions);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::handle
-     */
+    #[Test]
     public function query_controller_works_with_handler_wrapper_in_catch_case_with_multiple_catches(): void
     {
         // -- Assert
